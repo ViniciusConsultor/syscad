@@ -30,6 +30,10 @@
             <End Role="aluno" EntitySet="aluno" />
             <End Role="cobranca" EntitySet="cobranca" />
           </AssociationSet>
+          <AssociationSet Name="FK_cobranca_taxa" Association="DatabaseModel.Store.FK_cobranca_taxa">
+            <End Role="taxa" EntitySet="taxa" />
+            <End Role="cobranca" EntitySet="cobranca" />
+          </AssociationSet>
           <AssociationSet Name="FK_curso_modulo1" Association="DatabaseModel.Store.FK_curso_modulo1">
             <End Role="modulo" EntitySet="modulo" />
             <End Role="curso" EntitySet="curso" />
@@ -274,6 +278,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_cobranca_taxa">
+          <End Role="taxa" Type="DatabaseModel.Store.taxa" Multiplicity="1" />
+          <End Role="cobranca" Type="DatabaseModel.Store.cobranca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="taxa">
+              <PropertyRef Name="idTaxa" />
+            </Principal>
+            <Dependent Role="cobranca">
+              <PropertyRef Name="idTaxa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_curso_modulo1">
           <End Role="modulo" Type="DatabaseModel.Store.modulo" Multiplicity="1" />
           <End Role="curso" Type="DatabaseModel.Store.curso" Multiplicity="*" />
@@ -446,12 +462,12 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatabaseModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="Database" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="endereco" EntityType="DatabaseModel.endereco" />
+        <EntityContainer Name="Repositorio" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="aluno" EntityType="DatabaseModel.aluno" />
           <EntitySet Name="cargo" EntityType="DatabaseModel.cargo" />
           <EntitySet Name="cobranca" EntityType="DatabaseModel.cobranca" />
           <EntitySet Name="curso" EntityType="DatabaseModel.curso" />
+          <EntitySet Name="endereco" EntityType="DatabaseModel.endereco" />
           <EntitySet Name="funcionario" EntityType="DatabaseModel.funcionario" />
           <EntitySet Name="matricula" EntityType="DatabaseModel.matricula" />
           <EntitySet Name="matriculaTurma" EntityType="DatabaseModel.matriculaTurma" />
@@ -460,6 +476,7 @@
           <EntitySet Name="perfil" EntityType="DatabaseModel.perfil" />
           <EntitySet Name="pessoa" EntityType="DatabaseModel.pessoa" />
           <EntitySet Name="taxa" EntityType="DatabaseModel.taxa" />
+          <EntitySet Name="tipoEndereco" EntityType="DatabaseModel.tipoEndereco" />
           <EntitySet Name="turma" EntityType="DatabaseModel.turma" />
           <EntitySet Name="usuario" EntityType="DatabaseModel.usuario" />
           <AssociationSet Name="FK_aluno_pessoa" Association="DatabaseModel.FK_aluno_pessoa">
@@ -470,20 +487,32 @@
             <End Role="aluno" EntitySet="aluno" />
             <End Role="cobranca" EntitySet="cobranca" />
           </AssociationSet>
+          <AssociationSet Name="FK_matricula_aluno" Association="DatabaseModel.FK_matricula_aluno">
+            <End Role="aluno" EntitySet="aluno" />
+            <End Role="matricula" EntitySet="matricula" />
+          </AssociationSet>
+          <AssociationSet Name="FK_notaFalta_aluno" Association="DatabaseModel.FK_notaFalta_aluno">
+            <End Role="aluno" EntitySet="aluno" />
+            <End Role="notaFalta" EntitySet="notaFalta" />
+          </AssociationSet>
           <AssociationSet Name="FK_funcionario_cargo" Association="DatabaseModel.FK_funcionario_cargo">
             <End Role="cargo" EntitySet="cargo" />
             <End Role="funcionario" EntitySet="funcionario" />
           </AssociationSet>
-          <AssociationSet Name="FK_cobranca_taxa" Association="DatabaseModel.FK_cobranca_taxa">
-            <End Role="taxa" EntitySet="taxa" />
-            <End Role="cobranca" EntitySet="cobranca" />
-          </AssociationSet>
-          <AssociationSet Name="FK_curso_modulo" Association="DatabaseModel.FK_curso_modulo">
+          <AssociationSet Name="FK_curso_modulo1" Association="DatabaseModel.FK_curso_modulo1">
             <End Role="modulo" EntitySet="modulo" />
             <End Role="curso" EntitySet="curso" />
           </AssociationSet>
+          <AssociationSet Name="FK_turma_curso" Association="DatabaseModel.FK_turma_curso">
+            <End Role="curso" EntitySet="curso" />
+            <End Role="turma" EntitySet="turma" />
+          </AssociationSet>
           <AssociationSet Name="FK_endereco_pessoa" Association="DatabaseModel.FK_endereco_pessoa">
             <End Role="pessoa" EntitySet="pessoa" />
+            <End Role="endereco" EntitySet="endereco" />
+          </AssociationSet>
+          <AssociationSet Name="FK_endereco_tipoEndereco" Association="DatabaseModel.FK_endereco_tipoEndereco">
+            <End Role="tipoEndereco" EntitySet="tipoEndereco" />
             <End Role="endereco" EntitySet="endereco" />
           </AssociationSet>
           <AssociationSet Name="FK_funcionario_pessoa" Association="DatabaseModel.FK_funcionario_pessoa">
@@ -494,17 +523,13 @@
             <End Role="usuario" EntitySet="usuario" />
             <End Role="funcionario" EntitySet="funcionario" />
           </AssociationSet>
-          <AssociationSet Name="FK_matricula_aluno" Association="DatabaseModel.FK_matricula_aluno">
-            <End Role="aluno" EntitySet="aluno" />
+          <AssociationSet Name="FK_matriculaTurma_matricula" Association="DatabaseModel.FK_matriculaTurma_matricula">
             <End Role="matricula" EntitySet="matricula" />
+            <End Role="matriculaTurma" EntitySet="matriculaTurma" />
           </AssociationSet>
-          <AssociationSet Name="FK_notaFalta_aluno" Association="DatabaseModel.FK_notaFalta_aluno">
-            <End Role="aluno" EntitySet="aluno" />
-            <End Role="notaFalta" EntitySet="notaFalta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_turma_curso" Association="DatabaseModel.FK_turma_curso">
-            <End Role="curso" EntitySet="curso" />
+          <AssociationSet Name="FK_matriculaTurma_turma" Association="DatabaseModel.FK_matriculaTurma_turma">
             <End Role="turma" EntitySet="turma" />
+            <End Role="matriculaTurma" EntitySet="matriculaTurma" />
           </AssociationSet>
           <AssociationSet Name="FK_notaFalta_modulo" Association="DatabaseModel.FK_notaFalta_modulo">
             <End Role="modulo" EntitySet="modulo" />
@@ -518,50 +543,19 @@
             <End Role="perfil" EntitySet="perfil" />
             <End Role="usuario" EntitySet="usuario" />
           </AssociationSet>
-          <AssociationSet Name="matriculaTurma1" Association="DatabaseModel.matriculaTurma1">
-            <End Role="matricula" EntitySet="matricula" />
-            <End Role="turma" EntitySet="turma" />
-          </AssociationSet>
-          <AssociationSet Name="FK_matriculaTurma_matricula" Association="DatabaseModel.FK_matriculaTurma_matricula">
-            <End Role="matricula" EntitySet="matricula" />
-            <End Role="matriculaTurma" EntitySet="matriculaTurma" />
-          </AssociationSet>
-          <EntitySet Name="tipoEndereco" EntityType="DatabaseModel.tipoEndereco" />
-          <AssociationSet Name="FK_endereco_tipoEndereco" Association="DatabaseModel.FK_endereco_tipoEndereco">
-            <End Role="tipoEndereco" EntitySet="tipoEndereco" />
-            <End Role="endereco" EntitySet="endereco" />
+          <AssociationSet Name="FK_cobranca_taxa" Association="DatabaseModel.FK_cobranca_taxa">
+            <End Role="taxa" EntitySet="taxa" />
+            <End Role="cobranca" EntitySet="cobranca" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="endereco">
-          <Key>
-            <PropertyRef Name="idendereco" />
-            <PropertyRef Name="idEndereco" />
-          </Key>
-          <Property Name="idendereco" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="tipoEndereco" Type="Int32" />
-          <Property Name="idpessoa" Type="Int32" />
-          <Property Name="logradouro" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="numero" Type="Int32" />
-          <Property Name="complemento" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
-          <Property Name="CEP" Type="String" MaxLength="9" Unicode="false" FixedLength="false" />
-          <Property Name="bairro" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="cidade" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
-          <Property Name="uf" Type="String" MaxLength="2" Unicode="false" FixedLength="true" />
-          <Property Name="tipo" Type="Int32" />
-          <Property Type="Int32" Name="idEndereco" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="idPessoa" Nullable="false" />
-          <NavigationProperty Name="pessoa" Relationship="DatabaseModel.FK_endereco_pessoa" FromRole="endereco" ToRole="pessoa" />
-          <Property Type="Int32" Name="idTipoEndereco" Nullable="false" />
-          <NavigationProperty Name="tipoEndereco_1" Relationship="DatabaseModel.FK_endereco_tipoEndereco" FromRole="endereco" ToRole="tipoEndereco" />
-        </EntityType>
         <EntityType Name="aluno">
           <Key>
             <PropertyRef Name="idAluno" />
           </Key>
-          <Property Type="Int32" Name="idAluno" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="idPessoa" Nullable="false" />
-          <Property Type="Int32" Name="statusPedagogico" />
-          <Property Type="Int32" Name="statusFinanceiro" />
+          <Property Name="idAluno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idPessoa" Type="Int32" Nullable="false" />
+          <Property Name="statusPedagogico" Type="Int32" />
+          <Property Name="statusFinanceiro" Type="Int32" />
           <NavigationProperty Name="pessoa" Relationship="DatabaseModel.FK_aluno_pessoa" FromRole="aluno" ToRole="pessoa" />
           <NavigationProperty Name="cobranca" Relationship="DatabaseModel.FK_cobranca_aluno" FromRole="aluno" ToRole="cobranca" />
           <NavigationProperty Name="matricula" Relationship="DatabaseModel.FK_matricula_aluno" FromRole="aluno" ToRole="matricula" />
@@ -571,21 +565,21 @@
           <Key>
             <PropertyRef Name="idCargo" />
           </Key>
-          <Property Type="Int32" Name="idCargo" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="nome" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="descricao" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="idCargo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="descricao" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="funcionario" Relationship="DatabaseModel.FK_funcionario_cargo" FromRole="cargo" ToRole="funcionario" />
         </EntityType>
         <EntityType Name="cobranca">
           <Key>
             <PropertyRef Name="idCobranca" />
           </Key>
-          <Property Type="Int32" Name="idCobranca" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="idTaxa" Nullable="false" />
-          <Property Type="Int32" Name="idAluno" Nullable="false" />
-          <Property Type="Int32" Name="statusPagamento" />
-          <Property Type="Single" Name="valorTotal" />
-          <Property Type="Single" Name="juros" />
+          <Property Name="idCobranca" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTaxa" Type="Int32" Nullable="false" />
+          <Property Name="idAluno" Type="Int32" Nullable="false" />
+          <Property Name="statusPagamento" Type="Int32" />
+          <Property Name="valorTotal" Type="Single" />
+          <Property Name="juros" Type="Single" />
           <NavigationProperty Name="aluno" Relationship="DatabaseModel.FK_cobranca_aluno" FromRole="cobranca" ToRole="aluno" />
           <NavigationProperty Name="taxa" Relationship="DatabaseModel.FK_cobranca_taxa" FromRole="cobranca" ToRole="taxa" />
         </EntityType>
@@ -593,24 +587,42 @@
           <Key>
             <PropertyRef Name="idCurso" />
           </Key>
-          <Property Type="Int32" Name="idCurso" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="idModulo" Nullable="false" />
-          <Property Type="String" Name="nome" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="descricao" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Single" Name="valor" />
-          <Property Type="Int32" Name="status" />
-          <NavigationProperty Name="modulo" Relationship="DatabaseModel.FK_curso_modulo" FromRole="curso" ToRole="modulo" />
+          <Property Name="idCurso" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idModulo" Type="Int32" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="descricao" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="valor" Type="Single" />
+          <Property Name="status" Type="Int32" />
+          <NavigationProperty Name="modulo" Relationship="DatabaseModel.FK_curso_modulo1" FromRole="curso" ToRole="modulo" />
           <NavigationProperty Name="turma" Relationship="DatabaseModel.FK_turma_curso" FromRole="curso" ToRole="turma" />
+        </EntityType>
+        <EntityType Name="endereco">
+          <Key>
+            <PropertyRef Name="idEndereco" />
+          </Key>
+          <Property Name="idEndereco" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTipoEndereco" Type="Int32" Nullable="false" />
+          <Property Name="idPessoa" Type="Int32" Nullable="false" />
+          <Property Name="logradouro" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="numero" Type="Int32" Nullable="false" />
+          <Property Name="complemento" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="CEP" Type="String" Nullable="false" MaxLength="9" Unicode="false" FixedLength="false" />
+          <Property Name="bairro" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="cidade" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="uf" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="tipo" Type="Int32" />
+          <NavigationProperty Name="pessoa" Relationship="DatabaseModel.FK_endereco_pessoa" FromRole="endereco" ToRole="pessoa" />
+          <NavigationProperty Name="tipoEndereco" Relationship="DatabaseModel.FK_endereco_tipoEndereco" FromRole="endereco" ToRole="tipoEndereco" />
         </EntityType>
         <EntityType Name="funcionario">
           <Key>
             <PropertyRef Name="idFuncionario" />
           </Key>
-          <Property Type="Int32" Name="idFuncionario" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="idUsuario" Nullable="false" />
-          <Property Type="Int32" Name="idCargo" Nullable="false" />
-          <Property Type="Int32" Name="idPessoa" Nullable="false" />
-          <Property Type="Single" Name="salario" />
+          <Property Name="idFuncionario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="idCargo" Type="Int32" Nullable="false" />
+          <Property Name="idPessoa" Type="Int32" Nullable="false" />
+          <Property Name="salario" Type="Single" />
           <NavigationProperty Name="cargo" Relationship="DatabaseModel.FK_funcionario_cargo" FromRole="funcionario" ToRole="cargo" />
           <NavigationProperty Name="pessoa" Relationship="DatabaseModel.FK_funcionario_pessoa" FromRole="funcionario" ToRole="pessoa" />
           <NavigationProperty Name="usuario" Relationship="DatabaseModel.FK_funcionario_usuario" FromRole="funcionario" ToRole="usuario" />
@@ -619,51 +631,47 @@
           <Key>
             <PropertyRef Name="idMatricula" />
           </Key>
-          <Property Type="Int32" Name="idMatricula" Nullable="false" />
-          <Property Type="Int32" Name="alunoStatus_idAluno" Nullable="false" />
-          <Property Type="Int32" Name="numeroMatricula" Nullable="false" />
-          <Property Type="DateTime" Name="dataRegistro" Nullable="false" />
-          <Property Type="DateTime" Name="dataCancelamento" />
-          <Property Type="String" Name="tipo" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="idAluno" Nullable="false" />
+          <Property Name="idMatricula" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idAluno" Type="Int32" Nullable="false" />
+          <Property Name="numeroMatricula" Type="Int32" Nullable="false" />
+          <Property Name="dataRegistro" Type="DateTime" Nullable="false" />
+          <Property Name="dataCancelamento" Type="DateTime" />
+          <Property Name="tipo" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="aluno" Relationship="DatabaseModel.FK_matricula_aluno" FromRole="matricula" ToRole="aluno" />
-          <NavigationProperty Name="turma" Relationship="DatabaseModel.matriculaTurma1" FromRole="matricula" ToRole="turma" />
           <NavigationProperty Name="matriculaTurma" Relationship="DatabaseModel.FK_matriculaTurma_matricula" FromRole="matricula" ToRole="matriculaTurma" />
         </EntityType>
         <EntityType Name="matriculaTurma">
           <Key>
-            <PropertyRef Name="idTurma" />
-            <PropertyRef Name="idMatricula" />
             <PropertyRef Name="idMatriculaTurma" />
           </Key>
-          <Property Type="Int32" Name="idTurma" Nullable="false" />
-          <Property Type="Int32" Name="idMatricula" Nullable="false" />
-          <Property Type="Int32" Name="idMatriculaTurma" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTurma" Type="Int32" Nullable="false" />
+          <Property Name="idMatricula" Type="Int32" Nullable="false" />
+          <Property Name="idMatriculaTurma" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="matricula" Relationship="DatabaseModel.FK_matriculaTurma_matricula" FromRole="matriculaTurma" ToRole="matricula" />
+          <NavigationProperty Name="turma" Relationship="DatabaseModel.FK_matriculaTurma_turma" FromRole="matriculaTurma" ToRole="turma" />
         </EntityType>
         <EntityType Name="modulo">
           <Key>
             <PropertyRef Name="idModulo" />
           </Key>
-          <Property Type="Int32" Name="idModulo" Nullable="false" />
-          <Property Type="String" Name="nome" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="tempoDuracao" />
-          <Property Type="Int32" Name="statusModulo" />
-          <NavigationProperty Name="curso" Relationship="DatabaseModel.FK_curso_modulo" FromRole="modulo" ToRole="curso" />
+          <Property Name="idModulo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+          <Property Name="tempoDuracao" Type="Int32" />
+          <Property Name="statusModulo" Type="Int32" />
+          <NavigationProperty Name="curso" Relationship="DatabaseModel.FK_curso_modulo1" FromRole="modulo" ToRole="curso" />
           <NavigationProperty Name="notaFalta" Relationship="DatabaseModel.FK_notaFalta_modulo" FromRole="modulo" ToRole="notaFalta" />
         </EntityType>
         <EntityType Name="notaFalta">
           <Key>
             <PropertyRef Name="idNotaFalta" />
           </Key>
-          <Property Type="Int32" Name="idNotaFalta" Nullable="false" />
-          <Property Type="Int32" Name="turma_idTurma" Nullable="false" />
-          <Property Type="Int32" Name="idModulo" Nullable="false" />
-          <Property Type="Int32" Name="idAluno" Nullable="false" />
-          <Property Type="Int32" Name="qtdFalta" />
-          <Property Type="Single" Name="nota1" />
-          <Property Type="Single" Name="nota2" />
-          <Property Type="Int32" Name="idTurma" Nullable="false" />
+          <Property Name="idNotaFalta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTurma" Type="Int32" Nullable="false" />
+          <Property Name="idModulo" Type="Int32" Nullable="false" />
+          <Property Name="idAluno" Type="Int32" Nullable="false" />
+          <Property Name="qtdFalta" Type="Int32" />
+          <Property Name="nota1" Type="Single" />
+          <Property Name="nota2" Type="Single" />
           <NavigationProperty Name="aluno" Relationship="DatabaseModel.FK_notaFalta_aluno" FromRole="notaFalta" ToRole="aluno" />
           <NavigationProperty Name="modulo" Relationship="DatabaseModel.FK_notaFalta_modulo" FromRole="notaFalta" ToRole="modulo" />
           <NavigationProperty Name="turma" Relationship="DatabaseModel.FK_notaFalta_turma" FromRole="notaFalta" ToRole="turma" />
@@ -672,22 +680,22 @@
           <Key>
             <PropertyRef Name="idPerfil" />
           </Key>
-          <Property Type="Int32" Name="idPerfil" Nullable="false" />
-          <Property Type="String" Name="nome" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="usuario" Relationship="DatabaseModel.FK_usuario_perfil" FromRole="perfil" ToRole="usuario" />
         </EntityType>
         <EntityType Name="pessoa">
           <Key>
             <PropertyRef Name="idPessoa" />
           </Key>
-          <Property Type="Int32" Name="idPessoa" Nullable="false" />
-          <Property Type="String" Name="nome" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="cpf" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="email" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="telefone" MaxLength="14" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="celular" MaxLength="14" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="dataNascimento" Nullable="false" />
-          <Property Type="Int32" Name="sexo" Nullable="false" />
+          <Property Name="idPessoa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="cpf" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="email" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="telefone" Type="String" MaxLength="14" Unicode="false" FixedLength="false" />
+          <Property Name="celular" Type="String" MaxLength="14" Unicode="false" FixedLength="false" />
+          <Property Name="dataNascimento" Type="DateTime" Nullable="false" />
+          <Property Name="sexo" Type="Int32" Nullable="false" />
           <NavigationProperty Name="aluno" Relationship="DatabaseModel.FK_aluno_pessoa" FromRole="pessoa" ToRole="aluno" />
           <NavigationProperty Name="endereco" Relationship="DatabaseModel.FK_endereco_pessoa" FromRole="pessoa" ToRole="endereco" />
           <NavigationProperty Name="funcionario" Relationship="DatabaseModel.FK_funcionario_pessoa" FromRole="pessoa" ToRole="funcionario" />
@@ -696,42 +704,50 @@
           <Key>
             <PropertyRef Name="idTaxa" />
           </Key>
-          <Property Type="Int32" Name="idTaxa" Nullable="false" />
-          <Property Type="String" Name="nome" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="descricao" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Single" Name="valor" />
+          <Property Name="idTaxa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="descricao" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="valor" Type="Single" />
           <NavigationProperty Name="cobranca" Relationship="DatabaseModel.FK_cobranca_taxa" FromRole="taxa" ToRole="cobranca" />
+        </EntityType>
+        <EntityType Name="tipoEndereco">
+          <Key>
+            <PropertyRef Name="idTipoEndereco" />
+          </Key>
+          <Property Name="idTipoEndereco" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="endereco" Relationship="DatabaseModel.FK_endereco_tipoEndereco" FromRole="tipoEndereco" ToRole="endereco" />
         </EntityType>
         <EntityType Name="turma">
           <Key>
             <PropertyRef Name="idTurma" />
           </Key>
-          <Property Type="Int32" Name="idTurma" Nullable="false" />
-          <Property Type="Int32" Name="idCurso" Nullable="false" />
-          <Property Type="String" Name="descricao" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Type="Int32" Name="numeroVagas" />
-          <Property Type="Int32" Name="vagasOcupadas" />
-          <Property Type="DateTime" Name="dataInicio" Nullable="false" />
-          <Property Type="DateTime" Name="dataFim" Nullable="false" />
-          <Property Type="DateTime" Name="dataFechamento" />
+          <Property Name="idTurma" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCurso" Type="Int32" Nullable="false" />
+          <Property Name="descricao" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="numeroVagas" Type="Int32" />
+          <Property Name="vagasOcupadas" Type="Int32" />
+          <Property Name="dataInicio" Type="DateTime" Nullable="false" />
+          <Property Name="dataFim" Type="DateTime" Nullable="false" />
+          <Property Name="dataFechamento" Type="DateTime" />
           <NavigationProperty Name="curso" Relationship="DatabaseModel.FK_turma_curso" FromRole="turma" ToRole="curso" />
+          <NavigationProperty Name="matriculaTurma" Relationship="DatabaseModel.FK_matriculaTurma_turma" FromRole="turma" ToRole="matriculaTurma" />
           <NavigationProperty Name="notaFalta" Relationship="DatabaseModel.FK_notaFalta_turma" FromRole="turma" ToRole="notaFalta" />
-          <NavigationProperty Name="matricula" Relationship="DatabaseModel.matriculaTurma1" FromRole="turma" ToRole="matricula" />
         </EntityType>
         <EntityType Name="usuario">
           <Key>
             <PropertyRef Name="idUsuario" />
           </Key>
-          <Property Type="Int32" Name="idUsuario" Nullable="false" />
-          <Property Type="Int32" Name="idPerfil" Nullable="false" />
-          <Property Type="String" Name="login" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="senha" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="idPerfil" Type="Int32" Nullable="false" />
+          <Property Name="login" Type="String" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="senha" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="funcionario" Relationship="DatabaseModel.FK_funcionario_usuario" FromRole="usuario" ToRole="funcionario" />
           <NavigationProperty Name="perfil" Relationship="DatabaseModel.FK_usuario_perfil" FromRole="usuario" ToRole="perfil" />
         </EntityType>
         <Association Name="FK_aluno_pessoa">
-          <End Type="DatabaseModel.pessoa" Role="pessoa" Multiplicity="1" />
-          <End Type="DatabaseModel.aluno" Role="aluno" Multiplicity="*" />
+          <End Role="pessoa" Type="DatabaseModel.pessoa" Multiplicity="1" />
+          <End Role="aluno" Type="DatabaseModel.aluno" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="pessoa">
               <PropertyRef Name="idPessoa" />
@@ -742,8 +758,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_cobranca_aluno">
-          <End Type="DatabaseModel.aluno" Role="aluno" Multiplicity="1" />
-          <End Type="DatabaseModel.cobranca" Role="cobranca" Multiplicity="*" />
+          <End Role="aluno" Type="DatabaseModel.aluno" Multiplicity="1" />
+          <End Role="cobranca" Type="DatabaseModel.cobranca" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="aluno">
               <PropertyRef Name="idAluno" />
@@ -753,15 +769,171 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_matricula_aluno">
+          <End Role="aluno" Type="DatabaseModel.aluno" Multiplicity="1" />
+          <End Role="matricula" Type="DatabaseModel.matricula" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aluno">
+              <PropertyRef Name="idAluno" />
+            </Principal>
+            <Dependent Role="matricula">
+              <PropertyRef Name="idAluno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_notaFalta_aluno">
+          <End Role="aluno" Type="DatabaseModel.aluno" Multiplicity="1" />
+          <End Role="notaFalta" Type="DatabaseModel.notaFalta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="aluno">
+              <PropertyRef Name="idAluno" />
+            </Principal>
+            <Dependent Role="notaFalta">
+              <PropertyRef Name="idAluno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_funcionario_cargo">
-          <End Type="DatabaseModel.cargo" Role="cargo" Multiplicity="1" />
-          <End Type="DatabaseModel.funcionario" Role="funcionario" Multiplicity="*" />
+          <End Role="cargo" Type="DatabaseModel.cargo" Multiplicity="1" />
+          <End Role="funcionario" Type="DatabaseModel.funcionario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="cargo">
               <PropertyRef Name="idCargo" />
             </Principal>
             <Dependent Role="funcionario">
               <PropertyRef Name="idCargo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_curso_modulo1">
+          <End Role="modulo" Type="DatabaseModel.modulo" Multiplicity="1" />
+          <End Role="curso" Type="DatabaseModel.curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="modulo">
+              <PropertyRef Name="idModulo" />
+            </Principal>
+            <Dependent Role="curso">
+              <PropertyRef Name="idModulo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_turma_curso">
+          <End Role="curso" Type="DatabaseModel.curso" Multiplicity="1" />
+          <End Role="turma" Type="DatabaseModel.turma" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="curso">
+              <PropertyRef Name="idCurso" />
+            </Principal>
+            <Dependent Role="turma">
+              <PropertyRef Name="idCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_endereco_pessoa">
+          <End Role="pessoa" Type="DatabaseModel.pessoa" Multiplicity="1" />
+          <End Role="endereco" Type="DatabaseModel.endereco" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pessoa">
+              <PropertyRef Name="idPessoa" />
+            </Principal>
+            <Dependent Role="endereco">
+              <PropertyRef Name="idPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_endereco_tipoEndereco">
+          <End Role="tipoEndereco" Type="DatabaseModel.tipoEndereco" Multiplicity="1" />
+          <End Role="endereco" Type="DatabaseModel.endereco" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipoEndereco">
+              <PropertyRef Name="idTipoEndereco" />
+            </Principal>
+            <Dependent Role="endereco">
+              <PropertyRef Name="idTipoEndereco" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_funcionario_pessoa">
+          <End Role="pessoa" Type="DatabaseModel.pessoa" Multiplicity="1" />
+          <End Role="funcionario" Type="DatabaseModel.funcionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pessoa">
+              <PropertyRef Name="idPessoa" />
+            </Principal>
+            <Dependent Role="funcionario">
+              <PropertyRef Name="idPessoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_funcionario_usuario">
+          <End Role="usuario" Type="DatabaseModel.usuario" Multiplicity="1" />
+          <End Role="funcionario" Type="DatabaseModel.funcionario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="funcionario">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_matriculaTurma_matricula">
+          <End Role="matricula" Type="DatabaseModel.matricula" Multiplicity="1" />
+          <End Role="matriculaTurma" Type="DatabaseModel.matriculaTurma" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="matricula">
+              <PropertyRef Name="idMatricula" />
+            </Principal>
+            <Dependent Role="matriculaTurma">
+              <PropertyRef Name="idMatricula" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_matriculaTurma_turma">
+          <End Role="turma" Type="DatabaseModel.turma" Multiplicity="1" />
+          <End Role="matriculaTurma" Type="DatabaseModel.matriculaTurma" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="turma">
+              <PropertyRef Name="idTurma" />
+            </Principal>
+            <Dependent Role="matriculaTurma">
+              <PropertyRef Name="idTurma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_notaFalta_modulo">
+          <End Role="modulo" Type="DatabaseModel.modulo" Multiplicity="1" />
+          <End Role="notaFalta" Type="DatabaseModel.notaFalta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="modulo">
+              <PropertyRef Name="idModulo" />
+            </Principal>
+            <Dependent Role="notaFalta">
+              <PropertyRef Name="idModulo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_notaFalta_turma">
+          <End Role="turma" Type="DatabaseModel.turma" Multiplicity="1" />
+          <End Role="notaFalta" Type="DatabaseModel.notaFalta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="turma">
+              <PropertyRef Name="idTurma" />
+            </Principal>
+            <Dependent Role="notaFalta">
+              <PropertyRef Name="idTurma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_usuario_perfil">
+          <End Role="perfil" Type="DatabaseModel.perfil" Multiplicity="1" />
+          <End Role="usuario" Type="DatabaseModel.usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="perfil">
+              <PropertyRef Name="idPerfil" />
+            </Principal>
+            <Dependent Role="usuario">
+              <PropertyRef Name="idPerfil" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -777,174 +949,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_curso_modulo">
-          <End Type="DatabaseModel.modulo" Role="modulo" Multiplicity="1" />
-          <End Type="DatabaseModel.curso" Role="curso" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="modulo">
-              <PropertyRef Name="idModulo" />
-            </Principal>
-            <Dependent Role="curso">
-              <PropertyRef Name="idModulo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_endereco_pessoa">
-          <End Type="DatabaseModel.pessoa" Role="pessoa" Multiplicity="1" />
-          <End Type="DatabaseModel.endereco" Role="endereco" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="pessoa">
-              <PropertyRef Name="idPessoa" />
-            </Principal>
-            <Dependent Role="endereco">
-              <PropertyRef Name="idPessoa" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_funcionario_pessoa">
-          <End Type="DatabaseModel.pessoa" Role="pessoa" Multiplicity="1" />
-          <End Type="DatabaseModel.funcionario" Role="funcionario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="pessoa">
-              <PropertyRef Name="idPessoa" />
-            </Principal>
-            <Dependent Role="funcionario">
-              <PropertyRef Name="idPessoa" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_funcionario_usuario">
-          <End Type="DatabaseModel.usuario" Role="usuario" Multiplicity="1" />
-          <End Type="DatabaseModel.funcionario" Role="funcionario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="usuario">
-              <PropertyRef Name="idUsuario" />
-            </Principal>
-            <Dependent Role="funcionario">
-              <PropertyRef Name="idUsuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_matricula_aluno">
-          <End Type="DatabaseModel.aluno" Role="aluno" Multiplicity="1" />
-          <End Type="DatabaseModel.matricula" Role="matricula" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="aluno">
-              <PropertyRef Name="idAluno" />
-            </Principal>
-            <Dependent Role="matricula">
-              <PropertyRef Name="idAluno" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_notaFalta_aluno">
-          <End Type="DatabaseModel.aluno" Role="aluno" Multiplicity="1" />
-          <End Type="DatabaseModel.notaFalta" Role="notaFalta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="aluno">
-              <PropertyRef Name="idAluno" />
-            </Principal>
-            <Dependent Role="notaFalta">
-              <PropertyRef Name="idAluno" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_turma_curso">
-          <End Type="DatabaseModel.curso" Role="curso" Multiplicity="1" />
-          <End Type="DatabaseModel.turma" Role="turma" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="curso">
-              <PropertyRef Name="idCurso" />
-            </Principal>
-            <Dependent Role="turma">
-              <PropertyRef Name="idCurso" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_notaFalta_modulo">
-          <End Type="DatabaseModel.modulo" Role="modulo" Multiplicity="1" />
-          <End Type="DatabaseModel.notaFalta" Role="notaFalta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="modulo">
-              <PropertyRef Name="idModulo" />
-            </Principal>
-            <Dependent Role="notaFalta">
-              <PropertyRef Name="idModulo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_notaFalta_turma">
-          <End Type="DatabaseModel.turma" Role="turma" Multiplicity="1" />
-          <End Type="DatabaseModel.notaFalta" Role="notaFalta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="turma">
-              <PropertyRef Name="idTurma" />
-            </Principal>
-            <Dependent Role="notaFalta">
-              <PropertyRef Name="idTurma" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_usuario_perfil">
-          <End Type="DatabaseModel.perfil" Role="perfil" Multiplicity="1" />
-          <End Type="DatabaseModel.usuario" Role="usuario" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="perfil">
-              <PropertyRef Name="idPerfil" />
-            </Principal>
-            <Dependent Role="usuario">
-              <PropertyRef Name="idPerfil" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="matriculaTurma1">
-          <End Type="DatabaseModel.matricula" Role="matricula" Multiplicity="*" />
-          <End Type="DatabaseModel.turma" Role="turma" Multiplicity="*" />
-        </Association>
-        <Association Name="FK_matriculaTurma_matricula">
-          <End Type="DatabaseModel.matricula" Role="matricula" Multiplicity="1" />
-          <End Type="DatabaseModel.matriculaTurma" Role="matriculaTurma" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="matricula">
-              <PropertyRef Name="idMatricula" />
-            </Principal>
-            <Dependent Role="matriculaTurma">
-              <PropertyRef Name="idMatricula" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="tipoEndereco">
-          <Key>
-            <PropertyRef Name="idTipoEndereco" />
-          </Key>
-          <Property Type="Int32" Name="idTipoEndereco" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="nome" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="endereco" Relationship="DatabaseModel.FK_endereco_tipoEndereco" FromRole="tipoEndereco" ToRole="endereco" />
-        </EntityType>
-        <Association Name="FK_endereco_tipoEndereco">
-          <End Type="DatabaseModel.tipoEndereco" Role="tipoEndereco" Multiplicity="1" />
-          <End Type="DatabaseModel.endereco" Role="endereco" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tipoEndereco">
-              <PropertyRef Name="idTipoEndereco" />
-            </Principal>
-            <Dependent Role="endereco">
-              <PropertyRef Name="idTipoEndereco" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="Database">
+        <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="Repositorio">
+          <EntitySetMapping Name="aluno">
+            <EntityTypeMapping TypeName="DatabaseModel.aluno">
+              <MappingFragment StoreEntitySet="aluno">
+                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
+                <ScalarProperty Name="idPessoa" ColumnName="idPessoa" />
+                <ScalarProperty Name="statusPedagogico" ColumnName="statusPedagogico" />
+                <ScalarProperty Name="statusFinanceiro" ColumnName="statusFinanceiro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cargo">
+            <EntityTypeMapping TypeName="DatabaseModel.cargo">
+              <MappingFragment StoreEntitySet="cargo">
+                <ScalarProperty Name="idCargo" ColumnName="idCargo" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cobranca">
+            <EntityTypeMapping TypeName="DatabaseModel.cobranca">
+              <MappingFragment StoreEntitySet="cobranca">
+                <ScalarProperty Name="idCobranca" ColumnName="idCobranca" />
+                <ScalarProperty Name="idTaxa" ColumnName="idTaxa" />
+                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
+                <ScalarProperty Name="statusPagamento" ColumnName="statusPagamento" />
+                <ScalarProperty Name="valorTotal" ColumnName="valorTotal" />
+                <ScalarProperty Name="juros" ColumnName="juros" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="curso">
+            <EntityTypeMapping TypeName="DatabaseModel.curso">
+              <MappingFragment StoreEntitySet="curso">
+                <ScalarProperty Name="idCurso" ColumnName="idCurso" />
+                <ScalarProperty Name="idModulo" ColumnName="idModulo" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="endereco">
             <EntityTypeMapping TypeName="DatabaseModel.endereco">
               <MappingFragment StoreEntitySet="endereco">
+                <ScalarProperty Name="idEndereco" ColumnName="idEndereco" />
                 <ScalarProperty Name="idTipoEndereco" ColumnName="idTipoEndereco" />
                 <ScalarProperty Name="idPessoa" ColumnName="idPessoa" />
-                <ScalarProperty Name="idEndereco" ColumnName="idEndereco" />
                 <ScalarProperty Name="logradouro" ColumnName="logradouro" />
                 <ScalarProperty Name="numero" ColumnName="numero" />
                 <ScalarProperty Name="complemento" ColumnName="complemento" />
@@ -956,173 +1015,122 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="aluno">
-            <EntityTypeMapping TypeName="DatabaseModel.aluno">
-              <MappingFragment StoreEntitySet="aluno">
-                <ScalarProperty Name="statusFinanceiro" ColumnName="statusFinanceiro" />
-                <ScalarProperty Name="statusPedagogico" ColumnName="statusPedagogico" />
-                <ScalarProperty Name="idPessoa" ColumnName="idPessoa" />
-                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="cargo">
-            <EntityTypeMapping TypeName="DatabaseModel.cargo">
-              <MappingFragment StoreEntitySet="cargo">
-                <ScalarProperty Name="descricao" ColumnName="descricao" />
-                <ScalarProperty Name="nome" ColumnName="nome" />
-                <ScalarProperty Name="idCargo" ColumnName="idCargo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="cobranca">
-            <EntityTypeMapping TypeName="DatabaseModel.cobranca">
-              <MappingFragment StoreEntitySet="cobranca">
-                <ScalarProperty Name="juros" ColumnName="juros" />
-                <ScalarProperty Name="valorTotal" ColumnName="valorTotal" />
-                <ScalarProperty Name="statusPagamento" ColumnName="statusPagamento" />
-                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
-                <ScalarProperty Name="idTaxa" ColumnName="idTaxa" />
-                <ScalarProperty Name="idCobranca" ColumnName="idCobranca" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="curso">
-            <EntityTypeMapping TypeName="DatabaseModel.curso">
-              <MappingFragment StoreEntitySet="curso">
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="valor" ColumnName="valor" />
-                <ScalarProperty Name="descricao" ColumnName="descricao" />
-                <ScalarProperty Name="nome" ColumnName="nome" />
-                <ScalarProperty Name="idModulo" ColumnName="idModulo" />
-                <ScalarProperty Name="idCurso" ColumnName="idCurso" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="funcionario">
             <EntityTypeMapping TypeName="DatabaseModel.funcionario">
               <MappingFragment StoreEntitySet="funcionario">
-                <ScalarProperty Name="salario" ColumnName="salario" />
-                <ScalarProperty Name="idPessoa" ColumnName="idPessoa" />
-                <ScalarProperty Name="idCargo" ColumnName="idCargo" />
-                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
                 <ScalarProperty Name="idFuncionario" ColumnName="idFuncionario" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idCargo" ColumnName="idCargo" />
+                <ScalarProperty Name="idPessoa" ColumnName="idPessoa" />
+                <ScalarProperty Name="salario" ColumnName="salario" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="matricula">
             <EntityTypeMapping TypeName="DatabaseModel.matricula">
               <MappingFragment StoreEntitySet="matricula">
-                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
-                <ScalarProperty Name="tipo" ColumnName="tipo" />
-                <ScalarProperty Name="dataCancelamento" ColumnName="dataCancelamento" />
-                <ScalarProperty Name="dataRegistro" ColumnName="dataRegistro" />
-                <ScalarProperty Name="numeroMatricula" ColumnName="numeroMatricula" />
                 <ScalarProperty Name="idMatricula" ColumnName="idMatricula" />
+                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
+                <ScalarProperty Name="numeroMatricula" ColumnName="numeroMatricula" />
+                <ScalarProperty Name="dataRegistro" ColumnName="dataRegistro" />
+                <ScalarProperty Name="dataCancelamento" ColumnName="dataCancelamento" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="matriculaTurma">
             <EntityTypeMapping TypeName="DatabaseModel.matriculaTurma">
               <MappingFragment StoreEntitySet="matriculaTurma">
-                <ScalarProperty Name="idMatriculaTurma" ColumnName="idMatriculaTurma" />
-                <ScalarProperty Name="idMatricula" ColumnName="idMatricula" />
                 <ScalarProperty Name="idTurma" ColumnName="idTurma" />
+                <ScalarProperty Name="idMatricula" ColumnName="idMatricula" />
+                <ScalarProperty Name="idMatriculaTurma" ColumnName="idMatriculaTurma" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="modulo">
             <EntityTypeMapping TypeName="DatabaseModel.modulo">
               <MappingFragment StoreEntitySet="modulo">
-                <ScalarProperty Name="statusModulo" ColumnName="statusModulo" />
-                <ScalarProperty Name="tempoDuracao" ColumnName="tempoDuracao" />
-                <ScalarProperty Name="nome" ColumnName="nome" />
                 <ScalarProperty Name="idModulo" ColumnName="idModulo" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="tempoDuracao" ColumnName="tempoDuracao" />
+                <ScalarProperty Name="statusModulo" ColumnName="statusModulo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="notaFalta">
             <EntityTypeMapping TypeName="DatabaseModel.notaFalta">
               <MappingFragment StoreEntitySet="notaFalta">
-                <ScalarProperty Name="idTurma" ColumnName="idTurma" />
-                <ScalarProperty Name="nota2" ColumnName="nota2" />
-                <ScalarProperty Name="nota1" ColumnName="nota1" />
-                <ScalarProperty Name="qtdFalta" ColumnName="qtdFalta" />
-                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
-                <ScalarProperty Name="idModulo" ColumnName="idModulo" />
                 <ScalarProperty Name="idNotaFalta" ColumnName="idNotaFalta" />
+                <ScalarProperty Name="idTurma" ColumnName="idTurma" />
+                <ScalarProperty Name="idModulo" ColumnName="idModulo" />
+                <ScalarProperty Name="idAluno" ColumnName="idAluno" />
+                <ScalarProperty Name="qtdFalta" ColumnName="qtdFalta" />
+                <ScalarProperty Name="nota1" ColumnName="nota1" />
+                <ScalarProperty Name="nota2" ColumnName="nota2" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="perfil">
             <EntityTypeMapping TypeName="DatabaseModel.perfil">
               <MappingFragment StoreEntitySet="perfil">
-                <ScalarProperty Name="nome" ColumnName="nome" />
                 <ScalarProperty Name="idPerfil" ColumnName="idPerfil" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="pessoa">
             <EntityTypeMapping TypeName="DatabaseModel.pessoa">
               <MappingFragment StoreEntitySet="pessoa">
-                <ScalarProperty Name="sexo" ColumnName="sexo" />
-                <ScalarProperty Name="dataNascimento" ColumnName="dataNascimento" />
-                <ScalarProperty Name="celular" ColumnName="celular" />
-                <ScalarProperty Name="telefone" ColumnName="telefone" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="cpf" ColumnName="cpf" />
-                <ScalarProperty Name="nome" ColumnName="nome" />
                 <ScalarProperty Name="idPessoa" ColumnName="idPessoa" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="cpf" ColumnName="cpf" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="telefone" ColumnName="telefone" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
+                <ScalarProperty Name="dataNascimento" ColumnName="dataNascimento" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="taxa">
             <EntityTypeMapping TypeName="DatabaseModel.taxa">
               <MappingFragment StoreEntitySet="taxa">
-                <ScalarProperty Name="valor" ColumnName="valor" />
-                <ScalarProperty Name="descricao" ColumnName="descricao" />
-                <ScalarProperty Name="nome" ColumnName="nome" />
                 <ScalarProperty Name="idTaxa" ColumnName="idTaxa" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipoEndereco">
+            <EntityTypeMapping TypeName="DatabaseModel.tipoEndereco">
+              <MappingFragment StoreEntitySet="tipoEndereco">
+                <ScalarProperty Name="idTipoEndereco" ColumnName="idTipoEndereco" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="turma">
             <EntityTypeMapping TypeName="DatabaseModel.turma">
               <MappingFragment StoreEntitySet="turma">
-                <ScalarProperty Name="dataFechamento" ColumnName="dataFechamento" />
-                <ScalarProperty Name="dataFim" ColumnName="dataFim" />
-                <ScalarProperty Name="dataInicio" ColumnName="dataInicio" />
-                <ScalarProperty Name="vagasOcupadas" ColumnName="vagasOcupadas" />
-                <ScalarProperty Name="numeroVagas" ColumnName="numeroVagas" />
-                <ScalarProperty Name="descricao" ColumnName="descricao" />
-                <ScalarProperty Name="idCurso" ColumnName="idCurso" />
                 <ScalarProperty Name="idTurma" ColumnName="idTurma" />
+                <ScalarProperty Name="idCurso" ColumnName="idCurso" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+                <ScalarProperty Name="numeroVagas" ColumnName="numeroVagas" />
+                <ScalarProperty Name="vagasOcupadas" ColumnName="vagasOcupadas" />
+                <ScalarProperty Name="dataInicio" ColumnName="dataInicio" />
+                <ScalarProperty Name="dataFim" ColumnName="dataFim" />
+                <ScalarProperty Name="dataFechamento" ColumnName="dataFechamento" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="usuario">
             <EntityTypeMapping TypeName="DatabaseModel.usuario">
               <MappingFragment StoreEntitySet="usuario">
-                <ScalarProperty Name="senha" ColumnName="senha" />
-                <ScalarProperty Name="login" ColumnName="login" />
-                <ScalarProperty Name="idPerfil" ColumnName="idPerfil" />
                 <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="matriculaTurma1" TypeName="DatabaseModel.matriculaTurma1" StoreEntitySet="matriculaTurma">
-            <EndProperty Name="turma">
-              <ScalarProperty Name="idTurma" ColumnName="idTurma" />
-            </EndProperty>
-            <EndProperty Name="matricula">
-              <ScalarProperty Name="idMatricula" ColumnName="idMatricula" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="tipoEndereco">
-            <EntityTypeMapping TypeName="DatabaseModel.tipoEndereco">
-              <MappingFragment StoreEntitySet="tipoEndereco">
-                <ScalarProperty Name="nome" ColumnName="nome" />
-                <ScalarProperty Name="idTipoEndereco" ColumnName="idTipoEndereco" />
+                <ScalarProperty Name="idPerfil" ColumnName="idPerfil" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="senha" ColumnName="senha" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1147,91 +1155,114 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="Repositorio">
-        <EntityTypeShape EntityType="DatabaseModel.endereco" Width="1.5" PointX="0.5" PointY="2.875" Height="4.0956022135416656" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.aluno" Width="1.5" PointX="3.5" PointY="8.625" Height="2.5571907552083317" />
-        <EntityTypeShape EntityType="DatabaseModel.cargo" Width="1.5" PointX="6.75" PointY="1.75" Height="1.7879850260416674" />
-        <EntityTypeShape EntityType="DatabaseModel.cobranca" Width="1.5" PointX="0.625" PointY="10.125" Height="2.5571907552083317" />
-        <EntityTypeShape EntityType="DatabaseModel.curso" Width="1.5" PointX="6.375" PointY="16.625" Height="2.5571907552083335" />
-        <EntityTypeShape EntityType="DatabaseModel.funcionario" Width="1.5" PointX="6.875" PointY="4.625" Height="2.5571907552083331" />
-        <EntityTypeShape EntityType="DatabaseModel.matricula" Width="1.5" PointX="3.5" PointY="11.875" Height="2.7494921875" />
-        <EntityTypeShape EntityType="DatabaseModel.matriculaTurma" Width="1.5" PointX="3.25" PointY="15.625" Height="1.4033821614583317" />
-        <EntityTypeShape EntityType="DatabaseModel.modulo" Width="1.5" PointX="10.875" PointY="13.5" Height="2.1725878906249996" />
-        <EntityTypeShape EntityType="DatabaseModel.notaFalta" Width="1.5" PointX="9" PointY="9.625" Height="3.1340950520833331" />
-        <EntityTypeShape EntityType="DatabaseModel.perfil" Width="1.5" PointX="9.25" PointY="0.5" Height="1.5956835937499996" />
-        <EntityTypeShape EntityType="DatabaseModel.pessoa" Width="1.5" PointX="3.5" PointY="3.75" Height="3.1340950520833317" />
-        <EntityTypeShape EntityType="DatabaseModel.taxa" Width="1.5" PointX="0.5" PointY="14" Height="1.9802864583333388" />
-        <EntityTypeShape EntityType="DatabaseModel.turma" Width="1.5" PointX="6.5" PointY="12" Height="3.1340950520833335" />
-        <EntityTypeShape EntityType="DatabaseModel.usuario" Width="1.5" PointX="9.375" PointY="3.125" Height="2.1725878906249996" />
-        <AssociationConnector Association="DatabaseModel.FK_aluno_pessoa" >
-          <ConnectorPoint PointX="4.25" PointY="6.8840950520833317" />
-          <ConnectorPoint PointX="4.25" PointY="8.625" />
+        <EntityTypeShape EntityType="DatabaseModel.aluno" Width="1.5" PointX="3" PointY="9.625" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.cargo" Width="1.5" PointX="0.75" PointY="13.5" Height="1.7879850260416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.cobranca" Width="1.5" PointX="5.25" PointY="8" Height="2.3648893229166639" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.curso" Width="1.5" PointX="3.75" PointY="1.625" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.endereco" Width="1.5" PointX="3" PointY="5.125" Height="3.5186979166666648" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.funcionario" Width="1.5" PointX="3" PointY="13.625" Height="2.55719075520833" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.matricula" Width="1.5" PointX="5.25" PointY="11.125" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.matriculaTurma" Width="1.5" PointX="7.5" PointY="11.375" Height="1.9802864583333317" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.modulo" Width="1.5" PointX="6" PointY="4.875" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.notaFalta" Width="1.5" PointX="8.25" PointY="7.375" Height="2.9417936197916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.perfil" Width="1.5" PointX="1.5" PointY="19.375" Height="1.5956835937500031" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.pessoa" Width="1.5" PointX="0.75" PointY="9.25" Height="3.1340950520833317" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.taxa" Width="1.5" PointX="10.375" PointY="6.375" Height="1.9802864583333339" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.tipoEndereco" Width="1.5" PointX="0.75" PointY="6" Height="1.5956835937500031" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.turma" Width="1.5" PointX="6" PointY="0.75" Height="3.1340950520833388" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.usuario" Width="1.5" PointX="0.75" PointY="16" Height="2.172587890624996" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseModel.FK_aluno_pessoa" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="10.903595377604166" />
+          <ConnectorPoint PointX="3" PointY="10.903595377604166" />
         </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_cobranca_aluno" >
-          <ConnectorPoint PointX="3.5" PointY="10.653595377604166" />
-          <ConnectorPoint PointX="2.125" PointY="10.653595377604166" />
+        <AssociationConnector Association="DatabaseModel.FK_cobranca_aluno" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="10.091095377604166" />
+          <ConnectorPoint PointX="5.25" PointY="10.091095377604166" />
         </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_funcionario_cargo" >
-          <ConnectorPoint PointX="7.5625" PointY="3.5379850260416674" />
-          <ConnectorPoint PointX="7.5625" PointY="4.625" />
+        <AssociationConnector Association="DatabaseModel.FK_matricula_aluno" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="11.653595377604166" />
+          <ConnectorPoint PointX="5.25" PointY="11.653595377604166" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_notaFalta_aluno" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="10.744944661458332" />
+          <ConnectorPoint PointX="7.791666666666667" PointY="10.744944661458332" />
+          <ConnectorPoint PointX="7.958333333333333" PointY="10.744944661458332" />
+          <ConnectorPoint PointX="9.40625" PointY="10.744944661458332" />
+          <ConnectorPoint PointX="9.40625" PointY="10.316793619791667" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_funcionario_cargo" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="14.456492513020834" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="14.456492513020834" />
+          <ConnectorPoint PointX="2.7083333333333335" PointY="14.456492513020834" />
+          <ConnectorPoint PointX="3" PointY="14.456492513020834" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_curso_modulo1" ManuallyRouted="false">
+          <ConnectorPoint PointX="6" PointY="4.96875" />
+          <ConnectorPoint PointX="4.90625" PointY="4.96875" />
+          <ConnectorPoint PointX="4.90625" PointY="4.1821907552083335" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_turma_curso" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.25" PointY="2.7545475260416694" />
+          <ConnectorPoint PointX="6" PointY="2.7545475260416694" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_endereco_pessoa" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="9.2511528461538468" />
+          <ConnectorPoint PointX="2.625" PointY="8.8761528461538468" />
+          <ConnectorPoint PointX="2.625" PointY="9.01985076282051" />
+          <ConnectorPoint PointX="3.001152846153845" PointY="8.6436979166666639" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_endereco_tipoEndereco" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="6.7978417968750016" />
+          <ConnectorPoint PointX="3" PointY="6.7978417968750016" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_funcionario_pessoa" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.2499999999999996" PointY="12.384095052083332" />
+          <ConnectorPoint PointX="2.625" PointY="12.759095052083332" />
+          <ConnectorPoint PointX="2.625" PointY="15.350593634114583" />
+          <ConnectorPoint PointX="3" PointY="15.350593634114583" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_funcionario_usuario" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="17.177389822916666" />
+          <ConnectorPoint PointX="3.75" PointY="17.177389822916666" />
+          <ConnectorPoint PointX="3.75" PointY="16.182190755208332" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_matriculaTurma_matricula" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.75" PointY="12.365143229166666" />
+          <ConnectorPoint PointX="7.5" PointY="12.365143229166666" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_matriculaTurma_turma" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.5" PointY="1.9096593945312552" />
+          <ConnectorPoint PointX="7.875" PointY="1.9096593945312552" />
+          <ConnectorPoint PointX="7.875" PointY="11.375" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_notaFalta_modulo" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.5" PointY="5.9612939453125" />
+          <ConnectorPoint PointX="7.791666666666667" PointY="5.9612939453124989" />
+          <ConnectorPoint PointX="7.958333333333333" PointY="5.9612939453125" />
+          <ConnectorPoint PointX="8.5104141666666653" PointY="5.9612939453124989" />
+          <ConnectorPoint PointX="8.6770808333333331" PointY="5.9612939453125" />
+          <ConnectorPoint PointX="9" PointY="5.9612939453125" />
+          <ConnectorPoint PointX="9" PointY="7.375" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_notaFalta_turma" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.5" PointY="3.1318237890624978" />
+          <ConnectorPoint PointX="7.791666666666667" PointY="3.1318237890624974" />
+          <ConnectorPoint PointX="7.958333333333333" PointY="3.1318237890624978" />
+          <ConnectorPoint PointX="8.5937475" PointY="3.1318237890624978" />
+          <ConnectorPoint PointX="8.5937475" PointY="7.375" />
+        </AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.FK_usuario_perfil" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.875" PointY="19.375" />
+          <ConnectorPoint PointX="1.875" PointY="18.172587890624996" />
         </AssociationConnector>
         <AssociationConnector Association="DatabaseModel.FK_cobranca_taxa" >
-          <ConnectorPoint PointX="1.3125" PointY="14" />
-          <ConnectorPoint PointX="1.3125" PointY="12.682190755208332" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_curso_modulo" >
-          <ConnectorPoint PointX="11.625" PointY="15.672587890625" />
-          <ConnectorPoint PointX="11.625" PointY="17.903595377604166" />
-          <ConnectorPoint PointX="7.875" PointY="17.903595377604166" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_endereco_pessoa" >
-          <ConnectorPoint PointX="3.5" PointY="5.3170475260416659" />
-          <ConnectorPoint PointX="2" PointY="5.3170475260416659" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_funcionario_pessoa" >
-          <ConnectorPoint PointX="5" PointY="5.7545475260416659" />
-          <ConnectorPoint PointX="6.875" PointY="5.7545475260416659" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_funcionario_usuario" >
-          <ConnectorPoint PointX="9.375" PointY="4.9612939453125" />
-          <ConnectorPoint PointX="8.375" PointY="4.9612939453125" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_matricula_aluno" >
-          <ConnectorPoint PointX="4.25" PointY="11.182190755208332" />
-          <ConnectorPoint PointX="4.25" PointY="11.875" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_notaFalta_aluno" >
-          <ConnectorPoint PointX="5" PointY="10.403595377604166" />
-          <ConnectorPoint PointX="9" PointY="10.403595377604166" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_turma_curso" >
-          <ConnectorPoint PointX="7.1875" PointY="16.625" />
-          <ConnectorPoint PointX="7.1875" PointY="15.134095052083334" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_notaFalta_modulo" >
-          <ConnectorPoint PointX="11.625" PointY="13.5" />
-          <ConnectorPoint PointX="11.625" PointY="11.192047526041666" />
-          <ConnectorPoint PointX="10.5" PointY="11.192047526041666" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_notaFalta_turma" >
-          <ConnectorPoint PointX="8" PointY="12.379547526041666" />
-          <ConnectorPoint PointX="9" PointY="12.379547526041666" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_usuario_perfil" >
-          <ConnectorPoint PointX="10.0625" PointY="2.0956835937499996" />
-          <ConnectorPoint PointX="10.0625" PointY="3.125" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.matriculaTurma1" >
-          <ConnectorPoint PointX="5" PointY="13.408396809895834" />
-          <ConnectorPoint PointX="6.5" PointY="13.408396809895834" />
-        </AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.FK_matriculaTurma_matricula" >
-          <ConnectorPoint PointX="4.125" PointY="14.816793619791666" />
-          <ConnectorPoint PointX="4.125" PointY="15.625" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="DatabaseModel.tipoEndereco" Width="1.5" PointX="0.625" PointY="0.5" Height="1.5956835937500031" />
-        <AssociationConnector Association="DatabaseModel.FK_endereco_tipoEndereco" >
-          <ConnectorPoint PointX="1.3125" PointY="2.0956835937500031" />
-          <ConnectorPoint PointX="1.3125" PointY="2.875" />
+          <ConnectorPoint PointX="11.125" PointY="8.3552864583333335" />
+          <ConnectorPoint PointX="11.125" PointY="10.4682421875" />
+          <ConnectorPoint PointX="9.4895833333333339" PointY="10.4682421875" />
+          <ConnectorPoint PointX="9.3229166666666661" PointY="10.4682421875" />
+          <ConnectorPoint PointX="7.958333333333333" PointY="10.4682421875" />
+          <ConnectorPoint PointX="7.791666666666667" PointY="10.4682421875" />
+          <ConnectorPoint PointX="6.75" PointY="10.4682421875" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
