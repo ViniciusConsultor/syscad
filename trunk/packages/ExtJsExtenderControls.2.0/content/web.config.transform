@@ -1,0 +1,13 @@
+<configuration>
+    <system.web>
+        <httpModules>
+            <add name="wwScriptCompressionModule" type="ExtExtenders.Helpers.wwScriptCompressionModule,ExtExtenders"/>
+        </httpModules>
+	</system.web>
+    <system.webServer>
+		<modules>
+			<!-- *** GZip JavaScript Resource Compression: Optional but recommended to reduce script size from 40k to 10k * -->
+			<add name="wwScriptCompressionModule" type="ExtExtenders.Helpers.wwScriptCompressionModule,ExtExtenders"/>
+		</modules>
+	</system.webServer>
+</configuration>
