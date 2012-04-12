@@ -25,9 +25,17 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("DatabaseModel", "FK_cobranca_taxa", "taxa", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.taxa), "cobranca", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.cobranca), true)]
 [assembly: EdmRelationshipAttribute("DatabaseModel", "FK_curso_modulo", "modulo", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.modulo), "curso", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.curso), true)]
 [assembly: EdmRelationshipAttribute("DatabaseModel", "FK_endereco_pessoa", "pessoa", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.pessoa), "endereco", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.endereco), true)]
-[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_endereco_tipo_endereco", "tipo_endereco", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.tipo_endereco), "endereco", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.endereco), true)]
 [assembly: EdmRelationshipAttribute("DatabaseModel", "FK_funcionario_pessoa", "pessoa", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.pessoa), "funcionario", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.funcionario), true)]
 [assembly: EdmRelationshipAttribute("DatabaseModel", "FK_funcionario_usuario", "usuario", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.usuario), "funcionario", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.funcionario), true)]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_matricula_aluno", "aluno", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.aluno), "matricula", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.matricula), true)]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_notaFalta_aluno", "aluno", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.aluno), "notaFalta", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.notaFalta), true)]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_turma_curso", "curso", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.curso), "turma", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.turma), true)]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_notaFalta_modulo", "modulo", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.modulo), "notaFalta", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.notaFalta), true)]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_notaFalta_turma", "turma", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.turma), "notaFalta", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.notaFalta), true)]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_usuario_perfil", "perfil", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.perfil), "usuario", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.usuario), true)]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "matriculaTurma1", "matricula", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.matricula), "turma", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.turma))]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_matriculaTurma_matricula", "matricula", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.matricula), "matriculaTurma", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.matriculaTurma), true)]
+[assembly: EdmRelationshipAttribute("DatabaseModel", "FK_endereco_tipoEndereco", "tipoEndereco", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Persistence.Repositorio.tipoEndereco), "endereco", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Persistence.Repositorio.endereco), true)]
 
 #endregion
 
@@ -274,22 +282,6 @@ namespace Persistence.Repositorio
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<sysdiagrams> sysdiagrams
-        {
-            get
-            {
-                if ((_sysdiagrams == null))
-                {
-                    _sysdiagrams = base.CreateObjectSet<sysdiagrams>("sysdiagrams");
-                }
-                return _sysdiagrams;
-            }
-        }
-        private ObjectSet<sysdiagrams> _sysdiagrams;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<taxa> taxa
         {
             get
@@ -302,22 +294,6 @@ namespace Persistence.Repositorio
             }
         }
         private ObjectSet<taxa> _taxa;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<tipo_endereco> tipo_endereco
-        {
-            get
-            {
-                if ((_tipo_endereco == null))
-                {
-                    _tipo_endereco = base.CreateObjectSet<tipo_endereco>("tipo_endereco");
-                }
-                return _tipo_endereco;
-            }
-        }
-        private ObjectSet<tipo_endereco> _tipo_endereco;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -350,6 +326,22 @@ namespace Persistence.Repositorio
             }
         }
         private ObjectSet<usuario> _usuario;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<tipoEndereco> tipoEndereco
+        {
+            get
+            {
+                if ((_tipoEndereco == null))
+                {
+                    _tipoEndereco = base.CreateObjectSet<tipoEndereco>("tipoEndereco");
+                }
+                return _tipoEndereco;
+            }
+        }
+        private ObjectSet<tipoEndereco> _tipoEndereco;
 
         #endregion
 
@@ -452,27 +444,11 @@ namespace Persistence.Repositorio
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the sysdiagrams EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddTosysdiagrams(sysdiagrams sysdiagrams)
-        {
-            base.AddObject("sysdiagrams", sysdiagrams);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the taxa EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddTotaxa(taxa taxa)
         {
             base.AddObject("taxa", taxa);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the tipo_endereco EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddTotipo_endereco(tipo_endereco tipo_endereco)
-        {
-            base.AddObject("tipo_endereco", tipo_endereco);
         }
     
         /// <summary>
@@ -489,6 +465,14 @@ namespace Persistence.Repositorio
         public void AddTousuario(usuario usuario)
         {
             base.AddObject("usuario", usuario);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the tipoEndereco EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddTotipoEndereco(tipoEndereco tipoEndereco)
+        {
+            base.AddObject("tipoEndereco", tipoEndereco);
         }
 
         #endregion
@@ -686,6 +670,50 @@ namespace Persistence.Repositorio
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<cobranca>("DatabaseModel.FK_cobranca_aluno", "cobranca", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_matricula_aluno", "matricula")]
+        public EntityCollection<matricula> matricula
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<matricula>("DatabaseModel.FK_matricula_aluno", "matricula");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<matricula>("DatabaseModel.FK_matricula_aluno", "matricula", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_notaFalta_aluno", "notaFalta")]
+        public EntityCollection<notaFalta> notaFalta
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<notaFalta>("DatabaseModel.FK_notaFalta_aluno", "notaFalta");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<notaFalta>("DatabaseModel.FK_notaFalta_aluno", "notaFalta", value);
                 }
             }
         }
@@ -1304,6 +1332,28 @@ namespace Persistence.Repositorio
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_turma_curso", "turma")]
+        public EntityCollection<turma> turma
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<turma>("DatabaseModel.FK_turma_curso", "turma");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<turma>("DatabaseModel.FK_turma_curso", "turma", value);
+                }
+            }
+        }
 
         #endregion
 
@@ -1325,16 +1375,16 @@ namespace Persistence.Repositorio
         /// <param name="idendereco">Initial value of the idendereco property.</param>
         /// <param name="complemento">Initial value of the complemento property.</param>
         /// <param name="idEndereco">Initial value of the idEndereco property.</param>
-        /// <param name="idtipoEndereco">Initial value of the idtipoEndereco property.</param>
         /// <param name="idPessoa">Initial value of the idPessoa property.</param>
-        public static endereco Createendereco(global::System.Int32 idendereco, global::System.String complemento, global::System.Int32 idEndereco, global::System.Int32 idtipoEndereco, global::System.Int32 idPessoa)
+        /// <param name="idTipoEndereco">Initial value of the idTipoEndereco property.</param>
+        public static endereco Createendereco(global::System.Int32 idendereco, global::System.String complemento, global::System.Int32 idEndereco, global::System.Int32 idPessoa, global::System.Int32 idTipoEndereco)
         {
             endereco endereco = new endereco();
             endereco.idendereco = idendereco;
             endereco.complemento = complemento;
             endereco.idEndereco = idEndereco;
-            endereco.idtipoEndereco = idtipoEndereco;
             endereco.idPessoa = idPessoa;
+            endereco.idTipoEndereco = idTipoEndereco;
             return endereco;
         }
 
@@ -1641,30 +1691,6 @@ namespace Persistence.Repositorio
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 idtipoEndereco
-        {
-            get
-            {
-                return _idtipoEndereco;
-            }
-            set
-            {
-                OnidtipoEnderecoChanging(value);
-                ReportPropertyChanging("idtipoEndereco");
-                _idtipoEndereco = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("idtipoEndereco");
-                OnidtipoEnderecoChanged();
-            }
-        }
-        private global::System.Int32 _idtipoEndereco;
-        partial void OnidtipoEnderecoChanging(global::System.Int32 value);
-        partial void OnidtipoEnderecoChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
         public global::System.Int32 idPessoa
         {
             get
@@ -1683,6 +1709,30 @@ namespace Persistence.Repositorio
         private global::System.Int32 _idPessoa;
         partial void OnidPessoaChanging(global::System.Int32 value);
         partial void OnidPessoaChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 idTipoEndereco
+        {
+            get
+            {
+                return _idTipoEndereco;
+            }
+            set
+            {
+                OnidTipoEnderecoChanging(value);
+                ReportPropertyChanging("idTipoEndereco");
+                _idTipoEndereco = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("idTipoEndereco");
+                OnidTipoEnderecoChanged();
+            }
+        }
+        private global::System.Int32 _idTipoEndereco;
+        partial void OnidTipoEnderecoChanging(global::System.Int32 value);
+        partial void OnidTipoEnderecoChanged();
 
         #endregion
 
@@ -1733,16 +1783,16 @@ namespace Persistence.Repositorio
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_endereco_tipo_endereco", "tipo_endereco")]
-        public tipo_endereco tipo_endereco
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_endereco_tipoEndereco", "tipoEndereco")]
+        public tipoEndereco tipoEndereco_1
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<tipo_endereco>("DatabaseModel.FK_endereco_tipo_endereco", "tipo_endereco").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<tipoEndereco>("DatabaseModel.FK_endereco_tipoEndereco", "tipoEndereco").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<tipo_endereco>("DatabaseModel.FK_endereco_tipo_endereco", "tipo_endereco").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<tipoEndereco>("DatabaseModel.FK_endereco_tipoEndereco", "tipoEndereco").Value = value;
             }
         }
         /// <summary>
@@ -1750,17 +1800,17 @@ namespace Persistence.Repositorio
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<tipo_endereco> tipo_enderecoReference
+        public EntityReference<tipoEndereco> tipoEndereco_1Reference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<tipo_endereco>("DatabaseModel.FK_endereco_tipo_endereco", "tipo_endereco");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<tipoEndereco>("DatabaseModel.FK_endereco_tipoEndereco", "tipoEndereco");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<tipo_endereco>("DatabaseModel.FK_endereco_tipo_endereco", "tipo_endereco", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<tipoEndereco>("DatabaseModel.FK_endereco_tipoEndereco", "tipoEndereco", value);
                 }
             }
         }
@@ -2064,7 +2114,8 @@ namespace Persistence.Repositorio
         /// <param name="numeroMatricula">Initial value of the numeroMatricula property.</param>
         /// <param name="dataRegistro">Initial value of the dataRegistro property.</param>
         /// <param name="tipo">Initial value of the tipo property.</param>
-        public static matricula Creatematricula(global::System.Int32 idMatricula, global::System.Int32 alunoStatus_idAluno, global::System.Int32 numeroMatricula, global::System.DateTime dataRegistro, global::System.String tipo)
+        /// <param name="idAluno">Initial value of the idAluno property.</param>
+        public static matricula Creatematricula(global::System.Int32 idMatricula, global::System.Int32 alunoStatus_idAluno, global::System.Int32 numeroMatricula, global::System.DateTime dataRegistro, global::System.String tipo, global::System.Int32 idAluno)
         {
             matricula matricula = new matricula();
             matricula.idMatricula = idMatricula;
@@ -2072,6 +2123,7 @@ namespace Persistence.Repositorio
             matricula.numeroMatricula = numeroMatricula;
             matricula.dataRegistro = dataRegistro;
             matricula.tipo = tipo;
+            matricula.idAluno = idAluno;
             return matricula;
         }
 
@@ -2225,10 +2277,120 @@ namespace Persistence.Repositorio
         private global::System.String _tipo;
         partial void OntipoChanging(global::System.String value);
         partial void OntipoChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 idAluno
+        {
+            get
+            {
+                return _idAluno;
+            }
+            set
+            {
+                OnidAlunoChanging(value);
+                ReportPropertyChanging("idAluno");
+                _idAluno = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("idAluno");
+                OnidAlunoChanged();
+            }
+        }
+        private global::System.Int32 _idAluno;
+        partial void OnidAlunoChanging(global::System.Int32 value);
+        partial void OnidAlunoChanged();
 
         #endregion
 
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_matricula_aluno", "aluno")]
+        public aluno aluno
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aluno>("DatabaseModel.FK_matricula_aluno", "aluno").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aluno>("DatabaseModel.FK_matricula_aluno", "aluno").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<aluno> alunoReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aluno>("DatabaseModel.FK_matricula_aluno", "aluno");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aluno>("DatabaseModel.FK_matricula_aluno", "aluno", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "matriculaTurma1", "turma")]
+        public EntityCollection<turma> turma
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<turma>("DatabaseModel.matriculaTurma1", "turma");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<turma>("DatabaseModel.matriculaTurma1", "turma", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_matriculaTurma_matricula", "matriculaTurma")]
+        public EntityCollection<matriculaTurma> matriculaTurma
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<matriculaTurma>("DatabaseModel.FK_matriculaTurma_matricula", "matriculaTurma");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<matriculaTurma>("DatabaseModel.FK_matriculaTurma_matricula", "matriculaTurma", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
     
     /// <summary>
@@ -2246,11 +2408,13 @@ namespace Persistence.Repositorio
         /// </summary>
         /// <param name="idTurma">Initial value of the idTurma property.</param>
         /// <param name="idMatricula">Initial value of the idMatricula property.</param>
-        public static matriculaTurma CreatematriculaTurma(global::System.Int32 idTurma, global::System.Int32 idMatricula)
+        /// <param name="idMatriculaTurma">Initial value of the idMatriculaTurma property.</param>
+        public static matriculaTurma CreatematriculaTurma(global::System.Int32 idTurma, global::System.Int32 idMatricula, global::System.Int32 idMatriculaTurma)
         {
             matriculaTurma matriculaTurma = new matriculaTurma();
             matriculaTurma.idTurma = idTurma;
             matriculaTurma.idMatricula = idMatricula;
+            matriculaTurma.idMatriculaTurma = idMatriculaTurma;
             return matriculaTurma;
         }
 
@@ -2311,10 +2475,79 @@ namespace Persistence.Repositorio
         private global::System.Int32 _idMatricula;
         partial void OnidMatriculaChanging(global::System.Int32 value);
         partial void OnidMatriculaChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 idMatriculaTurma
+        {
+            get
+            {
+                return _idMatriculaTurma;
+            }
+            set
+            {
+                if (_idMatriculaTurma != value)
+                {
+                    OnidMatriculaTurmaChanging(value);
+                    ReportPropertyChanging("idMatriculaTurma");
+                    _idMatriculaTurma = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("idMatriculaTurma");
+                    OnidMatriculaTurmaChanged();
+                }
+            }
+        }
+        private global::System.Int32 _idMatriculaTurma;
+        partial void OnidMatriculaTurmaChanging(global::System.Int32 value);
+        partial void OnidMatriculaTurmaChanged();
 
         #endregion
 
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_matriculaTurma_matricula", "matricula")]
+        public matricula matricula
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<matricula>("DatabaseModel.FK_matriculaTurma_matricula", "matricula").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<matricula>("DatabaseModel.FK_matriculaTurma_matricula", "matricula").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<matricula> matriculaReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<matricula>("DatabaseModel.FK_matriculaTurma_matricula", "matricula");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<matricula>("DatabaseModel.FK_matriculaTurma_matricula", "matricula", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
     
     /// <summary>
@@ -2467,6 +2700,28 @@ namespace Persistence.Repositorio
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_notaFalta_modulo", "notaFalta")]
+        public EntityCollection<notaFalta> notaFalta
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<notaFalta>("DatabaseModel.FK_notaFalta_modulo", "notaFalta");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<notaFalta>("DatabaseModel.FK_notaFalta_modulo", "notaFalta", value);
+                }
+            }
+        }
 
         #endregion
 
@@ -2489,13 +2744,15 @@ namespace Persistence.Repositorio
         /// <param name="turma_idTurma">Initial value of the turma_idTurma property.</param>
         /// <param name="idModulo">Initial value of the idModulo property.</param>
         /// <param name="idAluno">Initial value of the idAluno property.</param>
-        public static notaFalta CreatenotaFalta(global::System.Int32 idNotaFalta, global::System.Int32 turma_idTurma, global::System.Int32 idModulo, global::System.Int32 idAluno)
+        /// <param name="idTurma">Initial value of the idTurma property.</param>
+        public static notaFalta CreatenotaFalta(global::System.Int32 idNotaFalta, global::System.Int32 turma_idTurma, global::System.Int32 idModulo, global::System.Int32 idAluno, global::System.Int32 idTurma)
         {
             notaFalta notaFalta = new notaFalta();
             notaFalta.idNotaFalta = idNotaFalta;
             notaFalta.turma_idTurma = turma_idTurma;
             notaFalta.idModulo = idModulo;
             notaFalta.idAluno = idAluno;
+            notaFalta.idTurma = idTurma;
             return notaFalta;
         }
 
@@ -2673,10 +2930,152 @@ namespace Persistence.Repositorio
         private Nullable<global::System.Single> _nota2;
         partial void Onnota2Changing(Nullable<global::System.Single> value);
         partial void Onnota2Changed();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 idTurma
+        {
+            get
+            {
+                return _idTurma;
+            }
+            set
+            {
+                OnidTurmaChanging(value);
+                ReportPropertyChanging("idTurma");
+                _idTurma = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("idTurma");
+                OnidTurmaChanged();
+            }
+        }
+        private global::System.Int32 _idTurma;
+        partial void OnidTurmaChanging(global::System.Int32 value);
+        partial void OnidTurmaChanged();
 
         #endregion
 
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_notaFalta_aluno", "aluno")]
+        public aluno aluno
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aluno>("DatabaseModel.FK_notaFalta_aluno", "aluno").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aluno>("DatabaseModel.FK_notaFalta_aluno", "aluno").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<aluno> alunoReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<aluno>("DatabaseModel.FK_notaFalta_aluno", "aluno");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<aluno>("DatabaseModel.FK_notaFalta_aluno", "aluno", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_notaFalta_modulo", "modulo")]
+        public modulo modulo
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<modulo>("DatabaseModel.FK_notaFalta_modulo", "modulo").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<modulo>("DatabaseModel.FK_notaFalta_modulo", "modulo").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<modulo> moduloReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<modulo>("DatabaseModel.FK_notaFalta_modulo", "modulo");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<modulo>("DatabaseModel.FK_notaFalta_modulo", "modulo", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_notaFalta_turma", "turma")]
+        public turma turma
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<turma>("DatabaseModel.FK_notaFalta_turma", "turma").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<turma>("DatabaseModel.FK_notaFalta_turma", "turma").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<turma> turmaReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<turma>("DatabaseModel.FK_notaFalta_turma", "turma");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<turma>("DatabaseModel.FK_notaFalta_turma", "turma", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
     
     /// <summary>
@@ -2760,6 +3159,32 @@ namespace Persistence.Repositorio
         #endregion
 
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_usuario_perfil", "usuario")]
+        public EntityCollection<usuario> usuario
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<usuario>("DatabaseModel.FK_usuario_perfil", "usuario");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<usuario>("DatabaseModel.FK_usuario_perfil", "usuario", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
     
     /// <summary>
@@ -3068,163 +3493,6 @@ namespace Persistence.Repositorio
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="sysdiagrams")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class sysdiagrams : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new sysdiagrams object.
-        /// </summary>
-        /// <param name="name">Initial value of the name property.</param>
-        /// <param name="principal_id">Initial value of the principal_id property.</param>
-        /// <param name="diagram_id">Initial value of the diagram_id property.</param>
-        public static sysdiagrams Createsysdiagrams(global::System.String name, global::System.Int32 principal_id, global::System.Int32 diagram_id)
-        {
-            sysdiagrams sysdiagrams = new sysdiagrams();
-            sysdiagrams.name = name;
-            sysdiagrams.principal_id = principal_id;
-            sysdiagrams.diagram_id = diagram_id;
-            return sysdiagrams;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                OnnameChanging(value);
-                ReportPropertyChanging("name");
-                _name = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("name");
-                OnnameChanged();
-            }
-        }
-        private global::System.String _name;
-        partial void OnnameChanging(global::System.String value);
-        partial void OnnameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 principal_id
-        {
-            get
-            {
-                return _principal_id;
-            }
-            set
-            {
-                Onprincipal_idChanging(value);
-                ReportPropertyChanging("principal_id");
-                _principal_id = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("principal_id");
-                Onprincipal_idChanged();
-            }
-        }
-        private global::System.Int32 _principal_id;
-        partial void Onprincipal_idChanging(global::System.Int32 value);
-        partial void Onprincipal_idChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 diagram_id
-        {
-            get
-            {
-                return _diagram_id;
-            }
-            set
-            {
-                if (_diagram_id != value)
-                {
-                    Ondiagram_idChanging(value);
-                    ReportPropertyChanging("diagram_id");
-                    _diagram_id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("diagram_id");
-                    Ondiagram_idChanged();
-                }
-            }
-        }
-        private global::System.Int32 _diagram_id;
-        partial void Ondiagram_idChanging(global::System.Int32 value);
-        partial void Ondiagram_idChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> version
-        {
-            get
-            {
-                return _version;
-            }
-            set
-            {
-                OnversionChanging(value);
-                ReportPropertyChanging("version");
-                _version = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("version");
-                OnversionChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _version;
-        partial void OnversionChanging(Nullable<global::System.Int32> value);
-        partial void OnversionChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.Byte[] definition
-        {
-            get
-            {
-                return StructuralObject.GetValidValue(_definition);
-            }
-            set
-            {
-                OndefinitionChanging(value);
-                ReportPropertyChanging("definition");
-                _definition = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("definition");
-                OndefinitionChanged();
-            }
-        }
-        private global::System.Byte[] _definition;
-        partial void OndefinitionChanging(global::System.Byte[] value);
-        partial void OndefinitionChanged();
-
-        #endregion
-
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="taxa")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -3380,22 +3648,22 @@ namespace Persistence.Repositorio
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="tipo_endereco")]
+    [EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="tipoEndereco")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class tipo_endereco : EntityObject
+    public partial class tipoEndereco : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new tipo_endereco object.
+        /// Create a new tipoEndereco object.
         /// </summary>
         /// <param name="idTipoEndereco">Initial value of the idTipoEndereco property.</param>
-        public static tipo_endereco Createtipo_endereco(global::System.Int32 idTipoEndereco)
+        public static tipoEndereco CreatetipoEndereco(global::System.Int32 idTipoEndereco)
         {
-            tipo_endereco tipo_endereco = new tipo_endereco();
-            tipo_endereco.idTipoEndereco = idTipoEndereco;
-            return tipo_endereco;
+            tipoEndereco tipoEndereco = new tipoEndereco();
+            tipoEndereco.idTipoEndereco = idTipoEndereco;
+            return tipoEndereco;
         }
 
         #endregion
@@ -3464,18 +3732,18 @@ namespace Persistence.Repositorio
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_endereco_tipo_endereco", "endereco")]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_endereco_tipoEndereco", "endereco")]
         public EntityCollection<endereco> endereco
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<endereco>("DatabaseModel.FK_endereco_tipo_endereco", "endereco");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<endereco>("DatabaseModel.FK_endereco_tipoEndereco", "endereco");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<endereco>("DatabaseModel.FK_endereco_tipo_endereco", "endereco", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<endereco>("DatabaseModel.FK_endereco_tipoEndereco", "endereco", value);
                 }
             }
         }
@@ -3715,6 +3983,92 @@ namespace Persistence.Repositorio
         #endregion
 
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_turma_curso", "curso")]
+        public curso curso
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<curso>("DatabaseModel.FK_turma_curso", "curso").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<curso>("DatabaseModel.FK_turma_curso", "curso").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<curso> cursoReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<curso>("DatabaseModel.FK_turma_curso", "curso");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<curso>("DatabaseModel.FK_turma_curso", "curso", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_notaFalta_turma", "notaFalta")]
+        public EntityCollection<notaFalta> notaFalta
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<notaFalta>("DatabaseModel.FK_notaFalta_turma", "notaFalta");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<notaFalta>("DatabaseModel.FK_notaFalta_turma", "notaFalta", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "matriculaTurma1", "matricula")]
+        public EntityCollection<matricula> matricula
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<matricula>("DatabaseModel.matriculaTurma1", "matricula");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<matricula>("DatabaseModel.matriculaTurma1", "matricula", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
     
     /// <summary>
@@ -3870,6 +4224,44 @@ namespace Persistence.Repositorio
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<funcionario>("DatabaseModel.FK_funcionario_usuario", "funcionario", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "FK_usuario_perfil", "perfil")]
+        public perfil perfil
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<perfil>("DatabaseModel.FK_usuario_perfil", "perfil").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<perfil>("DatabaseModel.FK_usuario_perfil", "perfil").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<perfil> perfilReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<perfil>("DatabaseModel.FK_usuario_perfil", "perfil");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<perfil>("DatabaseModel.FK_usuario_perfil", "perfil", value);
                 }
             }
         }
