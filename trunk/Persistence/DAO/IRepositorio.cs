@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data.Objects;
+using System.Data.Objects.DataClasses;
+using Persistence.Entity;
 
 namespace Persistence.DAO
 {
@@ -9,9 +12,9 @@ namespace Persistence.DAO
     {
         void Adicionar(T item);
         void Remover(T item);
-        void Remover(Object id);
-        void Atualizar(T item);
+        //void Remover(Object id);
+        //void Atualizar(T item);
         T FindOne(Object id);
-        IQueryable FindAll();
+        List<T> FindAll();
     }
 }
