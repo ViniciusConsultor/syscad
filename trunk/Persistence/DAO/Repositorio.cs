@@ -80,7 +80,7 @@ namespace Persistence.DAO
 
         public T FindOne(Expression<Func<T, bool>> where)
         {
-            return context.CreateQuery<T>(EntitySetName, new ObjectParameter("key", id)).First<T>();
+            return context.CreateQuery<T>(EntitySetName).Where(where).FirstOrDefault();
         }
 
        // public T FindOne(object id)
