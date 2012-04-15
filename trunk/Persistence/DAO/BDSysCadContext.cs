@@ -12,6 +12,7 @@ namespace Persistence.DAO
     public class BDSysCadContext : ObjectContext
     {
         private ObjectSet<Curso> _curso;
+        private ObjectSet<Usuario> _usuario;
 
         public BDSysCadContext()
             : base("name=BDSysCadEntities", "BDSysCadEntities")
@@ -19,6 +20,7 @@ namespace Persistence.DAO
             base.ContextOptions.ProxyCreationEnabled = true;
             base.ContextOptions.LazyLoadingEnabled = true;
             _curso = base.CreateObjectSet<Curso>();
+            _usuario = base.CreateObjectSet<Usuario>();
         }
 
         public ObjectSet<Curso> Curso
@@ -26,6 +28,14 @@ namespace Persistence.DAO
             get
             {
                 return _curso;
+            }
+        }
+
+        public ObjectSet<Usuario> Curso
+        {
+            get
+            {
+                return _usuario;
             }
         }
 
