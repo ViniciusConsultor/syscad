@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using Persistence.Entity;
+using System.Linq.Expressions;
 
 namespace Persistence.DAO
 {
@@ -77,10 +78,15 @@ namespace Persistence.DAO
             return context.CreateQuery<T>(EntitySetName).Skip<T>(startRowIndex).Take(maximumRows);
         }
 
-        public T FindOne(object id)
+        public T FindOne(Expression<Func<T, bool>> where)
         {
             return context.CreateQuery<T>(EntitySetName, new ObjectParameter("key", id)).First<T>();
         }
+
+       // public T FindOne(object id)
+       // {
+       //     return context.CreateQuery<T>(EntitySetName, new ObjectParameter("idUsuario", id)).First<T>();
+      //  }
 
         public List<T> FindAll()
         {

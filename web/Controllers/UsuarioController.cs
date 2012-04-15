@@ -21,7 +21,7 @@ namespace web.Controllers
         public ActionResult BuscarUsuario(int id)
         {
             IRepositorio<Usuario> dbUsuario = new Repositorio<Usuario>();
-            Usuario usuario = dbUsuario.FindOne(id);
+            Usuario usuario = dbUsuario.FindOne(x => x.idUsuario == id);
             return View(usuario);
         }
 
