@@ -1,0 +1,14 @@
+﻿/*GENERICO*/
+*{padding: 0; margin: 0;}
+body{ background-image: url(imagens/bg_login.jpg); background-repeat: no-repeat; background-color: #8EC19B; }
+
+/*CORPO DA PAGINA*/
+#syscad_superior_direito { position: absolute; margin-right: 0; float: right; font: 100px "Agency FB", Arial, Helvetica, sans-serif; color: #FFF; right: 0px; 	top: 0px; }
+#logo_syscad_login { position: absolute; float: left; margin-left: 30%; margin-top: 25%; width: 108px; height: 108px; }
+.txt_syscad_login { width: 400px; height: 50px; font: 40px "Agency FB", Arial, Helvetica, sans-serif; border: 1px solid #000; color: #090; }
+.word_syscad_login { font: 20px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; }
+
+#syscad_rodape_login { position: absolute; bottom: 10%; float: left; left: 10%; font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; }
+#syscad_rodape_login a { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: none; }
+#syscad_rodape_login a:hover { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: underline; }
+#syscad_rodape_login a:visited { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; }
