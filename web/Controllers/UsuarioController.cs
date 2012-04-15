@@ -16,14 +16,46 @@ namespace web.Controllers
         public ActionResult Index()
         {
             return View();
-        }
+        } // Index
 
-        public ActionResult BuscarUsuario(int id)
+        public ActionResult BuscarUsuario(string login)
         {
+            string resposta = "";
             IRepositorio<Usuario> dbUsuario = new Repositorio<Usuario>();
-            Usuario usuario = dbUsuario.FindOne(x => x.idUsuario == id);
-            return View(usuario);
-        }
+            Usuario usuario = dbUsuario.FindOne(usu => usu.login == login);
 
-    }
-}
+            if (usuario != null)
+            {
+                resposta = usuario.login;
+            }
+            else
+            {
+                resposta = "Não";
+            } //if
+
+            return Json(resposta);
+        } // BuscarUsuario
+
+        public ActionResult BuscarSenha(string login, string senha)
+        {
+
+            string resposta = "";
+            IRepositorio<Usuario> dbUsuario = new Repositorio<Usuario>();
+            Usuario usuario = dbUsuario.FindOne(usu => usu.login == login && usu.senha == senha);
+
+            if (usuario != null)
+            {
+                resposta = usuario.login;
+            }
+            else
+            {
+                resposta = "Não";
+            } //if
+
+            return Json(resposta);
+
+        } // BuscarSenha
+
+    } // class
+
+} // namespace

@@ -7,8 +7,11 @@ body{ background-image: url(imagens/bg_login.jpg); background-repeat: no-repeat;
 #logo_syscad_login { position: absolute; float: left; margin-left: 30%; margin-top: 25%; width: 108px; height: 108px; }
 .txt_syscad_login { width: 400px; height: 50px; font: 40px "Agency FB", Arial, Helvetica, sans-serif; border: 1px solid #000; color: #090; }
 .word_syscad_login { font: 20px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; }
+.word_syscad_login a { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: none; }
+.word_syscad_login a:hover { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: underline; }
+.word_syscad_login a:visited { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: none; }
 
-#syscad_rodape_login { position: absolute; bottom: 10%; float: left; left: 10%; font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; }
+#syscad_rodape_login { position: absolute; bottom: 10%; float: left; left: 10%; }
 #syscad_rodape_login a { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: none; }
 #syscad_rodape_login a:hover { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: underline; }
-#syscad_rodape_login a:visited { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; }
+#syscad_rodape_login a:visited { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: none; }
