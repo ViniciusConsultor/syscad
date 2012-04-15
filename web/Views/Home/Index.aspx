@@ -22,7 +22,7 @@
                 <tr>
                     <td rowspan="2"><img src="../../Content/imagens/logo_syscad.png" alt="Logo Syscad" /></td>
                     <td class="word_syscad_login">Usuário:</td>
-                  <td class="word_syscad_login">&nbsp;</td>
+                    <td class="word_syscad_login">&nbsp;</td>
                 </tr>
                 <tr>
                   <td><input type="text" name="login2" class="txt_syscad_login" /></td>
@@ -34,7 +34,7 @@
                   <td class="word_syscad_login">&nbsp;</td>
                 </tr>
             </table>
-      </form>
+          </form>
     </div>
     <div id="syscad_rodape_login">
     	<table cellspacing="10">

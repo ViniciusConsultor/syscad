@@ -79,7 +79,7 @@ namespace Persistence.DAO
 
         public T FindOne(object id)
         {
-            return context.CreateQuery<T>(EntitySetName, new ObjectParameter("idUsuario", id)).First<T>();
+            return context.CreateQuery<T>(EntitySetName, new ObjectParameter("key", id)).First<T>();
         }
 
         public List<T> FindAll()
