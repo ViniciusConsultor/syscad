@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<IEnumerable<Curso>>" %>
 
-<<%@ Import Namespace="Persistence.Entity" %>
+<%@ Import Namespace="Persistence.Entity" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -9,7 +9,7 @@
     <title>Curso</title>
 </head>
 <body>
-    <table>
+    <table border="1">
         <tr>
             <th></th>
             <th>

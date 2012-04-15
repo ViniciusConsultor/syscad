@@ -12,6 +12,7 @@ namespace Persistence.DAO
     public class BDSysCadContext : ObjectContext
     {
         private ObjectSet<Curso> _curso;
+
         public BDSysCadContext()
             : base("name=BDSysCadEntities", "BDSysCadEntities")
         {
@@ -27,5 +28,6 @@ namespace Persistence.DAO
                 return _curso;
             }
         }
+
     }
 }

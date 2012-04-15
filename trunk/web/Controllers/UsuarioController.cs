@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Persistence.Entity;
+using Persistence.DAO;
 
 namespace web.Controllers
 {
@@ -14,6 +16,13 @@ namespace web.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult BuscarUsuario(int id)
+        {
+            IRepositorio<Usuario> dbUsuario = new Repositorio<Usuario>();
+            Usuario usuario = dbUsuario.FindOne(id);
+            return View(usuario);
         }
 
     }
