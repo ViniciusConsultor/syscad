@@ -9,6 +9,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login SysCad</title>
 <link href="../../Content/Login.css" rel="stylesheet" type="text/css" />
+<script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="../../Scripts/funcoes_ready.js" type="text/javascript"></script>
+
 </head>
 
 <body>
@@ -17,20 +20,20 @@
         sysCAD
     </div>
     <div id="logo_syscad_login">
-          <form name="login" action="#" method="post" >
+          <form name="formulario_login" action="" method="post" id="formulario_login" >
             <table cellpadding="10" cellspacing="10">
                 <tr>
                     <td rowspan="2"><img src="../../Content/imagens/logo_syscad.png" alt="Logo Syscad" /></td>
-                    <td class="word_syscad_login">Usuário:</td>
+                    <td class="word_syscad_login" id="retorno_identificacao">Usuário:</td>
                     <td class="word_syscad_login">&nbsp;</td>
                 </tr>
                 <tr>
-                  <td><input type="text" name="login2" class="txt_syscad_login" /></td>
-                  <td><input type="image" src="../../Content/imagens/seta_vai.png" /></td>
+                  <td id="txt_identificacao"><input type="text" name="login" class="txt_syscad_login" /></td>
+                  <td id="buttton_identificacao"><input type="image" src="../../Content/imagens/seta_vai.png" id="enviar_login" /></td>
                 </tr>
                 <tr>
                   <td>&nbsp;</td>
-                  <td class="word_syscad_login">Por favor, entre com seu usuário</td>
+                  <td class="word_syscad_login" id="retorno_mensagem">Por favor, entre com seu usuário</td>
                   <td class="word_syscad_login">&nbsp;</td>
                 </tr>
             </table>
