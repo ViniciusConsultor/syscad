@@ -42,17 +42,13 @@ namespace Persistence.DAO
             context.DeleteObject(item);
         }
 
-        /*
+        
         public virtual void Atualizar(T item)
         {
             EntityKey key;
             object originalItem;
+            key = context.CreateEntityKey(EntitySetName, item);
 
-            if ((item.EntityKey == null)
-                // Obtém o entity key do objeto que será atualizado
-                key = context.CreateEntityKey(EntitySetName, item);
-            else
-                key = item.EntityKey;
             try
             {
                 // Obtém o objeto original
@@ -70,15 +66,9 @@ namespace Persistence.DAO
             {
                 throw ex;
             }
-        }*/
-
-        /// Retorna um IQueryable com todos os objetos usando paginação
-        public IQueryable<T> QueryAll(int maximumRows, int startRowIndex)
-        {
-            return context.CreateQuery<T>(EntitySetName).Skip<T>(startRowIndex).Take(maximumRows);
         }
 
-        public T FindOne(Expression<Func<T, bool>> where)
+        public virtual T FindOne(Expression<Func<T, bool>> where)
         {
             return context.CreateQuery<T>(EntitySetName).Where(where).FirstOrDefault();
         }
@@ -88,7 +78,7 @@ namespace Persistence.DAO
        //     return context.CreateQuery<T>(EntitySetName, new ObjectParameter("idUsuario", id)).First<T>();
       //  }
 
-        public List<T> FindAll()
+        public virtual List<T> FindAll()
         {
             return context.CreateQuery<T>(EntitySetName).ToList<T>();
         }
