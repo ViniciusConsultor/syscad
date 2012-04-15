@@ -5,6 +5,7 @@ using System.Text;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using Persistence.Entity;
+using System.Linq.Expressions;
 
 namespace Persistence.DAO
 {
@@ -14,7 +15,7 @@ namespace Persistence.DAO
         void Remover(T item);
         //void Remover(Object id);
         //void Atualizar(T item);
-        T FindOne(Object id);
+        T FindOne(Expression<Func<T, bool>> where);
         List<T> FindAll();
     }
 }

@@ -4,7 +4,7 @@
 
 <% Usuario usuario = Model; %>
 
-<% if (usuario.login != null)
+<% if (usuario != null)
    { %>
         <%= usuario.login %>
 <% }
