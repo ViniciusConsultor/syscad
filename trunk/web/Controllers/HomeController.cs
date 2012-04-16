@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Persistence.Entity;
 using Persistence.DAO;
+using ExtExtenders;
 
 namespace web.Controllers
 {
@@ -18,12 +19,7 @@ namespace web.Controllers
            return View();
         }
 
-        public ActionResult Curso() 
-        {
-            IRepositorio<Curso> dbCurso = new Repositorio<Curso>();
-            IList<Curso> listaCurso = dbCurso.FindAll();
-            return View(listaCurso);
-        }
+     
 
     }
 }
