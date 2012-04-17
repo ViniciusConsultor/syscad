@@ -27,6 +27,11 @@ namespace web.Controllers
             if (usuario != null)
             {
                 resposta = usuario.login;
+
+                Session["login_usuario"] = usuario.login;
+                Session["id_usuario"] = usuario.idUsuario;
+                //Session["nome_perfil"] = usuario.Perfil.nome;
+                //Session["id_perfil"] = usuario.Perfil.idPerfil;
             }
             else
             {

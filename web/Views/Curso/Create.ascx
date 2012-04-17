@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<dynamic>" MasterPageFile="~/Views/Shared/Site.Master" %>
 
 <script type="text/javascript">
     Ext.onReady(function () {

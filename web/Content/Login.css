@@ -3,15 +3,30 @@
 body{ background-image: url(imagens/bg_login.jpg); background-repeat: no-repeat; background-color: #8EC19B; }
 
 /*CORPO DA PAGINA*/
-#syscad_superior_direito { position: absolute; margin-right: 0; float: right; font: 100px "Agency FB", Arial, Helvetica, sans-serif; color: #FFF; right: 0px; 	top: 0px; }
+#syscad_superior_direito { position: absolute; margin-right: 0; float: right; font: 100px "Agency FB", Arial, Helvetica, sans-serif; color: #000099; right: 0px; 	top: 0px; }
 #logo_syscad_login { position: absolute; float: left; margin-left: 30%; margin-top: 25%; width: 108px; height: 108px; }
-.txt_syscad_login { width: 400px; height: 50px; font: 40px "Agency FB", Arial, Helvetica, sans-serif; border: 1px solid #000; color: #090; }
-.word_syscad_login { font: 20px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; }
-.word_syscad_login a { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: none; }
-.word_syscad_login a:hover { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: underline; }
-.word_syscad_login a:visited { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: none; }
+.txt_syscad_login { width: 400px; height: 50px; font: 40px "Agency FB", Arial, Helvetica, sans-serif; border: 1px solid #000099; color: #000; }
+.word_syscad_login { font: 20px "Arial MT", Arial, Helvetica, sans-serif; color: #000099; }
+.word_syscad_login a { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #000099; text-decoration: none; }
+.word_syscad_login a:hover { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #000099; text-decoration: underline; }
+.word_syscad_login a:visited { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #000099; text-decoration: none; }
 
 #syscad_rodape_login { position: absolute; bottom: 10%; float: left; left: 10%; }
-#syscad_rodape_login a { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: none; }
-#syscad_rodape_login a:hover { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: underline; }
-#syscad_rodape_login a:visited { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: none; }
+#syscad_rodape_login a { font: "Arial MT", Arial, Helvetica, sans-serif; color: #000099; text-decoration: none; }
+#syscad_rodape_login a:hover { font: "Arial MT", Arial, Helvetica, sans-serif; color: #000099; text-decoration: underline; }
+#syscad_rodape_login a:visited { font: "Arial MT", Arial, Helvetica, sans-serif; color: #000099; text-decoration: none; }
+
+//O codigo a seguir é para um plano de fundo na cor verde escura, para utiliza-la basta remover o "-verde" do fim de cada tag e apagar o codigo principal logo acima
+
+#syscad_superior_direito-verde { position: absolute; margin-right: 0; float: right; font: 100px "Agency FB", Arial, Helvetica, sans-serif; color: #FFF; right: 0px; 	top: 0px; }
+#logo_syscad_login-verde { position: absolute; float: left; margin-left: 30%; margin-top: 25%; width: 108px; height: 108px; }
+.txt_syscad_login-verde { width: 400px; height: 50px; font: 40px "Agency FB", Arial, Helvetica, sans-serif; border: 1px solid #000; color: #090; }
+.word_syscad_login-verde { font: 20px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; }
+.word_syscad_login a-verde { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: none; }
+.word_syscad_login a:hover-verde { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: underline; }
+.word_syscad_login a:visited-verde { font: 10px "Arial MT", Arial, Helvetica, sans-serif; color: #FFF; text-decoration: none; }
+
+#syscad_rodape_login-verde { position: absolute; bottom: 10%; float: left; left: 10%; }
+#syscad_rodape_login a-verde { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: none; }
+#syscad_rodape_login a:hover-verde { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: underline; }
+#syscad_rodape_login a:visited-verde { font: "Arial MT", Arial, Helvetica, sans-serif; color: #D2D2D2; text-decoration: none; }
