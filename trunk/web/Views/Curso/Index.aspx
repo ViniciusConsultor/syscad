@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
-<head runat="server">
+<head id="Head1" runat="server">
     <title>Curso</title>
     <link href="../../Extjs/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
     <script src="../../Extjs/ext.js" type="text/javascript"></script>
@@ -70,7 +70,17 @@
                         text: 'Novo',
                         iconCls: 'btn-add',
                         handler: adicionar
-                    }, '-'
+                    },
+                    {
+                        text: 'Editar',
+                        iconCls: 'btn-edit',
+                        handler: editar
+                    },
+                    {
+                        text: 'Deletar',
+                        iconCls: 'btn-add',
+                      
+                    }
                  ]
         });
     });
@@ -107,7 +117,45 @@
 
         });
 
-        var formTitle = 'Curso ';
+       var cancelar = function(){
+            formulario.getForm().reset();
+            winForm.hide();
+       }
+
+       var salvar = function(){
+
+            if(formulario.getForm().isValid()){
+                winForm.el.mask('Salvando', 'x-mask-loading');
+                formulario.getForm().submit({
+                    url: '/Curso/Save',
+                    params: {
+                        action: winForm.update ? 'update' : 'insert'
+                    },
+                    success: function(form, action){
+                        if(action.result.success){                       
+                            Ext.Msg.show({
+                                title: 'Sucesso',
+                                msg: 'Curso cadastrado com sucesso',
+                                buttons: Ext.Msg.OK
+                            });
+                            winForm.el.mask();
+                            winForm.hide();
+                            cursoStore.reload();
+                            
+                        }
+                    },
+                    failure: function(form, action){
+                        winForm.el.mask();
+                        Ext.Msg.alert('Erro',action.result.message);
+                    },
+                    scope: this
+                });
+            }else{
+                Ext.Msg.alert('Atenção', 'Existem campos inválidos');
+            }
+        }
+
+       var formTitle = 'Curso ';
 
        var winForm = new Ext.Window({
             name: 'formNovoRegisro',
@@ -127,13 +175,15 @@
                     name: 'btnSalvar',
                     id: 'btnSalvar',
                     text: 'Salvar',
-                    iconCls: 'icon-save'
+                    scope: this,
+                    handler: salvar
                 },
                 {
                     name: 'btnFechar',
                     id: 'btnFechar',
                     text: 'Fechar',
-                    iconCls: 'icon-cancel'
+                    scope: this,
+                    handler: cancelar
                 }
             ]
 
@@ -145,10 +195,21 @@
             winForm.setTitle(formTitle + '[Inserindo]');
             winForm.show();
             formulario.getForm().reset();
-        };
-            
-    
+        };       
 
+        var editar = function(){
+            if(gridCurso.getSelectionModel().hasSelection()){
+                winForm.update = true;
+                winForm.setTitle(formTitle + '[Alterando]');
+                winForm.show();
+                var record = gridCurso.getSelectionModel().getSelected();
+                Ext.getCmp('txtNome').setValue(record.data.nome);
+                Ext.getCmp('txtDescricao').setValue(record.data.descricao);
+                Ext.getCmp('txtValor').setValue(record.data.valor);
+            }else{
+                Ext.Msg.alert('Atenção', 'Selecione um registro');
+            }
+        };
     </script>
 </head>
 <body>
