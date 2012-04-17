@@ -5,9 +5,6 @@
 
 <asp:Content ID="HeadIndexCurso" ContentPlaceHolderID="ContentHead" runat="server">
 
-
-
-
     <link href="../../Extjs/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
     <script src="../../Extjs/ext.js" type="text/javascript"></script>
     <script src="../../Extjs/ext-all.js" type="text/javascript"></script>
@@ -43,8 +40,8 @@
             name: 'gridCurso',
             store: cursoStore,
             title: 'Cursos',
-            width: 500,
-            height: 300,
+            width: 800,
+            height: 600,
             renderTo: 'grid_curso',
             loadMask: true,
             border: true,
@@ -53,17 +50,17 @@
                         {
                             dataIndex: 'nome',
                             header: 'Nome',
-                            width: 200
+                            width: 300
                         },
                         {
                             dataIndex: 'descricao',
                             header: 'Descrição',
-                            width: 200
+                            width: 299
                         },
                         {
                             dataIndex: 'valor',
                             header: 'Valor',
-                            width: 100
+                            width: 199
                         },
                     ],
             tbar:[

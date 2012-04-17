@@ -12,23 +12,23 @@
 
     $("#enviar_login").live("click", function () {
 
-           $.post("/Usuario/BuscarUsuario", $("#formulario_login").serialize(), function (valor) {
-                
-                if (valor != "Não") {
+        $.post("/Usuario/BuscarUsuario", $("#formulario_login").serialize(), function (valor) {
 
-                    $("#retorno_identificacao").html("Senha: <a href=\"\">Trocar Usuário<a>");
-                    $("#txt_identificacao").html("<input type=\"hidden\" id=\"login\" name=\"login\" value=\"" + valor + "\"/> <input type=\"password\" name=\"senha\" class=\"txt_syscad_login\" />");
-                    $("#buttton_identificacao").html("<input type=\"image\" src=\"../../Content/imagens/seta_vai.png\" id=\"enviar_login_2\" />");
-                    $("#retorno_mensagem").html("Digite a senha para o usuário <br /><strong>" + valor + "</strong>");
+            if (valor != "Não") {
 
-                } else {
+                $("#retorno_identificacao").html("Senha: <a href=\"\">Trocar Usuário<a>");
+                $("#txt_identificacao").html("<input type=\"hidden\" id=\"login\" name=\"login\" value=\"" + valor + "\"/> <input type=\"password\" name=\"senha\" class=\"txt_syscad_login\" />");
+                $("#buttton_identificacao").html("<input type=\"image\" src=\"../../Content/imagens/seta_vai.png\" id=\"enviar_login_2\" />");
+                $("#retorno_mensagem").html("Digite a senha para o usuário <br /><strong>" + valor + "</strong>");
 
-                    $("#retorno_identificacao").html("Usuário:");
-                    $("#retorno_mensagem").html("Usuário não encontrado, tente novamente!");
+            } else {
 
-                } //if
+                $("#retorno_identificacao").html("Usuário:");
+                $("#retorno_mensagem").html("Usuário não encontrado, tente novamente!");
 
-            }); //post
+            } //if
+
+        }); //post
 
 
 
@@ -43,6 +43,7 @@
             if (valor != "Não") {
 
                 $("#retorno_mensagem").html("Autenticação efetuada com sucesso para o usuário <strong>" + valor + "</strong>");
+                location.href = "/Curso/";
 
             } else {
 
@@ -56,4 +57,4 @@
 
     //----------------------------------------------------------------------------------------------------------------------------
 
-}); // document ready
+});  // document ready
