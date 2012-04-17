@@ -17,5 +17,6 @@ namespace Persistence.DAO
         //void Atualizar(T item);
         T FindOne(Expression<Func<T, bool>> where);
         List<T> FindAll();
+        void SaveChanges();
     }
 }

@@ -10,6 +10,11 @@ namespace web.Controllers
 {
     public class CursoController : Controller
     {
+        IRepositorio<Curso> dbCurso;
+        public CursoController()
+        {
+            dbCurso = new Repositorio<Curso>();
+        }
 
         public ActionResult Index()
         {
@@ -19,15 +24,35 @@ namespace web.Controllers
         [HttpGet]
         public JsonResult FindAll()
         {
-            IRepositorio<Curso> dbCurso = new Repositorio<Curso>();
+
             IList<Curso> listaCurso = dbCurso.FindAll();
 
-            return Json(new {cursos = listaCurso, totalReg = listaCurso.Count},JsonRequestBehavior.AllowGet);
+            return Json(new { cursos = listaCurso, totalReg = listaCurso.Count }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Create()
+        [HttpPost]
+        public JsonResult Save(string txtNome, string txtDescricao, string txtValor, string action)
         {
-            return View();
+            Curso curso = new Curso();
+            curso.nome = txtNome;
+            curso.descricao = txtDescricao;
+            curso.valor = Convert.ToDecimal(txtValor);
+            curso.status = 1;
+            try
+            {
+                if (action.Equals("insert"))
+                {
+                    dbCurso.Adicionar(curso);
+                    dbCurso.SaveChanges();
+                }
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+
         }
     }
 }
