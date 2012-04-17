@@ -2,14 +2,44 @@
 
 <%@ Import Namespace="Persistence.Entity" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>SysCad - Sistema de Controle Acadêmico</title>
-    <link href="../../Content/MasterPage.css" rel="stylesheet" type="text/css" />
-</head>
+<% if (Session["id_usuario"] != null)
+   { %>
 
-<body>
-    <asp:ContentPlaceHolder ID="MainContent" runat="server" />
-</body>
-</html>
+   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head id="Head1" runat="server">
+        <title>SysCad - Sistema de Controle Acadêmico</title>
+        <link href="../../Content/MasterPage.css" rel="stylesheet" type="text/css" />
+
+        <asp:ContentPlaceHolder ID="ContentHead" runat="server" />
+
+    </head>
+
+    <body>
+        <div id="bar_login">
+            <div id="left_inside_bar_login">
+                <ul>
+                    <li><img src="../../Content/imagens/logo_syscad_peq.png"" alt="LogoSysCadPeq" id="logo_syscad_peq"/></li>
+                    <li>SysCad</li>
+                    <li><img src="../../Content/imagens/msg_user.png" alt="MensagemUsuario" id="mensagem_usuario" /></li>                    
+                </ul>
+            </div>
+            <div id="right_inside_bar_login">
+                <ul>
+                    <li>Olá, <%= Session["login_usuario"] %> <img src="../../Content/imagens/user_perfil.jpg" alt="Perfil"/></li>
+                </ul>
+            </div>
+        </div>
+        <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+    </body>
+    </html>
+
+<% }
+   else
+   { %>
+
+    <% Response.Redirect("/Home"); %>
+
+<% } %>
+
+

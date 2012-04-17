@@ -83,11 +83,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\imagens\bar_login.jpg" />
+    <Content Include="Content\imagens\bar_login_separador.jpg" />
     <Content Include="Content\imagens\bg_login.jpg" />
+    <Content Include="Content\imagens\bg_login_2.jpg" />
     <Content Include="Content\imagens\logo_syscad.png" />
+    <Content Include="Content\imagens\logo_syscad_2.png" />
+    <Content Include="Content\imagens\logo_syscad_peq.png" />
+    <Content Include="Content\imagens\msg_user.jpg" />
+    <Content Include="Content\imagens\msg_user.png" />
     <Content Include="Content\imagens\separador_login.png" />
     <Content Include="Content\imagens\seta_vai.png" />
+    <Content Include="Content\imagens\seta_vai_2.png" />
+    <Content Include="Content\imagens\user_perfil.jpg" />
     <Content Include="Content\Login.css" />
+    <Content Include="Content\MasterPage.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -137,6 +147,7 @@
     <Content Include="Views\Curso\Create.ascx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Curso\Index.aspx" />
+    <Content Include="Views\Home\ViewPage1.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -1,12 +1,13 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<YuiGrid>" %>
+﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<YuiGrid>" MasterPageFile="~/Views/Shared/Site.Master" %>
 
 <%@ Import Namespace="ExtExtenders" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" >
-<head id="Head1" runat="server">
-    <title>Curso</title>
+<asp:Content ID="HeadIndexCurso" ContentPlaceHolderID="ContentHead" runat="server">
+
+
+
+
     <link href="../../Extjs/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
     <script src="../../Extjs/ext.js" type="text/javascript"></script>
     <script src="../../Extjs/ext-all.js" type="text/javascript"></script>
@@ -211,10 +212,13 @@
             }
         };
     </script>
-</head>
-<body>
 
-<div id="grid_curso"></div>
-</body>
-</html>
+
+</asp:Content>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+
+    <div id="grid_curso"></div>
+
+</asp:Content>
 
