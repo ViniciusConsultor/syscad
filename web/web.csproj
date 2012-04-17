@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="Ext.Net, Version=1.3.0.1840, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ext.NET1.3\Ext.Net.dll</HintPath>
     </Reference>
     <Reference Include="ExtExtenders">
       <HintPath>..\packages\ExtJsExtenderControls.2.0\lib\ExtExtenders.dll</HintPath>
