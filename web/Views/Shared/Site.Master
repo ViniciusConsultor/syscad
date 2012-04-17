@@ -2,6 +2,8 @@
 
 <%@ Import Namespace="Persistence.Entity" %>
 
+<%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
+
 <% if (Session["id_usuario"] != null)
    { %>
 
@@ -19,7 +21,7 @@
 
     <body>
     
-        <div id="bar_login">
+        <!-- <div id="bar_login">
             <div id="left_inside_bar_login">
                 <ul>
                     <li><img src="../../Content/imagens/logo_syscad_peq.png"" alt="LogoSysCadPeq" id="logo_syscad_peq"/></li>
@@ -32,8 +34,10 @@
                     <li>Olá, <%= Session["login_usuario"] %> <img src="../../Content/imagens/user_perfil.jpg" alt="Perfil"/></li>
                 </ul>
             </div>
-        </div>
+        </div> -->
+            
         <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+
     </body>
     </html>
 
