@@ -19,6 +19,11 @@ namespace web.Controllers
            return View();
         }
 
+        public ActionResult Inicial()
+        {
+            return View();
+        }
+
      
 
     }

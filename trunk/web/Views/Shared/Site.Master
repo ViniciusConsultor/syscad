@@ -10,12 +10,15 @@
     <head id="Head1" runat="server">
         <title>SysCad - Sistema de Controle Acadêmico</title>
         <link href="../../Content/MasterPage.css" rel="stylesheet" type="text/css" />
+        <link href="../../Content/Grid.css" rel="stylesheet" type="text/css" />
+        <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
 
         <asp:ContentPlaceHolder ID="ContentHead" runat="server" />
 
     </head>
 
     <body>
+    
         <div id="bar_login">
             <div id="left_inside_bar_login">
                 <ul>

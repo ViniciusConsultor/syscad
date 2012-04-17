@@ -38,6 +38,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Ext.Net, Version=1.3.0.1840, Culture=neutral, PublicKeyToken=2e12ce3d0176cd87, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="ExtExtenders">
       <HintPath>..\packages\ExtJsExtenderControls.2.0\lib\ExtExtenders.dll</HintPath>
     </Reference>
@@ -83,6 +86,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Grid.css" />
     <Content Include="Content\imagens\bar_login.jpg" />
     <Content Include="Content\imagens\bar_login_separador.jpg" />
     <Content Include="Content\imagens\bg_login.jpg" />
@@ -147,7 +151,7 @@
     <Content Include="Views\Curso\Create.ascx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Curso\Index.aspx" />
-    <Content Include="Views\Home\ViewPage1.aspx" />
+    <Content Include="Views\Home\Inicial.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
