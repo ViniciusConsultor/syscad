@@ -1,9 +1,6 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<YuiGrid>" MasterPageFile="~/Views/Shared/Site.Master" %>
+﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<YuiGrid>" %>
 
 <%@ Import Namespace="ExtExtenders" %>
-
-
-<asp:Content ID="HeadIndexCurso" ContentPlaceHolderID="ContentHead" runat="server">
 
     <link href="../../Extjs/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
     <script src="../../Extjs/ext.js" type="text/javascript"></script>
@@ -213,12 +210,5 @@
         };
     </script>
 
-
-</asp:Content>
-
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-
     <div id="grid_curso"></div>
-
-</asp:Content>
 
