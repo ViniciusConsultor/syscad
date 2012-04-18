@@ -41,7 +41,6 @@ namespace web.Controllers
             treeNode.NodeID = siteMapNode.Key;
             treeNode.Text = siteMapNode.Title;
             treeNode.Qtip = siteMapNode.Description;
-            // treeNode.Href = siteMapNode.Url;
             treeNode.Listeners.Click.Handler = "addTab(#{TabPanel1},'idAba" + siteMapNode.Key + "','" + siteMapNode.Url + "','" + siteMapNode.Title + "')";
 
 

@@ -3,6 +3,13 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
+<script runat="server">
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        TreePanel1.Root.Add(Model);
+    }
+</script>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -88,8 +95,7 @@
                             AutoScroll="true"
                             Animate="true"
                             EnableDD="true"
-                            ContainerScroll="true"
-                            
+                            ContainerScroll="true"                            
                             >           
                             <TopBar>
                                 <ext:Toolbar runat="server">
