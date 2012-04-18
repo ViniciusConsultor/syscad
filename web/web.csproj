@@ -153,6 +153,7 @@
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Curso\Index.aspx" />
     <Content Include="Views\Home\Inicial.aspx" />
+    <Content Include="Views\Home\Layout.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -193,6 +194,9 @@
       <Project>{E71013B0-C971-40CC-961C-529BA6D2E1D0}</Project>
       <Name>Persistence</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.sitemap" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -8,7 +8,7 @@
     <link href="../../Extjs/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
     <script src="../../Extjs/ext.js" type="text/javascript"></script>
     <script src="../../Extjs/ext-all.js" type="text/javascript"></script>
-    <script src="../../Extjs/locate/ext-lang-pt_BR.js" type="text/javascript"></script>
+    <script src="../../Extjs/locale/ext-lang-pt_BR.js" type="text/javascript"></script>
     <script type="text/javascript">
 
     Ext.onReady(function () {
