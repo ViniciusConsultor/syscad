@@ -26,11 +26,16 @@ namespace web.Controllers
 
         public ActionResult Layout()
         {
+            return View();
+        }
+
+        public ActionResult TreePanel()
+        {
             SiteMapNode siteNode = SiteMap.RootNode;
             TreeNode root = CreateNode(siteNode);
             root.Draggable = false;
             root.Expanded = true;
-            return View(root);
+            return Json(root);
         }
 
         //static node creation with children

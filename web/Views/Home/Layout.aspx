@@ -3,19 +3,14 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
-<script runat="server">
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        TreePanel1.Root.Add(Model);
-    }
-</script>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>Simple BorderLayout in Markup - Ext.NET Examples</title>
+    <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+
      <script type="text/javascript">
          var filterTree = function (el, e) {
              var tree = TreePanel1,
@@ -75,14 +70,12 @@
 
             tabPanel.setActiveTab(tab);
         }
-
-        #{TreePanel1}.getComponent
     </script>
 </head>
 <body bgcolor="#DFE8F6">
     <ext:ResourceManager ID="ResourceManager1" runat="server" />
     <h1>Teste</h1>
-    <ext:Panel ID="Panel2" runat="server" Height="500">    
+    <ext:Panel ID="Panel2" runat="server" Height="500">
         <Items>
             <ext:BorderLayout ID="BorderLayout1" runat="server">
                 <West Collapsible="true" MinWidth="175" Split="true">
@@ -95,7 +88,9 @@
                             AutoScroll="true"
                             Animate="true"
                             EnableDD="true"
-                            ContainerScroll="true"                            
+                            ContainerScroll="true"
+                            
+                            Root="={$.get('/Home/TreePanel/')}"
                             >           
                             <TopBar>
                                 <ext:Toolbar runat="server">
