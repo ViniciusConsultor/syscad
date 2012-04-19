@@ -86,6 +86,7 @@
   <ItemGroup>
     <Content Include="Content\Grid.css" />
     <Content Include="Content\imagens\bar_login.jpg" />
+    <Content Include="Content\imagens\bar_login_2.jpg" />
     <Content Include="Content\imagens\bar_login_separador.jpg" />
     <Content Include="Content\imagens\bg_login.jpg" />
     <Content Include="Content\imagens\bg_login_2.jpg" />

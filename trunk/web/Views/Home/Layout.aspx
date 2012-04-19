@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<TreeNode>" %>
+﻿<%@ Page Language="C#" %>
 <%@ Import Namespace="TreeNode=Ext.Net.TreeNode" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
@@ -10,6 +10,7 @@
 <head id="Head1" runat="server">
     <title>TreeNode</title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+    <link href="../../Content/MasterPage.css" rel="stylesheet" type="text/css" />
 
      <script type="text/javascript">
 
@@ -73,10 +74,27 @@
         }
     </script>
 </head>
-<body bgcolor="#DFE8F6">
+
+<body>
+
+    <div id="bar_login">
+        <div id="left_inside_bar_login">
+            <ul>
+                <li><img src="../../Content/imagens/logo_syscad_peq.png" alt="SysCad" /></li>
+                <li>SysCad</li>
+                <li><img src="../../Content/imagens/msg_user.png" alt="Mensagem" /></li>
+            </ul>
+        </div>
+        <div id="right_inside_bar_login">
+            <ul>
+                <li>Olá, <%= Session["login_usuario"] %> <img src="../../Content/imagens/user_perfil.jpg" alt="Usuario" /></li>
+            </ul>
+        </div>
+    </div>
+
     <ext:ResourceManager ID="ResourceManager1" runat="server" />
-    <h1>Teste</h1>
-    <ext:Panel ID="Panel2" runat="server" Height="500">
+
+    <ext:Panel ID="Panel2" runat="server" Height="735">
         <Items>
             <ext:BorderLayout ID="BorderLayout1" runat="server">
                 <West Collapsible="true" MinWidth="175" Split="true">
@@ -122,7 +140,14 @@
                                     <Nodes>
                                         <ext:TreeNode Icon="User" Expanded="true" Text="Usuario">
                                             <Listeners>
-                                                <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso','Curso')" />
+                                                <Click Handler="addTab(#{TabPanel1},'idAba2','/Curso/Curso','Usuario')" />
+                                            </Listeners>
+                                        </ext:TreeNode>
+                                    </Nodes>
+                                    <Nodes>
+                                        <ext:TreeNode Icon="Book" Expanded="true" Text="Professor">
+                                            <Listeners>
+                                                <Click Handler="addTab(#{TabPanel1},'idAba3','/Curso/Curso','Professor')" />
                                             </Listeners>
                                         </ext:TreeNode>
                                     </Nodes>
@@ -147,6 +172,7 @@
                 </Center>
             </ext:BorderLayout>
         </Items>
-    </ext:Panel>   
+    </ext:Panel>
+       
 </body>
 </html>
