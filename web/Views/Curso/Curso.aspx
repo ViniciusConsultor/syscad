@@ -130,7 +130,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>GridPanel using DataTable with Paging and Remote Reloading - Ext.NET Examples</title>
- 
 
     <script type="text/javascript">
         var template = '<span style="color:{0};">{1}</span>';
@@ -174,10 +173,6 @@
 <body>
     <form id="Form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
-        
-        <h1>GridPanel using DataTable with Paging and Remote Reloading</h1>
-        
-        <p>Demonstrates how to create a grid from Array data with Local Paging and Remote Reloading.</p>
         
         <ext:Hidden ID="FormatType" runat="server" />
 
