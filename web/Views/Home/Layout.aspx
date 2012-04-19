@@ -8,10 +8,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-    <title>Simple BorderLayout in Markup - Ext.NET Examples</title>
+    <title>TreeNode</title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
 
      <script type="text/javascript">
+
          var filterTree = function (el, e) {
              var tree = TreePanel1,
                 text = this.getRawValue();
@@ -44,7 +45,7 @@
          };
 
         var addTab = function (tabPanel, id, url, title) {
-            var tab = tabPanel.getComponent(id);
+            var tab = TabPanel1.getComponent(id);
 
             if (!tab) {
                 tab = tabPanel.add({
@@ -89,9 +90,8 @@
                             Animate="true"
                             EnableDD="true"
                             ContainerScroll="true"
-                            
-                            Root="={$.get('/Home/TreePanel/')}"
-                            >           
+                            RootVisible="true"
+                            >       
                             <TopBar>
                                 <ext:Toolbar runat="server">
                                     <Items>
@@ -110,7 +110,27 @@
                                     </Items>
                                 </ext:Toolbar>
                             </TopBar>
-                        </ext:TreePanel>
+                            <Root>
+                                <ext:TreeNode Text="SysCad" Expanded="true" Icon="Application">
+                                    <Nodes>
+                                        <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso">
+                                            <Listeners>
+                                                <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso/Curso','Curso')" />
+                                            </Listeners>
+                                        </ext:TreeNode>
+                                    </Nodes>
+                                    <Nodes>
+                                        <ext:TreeNode Icon="User" Expanded="true" Text="Usuario">
+                                            <Listeners>
+                                                <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso','Curso')" />
+                                            </Listeners>
+                                        </ext:TreeNode>
+                                    </Nodes>
+                                </ext:TreeNode>
+                            </Root>
+                            </ext:TreePanel>
+                                   
+
                 </West>
                 <Center>
                     <ext:TabPanel ID="TabPanel1" runat="server" ActiveTabIndex="0">
