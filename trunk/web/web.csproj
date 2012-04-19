@@ -42,9 +42,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Ext.NET1.3\Ext.Net.dll</HintPath>
     </Reference>
-    <Reference Include="ExtExtenders">
-      <HintPath>..\packages\ExtJsExtenderControls.2.0\lib\ExtExtenders.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -150,6 +147,7 @@
     <Content Include="Scripts\jquery-ui-1.8.18.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Views\Curso\Create.ascx" />
+    <Content Include="Views\Curso\Curso.aspx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Curso\Index.aspx" />
     <Content Include="Views\Home\Inicial.aspx" />

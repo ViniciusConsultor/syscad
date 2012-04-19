@@ -54,5 +54,10 @@ namespace web.Controllers
             }
 
         }
+
+        public ActionResult Curso()
+        {
+            return View();
+        }
     }
 }
