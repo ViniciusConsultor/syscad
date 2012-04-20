@@ -42,19 +42,24 @@ namespace web.Controllers
             curso.descricao = txtDescricao;
             curso.valor = Convert.ToDecimal(txtValor);
             curso.status = 1;
+
             try
             {
                 if (action.Equals("insert"))
                 {
                     dbCurso.Adicionar(curso);
                     dbCurso.SaveChanges();
+                    
                 }
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
             }
             catch (Exception e)
             {
+
                 return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
             }
 
         }

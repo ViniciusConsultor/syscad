@@ -21,6 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>GridPanel using DataTable with Paging and Remote Reloading - Ext.NET Examples</title>
+    <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         var template = '<span style="color:{0};">{1}</span>';
@@ -49,7 +50,32 @@
             grid.submitData(false);
         };
 
+
         var salvar = function () {
+            winNovo.hide();
+            GridPanel1.el.mask('Salvando', 'x-mask-loading');
+            this.formulario.getForm().submit({
+                url: '/Curso/Index',
+                params: {
+                    action: 'insert'
+                },
+                success: function (form, action) {
+                    if (action.result.success) {
+                        GridPanel1.el.unmask();
+                        GridPanel1.reload();
+                    }
+                },
+
+                failure: function (form, action) {
+                    winNovo.el.unmask();
+                    Ext.Msg.alert('Erro', action.result.message);
+                },
+                scope: this
+            })
+        };
+
+
+        /*var salvar = function () {
 
             if (formulario.getForm().isValid()) {
                 winNovo.el.mask('Salvando', 'x-mask-loading');
@@ -78,7 +104,7 @@
             } else {
                 Ext.Msg.alert('Atenção', 'Existem campos inválidos');
             }
-        };
+        };*/
     </script>
 </head>
 <body>
@@ -91,8 +117,8 @@
             ID="GridPanel1"
             runat="server" 
             Title="Cursos" 
-            Width="600" 
-            Height="320"
+            Width="1181" 
+            Height="705"
             OnRefreshData="/Curso/FindAll">
             <Store>
                 <ext:Store 
@@ -172,11 +198,13 @@
             </BottomBar>
         </ext:GridPanel>
 
+
+
         <ext:Window 
             ID="winNovo" 
             runat="server" 
             Icon="ApplicationAdd" 
-            Title="Curso" 
+            Title="Novo Curso" 
             Hidden="true"
             X="250"
             Y="100"
@@ -187,48 +215,34 @@
             Modal="true"
             >
             <Items>
-                <ext:FormPanel
-                    ID="formulario"
-                    
-                    >
+                <ext:FormPanel ID="formulario" runat="server">
+
                     <Items>
-                        <ext:TextField 
-                            ID="txtNome" 
-                            runat="server"                    
-                            FieldLabel="Nome"
-                            InputType="Text"
-                            Width="175">                            
-                        </ext:TextField>
-                        <ext:TextField 
-                            ID="txtDescricao" 
-                            runat="server"                    
-                            FieldLabel="Descrição"
-                            InputType="Text"
-                            Width="175">                            
-                        </ext:TextField>
-                        <ext:TextField 
-                            ID="txtValor" 
-                            runat="server"                    
-                            FieldLabel="Valor"
-                            InputType="Text"
-                            Width="175">                           
-                        </ext:TextField >
-                        </Items>
+                        <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" AutoFocus="true" />
+                        <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" InputType="Text" Width="175" AllowBlank="false" />                            
+                        <ext:NumberField ID="txtValor" runat="server" FieldLabel="Valor" Width="175" Vtype="numberrange" AllowBlank="false" />
+                    </Items>
+
+                    <BottomBar>
+                        <ext:Toolbar runat="server">
+                            <Items>
+                                <ext:ToolbarFill />
+                                    <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
+                                        <Listeners>
+                                            <Click Handler="salvar()" />
+                                        </Listeners>
+                                    </ext:Button>
+                            </Items>
+                        </ext:Toolbar>  
+                    </BottomBar>
+
                 </ext:FormPanel>
             </Items>
-            <BottomBar>
-                <ext:Toolbar>
-                    <Items>
-                        <ext:ToolbarFill />
-                        <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk">
-                            <Listeners>
-                                <Click Handler="salvar()" />
-                            </Listeners>
-                        </ext:Button>
-                    </Items>
-                </ext:Toolbar>  
-            </BottomBar>
+
         </ext:Window>
+
+
+
     </form>
 </body>
 </html>

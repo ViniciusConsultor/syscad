@@ -8,7 +8,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-    <title>TreeNode</title>
+    <title>SysCad - Seja bem vindo <%= Session["login_usuario"] %></title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
     <link href="../../Content/MasterPage.css" rel="stylesheet" type="text/css" />
 
