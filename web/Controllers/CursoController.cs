@@ -56,10 +56,10 @@ namespace web.Controllers
 
         }
 
-        [HttpGet]
-        public JsonResult Curso()
+       
+        public ActionResult Curso()
         {
-        
+        /*
             DataTable table = new DataTable();
 
             table.Columns.AddRange(new DataColumn[] {
@@ -74,11 +74,12 @@ namespace web.Controllers
             {
                 table.Rows.Add(obj);
             }
-
+            */
             //return table;
-
-            return Json(new { dados = table }, JsonRequestBehavior.AllowGet);
+            return View();
         }
+
+
 
         private object[] Data
         {
