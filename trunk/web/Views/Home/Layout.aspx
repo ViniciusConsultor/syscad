@@ -167,9 +167,64 @@
                             <ext:Panel 
                                 ID="Tab1" 
                                 runat="server" 
-                                Title="First Tab" 
+                                Title="Bem Vindo" 
                                 Padding="6"
-                                Html="First Tab"
+                                Html='
+                                  <h1 class="h1_titulo">Bem Vindo ao SysCad</h1>
+                                  <div id="sidebar_left">
+                                    <div class="titulo_bloco"><h2 class="h2_titulo_bloco">Novidade</h2></div>
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                  </div>
+                                  <div id="sidebar_center">
+                                    <div class="titulo_bloco"><h2 class="h2_titulo_bloco">Atualizações</h2></div>
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                  </div>
+                                  <div id="sidebar_right">
+                                    <div class="titulo_bloco"><h2 class="h2_titulo_bloco">Notícias</h2></div>
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                    <div class="info">
+                                      <h3 class="h3_titulo_info">Título da notícia</h3>
+                                      <p class="p_descricao_info">Descrição da notícia, informando uma breve descrição do que sera falado.</p>
+                                      <span class="span_data_info">Data de publicação: 19/04/2012</span>
+                                    </div><!--Fim class info-->
+                                  </div>'
                                 />
                         </Items>
                     </ext:TabPanel>
