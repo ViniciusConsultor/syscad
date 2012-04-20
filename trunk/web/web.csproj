@@ -128,18 +128,6 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
-    <Content Include="Extjs\bootstrap.js" />
-    <Content Include="Extjs\ext-all.js" />
-    <Content Include="Extjs\ext.js" />
-    <Content Include="Extjs\resources\css\ext-all-access.css" />
-    <Content Include="Extjs\resources\css\ext-all-gray.css" />
-    <Content Include="Extjs\resources\css\ext-all-scoped.css" />
-    <Content Include="Extjs\resources\css\ext-all.css" />
-    <Content Include="Extjs\resources\css\ext-ie-scoped.css" />
-    <Content Include="Extjs\resources\css\ext-ie.css" />
-    <Content Include="Extjs\resources\css\ext-sandbox.css" />
-    <Content Include="Extjs\resources\css\ext-standard-scoped.css" />
-    <Content Include="Extjs\resources\css\ext-standard.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\funcoes_ready.js" />
     <Content Include="Scripts\jquery-1.4.4-vsdoc.js" />
@@ -178,7 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Extjs\resources\themes\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Shared\" />
     <Folder Include="Views\Usuario\" />
