@@ -62,10 +62,10 @@
                 });
 
                 tab.on("activate", function () {
-                    var item = MenuPanel1.menu.items.get(id + "_item");
+                    var item = TreePanel1.items.get(id + "_item");
 
                     if (item) {
-                        MenuPanel1.setSelection(item);
+                        TreePanel1.setSelection(item);
                     }
                 }, this);
             }
