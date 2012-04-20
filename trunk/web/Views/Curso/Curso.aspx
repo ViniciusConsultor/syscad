@@ -12,44 +12,7 @@
 
 
 
-    protected void Store1_Submit(object sender, StoreSubmitDataEventArgs e)
-    {
-        string format = this.FormatType.Value.ToString();
-
-        XmlNode xml = e.Xml;
-
-        this.Response.Clear();
-
-        switch (format)
-        {
-            case "xml":
-                string strXml = xml.OuterXml;
-                this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
-                this.Response.AddHeader("Content-Length", strXml.Length.ToString());
-                this.Response.ContentType = "application/xml";
-                this.Response.Write(strXml);
-
-                break;
-            case "xls":
-                this.Response.ContentType = "application/vnd.ms-excel";
-                this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
-                XslCompiledTransform xtExcel = new XslCompiledTransform();
-                xtExcel.Load(Server.MapPath("Excel.xsl"));
-                xtExcel.Transform(xml, null, Response.OutputStream);
-
-                break;
-            case "csv":
-                this.Response.ContentType = "application/octet-stream";
-                this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
-                XslCompiledTransform xtCsv = new XslCompiledTransform();
-                xtCsv.Load(Server.MapPath("Csv.xsl"));
-                xtCsv.Transform(xml, null, Response.OutputStream);
-
-                break;
-        }
-
-        this.Response.End();
-    }
+    
 </script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
@@ -75,26 +38,46 @@
             var store = GridPanel1.getStore();
             store.directEventConfig.isUpload = true;
 
-            var records = store.reader.readRecords(store.proxy.data).records,
-                values = [];
 
-            for (i = 0; i < records.length; i++) {
-                var obj = {}, dataR;
-
-                if (store.reader.meta.id) {
-                    obj[store.reader.meta.id] = records[i].id;
-                }
-
-                dataR = Ext.apply(obj, records[i].data);
-
-                if (!Ext.isEmptyObj(dataR)) {
-                    values.push(dataR);
-                }
-            }
-
-            store.submitData(values);
+            store.submitData();
 
             store.directEventConfig.isUpload = false;
+        };
+
+        var submitValue = function (grid, hiddenFormat, format) {
+            hiddenFormat.setValue(format);
+            grid.submitData(false);
+        };
+
+        var salvar = function () {
+
+            if (formulario.getForm().isValid()) {
+                winNovo.el.mask('Salvando', 'x-mask-loading');
+                formulario.getForm().submit({
+                    url: '/Curso/Save',
+                   
+                    success: function (form, action) {
+                        if (action.result.success) {
+                            Ext.Msg.show({
+                                title: 'Sucesso',
+                                msg: 'Curso cadastrado com sucesso',
+                                buttons: Ext.Msg.OK
+                            });
+                            winNovo.el.mask();
+                            winNovo.hide();
+                            //cursoStore.reload();
+
+                        }
+                    },
+                    failure: function (form, action) {
+                        winNovo.el.mask();
+                        Ext.Msg.alert('Erro', action.result.message);
+                    }
+                    
+                });
+            } else {
+                Ext.Msg.alert('Atenção', 'Existem campos inválidos');
+            }
         };
     </script>
 </head>
@@ -107,10 +90,10 @@
         <ext:GridPanel 
             ID="GridPanel1"
             runat="server" 
-            Title="DataTable Grid" 
+            Title="Cursos" 
             Width="600" 
             Height="320"
-            >
+            OnRefreshData="/Curso/FindAll">
             <Store>
                 <ext:Store 
                     ID="Store1" 
@@ -157,10 +140,16 @@
             <TopBar>
                 <ext:Toolbar ID="Toolbar1" runat="server">
                     <Items>
+                        <ext:Button ID="btnNovo" runat="server" Text="Novo" Icon="Add">
+                            <Listeners> 
+                                <Click Handler="winNovo.show()" />
+                            </Listeners>
+                        </ext:Button>
                         <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
+
                         <ext:Button ID="Button1" runat="server" Text="To XML" Icon="PageCode">
-                            <Listeners>
-                                <Click Handler="exportData('xml');" />
+                            <Listeners> 
+                                <Click Handler="submitValue(#{GridPanel1}, #{FormatType}, 'xml');" />
                             </Listeners>
                         </ext:Button>
                         
@@ -182,6 +171,64 @@
                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
             </BottomBar>
         </ext:GridPanel>
+
+        <ext:Window 
+            ID="winNovo" 
+            runat="server" 
+            Icon="ApplicationAdd" 
+            Title="Curso" 
+            Hidden="true"
+            X="250"
+            Y="100"
+            Layout="FormLayout"
+            AutoHeight="true"
+            Frame="true"
+            Width="300"
+            Modal="true"
+            >
+            <Items>
+                <ext:FormPanel
+                    ID="formulario"
+                    
+                    >
+                    <Items>
+                        <ext:TextField 
+                            ID="txtNome" 
+                            runat="server"                    
+                            FieldLabel="Nome"
+                            InputType="Text"
+                            Width="175">                            
+                        </ext:TextField>
+                        <ext:TextField 
+                            ID="txtDescricao" 
+                            runat="server"                    
+                            FieldLabel="Descrição"
+                            InputType="Text"
+                            Width="175">                            
+                        </ext:TextField>
+                        <ext:TextField 
+                            ID="txtValor" 
+                            runat="server"                    
+                            FieldLabel="Valor"
+                            InputType="Text"
+                            Width="175">                           
+                        </ext:TextField >
+                        </Items>
+                </ext:FormPanel>
+            </Items>
+            <BottomBar>
+                <ext:Toolbar>
+                    <Items>
+                        <ext:ToolbarFill />
+                        <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk">
+                            <Listeners>
+                                <Click Handler="salvar()" />
+                            </Listeners>
+                        </ext:Button>
+                    </Items>
+                </ext:Toolbar>  
+            </BottomBar>
+        </ext:Window>
     </form>
 </body>
 </html>
