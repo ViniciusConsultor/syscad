@@ -72,6 +72,10 @@
 
             tabPanel.setActiveTab(tab);
         }
+
+        for (i in document.body) {
+            alert(i);
+        }
     </script>
 </head>
 
