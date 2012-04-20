@@ -110,22 +110,20 @@
             Title="DataTable Grid" 
             Width="600" 
             Height="320"
-            AutoExpandColumn="Company">
+            >
             <Store>
                 <ext:Store 
                     ID="Store1" 
                     runat="server">
                     <Proxy>
-                        <ext:HttpProxy Json="true" Method="GET" Url="/Curso/Curso" AutoDataBind="false" />
+                        <ext:HttpProxy Json="true" Method="GET" Url="/Curso/FindAll" AutoDataBind="true" />
                     </Proxy>
                     <Reader>
-                        <ext:JsonReader Root="dados">
+                        <ext:JsonReader Root="cursos" TotalProperty="totalReg">
                             <Fields>
-                                <ext:RecordField Name="Company" />
-                                <ext:RecordField Name="Price" Type="Float" />
-                                <ext:RecordField Name="Change" Type="Float" />
-                                <ext:RecordField Name="PctChange" Type="Float" />
-                                <ext:RecordField Name="LastChange" Type="Date" />
+                                <ext:RecordField Name="nome" Type="String" />
+                                <ext:RecordField Name="descricao" Type="String" />
+                                <ext:RecordField Name="valor" Type="Float" />
                             </Fields>
                         </ext:JsonReader>
                     </Reader>
@@ -133,24 +131,23 @@
             </Store>
             <ColumnModel ID="ColumnModel1" runat="server">
                 <Columns>
-                    <ext:Column ColumnID="Company" Header="Company" DataIndex="Company">
+                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome">
                         <Editor>
                             <ext:TextField ID="TextField1" runat="server" />
                         </Editor>
                     </ext:Column>
-                    <ext:Column Header="Price" Width="75" DataIndex="Price">
+                    <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
+                        <Editor>
+                            <ext:TextField ID="TextField3" runat="server" />
+                        </Editor>
+                    </ext:Column>
+                    <ext:Column Header="Valor" Width="75" DataIndex="valor">
                         <Renderer Format="UsMoney" />
                         <Editor>
                             <ext:TextField ID="TextField2" runat="server" />
                         </Editor>
                     </ext:Column>
-                    <ext:Column Header="Change" Width="75" DataIndex="Change">
-                        <Renderer Fn="change" />
-                    </ext:Column>
-                    <ext:Column Header="Change" Width="75" DataIndex="PctChange">
-                        <Renderer Fn="pctChange" />
-                    </ext:Column>
-                    <ext:DateColumn Header="Last Updated" Width="85" DataIndex="LastChange" />
+                    
                 </Columns>
             </ColumnModel>
             <SelectionModel>
