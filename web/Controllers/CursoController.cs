@@ -35,7 +35,7 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save(string txtNome, string txtDescricao, string txtValor, string action)
+        public JsonResult Save(string txtNome, string txtDescricao, string txtValor)
         {
             Curso curso = new Curso();
             curso.nome = txtNome;
@@ -45,12 +45,57 @@ namespace web.Controllers
 
             try
             {
-                if (action.Equals("insert"))
-                {
-                    dbCurso.Adicionar(curso);
-                    dbCurso.SaveChanges();
-                    
-                }
+
+                dbCurso.Adicionar(curso);
+                dbCurso.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult Editar(int idCurso, string Nome, string Descricao, string Valor)
+        {
+
+            Curso curso = dbCurso.FindOne(cur => cur.idCurso == idCurso);
+
+            try
+            {
+                curso.nome = Nome;
+                curso.descricao = Descricao;
+                curso.valor = Convert.ToDecimal(Valor);
+                dbCurso.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult Excluir(int idCurso)
+        {
+
+            Curso curso = dbCurso.FindOne(cur => cur.idCurso == idCurso);
+
+            try
+            {
+                dbCurso.Remover(curso);
+                dbCurso.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
 
@@ -70,7 +115,7 @@ namespace web.Controllers
             return View();
         }
 
-        public ActionResult SubmitCurso(object sender, StoreSubmitDataEventArgs e, string formatType)
+        /*public ActionResult SubmitCurso(object sender, StoreSubmitDataEventArgs e, string formatType)
         {
             string format = formatType.ToString();
 
@@ -109,6 +154,6 @@ namespace web.Controllers
             this.Response.End();
 
             return View("Curso");
-        }
+        }*/
     }
 }

@@ -20,10 +20,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-    <title>GridPanel using DataTable with Paging and Remote Reloading - Ext.NET Examples</title>
+    <title>Cursos</title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+
         var template = '<span style="color:{0};">{1}</span>';
 
         var change = function (value) {
@@ -36,7 +37,7 @@
 
         var exportData = function (format) {
             FormatType.setValue(format);
-            var store = GridPanel1.getStore();
+            var store = GridPanelEdicao.getStore();
             store.directEventConfig.isUpload = true;
 
 
@@ -51,60 +52,82 @@
         };
 
 
-        var salvar = function () {
-            winNovo.hide();
-            GridPanel1.el.mask('Salvando', 'x-mask-loading');
-            this.formulario.getForm().submit({
-                url: '/Curso/Index',
-                params: {
-                    action: 'insert'
-                },
-                success: function (form, action) {
-                    if (action.result.success) {
-                        GridPanel1.el.unmask();
-                        GridPanel1.reload();
-                    }
-                },
+        function modoEdicao() {
+            GridPanelEdicao.reload('yes');
+            GridPanelNormal.hide();
+            GridPanelEdicao.show();
+        };
 
-                failure: function (form, action) {
-                    winNovo.el.unmask();
-                    Ext.Msg.alert('Erro', action.result.message);
-                },
-                scope: this
-            })
+        function sairModoEdicao () {
+            GridPanelNormal.reload();
+            GridPanelNormal.show();
+            GridPanelEdicao.hide();
         };
 
 
-        /*var salvar = function () {
+        function excluirRegistro() {
 
-            if (formulario.getForm().isValid()) {
-                winNovo.el.mask('Salvando', 'x-mask-loading');
-                formulario.getForm().submit({
-                    url: '/Curso/Save',
-                   
-                    success: function (form, action) {
-                        if (action.result.success) {
-                            Ext.Msg.show({
-                                title: 'Sucesso',
-                                msg: 'Curso cadastrado com sucesso',
-                                buttons: Ext.Msg.OK
-                            });
-                            winNovo.el.mask();
-                            winNovo.hide();
-                            //cursoStore.reload();
+            var confirm = Ext.Msg.confirm('Confirmação','Tem certeza que deseja excluir o curso?', function (btn) {
 
-                        }
-                    },
-                    failure: function (form, action) {
-                        winNovo.el.mask();
-                        Ext.Msg.alert('Erro', action.result.message);
+                if (btn == 'yes') {
+                    if (GridPanelNormal.getSelectionModel().hasSelection()) {
+
+                        GridPanelNormal.el.mask('Excluindo curso', 'x-mask-loading');
+
+                        var record = GridPanelNormal.getSelectionModel().getSelected();
+
+                        $.post('/Curso/Excluir', { idCurso: record.data.idCurso }, function () {
+                            GridPanelNormal.reload();
+                            GridPanelNormal.el.unmask();
+                        });
+
                     }
-                    
+
+                }
+
+            });
+
+        };
+        
+        
+        function salvarAlteracoes() {
+
+            if (GridPanelEdicao.getSelectionModel().hasSelection()) {
+
+                GridPanelEdicao.el.mask('Alterando curso', 'x-mask-loading');
+
+                var record = GridPanelEdicao.getSelectionModel().getSelected();
+
+                $.post('/Curso/Editar', { idCurso: record.data.idCurso, Nome: record.data.nome, Descricao: record.data.descricao, Valor: record.data.valor }, function () {
+                    GridPanelEdicao.el.unmask();
                 });
-            } else {
-                Ext.Msg.alert('Atenção', 'Existem campos inválidos');
+
             }
-        };*/
+
+        };
+
+        function salvar() {
+            winNovo.hide();
+            GridPanelNormal.el.mask('Salvando', 'x-mask-loading');
+            $.post('/Curso/Save', $("#Form1").serialize(), function (valor) {
+                //Ext.Msg.alert('Curso salvo com sucesso!');
+                Ext.Msg.show({
+                    title: 'Sucesso',
+                    msg: 'Curso cadastrado com sucesso',
+                    buttons: Ext.Msg.OK
+                });
+                GridPanelNormal.reload();
+                GridPanelNormal.el.unmask();
+            });
+
+        };
+
+        function carregaGrid() {
+
+            GridPanelEdicao.hide();
+
+        }
+
     </script>
 </head>
 <body>
@@ -114,12 +137,16 @@
         <ext:Hidden ID="FormatType" runat="server" />
 
         <ext:GridPanel 
-            ID="GridPanel1"
+            ID="GridPanelEdicao"
             runat="server" 
             Title="Cursos" 
-            Width="1181" 
+            Width="1164" 
             Height="705"
-            OnRefreshData="/Curso/FindAll">
+            OnRefreshData="/Curso/FindAll"
+            >
+            <Listeners>
+                <BeforeRender Handler="carregaGrid()" />
+            </Listeners>
             <Store>
                 <ext:Store 
                     ID="Store1" 
@@ -130,6 +157,7 @@
                     <Reader>
                         <ext:JsonReader Root="cursos" TotalProperty="totalReg">
                             <Fields>
+                                <ext:RecordField Name="idCurso" Type="Int" />
                                 <ext:RecordField Name="nome" Type="String" />
                                 <ext:RecordField Name="descricao" Type="String" />
                                 <ext:RecordField Name="valor" Type="Float" />
@@ -138,54 +166,134 @@
                     </Reader>
                 </ext:Store>
             </Store>
-            <ColumnModel ID="ColumnModel1" runat="server">
+            <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                 <Columns>
-                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome">
+                    <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
+
+                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true">
                         <Editor>
-                            <ext:TextField ID="TextField1" runat="server" />
+                            <ext:TextField ID="txtNomeEditar" runat="server" />
                         </Editor>
                     </ext:Column>
                     <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
                         <Editor>
-                            <ext:TextField ID="TextField3" runat="server" />
+                            <ext:TextField ID="txtDescricaoEditar" runat="server" />
                         </Editor>
                     </ext:Column>
-                    <ext:Column Header="Valor" Width="75" DataIndex="valor">
+                    <ext:Column Header="valor" Width="75" DataIndex="valor">
                         <Renderer Format="UsMoney" />
                         <Editor>
-                            <ext:TextField ID="TextField2" runat="server" />
+                            <ext:TextField ID="txtValorEditar" runat="server" />
                         </Editor>
                     </ext:Column>
-                    
                 </Columns>
             </ColumnModel>
             <SelectionModel>
-                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" />
+                <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" >
+                    <Listeners> 
+                        <BeforeRowSelect Handler="salvarAlteracoes()" />
+                    </Listeners>
+                </ext:RowSelectionModel>
             </SelectionModel>
             <LoadMask ShowMask="true" />
             <TopBar>
                 <ext:Toolbar ID="Toolbar1" runat="server">
                     <Items>
-                        <ext:Button ID="btnNovo" runat="server" Text="Novo" Icon="Add">
+
+                        <ext:Button ID="btnEditar" runat="server" Text="Modo Edição" Icon="Pencil" Pressed="true">
+                            <Listeners> 
+                                <Click Handler="sairModoEdicao()" />
+                            </Listeners>
+                        </ext:Button>
+                        
+                    </Items>
+                </ext:Toolbar>
+            </TopBar>
+            <BottomBar>
+                <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
+            </BottomBar>
+        </ext:GridPanel>
+
+
+        <ext:GridPanel 
+            ID="GridPanelNormal"
+            runat="server" 
+            Title="Cursos" 
+            Width="1164" 
+            Height="705"
+            OnRefreshData="/Curso/FindAll"
+            >
+            <Store>
+                <ext:Store 
+                    ID="Store2" 
+                    runat="server">
+                    <Proxy>
+                        <ext:HttpProxy Json="true" Method="GET" Url="/Curso/FindAll" AutoDataBind="true" />
+                    </Proxy>
+                    <Reader>
+                        <ext:JsonReader Root="cursos" TotalProperty="totalReg">
+                            <Fields>
+                                <ext:RecordField Name="idCurso" Type="Int" />
+                                <ext:RecordField Name="nome" Type="String" />
+                                <ext:RecordField Name="descricao" Type="String" />
+                                <ext:RecordField Name="valor" Type="Float" />
+                            </Fields>
+                        </ext:JsonReader>
+                    </Reader>
+                </ext:Store>
+            </Store>
+            <ColumnModel ID="ColumnModel2" runat="server">
+                <Columns>
+                    <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
+
+                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome">
+                    </ext:Column>
+                    <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
+                    </ext:Column>
+                    <ext:Column Header="valor" Width="75" DataIndex="valor">
+                        <Renderer Format="UsMoney" />
+                    </ext:Column>
+                </Columns>
+            </ColumnModel>
+            <SelectionModel>
+                <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" >
+                </ext:RowSelectionModel>
+            </SelectionModel>
+            <LoadMask ShowMask="true" />
+            <TopBar>
+                <ext:Toolbar ID="Toolbar2" runat="server">
+                    <Items>
+                        <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                             <Listeners> 
                                 <Click Handler="winNovo.show()" />
                             </Listeners>
                         </ext:Button>
-                        <ext:ToolbarFill ID="ToolbarFill1" runat="server" />
-
-                        <ext:Button ID="Button1" runat="server" Text="To XML" Icon="PageCode">
+                        <ext:Button ID="Button5" runat="server" Text="Modo Edição" Icon="Pencil">
                             <Listeners> 
-                                <Click Handler="submitValue(#{GridPanel1}, #{FormatType}, 'xml');" />
+                                <Click Handler="modoEdicao()" />
+                            </Listeners>
+                        </ext:Button>
+                        <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
+                            <Listeners> 
+                                <Click Handler="excluirRegistro()" />
+                            </Listeners>
+                        </ext:Button>
+
+                        <ext:ToolbarFill ID="ToolbarFill2" runat="server" />
+
+                        <ext:Button ID="Button7" runat="server" Text="To XML" Icon="PageCode">
+                            <Listeners> 
+                                <Click Handler="submitValue(#{GridPanelEdicao}, #{FormatType}, 'xml');" />
                             </Listeners>
                         </ext:Button>
                         
-                        <ext:Button ID="Button2" runat="server" Text="To Excel" Icon="PageExcel">
+                        <ext:Button ID="Button8" runat="server" Text="To Excel" Icon="PageExcel">
                             <Listeners>
                                 <Click Handler="exportData('xls');" />
                             </Listeners>
                         </ext:Button>
                         
-                        <ext:Button ID="Button3" runat="server" Text="To CSV" Icon="PageAttach">
+                        <ext:Button ID="Button9" runat="server" Text="To CSV" Icon="PageAttach">
                             <Listeners>
                                 <Click Handler="exportData('csv');" />
                             </Listeners>
@@ -194,7 +302,7 @@
                 </ext:Toolbar>
             </TopBar>
             <BottomBar>
-                <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
+                <ext:PagingToolbar ID="PagingToolbar2" runat="server" PageSize="10" />
             </BottomBar>
         </ext:GridPanel>
 
@@ -240,8 +348,6 @@
             </Items>
 
         </ext:Window>
-
-
 
     </form>
 </body>
