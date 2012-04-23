@@ -22,7 +22,9 @@ namespace web.Controllers
         {
             string resposta = "";
             IRepositorio<Usuario> dbUsuario = new Repositorio<Usuario>();
+            IRepositorio<Perfil> dbPerfil = new Repositorio<Perfil>();
             Usuario usuario = dbUsuario.FindOne(usu => usu.login == login);
+            Perfil perfil = dbPerfil.FindOne(per => per.idPerfil == usuario.idPerfil);
 
             if (usuario != null)
             {
@@ -30,8 +32,8 @@ namespace web.Controllers
 
                 Session["login_usuario"] = usuario.login;
                 Session["id_usuario"] = usuario.idUsuario;
-                //Session["nome_perfil"] = usuario.Perfil.nome;
-                //Session["id_perfil"] = usuario.Perfil.idPerfil;
+                Session["nome_perfil"] = perfil.nome;
+                Session["id_perfil"] = perfil.idPerfil;
             }
             else
             {
@@ -60,6 +62,17 @@ namespace web.Controllers
             return Json(resposta);
 
         } // BuscarSenha
+
+        [HttpGet]
+        public JsonResult DesconectarUsuario()
+        {
+            Session["login_usuario"] = null;
+            Session["id_usuario"] = null;
+            Session["nome_perfil"] = null;
+            Session["id_perfil"] = null;
+
+            return Json("Desconectado com sucesso!");
+        }
 
     } // class
 

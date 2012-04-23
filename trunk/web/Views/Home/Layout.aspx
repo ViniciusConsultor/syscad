@@ -3,6 +3,8 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
+<% if (Session["login_usuario"] != null)
+   { %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,6 +12,7 @@
 <head id="Head1" runat="server">
     <title>SysCad - Seja bem vindo <%= Session["login_usuario"] %></title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+    <script src="../../Scripts/funcoes_ready.js" type="text/javascript"></script>
     <link href="../../Content/MasterPage.css" rel="stylesheet" type="text/css" />
 
      <script type="text/javascript">
@@ -91,7 +94,7 @@
         </div>
         <div id="right_inside_bar_login">
             <ul>
-                <li>Olá, <%= Session["login_usuario"] %> <img src="../../Content/imagens/user_perfil.jpg" alt="Usuario" /></li>
+                <li id="user_perfil_bar" exibindo="false">Olá, <%= Session["login_usuario"]%> <img src="../../Content/imagens/user_perfil.jpg" alt="Usuario" /></li>
             </ul>
         </div>
     </div>
@@ -135,23 +138,20 @@
                             <Root>
                                 <ext:TreeNode Text="SysCad" Expanded="true" Icon="Application">
                                     <Nodes>
-                                        <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso">
-                                            <Listeners>
-                                                <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso/Curso','Curso')" />
-                                            </Listeners>
+                                        <ext:TreeNode Icon="AsteriskOrange" Expanded="true" Text="Cadastros">
+                                            <Nodes>
+                                                <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso/Curso','Curso')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
+                                            </Nodes>
                                         </ext:TreeNode>
                                     </Nodes>
                                     <Nodes>
-                                        <ext:TreeNode Icon="User" Expanded="true" Text="Usuario">
+                                        <ext:TreeNode Icon="AsteriskYellow" Expanded="true" Text="Lancar Notas e Faltas">
                                             <Listeners>
                                                 <Click Handler="addTab(#{TabPanel1},'idAba2','/Curso/Curso','Usuario')" />
-                                            </Listeners>
-                                        </ext:TreeNode>
-                                    </Nodes>
-                                    <Nodes>
-                                        <ext:TreeNode Icon="Book" Expanded="true" Text="Professor">
-                                            <Listeners>
-                                                <Click Handler="addTab(#{TabPanel1},'idAba3','/Curso/Curso','Professor')" />
                                             </Listeners>
                                         </ext:TreeNode>
                                     </Nodes>
@@ -235,3 +235,12 @@
        
 </body>
 </html>
+
+<% }
+   else
+   {
+     %>
+     <script>
+         location.href = "/Home/";
+     </script>
+<% } %>

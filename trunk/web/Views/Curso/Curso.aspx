@@ -141,7 +141,7 @@
             runat="server" 
             Title="Cursos" 
             Width="1164" 
-            Height="705"
+            Height="704"
             OnRefreshData="/Curso/FindAll"
             >
             <Listeners>
@@ -170,7 +170,7 @@
                 <Columns>
                     <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
 
-                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true">
+                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                         <Editor>
                             <ext:TextField ID="txtNomeEditar" runat="server" />
                         </Editor>
