@@ -57,4 +57,20 @@
 
     //----------------------------------------------------------------------------------------------------------------------------
 
-});  // document ready
+    $("#info_perfil").hide();
+
+    $("#user_perfil_bar").live("click", function () {
+
+        var exibindo = $("#user_perfil_bar").attr("exibindo");
+
+        if (exibindo == "false") {
+            $("#info_perfil").show();
+            $("#user_perfil_bar").attr("exibindo", "true");
+        } else {
+            $("#info_perfil").hide();
+            $("#user_perfil_bar").attr("exibindo", "false");
+        }
+
+    });
+
+});          // document ready

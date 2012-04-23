@@ -95,6 +95,7 @@
     <Content Include="Content\imagens\logo_syscad_peq.png" />
     <Content Include="Content\imagens\msg_user.jpg" />
     <Content Include="Content\imagens\msg_user.png" />
+    <Content Include="Content\imagens\sem_foto.png" />
     <Content Include="Content\imagens\separador_login.png" />
     <Content Include="Content\imagens\seta_vai.png" />
     <Content Include="Content\imagens\seta_vai_2.png" />
@@ -135,11 +136,8 @@
     <Content Include="Scripts\jquery-1.4.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
-    <Content Include="Views\Curso\Create.ascx" />
     <Content Include="Views\Curso\Curso.aspx" />
     <Content Include="Views\Home\Index.aspx" />
-    <Content Include="Views\Curso\Index.aspx" />
-    <Content Include="Views\Home\Inicial.aspx" />
     <Content Include="Views\Home\Layout.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

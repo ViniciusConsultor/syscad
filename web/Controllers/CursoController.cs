@@ -20,11 +20,6 @@ namespace web.Controllers
             dbCurso = new Repositorio<Curso>();
         }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         public JsonResult FindAll()
         {
