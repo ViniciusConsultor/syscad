@@ -43,7 +43,7 @@
             if (valor != "Não") {
 
                 $("#retorno_mensagem").html("Autenticação efetuada com sucesso para o usuário <strong>" + valor + "</strong>");
-                location.href = "/Curso/";
+                location.href = "/Home/Layout";
 
             } else {
 
