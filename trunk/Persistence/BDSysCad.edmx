@@ -521,31 +521,31 @@
             <End Role="perfil" EntitySet="PerfilSet" />
             <End Role="usuario" EntitySet="UsuarioSet" />
           </AssociationSet>
-          <EntitySet Name="funcionario" EntityType="BDSysCadModel.funcionario" />
-          <EntitySet Name="notaFalta" EntityType="BDSysCadModel.notaFalta" />
+          <EntitySet Name="FuncionarioSet" EntityType="BDSysCadModel.Funcionario" />
+          <EntitySet Name="NotaFaltaSet" EntityType="BDSysCadModel.NotaFalta" />
           <AssociationSet Name="FK_notaFalta_aluno" Association="BDSysCadModel.FK_notaFalta_aluno">
             <End Role="Aluno" EntitySet="AlunoSet" />
-            <End Role="notaFalta" EntitySet="notaFalta" />
+            <End Role="NotaFaltas" EntitySet="NotaFaltaSet" />
           </AssociationSet>
           <AssociationSet Name="FK_funcionario_cargo" Association="BDSysCadModel.FK_funcionario_cargo">
             <End Role="Cargo" EntitySet="CargoSet" />
-            <End Role="funcionario" EntitySet="funcionario" />
+            <End Role="Funcionario" EntitySet="FuncionarioSet" />
           </AssociationSet>
           <AssociationSet Name="FK_funcionario_pessoa" Association="BDSysCadModel.FK_funcionario_pessoa">
             <End Role="Pessoa" EntitySet="PessoaSet" />
-            <End Role="funcionario" EntitySet="funcionario" />
+            <End Role="Funcionario" EntitySet="FuncionarioSet" />
           </AssociationSet>
           <AssociationSet Name="FK_funcionario_usuario" Association="BDSysCadModel.FK_funcionario_usuario">
             <End Role="Usuario" EntitySet="UsuarioSet" />
-            <End Role="funcionario" EntitySet="funcionario" />
+            <End Role="Funcionario" EntitySet="FuncionarioSet" />
           </AssociationSet>
           <AssociationSet Name="FK_notaFalta_modulo" Association="BDSysCadModel.FK_notaFalta_modulo">
             <End Role="Modulo" EntitySet="ModuloSet" />
-            <End Role="notaFalta" EntitySet="notaFalta" />
+            <End Role="NotaFalta" EntitySet="NotaFaltaSet" />
           </AssociationSet>
           <AssociationSet Name="FK_notaFalta_turma" Association="BDSysCadModel.FK_notaFalta_turma">
             <End Role="Turma" EntitySet="TurmaSet" />
-            <End Role="notaFalta" EntitySet="notaFalta" />
+            <End Role="NotaFalta" EntitySet="NotaFaltaSet" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Aluno">
@@ -559,7 +559,7 @@
           <NavigationProperty Name="Pessoa" Relationship="BDSysCadModel.FK_aluno_pessoa" FromRole="aluno" ToRole="pessoa" />
           <NavigationProperty Name="Cobrancas" Relationship="BDSysCadModel.FK_cobranca_aluno" FromRole="aluno" ToRole="cobranca" />
           <NavigationProperty Name="Matriculas" Relationship="BDSysCadModel.FK_matricula_aluno" FromRole="aluno" ToRole="matricula" />
-          <NavigationProperty Name="notaFalta" Relationship="BDSysCadModel.FK_notaFalta_aluno" FromRole="Aluno" ToRole="notaFalta" />
+          <NavigationProperty Name="NotaFaltas" Relationship="BDSysCadModel.FK_notaFalta_aluno" FromRole="Aluno" ToRole="NotaFaltas" />
         </EntityType>
         <EntityType Name="Cargo">
           <Key>
@@ -568,7 +568,7 @@
           <Property Type="Int32" Name="idCargo" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="nome" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="descricao" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="funcionario" Relationship="BDSysCadModel.FK_funcionario_cargo" FromRole="Cargo" ToRole="funcionario" />
+          <NavigationProperty Name="Funcionarios" Relationship="BDSysCadModel.FK_funcionario_cargo" FromRole="Cargo" ToRole="Funcionario" />
         </EntityType>
         <EntityType Name="Cobranca">
           <Key>
@@ -646,7 +646,7 @@
           <Property Type="Int32" Name="statusModulo" />
           <Property Type="Int32" Name="idCurso" Nullable="false" />
           <NavigationProperty Name="Curso" Relationship="BDSysCadModel.FK_modulo_curso" FromRole="modulo" ToRole="curso" />
-          <NavigationProperty Name="notaFalta" Relationship="BDSysCadModel.FK_notaFalta_modulo" FromRole="Modulo" ToRole="notaFalta" />
+          <NavigationProperty Name="NotaFaltas" Relationship="BDSysCadModel.FK_notaFalta_modulo" FromRole="Modulo" ToRole="NotaFalta" />
         </EntityType>
         <EntityType Name="Perfil">
           <Key>
@@ -670,7 +670,7 @@
           <Property Type="Int32" Name="sexo" Nullable="false" />
           <NavigationProperty Name="Alunos" Relationship="BDSysCadModel.FK_aluno_pessoa" FromRole="pessoa" ToRole="aluno" />
           <NavigationProperty Name="Enderecos" Relationship="BDSysCadModel.FK_endereco_pessoa" FromRole="pessoa" ToRole="endereco" />
-          <NavigationProperty Name="funcionario" Relationship="BDSysCadModel.FK_funcionario_pessoa" FromRole="Pessoa" ToRole="funcionario" />
+          <NavigationProperty Name="Funcionarios" Relationship="BDSysCadModel.FK_funcionario_pessoa" FromRole="Pessoa" ToRole="Funcionario" />
         </EntityType>
         <EntityType Name="Taxa">
           <Key>
@@ -704,7 +704,7 @@
           <Property Type="DateTime" Name="dataFechamento" />
           <NavigationProperty Name="Curso" Relationship="BDSysCadModel.FK_turma_curso" FromRole="turma" ToRole="curso" />
           <NavigationProperty Name="MatriculaTurmas" Relationship="BDSysCadModel.FK_matriculaTurma_turma" FromRole="turma" ToRole="matriculaTurma" />
-          <NavigationProperty Name="notaFalta" Relationship="BDSysCadModel.FK_notaFalta_turma" FromRole="Turma" ToRole="notaFalta" />
+          <NavigationProperty Name="NotaFaltas" Relationship="BDSysCadModel.FK_notaFalta_turma" FromRole="Turma" ToRole="NotaFalta" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -715,7 +715,7 @@
           <Property Type="String" Name="login" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="senha" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Perfil" Relationship="BDSysCadModel.FK_usuario_perfil" FromRole="usuario" ToRole="perfil" />
-          <NavigationProperty Name="funcionario" Relationship="BDSysCadModel.FK_funcionario_usuario" FromRole="Usuario" ToRole="funcionario" />
+          <NavigationProperty Name="Funcionarios" Relationship="BDSysCadModel.FK_funcionario_usuario" FromRole="Usuario" ToRole="Funcionario" />
         </EntityType>
         <Association Name="FK_aluno_pessoa">
           <End Type="BDSysCadModel.Pessoa" Role="pessoa" Multiplicity="1" />
@@ -849,7 +849,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="funcionario">
+        <EntityType Name="Funcionario">
           <Key>
             <PropertyRef Name="idFuncionario" />
           </Key>
@@ -858,11 +858,11 @@
           <Property Type="Int32" Name="idCargo" Nullable="false" />
           <Property Type="Int32" Name="idPessoa" Nullable="false" />
           <Property Type="Decimal" Name="salario" Precision="18" Scale="0" />
-          <NavigationProperty Name="cargo" Relationship="BDSysCadModel.FK_funcionario_cargo" FromRole="funcionario" ToRole="Cargo" />
-          <NavigationProperty Name="pessoa" Relationship="BDSysCadModel.FK_funcionario_pessoa" FromRole="funcionario" ToRole="Pessoa" />
-          <NavigationProperty Name="usuario" Relationship="BDSysCadModel.FK_funcionario_usuario" FromRole="funcionario" ToRole="Usuario" />
+          <NavigationProperty Name="Cargo" Relationship="BDSysCadModel.FK_funcionario_cargo" FromRole="Funcionario" ToRole="Cargo" />
+          <NavigationProperty Name="Pessoa" Relationship="BDSysCadModel.FK_funcionario_pessoa" FromRole="Funcionario" ToRole="Pessoa" />
+          <NavigationProperty Name="Usuario" Relationship="BDSysCadModel.FK_funcionario_usuario" FromRole="Funcionario" ToRole="Usuario" />
         </EntityType>
-        <EntityType Name="notaFalta">
+        <EntityType Name="NotaFalta">
           <Key>
             <PropertyRef Name="idNotaFalta" />
           </Key>
@@ -873,78 +873,78 @@
           <Property Type="Int32" Name="qtdFalta" />
           <Property Type="Decimal" Name="nota1" Precision="18" Scale="0" />
           <Property Type="Decimal" Name="nota2" Precision="18" Scale="0" />
-          <NavigationProperty Name="aluno" Relationship="BDSysCadModel.FK_notaFalta_aluno" FromRole="notaFalta" ToRole="Aluno" />
-          <NavigationProperty Name="modulo" Relationship="BDSysCadModel.FK_notaFalta_modulo" FromRole="notaFalta" ToRole="Modulo" />
-          <NavigationProperty Name="turma" Relationship="BDSysCadModel.FK_notaFalta_turma" FromRole="notaFalta" ToRole="Turma" />
+          <NavigationProperty Name="Aluno" Relationship="BDSysCadModel.FK_notaFalta_aluno" FromRole="NotaFaltas" ToRole="Aluno" />
+          <NavigationProperty Name="Modulo" Relationship="BDSysCadModel.FK_notaFalta_modulo" FromRole="NotaFalta" ToRole="Modulo" />
+          <NavigationProperty Name="Turma" Relationship="BDSysCadModel.FK_notaFalta_turma" FromRole="NotaFalta" ToRole="Turma" />
         </EntityType>
         <Association Name="FK_notaFalta_aluno">
           <End Type="BDSysCadModel.Aluno" Role="Aluno" Multiplicity="1" />
-          <End Type="BDSysCadModel.notaFalta" Role="notaFalta" Multiplicity="*" />
+          <End Type="BDSysCadModel.NotaFalta" Role="NotaFaltas" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Aluno">
               <PropertyRef Name="idAluno" />
             </Principal>
-            <Dependent Role="notaFalta">
+            <Dependent Role="NotaFaltas">
               <PropertyRef Name="idAluno" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_funcionario_cargo">
           <End Type="BDSysCadModel.Cargo" Role="Cargo" Multiplicity="1" />
-          <End Type="BDSysCadModel.funcionario" Role="funcionario" Multiplicity="*" />
+          <End Type="BDSysCadModel.Funcionario" Role="Funcionario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Cargo">
               <PropertyRef Name="idCargo" />
             </Principal>
-            <Dependent Role="funcionario">
+            <Dependent Role="Funcionario">
               <PropertyRef Name="idCargo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_funcionario_pessoa">
           <End Type="BDSysCadModel.Pessoa" Role="Pessoa" Multiplicity="1" />
-          <End Type="BDSysCadModel.funcionario" Role="funcionario" Multiplicity="*" />
+          <End Type="BDSysCadModel.Funcionario" Role="Funcionario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Pessoa">
               <PropertyRef Name="idPessoa" />
             </Principal>
-            <Dependent Role="funcionario">
+            <Dependent Role="Funcionario">
               <PropertyRef Name="idPessoa" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_funcionario_usuario">
           <End Type="BDSysCadModel.Usuario" Role="Usuario" Multiplicity="1" />
-          <End Type="BDSysCadModel.funcionario" Role="funcionario" Multiplicity="*" />
+          <End Type="BDSysCadModel.Funcionario" Role="Funcionario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Usuario">
               <PropertyRef Name="idUsuario" />
             </Principal>
-            <Dependent Role="funcionario">
+            <Dependent Role="Funcionario">
               <PropertyRef Name="idUsuario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_notaFalta_modulo">
           <End Type="BDSysCadModel.Modulo" Role="Modulo" Multiplicity="1" />
-          <End Type="BDSysCadModel.notaFalta" Role="notaFalta" Multiplicity="*" />
+          <End Type="BDSysCadModel.NotaFalta" Role="NotaFalta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Modulo">
               <PropertyRef Name="idModulo" />
             </Principal>
-            <Dependent Role="notaFalta">
+            <Dependent Role="NotaFalta">
               <PropertyRef Name="idModulo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_notaFalta_turma">
           <End Type="BDSysCadModel.Turma" Role="Turma" Multiplicity="1" />
-          <End Type="BDSysCadModel.notaFalta" Role="notaFalta" Multiplicity="*" />
+          <End Type="BDSysCadModel.NotaFalta" Role="NotaFalta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Turma">
               <PropertyRef Name="idTurma" />
             </Principal>
-            <Dependent Role="notaFalta">
+            <Dependent Role="NotaFalta">
               <PropertyRef Name="idTurma" />
             </Dependent>
           </ReferentialConstraint>
@@ -1110,8 +1110,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="funcionario">
-            <EntityTypeMapping TypeName="BDSysCadModel.funcionario">
+          <EntitySetMapping Name="FuncionarioSet">
+            <EntityTypeMapping TypeName="BDSysCadModel.Funcionario">
               <MappingFragment StoreEntitySet="funcionario">
                 <ScalarProperty Name="salario" ColumnName="salario" />
                 <ScalarProperty Name="idPessoa" ColumnName="idPessoa" />
@@ -1121,8 +1121,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="notaFalta">
-            <EntityTypeMapping TypeName="BDSysCadModel.notaFalta">
+          <EntitySetMapping Name="NotaFaltaSet">
+            <EntityTypeMapping TypeName="BDSysCadModel.NotaFalta">
               <MappingFragment StoreEntitySet="notaFalta">
                 <ScalarProperty Name="nota2" ColumnName="nota2" />
                 <ScalarProperty Name="nota1" ColumnName="nota1" />
@@ -1226,8 +1226,8 @@
           <ConnectorPoint PointX="1.875" PointY="18.75" />
           <ConnectorPoint PointX="1.875" PointY="17.547587890625" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="BDSysCadModel.funcionario" Width="1.5" PointX="3.375" PointY="12.625" Height="2.5571907552083388" />
-        <EntityTypeShape EntityType="BDSysCadModel.notaFalta" Width="1.5" PointX="8.75" PointY="8.375" Height="2.9417936197916674" />
+        <EntityTypeShape EntityType="BDSysCadModel.Funcionario" Width="1.5" PointX="3.375" PointY="12.625" Height="2.5571907552083388" />
+        <EntityTypeShape EntityType="BDSysCadModel.NotaFalta" Width="1.5" PointX="8.75" PointY="8.375" Height="2.9417936197916674" />
         <AssociationConnector Association="BDSysCadModel.FK_notaFalta_aluno" >
           <ConnectorPoint PointX="3.8125" PointY="9" />
           <ConnectorPoint PointX="3.8125" PointY="8.6562475" />
