@@ -25,6 +25,8 @@ namespace web.Controllers
         {
 
             IList<Curso> listaCurso = dbCurso.FindAll();
+            Curso curso = new Curso();
+            listaCurso.Add(curso);
 
             return Json(new { cursos = listaCurso, totalReg = listaCurso.Count }, JsonRequestBehavior.AllowGet);
         }
@@ -110,45 +112,5 @@ namespace web.Controllers
             return View();
         }
 
-        /*public ActionResult SubmitCurso(object sender, StoreSubmitDataEventArgs e, string formatType)
-        {
-            string format = formatType.ToString();
-
-            XmlNode xml = e.Xml;
-
-            this.Response.Clear();
-
-            switch (format)
-            {
-                case "xml":
-                    string strXml = xml.OuterXml;
-                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xml");
-                    this.Response.AddHeader("Content-Length", strXml.Length.ToString());
-                    this.Response.ContentType = "application/xml";
-                    this.Response.Write(strXml);
-
-                    break;
-                case "xls":
-                    this.Response.ContentType = "application/vnd.ms-excel";
-                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.xls");
-                    XslCompiledTransform xtExcel = new XslCompiledTransform();
-                    xtExcel.Load(Server.MapPath("Excel.xsl"));
-                    xtExcel.Transform(xml, null, Response.OutputStream);
-
-                    break;
-                case "csv":
-                    this.Response.ContentType = "application/octet-stream";
-                    this.Response.AddHeader("Content-Disposition", "attachment; filename=submittedData.csv");
-                    XslCompiledTransform xtCsv = new XslCompiledTransform();
-                    xtCsv.Load(Server.MapPath("Csv.xsl"));
-                    xtCsv.Transform(xml, null, Response.OutputStream);
-
-                    break;
-            }
-
-            this.Response.End();
-
-            return View("Curso");
-        }*/
     }
 }

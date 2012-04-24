@@ -1,14 +1,26 @@
-﻿<%@ Page Language="C#"  %>
+﻿<%@ Page Language="C#"  Inherits="System.Web.Mvc.ViewPage<DataTable>" %>
+
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Xml.Xsl" %>
+<%@ Import Namespace="System.Xml" %>
+<%@ Import Namespace="System.Linq" %>
 
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
+<script runat="server">
+  
+
+
+
+    
+</script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-    <title>Cursos</title>
+    <title>Funcionários</title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
@@ -46,7 +58,7 @@
             GridPanelEdicao.show();
         };
 
-        function sairModoEdicao () {
+        function sairModoEdicao() {
             GridPanelNormal.reload();
             GridPanelNormal.show();
             GridPanelEdicao.hide();
@@ -55,7 +67,7 @@
 
         function excluirRegistro() {
 
-            var confirm = Ext.Msg.confirm('Confirmação','Tem certeza que deseja excluir o curso?', function (btn) {
+            var confirm = Ext.Msg.confirm('Confirmação', 'Tem certeza que deseja excluir o curso?', function (btn) {
 
                 if (btn == 'yes') {
                     if (GridPanelNormal.getSelectionModel().hasSelection()) {
@@ -76,8 +88,8 @@
             });
 
         };
-        
-        
+
+
         function salvarAlteracoes() {
 
             if (GridPanelEdicao.getSelectionModel().hasSelection()) {
@@ -320,7 +332,7 @@
                     </Items>
 
                     <BottomBar>
-                        <ext:Toolbar runat="server">
+                        <ext:Toolbar ID="Toolbar1" runat="server">
                             <Items>
                                 <ext:ToolbarFill />
                                     <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
