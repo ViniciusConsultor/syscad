@@ -145,47 +145,44 @@
                                                         <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso/Curso','Curso')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
-                                            </Nodes>
-                                            <Nodes>
+                                                <ext:TreeNode Icon="UserAlert" Expanded="true" Text="Funcionario">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAba3','/Curso/Curso','Professor')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
                                                 <ext:TreeNode Icon="ApplicationDouble" Expanded="true" Text="Modulo">
                                                     <Listeners>
                                                         <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso/Curso','Curso')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
-                                            </Nodes>
-                                            <Nodes>
-                                                <ext:TreeNode Icon="User" Expanded="true" Text="Usuario">
-                                                    <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAba2','/Curso/Curso','Usuario')" />
-                                                    </Listeners>
-                                                </ext:TreeNode>
-                                            </Nodes>
-                                            <Nodes>
-                                                <ext:TreeNode Icon="Book" Expanded="true" Text="Professor">
+                                                <ext:TreeNode Icon="MoneyAdd" Expanded="true" Text="Taxas">
                                                     <Listeners>
                                                         <Click Handler="addTab(#{TabPanel1},'idAba3','/Curso/Curso','Professor')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                             </Nodes>
                                         </ext:TreeNode>
-                                        <ext:TreeNode Icon="Folder" Expanded="true" Text="Recepção">
+                                        <ext:TreeNode Icon="Folder" Expanded="true" Text="Coodenação">
                                             <Nodes>
-                                                <ext:TreeNode Icon="Money" Expanded="true" Text="Realizar Pagamento">
-                                                    
+                                                <ext:TreeNode Icon="ApplicationAdd" Expanded="true" Text="Abertura de Turma">                                 
                                                 </ext:TreeNode>
-                                            </Nodes>
-                                        </ext:TreeNode>
-                                         <ext:TreeNode Icon="Folder" Expanded="true" Text="Coodenação">
-                                            <Nodes>
-                                                <ext:TreeNode Icon="Clipboard" Expanded="true" Text="Abertura de Turma">
-                                         
+                                                <ext:TreeNode Icon="ApplicationDelete" Expanded="true" Text="Fechar Turma">                                         
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="MoneyDollar" Expanded="true" Text="Processar cobrança de mensalidade">                                         
                                                 </ext:TreeNode>
                                             </Nodes>
                                         </ext:TreeNode>
                                          <ext:TreeNode Icon="Folder" Expanded="true" Text="Diretoria">
                                             <Nodes>
+                                                <ext:TreeNode Icon="Accept" Expanded="true" Text="Autorizar abertura de turma">
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="Report" Expanded="true" Text="Relatorio de Ex-Alunos">
+                                                </ext:TreeNode>
                                                 <ext:TreeNode Icon="Report" Expanded="true" Text="Relatorio de Inadimplentes">
-                                                    
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="Report" Expanded="true" Text="Relatorio de cursos mais cursados">
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="Report" Expanded="true" Text="Relatorio de especialização dos professores">
                                                 </ext:TreeNode>
                                             </Nodes>
                                         </ext:TreeNode>
@@ -193,6 +190,20 @@
                                              <Nodes>
                                                 <ext:TreeNode Icon="BookAddresses" Expanded="true" Text="Lançar Nota/Falta">
                                                     
+                                                </ext:TreeNode>
+                                            </Nodes>
+                                        </ext:TreeNode>
+                                        <ext:TreeNode Icon="Folder" Expanded="true" Text="Recepção">
+                                            <Nodes>
+                                                <ext:TreeNode Icon="Clock" Expanded="true" Text="Consultar disponibilidade horário/turma">
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="BookOpen" Expanded="true" Text="Realizar Matrícula">
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="Money" Expanded="true" Text="Realizar Pagamento">
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="BookOpenMark" Expanded="true" Text="Realizar Pré-Matrícula">
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="Vcard" Expanded="true" Text="Vincular Aluno/Turma">
                                                 </ext:TreeNode>
                                             </Nodes>
                                         </ext:TreeNode>
