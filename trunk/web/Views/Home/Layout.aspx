@@ -138,7 +138,7 @@
                             <Root>
                                 <ext:TreeNode Text="SysCad" Expanded="true" Icon="Application">
                                     <Nodes>
-                                        <ext:TreeNode Icon="AsteriskOrange" Expanded="true" Text="Cadastros">
+                                        <ext:TreeNode Icon="Folder" Expanded="true" Text="Cadastro">
                                             <Nodes>
                                                 <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso">
                                                     <Listeners>
@@ -146,13 +146,55 @@
                                                     </Listeners>
                                                 </ext:TreeNode>
                                             </Nodes>
+                                            <Nodes>
+                                                <ext:TreeNode Icon="ApplicationDouble" Expanded="true" Text="Modulo">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso/Curso','Curso')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
+                                            </Nodes>
+                                            <Nodes>
+                                                <ext:TreeNode Icon="User" Expanded="true" Text="Usuario">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAba2','/Curso/Curso','Usuario')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
+                                            </Nodes>
+                                            <Nodes>
+                                                <ext:TreeNode Icon="Book" Expanded="true" Text="Professor">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAba3','/Curso/Curso','Professor')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
+                                            </Nodes>
                                         </ext:TreeNode>
-                                    </Nodes>
-                                    <Nodes>
-                                        <ext:TreeNode Icon="AsteriskYellow" Expanded="true" Text="Lancar Notas e Faltas">
-                                            <Listeners>
-                                                <Click Handler="addTab(#{TabPanel1},'idAba2','/Curso/Curso','Usuario')" />
-                                            </Listeners>
+                                        <ext:TreeNode Icon="Folder" Expanded="true" Text="Recepção">
+                                            <Nodes>
+                                                <ext:TreeNode Icon="Money" Expanded="true" Text="Realizar Pagamento">
+                                                    
+                                                </ext:TreeNode>
+                                            </Nodes>
+                                        </ext:TreeNode>
+                                         <ext:TreeNode Icon="Folder" Expanded="true" Text="Coodenação">
+                                            <Nodes>
+                                                <ext:TreeNode Icon="Clipboard" Expanded="true" Text="Abertura de Turma">
+                                         
+                                                </ext:TreeNode>
+                                            </Nodes>
+                                        </ext:TreeNode>
+                                         <ext:TreeNode Icon="Folder" Expanded="true" Text="Diretoria">
+                                            <Nodes>
+                                                <ext:TreeNode Icon="Report" Expanded="true" Text="Relatorio de Inadimplentes">
+                                                    
+                                                </ext:TreeNode>
+                                            </Nodes>
+                                        </ext:TreeNode>
+                                         <ext:TreeNode Icon="Folder" Expanded="true" Text="Professor">
+                                             <Nodes>
+                                                <ext:TreeNode Icon="BookAddresses" Expanded="true" Text="Lançar Nota/Falta">
+                                                    
+                                                </ext:TreeNode>
+                                            </Nodes>
                                         </ext:TreeNode>
                                     </Nodes>
                                 </ext:TreeNode>
