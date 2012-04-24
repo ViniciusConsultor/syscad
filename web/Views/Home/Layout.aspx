@@ -147,7 +147,7 @@
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="UserAlert" Expanded="true" Text="Funcionario">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAba3','/Curso/Curso','Professor')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaFuncionario','/Funcionario/Funcionario','Funcionario')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="ApplicationDouble" Expanded="true" Text="Modulo">
