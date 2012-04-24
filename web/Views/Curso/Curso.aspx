@@ -1,19 +1,7 @@
-﻿<%@ Page Language="C#"  Inherits="System.Web.Mvc.ViewPage<DataTable>" %>
-
-<%@ Import Namespace="System.Data" %>
-<%@ Import Namespace="System.Xml.Xsl" %>
-<%@ Import Namespace="System.Xml" %>
-<%@ Import Namespace="System.Linq" %>
+﻿<%@ Page Language="C#"  %>
 
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
-<script runat="server">
-  
-
-
-
-    
-</script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
