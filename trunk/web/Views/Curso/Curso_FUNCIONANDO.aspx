@@ -3,29 +3,121 @@
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head id="Head1" runat="server">
-    <title>Funcionário</title>
+    <title>Cursos</title>
+    <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        var template = '<span style="color:{0};">{1}</span>';
+
+        var change = function (value) {
+            return String.format(template, (value > 0) ? "green" : "red", value);
+        };
+
+        var pctChange = function (value) {
+            return String.format(template, (value > 0) ? "green" : "red", value + "%");
+        };
+
+        var exportData = function (format) {
+            FormatType.setValue(format);
+            var store = GridPanelEdicao.getStore();
+            store.directEventConfig.isUpload = true;
+
+
+            store.submitData();
+
+            store.directEventConfig.isUpload = false;
+        };
+
+        var submitValue = function (grid, hiddenFormat, format) {
+            hiddenFormat.setValue(format);
+            grid.submitData(false);
+        };
+
+
+        function modoEdicao() {
+            GridPanelEdicao.reload('yes');
+            GridPanelNormal.hide();
+            GridPanelEdicao.show();
+        };
+
+        function sairModoEdicao () {
+            GridPanelNormal.reload();
+            GridPanelNormal.show();
+            GridPanelEdicao.hide();
+        };
+
+
+        function excluirRegistro() {
+
+            var confirm = Ext.Msg.confirm('Confirmação','Tem certeza que deseja excluir o curso?', function (btn) {
+
+                if (btn == 'yes') {
+                    if (GridPanelNormal.getSelectionModel().hasSelection()) {
+
+                        GridPanelNormal.el.mask('Excluindo curso', 'x-mask-loading');
+
+                        var record = GridPanelNormal.getSelectionModel().getSelected();
+
+                        $.post('/Curso/Excluir', { idCurso: record.data.idCurso }, function () {
+                            GridPanelNormal.reload();
+                            GridPanelNormal.el.unmask();
+                        });
+
+                    }
+
+                }
+
+            });
+
+        };
+        
+        
+        function salvarAlteracoes() {
+
+            if (GridPanelEdicao.getSelectionModel().hasSelection()) {
+
+                GridPanelEdicao.el.mask('Alterando curso', 'x-mask-loading');
+
+                var record = GridPanelEdicao.getSelectionModel().getSelected();
+
+                $.post('/Curso/Editar', { idCurso: record.data.idCurso, Nome: record.data.nome, Descricao: record.data.descricao, Valor: record.data.valor }, function () {
+                    GridPanelEdicao.el.unmask();
+                });
+
+            }
+
+        };
+
+        function salvar() {
+            winNovo.hide();
+            GridPanelNormal.el.mask('Salvando', 'x-mask-loading');
+            $.post('/Curso/Save', $("#Form1").serialize(), function (valor) {
+                //Ext.Msg.alert('Curso salvo com sucesso!');
+                Ext.Msg.show({
+                    title: 'Sucesso',
+                    msg: 'Curso cadastrado com sucesso',
+                    buttons: Ext.Msg.OK
+                });
+                GridPanelNormal.reload();
+                GridPanelNormal.el.unmask();
+            });
+
+        };
+
+        function carregaGrid() {
+
+            GridPanelEdicao.hide();
+
+        }
+
+    </script>
 </head>
-
-<script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-    var metodoSalvar;
-    var metodoSalvarAlteracoes;
-    var metodoExcluir;
-    var metodoFindAll = "/Funcionario/FindAll";
-
-    var controller = '<%= ViewContext.RouteData.Values["Controller"] %>';
-    
-</script>
-<script src="../../Scripts/CRUD.js" type="text/javascript"></script>
-
 <body>
     <form id="Form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
@@ -35,10 +127,10 @@
         <ext:GridPanel 
             ID="GridPanelEdicao"
             runat="server" 
-            Title="Funcionários" 
+            Title="Cursos" 
             Width="1164" 
             Height="704"
-            OnRefreshData="/Funcionario/FindAll"
+            OnRefreshData="/Curso/FindAll"
             >
             <Listeners>
                 <BeforeRender Handler="carregaGrid()" />
@@ -48,16 +140,15 @@
                     ID="Store1" 
                     runat="server">
                     <Proxy>
-                        <ext:HttpProxy Json="true" Method="GET" Url="/Funcionario/FindAll" AutoDataBind="true" />
+                        <ext:HttpProxy Json="true" Method="GET" Url="/Curso/FindAll" AutoDataBind="true" />
                     </Proxy>
                     <Reader>
-                        <ext:JsonReader Root="funcionarios" TotalProperty="totalReg">
+                        <ext:JsonReader Root="cursos" TotalProperty="totalReg">
                             <Fields>
-                                <ext:RecordField Name="idFuncionario" Type="Int" />
-                                <ext:RecordField Name="idUsuario" Type="Int" />
-                                <ext:RecordField Name="idCargo" Type="Int" />
-                                <ext:RecordField Name="idPessoa" Type="Int" />
-                                <ext:RecordField Name="salario" Type="Float" />
+                                <ext:RecordField Name="idCurso" Type="Int" />
+                                <ext:RecordField Name="nome" Type="String" />
+                                <ext:RecordField Name="descricao" Type="String" />
+                                <ext:RecordField Name="valor" Type="Float" />
                             </Fields>
                         </ext:JsonReader>
                     </Reader>
@@ -65,26 +156,22 @@
             </Store>
             <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                 <Columns>
-                    <ext:Column ColumnID="idFuncionario" Header="Id" DataIndex="idFuncionario" Hidden="true" />
+                    <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
 
-                    <ext:Column ColumnID="idUsuario" Header="Usuario" DataIndex="idUsuario" AutoDataBind="true" >
+                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                         <Editor>
-                            <ext:TextField ID="txtUsuarioEditar" runat="server" />
+                            <ext:TextField ID="txtNomeEditar" runat="server" />
                         </Editor>
                     </ext:Column>
-                    <ext:Column ColumnID="idCargo" Header="Cargo" DataIndex="idCargo">
+                    <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
                         <Editor>
-                            <ext:TextField ID="txtCargoEditar" runat="server" />
+                            <ext:TextField ID="txtDescricaoEditar" runat="server" />
                         </Editor>
                     </ext:Column>
-                    <ext:Column ColumnID="idPessoa" Header="Pessoa" DataIndex="idPessoa">
+                    <ext:Column Header="valor" Width="75" DataIndex="valor">
+                        <Renderer Format="UsMoney" />
                         <Editor>
-                            <ext:TextField ID="txtPessoaEditar" runat="server" />
-                        </Editor>
-                    </ext:Column>
-                    <ext:Column ColumnID="salario" Header="Salario" DataIndex="salario">
-                        <Editor>
-                            <ext:TextField ID="txtSalarioEditar" runat="server" />
+                            <ext:TextField ID="txtValorEditar" runat="server" />
                         </Editor>
                     </ext:Column>
                 </Columns>
@@ -119,54 +206,40 @@
         <ext:GridPanel 
             ID="GridPanelNormal"
             runat="server" 
-            Title="Funcionários" 
+            Title="Cursos" 
             Width="1164" 
             Height="705"
-            OnRefreshData="/Funcionario/FindAll"
+            OnRefreshData="/Curso/FindAll"
             >
             <Store>
                 <ext:Store 
                     ID="Store2" 
                     runat="server">
                     <Proxy>
-                        <ext:HttpProxy Json="true" Method="GET" Url="/Funcionario/FindAll" AutoDataBind="true" />
+                        <ext:HttpProxy Json="true" Method="GET" Url="/Curso/FindAll" AutoDataBind="true" />
                     </Proxy>
                     <Reader>
-                        <ext:JsonReader Root="funcionarios" TotalProperty="totalReg">
+                        <ext:JsonReader Root="cursos" TotalProperty="totalReg">
                             <Fields>
-                                <ext:RecordField Name="idFuncionario" Type="Int" />
-                                <ext:RecordField Name="idUsuario" Type="Int" />
-                                <ext:RecordField Name="idCargo" Type="Int" />
-                                <ext:RecordField Name="idPessoa" Type="Int" />
-                                <ext:RecordField Name="salario" Type="Float" />
+                                <ext:RecordField Name="idCurso" Type="Int" />
+                                <ext:RecordField Name="nome" Type="String" />
+                                <ext:RecordField Name="descricao" Type="String" />
+                                <ext:RecordField Name="valor" Type="Float" />
                             </Fields>
                         </ext:JsonReader>
                     </Reader>
                 </ext:Store>
             </Store>
-            <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
+            <ColumnModel ID="ColumnModel2" runat="server">
                 <Columns>
-                    <ext:Column ColumnID="idFuncionario" Header="Id" DataIndex="idFuncionario" Hidden="true" />
+                    <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
 
-                    <ext:Column ColumnID="idUsuario" Header="Usuario" DataIndex="idUsuario" AutoDataBind="true" >
-                        <Editor>
-                            <ext:TextField ID="TextField1" runat="server" />
-                        </Editor>
+                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome">
                     </ext:Column>
-                    <ext:Column ColumnID="idCargo" Header="Cargo" DataIndex="idCargo">
-                        <Editor>
-                            <ext:TextField ID="TextField2" runat="server" />
-                        </Editor>
+                    <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
                     </ext:Column>
-                    <ext:Column ColumnID="idPessoa" Header="Pessoa" DataIndex="idPessoa">
-                        <Editor>
-                            <ext:TextField ID="TextField3" runat="server" />
-                        </Editor>
-                    </ext:Column>
-                    <ext:Column ColumnID="salario" Header="Salario" DataIndex="salario">
-                        <Editor>
-                            <ext:TextField ID="TextField4" runat="server" />
-                        </Editor>
+                    <ext:Column Header="valor" Width="75" DataIndex="valor">
+                        <Renderer Format="UsMoney" />
                     </ext:Column>
                 </Columns>
             </ColumnModel>
@@ -247,7 +320,7 @@
                     </Items>
 
                     <BottomBar>
-                        <ext:Toolbar ID="Toolbar3" runat="server">
+                        <ext:Toolbar runat="server">
                             <Items>
                                 <ext:ToolbarFill />
                                     <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
