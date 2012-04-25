@@ -25,13 +25,11 @@ namespace web.Controllers
         {
 
             IList<Curso> listaCurso = dbCurso.FindAll();
-            Curso curso = new Curso();
-            listaCurso.Add(curso);
-
             return Json(new { cursos = listaCurso, totalReg = listaCurso.Count }, JsonRequestBehavior.AllowGet);
+
         }
 
-        [HttpPost]
+        [HttpPost, DirectMethod]
         public JsonResult Save(string txtNome, string txtDescricao, string txtValor)
         {
             Curso curso = new Curso();
@@ -59,7 +57,41 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Editar(int idCurso, string Nome, string Descricao, string Valor)
+        public JsonResult Editar(int idCurso, string campo, string valor)
+        {
+
+            Curso curso = dbCurso.FindOne(cur => cur.idCurso == idCurso);
+
+            try
+            {
+                switch (campo)
+                {
+                    case "descricao":
+                        curso.descricao = valor;
+                        break;
+                    case "nome":
+                        curso.nome = valor;
+                        break;
+                    case "status":
+                        curso.status = Convert.ToInt32(valor);
+                        break;
+
+                }
+
+                dbCurso.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+        /*public JsonResult Editar(int idCurso, string Nome, string Descricao, string Valor)
         {
 
             Curso curso = dbCurso.FindOne(cur => cur.idCurso == idCurso);
@@ -81,7 +113,7 @@ namespace web.Controllers
 
             }
 
-        }
+        }*/
 
         [HttpPost]
         public JsonResult Excluir(int idCurso)

@@ -132,6 +132,7 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\CRUD.js" />
     <Content Include="Scripts\funcoes_ready.js" />
     <Content Include="Scripts\jquery-1.4.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.4.js" />
@@ -139,6 +140,7 @@
     <Content Include="Scripts\jquery-ui-1.8.18.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Views\Curso\Curso.aspx" />
+    <Content Include="Views\Curso\Curso_FUNCIONANDO.aspx" />
     <Content Include="Views\Funcionario\Funcionario.aspx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Home\Layout.aspx" />
