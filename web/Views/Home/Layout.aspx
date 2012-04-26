@@ -3,7 +3,7 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
-<% if (Session["login_usuario"] != null)
+<% if (Session["login_usuario"]  != null)
    { %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -152,7 +152,7 @@
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="ApplicationDouble" Expanded="true" Text="Modulo">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso/Curso','Curso')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAba1','/Modulo/Modulo','Modulo')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="MoneyAdd" Expanded="true" Text="Taxas">

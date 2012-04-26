@@ -17,12 +17,12 @@ namespace Persistence.Entity
             Modulos = new List<Modulo>();
             Turmas = new List<Turma>();
         }
-        public virtual int idCurso { get; set; }
-        public virtual ICollection<Modulo> Modulos { get; private set; } // muitos modulos
-        public virtual ICollection<Turma> Turmas { get; private set; } // muitas turmas
-        public virtual string nome { get; set; }
-        public virtual string descricao { get; set; }
-        public virtual decimal valor { get; set; }
-        public virtual int status { get; set; }
+        public int idCurso { get; set; }
+        public ICollection<Modulo> Modulos { get; private set; } // muitos modulos
+        public ICollection<Turma> Turmas { get; private set; } // muitas turmas
+        public string nome { get; set; }
+        public string descricao { get; set; }
+        public decimal valor { get; set; }
+        public int status { get; set; }
     }
 }

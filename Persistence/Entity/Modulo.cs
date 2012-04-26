@@ -6,6 +6,7 @@ using System.Data;
 using System.Text;
 using System.Data.Objects;
 using System.Data.EntityClient;
+using Persistence.DAO;
 
 namespace Persistence.Entity
 {
@@ -15,12 +16,12 @@ namespace Persistence.Entity
         {
             NotaFaltas = new List<NotaFalta>();
         }
-        public virtual int idModulo { get; set; }
-        public virtual int idCurso { get; set; }
-        public virtual string nome { get; set; }
-        public virtual int tempoDuracao { get; set; }
-        public virtual int statusModulo { get; set; }
-        public virtual Curso Curso { get; set; } //um cara só
-        public virtual ICollection<NotaFalta> NotaFaltas { get; private set; }
+        public int idModulo { get; set; }
+        public int idCurso { get; set; }
+        public string nome { get; set; }
+        public int tempoDuracao { get; set; }
+        public int statusModulo { get; set; }
+        public Curso Curso { get; set; } //um cara só
+        public ICollection<NotaFalta> NotaFaltas { get; set; }
     }
 }
