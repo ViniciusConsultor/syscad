@@ -29,7 +29,12 @@ namespace Persistence.DAO
 
         public Repositorio()
         {
-            this.context = new BDSysCadContext();
+            this.context = new BDSysCadContext(true);
+        }
+
+        public Repositorio(bool LazyEnable)
+        {
+            this.context = new BDSysCadContext(LazyEnable);
         }
 
         public virtual void Adicionar(T item)

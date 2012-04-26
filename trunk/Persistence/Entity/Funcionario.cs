@@ -15,7 +15,7 @@ namespace Persistence.Entity
         public virtual int idUsuario { get; set; }
         public virtual int idCargo { get; set; }
         public virtual int idPessoa { get; set; }
-        public virtual decimal salario { get; set; }
+        public virtual decimal? salario { get; set; }
         public virtual Cargo Cargo { get; set; }
         public virtual Pessoa Pessoa { get; set; }
         public virtual Usuario Usuario { get; set; }

@@ -1,10 +1,95 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
+﻿<%@ Page Language="C#"  %>
+
+<%@ Register Assembly="Ext.Net" Namespace="Ext.Net" TagPrefix="ext" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>Modulo</title>
+    <title>Modulos</title>
+    <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+       
+
+        function modoEdicao() {
+            GridPanelEdicao.reload('yes');
+            GridPanelNormal.hide();
+            GridPanelEdicao.show();
+        };
+
+        function sairModoEdicao() {
+            GridPanelNormal.reload();
+            GridPanelNormal.show();
+            GridPanelEdicao.hide();
+        };
+
+
+        function excluirRegistro() {
+
+            var confirm = Ext.Msg.confirm('Confirmação', 'Tem certeza que deseja excluir o modulo?', function (btn) {
+
+                if (btn == 'yes') {
+                    if (GridPanelNormal.getSelectionModel().hasSelection()) {
+
+                        GridPanelNormal.el.mask('Excluindo Modulo', 'x-mask-loading');
+
+                        var record = GridPanelNormal.getSelectionModel().getSelected();
+
+                        $.post('/Modulo/Excluir', { idModulo: record.data.idModulo }, function () {
+                            GridPanelNormal.reload();
+                            GridPanelNormal.el.unmask();
+                        });
+
+                    }
+
+                }
+
+            });
+
+        };
+
+
+        function salvarAlteracoes() {
+
+            if (GridPanelEdicao.getSelectionModel().hasSelection()) {
+
+                GridPanelEdicao.el.mask('Alterando modulo', 'x-mask-loading');
+
+                var record = GridPanelEdicao.getSelectionModel().getSelected();
+
+                $.post('/Modulo/Editar', { idModulo: record.data.idModulo, Nome: record.data.nome, tempoDuracao: record.data.tempoDuracao, statusModulo: record.data.statusModulo, idCurso: record.data.idCurso }, function () {
+                    GridPanelEdicao.el.unmask();
+                });
+
+            }
+
+        };
+
+        function salvar() {
+            winNovo.hide();
+            GridPanelNormal.el.mask('Salvando', 'x-mask-loading');
+            $.post('/Modulo/Save', $("#Form1").serialize(), function (valor) {
+                //Ext.Msg.alert('Modulo salvo com sucesso!');
+                Ext.Msg.show({
+                    title: 'Sucesso',
+                    msg: 'Modulo cadastrado com sucesso',
+                    buttons: Ext.Msg.OK
+                });
+                GridPanelNormal.reload();
+                GridPanelNormal.el.unmask();
+            });
+
+        };
+
+        function carregaGrid() {
+
+            GridPanelEdicao.hide();
+
+        }
+
+    </script>
 </head>
 <body>
     <form id="Form1" runat="server">
@@ -15,7 +100,7 @@
         <ext:GridPanel 
             ID="GridPanelEdicao"
             runat="server" 
-            Title="Cursos" 
+            Title="Editando Modulo" 
             Width="1164" 
             Height="704"
             OnRefreshData="/Modulo/FindAll"
@@ -33,10 +118,11 @@
                     <Reader>
                         <ext:JsonReader Root="modulos" TotalProperty="totalReg">
                             <Fields>
-                                <ext:RecordField Name="idCurso" Type="Int" />
+                                <ext:RecordField Name="idModulo" Type="Int" />
                                 <ext:RecordField Name="nome" Type="String" />
-                                <ext:RecordField Name="descricao" Type="String" />
-                                <ext:RecordField Name="valor" Type="Float" />
+                                <ext:RecordField Name="tempoDuracao" Type="Int" />
+                                <ext:RecordField Name="statusModulo" Type="Int" />
+                                <ext:RecordField Name="idCurso" Type="Int" />
                             </Fields>
                         </ext:JsonReader>
                     </Reader>
@@ -44,22 +130,21 @@
             </Store>
             <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                 <Columns>
-                    <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
+                    <ext:Column ColumnID="idModulo" Header="Id" DataIndex="idModulo" Hidden="true" />
 
                     <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                         <Editor>
                             <ext:TextField ID="txtNomeEditar" runat="server" />
                         </Editor>
                     </ext:Column>
-                    <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
+                    <ext:Column ColumnID="tempoDuracao" Header="Tempo de Duração" DataIndex="tempoDuracao">
                         <Editor>
-                            <ext:TextField ID="txtDescricaoEditar" runat="server" />
+                            <ext:TextField ID="txtTempoDuracaoEditar" runat="server" />
                         </Editor>
                     </ext:Column>
-                    <ext:Column Header="valor" Width="75" DataIndex="valor">
-                        <Renderer Format="UsMoney" />
+                    <ext:Column ColumnID="statusModulo" Header="StatusModulo" Width="75" DataIndex="statusModulo">
                         <Editor>
-                            <ext:TextField ID="txtValorEditar" runat="server" />
+                            <ext:TextField ID="txtStatusModuloEditar" runat="server" />
                         </Editor>
                     </ext:Column>
                 </Columns>
@@ -94,40 +179,46 @@
         <ext:GridPanel 
             ID="GridPanelNormal"
             runat="server" 
-            Title="Cursos" 
+            Title="Modulo" 
             Width="1164" 
             Height="705"
-            OnRefreshData="/Curso/FindAll"
+            OnRefreshData="/Modulo/FindAll"
             >
             <Store>
                 <ext:Store 
                     ID="Store2" 
                     runat="server">
                     <Proxy>
-                        <ext:HttpProxy Json="true" Method="GET" Url="/Curso/FindAll" AutoDataBind="true" />
+                        <ext:HttpProxy Json="true" Method="GET" Url="/Modulo/FindAll" AutoDataBind="true" />
                     </Proxy>
                     <Reader>
-                        <ext:JsonReader Root="cursos" TotalProperty="totalReg">
+                        <ext:JsonReader Root="modulos" TotalProperty="totalReg">
                             <Fields>
-                                <ext:RecordField Name="idCurso" Type="Int" />
+                                <ext:RecordField Name="idModulo" Type="Int" />
                                 <ext:RecordField Name="nome" Type="String" />
-                                <ext:RecordField Name="descricao" Type="String" />
-                                <ext:RecordField Name="valor" Type="Float" />
+                                <ext:RecordField Name="tempoDuracao" Type="Int" />
+                                <ext:RecordField Name="statusModulo" Type="Int" />
+                                <ext:RecordField Name="Curso.nome" Type="Int" Mapping="curso"/>
                             </Fields>
                         </ext:JsonReader>
                     </Reader>
                 </ext:Store>
             </Store>
-            <ColumnModel ID="ColumnModel2" runat="server">
+            <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                 <Columns>
-                    <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
+                    <ext:Column ColumnID="idModulo" Header="Id" DataIndex="idModulo"/>
 
-                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome">
+                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
+                       
                     </ext:Column>
-                    <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
+                    <ext:Column ColumnID="tempoDuracao" Header="Tempo de Duração" DataIndex="tempoDuracao">
+                       
                     </ext:Column>
-                    <ext:Column Header="valor" Width="75" DataIndex="valor">
-                        <Renderer Format="UsMoney" />
+                    <ext:Column ColumnID="statusModulo" Header="StatusModulo" Width="75" DataIndex="statusModulo">
+                        
+                    </ext:Column>
+                     <ext:Column ColumnID="curso" Header="Curso" Width="75" DataIndex="curso">
+                        
                     </ext:Column>
                 </Columns>
             </ColumnModel>
@@ -156,24 +247,6 @@
                         </ext:Button>
 
                         <ext:ToolbarFill ID="ToolbarFill2" runat="server" />
-
-                        <ext:Button ID="Button7" runat="server" Text="To XML" Icon="PageCode">
-                            <Listeners> 
-                                <Click Handler="submitValue(#{GridPanelEdicao}, #{FormatType}, 'xml');" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button8" runat="server" Text="To Excel" Icon="PageExcel">
-                            <Listeners>
-                                <Click Handler="exportData('xls');" />
-                            </Listeners>
-                        </ext:Button>
-                        
-                        <ext:Button ID="Button9" runat="server" Text="To CSV" Icon="PageAttach">
-                            <Listeners>
-                                <Click Handler="exportData('csv');" />
-                            </Listeners>
-                        </ext:Button>
                     </Items>
                 </ext:Toolbar>
             </TopBar>
@@ -182,18 +255,21 @@
             </BottomBar>
         </ext:GridPanel>
 
+
+            
+
         <ext:Window 
             ID="winNovo" 
             runat="server" 
             Icon="ApplicationAdd" 
-            Title="Novo Curso" 
+            Title="Novo Modulo" 
             Hidden="true"
             X="250"
             Y="100"
             Layout="FormLayout"
             AutoHeight="true"
             Frame="true"
-            Width="300"
+            Width="400"
             Modal="true"
             >
             <Items>
@@ -201,8 +277,35 @@
 
                     <Items>
                         <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" AutoFocus="true" />
-                        <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" InputType="Text" Width="175" AllowBlank="false" />                            
-                        <ext:NumberField ID="txtValor" runat="server" FieldLabel="Valor" Width="175" Vtype="numberrange" AllowBlank="false" />
+                        <ext:NumberField ID="txtTempoDuracao" runat="server" FieldLabel="Tempo de Duração" Width="175" Vtype="numberrange" AllowBlank="false" />                            
+                        <ext:NumberField ID="txtStatusModulo" runat="server" FieldLabel="Status" Width="175" Vtype="numberrange" AllowBlank="false" />
+                        <ext:ComboBox 
+                            ID="txtIdCurso"
+                            Mode="Remote"
+                            DisplayField="nome"
+                            ValueField="idCurso"
+                            runat="server"
+                            TypeAhead="true"
+                            ForceSelection="true"
+                            TriggerAction="All"
+                             >
+                         <Store>
+                             <ext:Store ID="StoreCurso" runat="server">
+                                <Proxy>
+                                    <ext:HttpProxy Url="/Curso/FindAll" Json="true" Method="GET" AutoDataBind="true" />
+                                </Proxy>
+                                <Reader>
+                                    <ext:JsonReader Root="cursos">
+                                        <Fields>
+                                            <ext:RecordField Name="idCurso" Type="Int" Mapping="idCurso" />
+                                            <ext:RecordField Name="nome" Type="String"  Mapping="nome"/>
+                                        </Fields>
+                                    </ext:JsonReader>
+                                </Reader>
+                            </ext:Store>
+                         </Store>    
+                         </ext:ComboBox>
+                        
                     </Items>
 
                     <BottomBar>

@@ -28,11 +28,11 @@ namespace Persistence.DAO
         private ObjectSet<Turma> _turma;
         private ObjectSet<Usuario> _usuario;
 
-        public BDSysCadContext()
+        public BDSysCadContext(bool LazyLoadingEnable)
             : base("name=BDSysCadEntities", "BDSysCadEntities")
         {
             base.ContextOptions.ProxyCreationEnabled = false;
-            base.ContextOptions.LazyLoadingEnabled = true;
+            base.ContextOptions.LazyLoadingEnabled = LazyLoadingEnable;
             _aluno = base.CreateObjectSet<Aluno>();
             _cargo = base.CreateObjectSet<Cargo>();
             _cobranca = base.CreateObjectSet<Cobranca>();
