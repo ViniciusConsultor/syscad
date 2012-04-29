@@ -22,6 +22,11 @@ namespace web.Controllers
 
             IList<Modulo> listaModulo = dbModulo.FindAll();
 
+            foreach (Modulo m in listaModulo)
+            {
+                m.Curso = new Repositorio<Curso>().FindOne(x => x.idCurso == m.idCurso);
+            }
+
             return Json(new { modulos = listaModulo, totalReg = listaModulo.Count }, JsonRequestBehavior.AllowGet);
         }
 
@@ -32,7 +37,8 @@ namespace web.Controllers
             modulo.nome = txtNome;
             modulo.tempoDuracao = txtTempoDuracao;
             modulo.statusModulo = txtStatusModulo;
-            modulo.Curso = new Repositorio<Curso>().FindOne(x => x.idCurso == txtIdCurso_Value);
+           //modulo.Curso = new Repositorio<Curso>().FindOne(x => x.idCurso == txtIdCurso_Value);
+            modulo.idCurso = txtIdCurso_Value;
 
             try
             {

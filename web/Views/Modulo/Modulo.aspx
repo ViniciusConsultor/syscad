@@ -198,7 +198,7 @@
                                 <ext:RecordField Name="nome" Type="String" />
                                 <ext:RecordField Name="tempoDuracao" Type="Int" />
                                 <ext:RecordField Name="statusModulo" Type="Int" />
-                                <ext:RecordField Name="Curso.nome" Type="Int" Mapping="curso"/>
+                                <ext:RecordField Name="Curso.nome" Type="String"/>
                             </Fields>
                         </ext:JsonReader>
                     </Reader>
@@ -206,18 +206,18 @@
             </Store>
             <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                 <Columns>
-                    <ext:Column ColumnID="idModulo" Header="Id" DataIndex="idModulo"/>
+                    <ext:Column ColumnID="idModulo" Header="Id" DataIndex="idModulo" Width="50"/>
 
-                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
+                    <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" Width="150">
                        
                     </ext:Column>
-                    <ext:Column ColumnID="tempoDuracao" Header="Tempo de Duração" DataIndex="tempoDuracao">
+                    <ext:Column ColumnID="tempoDuracao" Header="Duração" DataIndex="tempoDuracao" Width="150">
                        
                     </ext:Column>
-                    <ext:Column ColumnID="statusModulo" Header="StatusModulo" Width="75" DataIndex="statusModulo">
+                    <ext:Column ColumnID="statusModulo" Header="Status" DataIndex="statusModulo" Width="150">
                         
                     </ext:Column>
-                     <ext:Column ColumnID="curso" Header="Curso" Width="75" DataIndex="curso">
+                     <ext:Column ColumnID="curso" Header="Curso" DataIndex="Curso.nome" Width="150">
                         
                     </ext:Column>
                 </Columns>
@@ -277,7 +277,7 @@
 
                     <Items>
                         <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" AutoFocus="true" />
-                        <ext:NumberField ID="txtTempoDuracao" runat="server" FieldLabel="Tempo de Duração" Width="175" Vtype="numberrange" AllowBlank="false" />                            
+                        <ext:NumberField ID="txtTempoDuracao" runat="server" FieldLabel="Duração" Width="175" Vtype="numberrange" AllowBlank="false"   />                            
                         <ext:NumberField ID="txtStatusModulo" runat="server" FieldLabel="Status" Width="175" Vtype="numberrange" AllowBlank="false" />
                         <ext:ComboBox 
                             ID="txtIdCurso"
