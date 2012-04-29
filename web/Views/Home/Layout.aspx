@@ -60,7 +60,7 @@
                         showMask: true,
                         url: url,
                         mode: "iframe",
-                        maskMsg: "Loading " + url + "..."
+                        maskMsg: "Carregando " + title + "..."
                     }
                 });
 
