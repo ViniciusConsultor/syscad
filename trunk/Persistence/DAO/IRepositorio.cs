@@ -13,10 +13,10 @@ namespace Persistence.DAO
     {
         void Adicionar(T item);
         void Remover(T item);
-        //void Remover(Object id);
-        //void Atualizar(T item);
+        void Atualizar(T item);
         T FindOne(Expression<Func<T, bool>> where);
         List<T> FindAll();
+        List<T> FindAll(Expression<Func<T, bool>> where);
         void SaveChanges();
     }
 }

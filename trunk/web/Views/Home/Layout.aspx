@@ -164,9 +164,7 @@
                                         </ext:TreeNode>
                                         <ext:TreeNode Icon="Folder" Expanded="true" Text="Coodenação">
                                             <Nodes>
-                                                <ext:TreeNode Icon="ApplicationAdd" Expanded="true" Text="Abertura de Turma">                                 
-                                                </ext:TreeNode>
-                                                <ext:TreeNode Icon="ApplicationDelete" Expanded="true" Text="Fechar Turma">                                         
+                                                <ext:TreeNode Icon="ApplicationAdd" Expanded="true" Text="Abertura de Turma">                               
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="MoneyDollar" Expanded="true" Text="Processar cobrança de mensalidade">                                         
                                                 </ext:TreeNode>
@@ -189,7 +187,9 @@
                                          <ext:TreeNode Icon="Folder" Expanded="true" Text="Professor">
                                              <Nodes>
                                                 <ext:TreeNode Icon="BookAddresses" Expanded="true" Text="Lançar Nota/Falta">
-                                                    
+                                                     <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAba3','/Professor/lancarNotaFalta','Lançar Nota/Falta')" />
+                                                    </Listeners>
                                                 </ext:TreeNode>
                                             </Nodes>
                                         </ext:TreeNode>

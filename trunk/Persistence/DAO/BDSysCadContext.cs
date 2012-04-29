@@ -28,11 +28,11 @@ namespace Persistence.DAO
         private ObjectSet<Turma> _turma;
         private ObjectSet<Usuario> _usuario;
 
-        public BDSysCadContext(bool LazyLoadingEnable)
+        public BDSysCadContext()
             : base("name=BDSysCadEntities", "BDSysCadEntities")
         {
             base.ContextOptions.ProxyCreationEnabled = false;
-            base.ContextOptions.LazyLoadingEnabled = LazyLoadingEnable;
+            base.ContextOptions.LazyLoadingEnabled = false;
             _aluno = base.CreateObjectSet<Aluno>();
             _cargo = base.CreateObjectSet<Cargo>();
             _cobranca = base.CreateObjectSet<Cobranca>();
@@ -58,6 +58,10 @@ namespace Persistence.DAO
             {
                 return _aluno;
             }
+            set
+            {
+                _aluno = value;
+            }
         }
 
         public ObjectSet<Cargo> Cargo
@@ -65,6 +69,10 @@ namespace Persistence.DAO
             get
             {
                 return _cargo;
+            }
+            set
+            {
+                _cargo = value;
             }
         }
 
@@ -74,6 +82,10 @@ namespace Persistence.DAO
             {
                 return _cobranca;
             }
+            set
+            {
+                _cobranca = value;
+            }
         }
 
         public ObjectSet<Curso> Curso
@@ -81,6 +93,10 @@ namespace Persistence.DAO
             get
             {
                 return _curso;
+            }
+            set
+            {
+                _curso = value;
             }
         }
 
@@ -90,6 +106,10 @@ namespace Persistence.DAO
             {
                 return _endereco;
             }
+            set
+            {
+                _endereco = value;
+            }
         }
 
         public ObjectSet<Funcionario> Funcionario
@@ -97,6 +117,10 @@ namespace Persistence.DAO
             get
             {
                 return _funcionario;
+            }
+            set
+            {
+                _funcionario = value;
             }
         }
 
@@ -106,6 +130,10 @@ namespace Persistence.DAO
             {
                 return _matricula;
             }
+            set
+            {
+                _matricula = value;
+            }
         }
 
         public ObjectSet<MatriculaTurma> MatriculaTurma
@@ -113,6 +141,10 @@ namespace Persistence.DAO
             get
             {
                 return _matriculaTurma;
+            }
+            set
+            {
+                _matriculaTurma = value;
             }
         }
 
@@ -122,6 +154,10 @@ namespace Persistence.DAO
             {
                 return _modulo;
             }
+            set
+            {
+                _modulo = value;
+            }
         }
 
         public ObjectSet<NotaFalta> NotaFalta
@@ -129,6 +165,10 @@ namespace Persistence.DAO
             get
             {
                 return _notaFalta;
+            }
+            set
+            {
+                _notaFalta = value;
             }
         }
 
@@ -138,6 +178,10 @@ namespace Persistence.DAO
             {
                 return _perfil;
             }
+            set
+            {
+                _perfil = value;
+            }
         }
 
         public ObjectSet<Pessoa> Pessoa
@@ -145,6 +189,10 @@ namespace Persistence.DAO
             get
             {
                 return _pessoa;
+            }
+            set
+            {
+                _pessoa = value;
             }
         }
 
@@ -154,6 +202,10 @@ namespace Persistence.DAO
             {
                 return _taxa;
             }
+            set
+            {
+                _taxa = value;
+            }
         }
 
         public ObjectSet<TipoEndereco> TipoEndereco
@@ -161,6 +213,10 @@ namespace Persistence.DAO
             get
             {
                 return _tipoEndereco;
+            }
+            set
+            {
+                _tipoEndereco = value;
             }
         }
 
@@ -170,6 +226,10 @@ namespace Persistence.DAO
             {
                 return _turma;
             }
+            set
+            {
+                _turma = value;
+            }
         }
 
 
@@ -178,6 +238,10 @@ namespace Persistence.DAO
             get
             {
                 return _usuario;
+            }
+            set
+            {
+                _usuario = value;
             }
         }
 

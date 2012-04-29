@@ -8,6 +8,8 @@ using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using Persistence.Entity;
 using System.Linq.Expressions;
+using System.Data.Metadata.Edm;
+using System.Data.Linq;
 
 namespace Persistence.DAO
 {
@@ -21,7 +23,7 @@ namespace Persistence.DAO
             get
             {
                 if (String.IsNullOrEmpty(entitySetName))
-                    entitySetName = GetEntitySetName();
+                    entitySetName = GetEntitySetName(typeof(T).Name);
 
                 return entitySetName;
             }
@@ -29,12 +31,16 @@ namespace Persistence.DAO
 
         public Repositorio()
         {
-            this.context = new BDSysCadContext(true);
+            this.context = new BDSysCadContext();
         }
 
-        public Repositorio(bool LazyEnable)
+        public BDSysCadContext Context
         {
-            this.context = new BDSysCadContext(LazyEnable);
+            get
+            {
+                return context;
+            }
+
         }
 
         public virtual void Adicionar(T item)
@@ -85,7 +91,12 @@ namespace Persistence.DAO
 
         public virtual List<T> FindAll()
         {
-            return context.CreateQuery<T>(EntitySetName).ToList<T>();
+           return context.CreateQuery<T>(EntitySetName).ToList<T>();
+        }
+
+        public virtual List<T> FindAll(Expression<Func<T, bool>> where)
+        {
+            return context.CreateQuery<T>(EntitySetName).Where(where).ToList<T>();
         }
 
         private string GetEntitySetName()
@@ -96,6 +107,16 @@ namespace Persistence.DAO
         public void SaveChanges()
         {
             context.SaveChanges();
+        }
+
+        private string GetEntitySetName(string entityTypeName)
+        {
+            var container = context.MetadataWorkspace.GetEntityContainer(context.DefaultContainerName,DataSpace.CSpace);
+            string entitySetName = (from meta in container.BaseEntitySets
+                                    where meta.ElementType.Name == entityTypeName
+                                    select meta.Name).FirstOrDefault();
+
+            return entitySetName;
         }
     }
 }
