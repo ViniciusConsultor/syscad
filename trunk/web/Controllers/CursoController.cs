@@ -29,7 +29,7 @@ namespace web.Controllers
 
         }
 
-        [HttpPost, DirectMethod]
+        [HttpPost]
         public JsonResult Save(string txtNome, string txtDescricao, string txtValor)
         {
             Curso curso = new Curso();
@@ -91,35 +91,12 @@ namespace web.Controllers
             }
 
         }
-        /*public JsonResult Editar(int idCurso, string Nome, string Descricao, string Valor)
-        {
-
-            Curso curso = dbCurso.FindOne(cur => cur.idCurso == idCurso);
-
-            try
-            {
-                curso.nome = Nome;
-                curso.descricao = Descricao;
-                curso.valor = Convert.ToDecimal(Valor);
-                dbCurso.SaveChanges();
-
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-
-            }
-            catch (Exception e)
-            {
-
-                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
-
-            }
-
-        }*/
 
         [HttpPost]
-        public JsonResult Excluir(int idCurso)
+        public JsonResult Excluir(int id)
         {
 
-            Curso curso = dbCurso.FindOne(cur => cur.idCurso == idCurso);
+            Curso curso = dbCurso.FindOne(cur => cur.idCurso == id);
 
             try
             {
