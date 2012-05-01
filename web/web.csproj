@@ -83,6 +83,7 @@
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
     <Compile Include="Controllers\ProfessorController.cs" />
+    <Compile Include="Controllers\TaxaController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -150,6 +151,7 @@
     <Content Include="Views\Home\Layout.aspx" />
     <Content Include="Views\Modulo\Modulo.aspx" />
     <Content Include="Views\Professor\LancarNotaFalta.aspx" />
+    <Content Include="Views\Taxa\Taxa.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
