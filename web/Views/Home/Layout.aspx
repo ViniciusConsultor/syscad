@@ -142,7 +142,7 @@
                                             <Nodes>
                                                 <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAba1','/Curso/Curso','Curso')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaCurso','/Curso/Curso','Curso')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="UserAlert" Expanded="true" Text="Funcionario">
@@ -152,12 +152,12 @@
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="ApplicationDouble" Expanded="true" Text="Modulo">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAba1','/Modulo/Modulo','Modulo')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaModulo','/Modulo/Modulo','Modulo')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="MoneyAdd" Expanded="true" Text="Taxas">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAba3','/Curso/Curso','Professor')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaProfessor','/Curso/Curso','Professor')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                             </Nodes>
