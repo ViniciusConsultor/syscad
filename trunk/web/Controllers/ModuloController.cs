@@ -31,14 +31,13 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save(string txtNome, int txtTempoDuracao, int txtStatusModulo, int txtIdCurso_Value)
+        public JsonResult Save(string txtNome, int txtTempoDuracao, int txtStatusModulo, int cmbCurso_Value)
         {
             Modulo modulo = new Modulo();
             modulo.nome = txtNome;
             modulo.tempoDuracao = txtTempoDuracao;
             modulo.statusModulo = txtStatusModulo;
-           //modulo.Curso = new Repositorio<Curso>().FindOne(x => x.idCurso == txtIdCurso_Value);
-            modulo.idCurso = txtIdCurso_Value;
+            modulo.idCurso = cmbCurso_Value;
 
             try
             {
@@ -60,18 +59,37 @@ namespace web.Controllers
 
 
         [HttpPost]
-        public JsonResult Editar(int idModulo, string Nome, int tempoDuracao, int statusModulo, int idCurso)
+        public JsonResult Editar(int id, string campo, string valor)
         {
 
-            Modulo modulo = dbModulo.FindOne(x => x.idModulo == idModulo);
+            Modulo modulo = dbModulo.FindOne(mod => mod.idModulo == id);
 
             try
             {
-                modulo.idModulo = idModulo;
-                modulo.nome = Nome;
-                modulo.tempoDuracao = tempoDuracao;
-                modulo.statusModulo = statusModulo;
-                modulo.idCurso = idCurso;
+
+                switch (campo)
+                {
+                    case "nome":
+
+                        modulo.nome = valor;
+                        break;
+
+                    case "tempoDuracao":
+
+                        modulo.tempoDuracao = Convert.ToInt32(valor);
+                        break;
+
+                    case "statusModulo":
+                        modulo.statusModulo = Convert.ToInt32(valor);
+                        break;
+
+                    case "Curso.nome":
+                        modulo.idCurso = Convert.ToInt32(valor);
+                        break;
+
+                }
+
+                dbModulo.Atualizar(modulo);
                 dbModulo.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
@@ -87,10 +105,10 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Excluir(int idModulo)
+        public JsonResult Excluir(int id)
         {
 
-            Modulo modulo = dbModulo.FindOne(x => x.idModulo == idModulo);
+            Modulo modulo = dbModulo.FindOne(x => x.idModulo == id);
 
             try
             {

@@ -5,10 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using Persistence.DAO;
 using Persistence.Entity;
-using System.Data;
-using Ext.Net;
-using System.Xml;
-using System.Xml.Xsl;
 
 namespace web.Controllers
 {
@@ -57,10 +53,10 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Editar(int idCurso, string campo, string valor)
+        public JsonResult Editar(int id, string campo, string valor)
         {
 
-            Curso curso = dbCurso.FindOne(cur => cur.idCurso == idCurso);
+            Curso curso = dbCurso.FindOne(cur => cur.idCurso == id);
 
             try
             {
@@ -78,6 +74,7 @@ namespace web.Controllers
 
                 }
 
+                dbCurso.Atualizar(curso);
                 dbCurso.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
@@ -119,6 +116,15 @@ namespace web.Controllers
         public ActionResult Curso()
         {
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult Search(string limit, string query, string start)
+        {
+
+            IList<Curso> listaCurso = dbCurso.FindAll().Where(x => x.nome.ToLower().Contains(query.ToLower())).ToList();
+            return Json(new { cursos = listaCurso, totalReg = listaCurso.Count }, JsonRequestBehavior.AllowGet);
+
         }
 
     }
