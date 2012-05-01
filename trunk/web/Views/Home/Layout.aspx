@@ -157,7 +157,7 @@
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="MoneyAdd" Expanded="true" Text="Taxas">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAbaProfessor','/Curso/Curso','Professor')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaTaxas','/Taxa/Taxa','Taxas')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                             </Nodes>
