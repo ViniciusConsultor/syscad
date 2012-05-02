@@ -101,7 +101,7 @@
 
     <ext:ResourceManager ID="ResourceManager1" runat="server" />
 
-    <ext:Panel ID="Panel2" runat="server" Height="735">
+    <ext:Panel ID="Panel2" runat="server" Height="600">
         <Items>
             <ext:BorderLayout ID="BorderLayout1" runat="server">
                 <West Collapsible="true" MinWidth="175" Split="true">
