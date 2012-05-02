@@ -8,10 +8,11 @@ namespace web.Models
     public class AlunoViewData
     {
         public int IdAluno { get; set; }
+        public int IdTurma { get; set; }
+        public int IdModulo { get; set; }
         public string Nome { get; set; }
-        public int Status { get; set; }
-        public string Turma { get; set; }
-        public int Nota { get; set; }
-        public int Faltas { get; set; }
+        public decimal? Nota1 { get; set; }
+        public decimal? Nota2 { get; set; }
+        public int? Faltas { get; set; }
     }
 }
