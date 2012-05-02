@@ -84,32 +84,41 @@
 
 <body>
 
-    <div id="bar_login">
-        <div id="left_inside_bar_login">
-            <ul>
-                <li><img src="../../Content/imagens/logo_syscad_peq.png" alt="SysCad" /></li>
-                <li>SysCad</li>
-                <li><img src="../../Content/imagens/msg_user.png" alt="Mensagem" /></li>
-            </ul>
-        </div>
-        <div id="right_inside_bar_login">
-            <ul>
-                <li id="user_perfil_bar" exibindo="false">Olá, <%= Session["login_usuario"]%> <img src="../../Content/imagens/user_perfil.jpg" alt="Usuario" /></li>
-            </ul>
-        </div>
-    </div>
+
 
     <ext:ResourceManager ID="ResourceManager1" runat="server" />
 
-    <ext:Panel ID="Panel2" runat="server" Height="600">
+    <ext:Viewport ID="ViewPort1" runat="server">
         <Items>
             <ext:BorderLayout ID="BorderLayout1" runat="server">
+                <North>
+                    <ext:Panel 
+                        ID="pnlInformation" 
+                        runat="server">
+                        <Content>
+                            <div id="bar_login">
+                                <div id="left_inside_bar_login">
+                                    <ul>
+                                        <li><img src="../../Content/imagens/logo_syscad_peq.png" alt="SysCad" /></li>
+                                        <li>SysCad</li>
+                                        <li><img src="../../Content/imagens/msg_user.png" alt="Mensagem" /></li>
+                                    </ul>
+                                </div>
+                                <div id="right_inside_bar_login">
+                                    <ul>
+                                        <li id="user_perfil_bar" exibindo="false">Olá, <%= Session["login_usuario"]%> <img src="../../Content/imagens/user_perfil.jpg" alt="Usuario" /></li>
+                                    </ul>
+                                </div>
+                            </div>                            
+                        </Content>
+                    </ext:Panel>
+                </North>
                 <West Collapsible="true" MinWidth="175" Split="true">
                        <ext:TreePanel 
                             ID="TreePanel1"
                             runat="server" 
                             Height="300" 
-                            Width="250"
+                            Width="290"
                             UseArrows="true"
                             AutoScroll="true"
                             Animate="true"
@@ -210,6 +219,9 @@
                                                 <ext:TreeNode Icon="BookOpen" Expanded="true" Text="Realizar Matrícula">
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="Money" Expanded="true" Text="Realizar Pagamento">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaPagamento','/Recepcao/RealizarPagamento','Realizar Pagamento')" />
+                                                    </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="BookOpenMark" Expanded="true" Text="Realizar Pré-Matrícula">
                                                 </ext:TreeNode>
@@ -294,8 +306,7 @@
                 </Center>
             </ext:BorderLayout>
         </Items>
-    </ext:Panel>
-       
+   </ext:Viewport>
 </body>
 </html>
 
