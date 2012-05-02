@@ -140,6 +140,11 @@
                                     <Nodes>
                                         <ext:TreeNode Icon="Folder" Expanded="true" Text="Cadastro">
                                             <Nodes>
+                                                <ext:TreeNode Icon="UserSuitBlack" Expanded="true" Text="Cargo">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaCargo','/Cargo/Cargo','Cargo')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
                                                 <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso">
                                                     <Listeners>
                                                         <Click Handler="addTab(#{TabPanel1},'idAbaCurso','/Curso/Curso','Curso')" />
@@ -153,6 +158,11 @@
                                                 <ext:TreeNode Icon="ApplicationDouble" Expanded="true" Text="Modulo">
                                                     <Listeners>
                                                         <Click Handler="addTab(#{TabPanel1},'idAbaModulo','/Modulo/Modulo','Modulo')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="User" Expanded="true" Text="Pessoa">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaPessoa','/Pessoa/Pessoa','Pessoa')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="MoneyAdd" Expanded="true" Text="Taxas">
