@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Controllers\CargoController.cs" />
     <Compile Include="Controllers\CursoController.cs" />
+    <Compile Include="Controllers\EnderecoController.cs" />
     <Compile Include="Controllers\FuncionarioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ModuloController.cs" />
@@ -148,6 +149,7 @@
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Views\Cargo\Cargo.aspx" />
     <Content Include="Views\Curso\Curso.aspx" />
+    <Content Include="Views\Endereco\Endereco.aspx" />
     <Content Include="Views\Funcionario\Funcionario.aspx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Home\Layout.aspx" />
