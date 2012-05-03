@@ -46,7 +46,7 @@
                             <ext:RecordField Name="email" Type="String" />
                             <ext:RecordField Name="telefone" Type="String" />
                             <ext:RecordField Name="celular" Type="String" />
-                            <ext:RecordField Name="dataNascimento" Type="Date" DateFormat="d-M-Y" />
+                            <ext:RecordField Name="dataNascimento" Type="Date" />
                             <ext:RecordField Name="sexo" Type="Int" />
                         </Fields>
                     </ext:JsonReader>
@@ -86,9 +86,9 @@
                             <ext:TextField ID="txtCelularEditar" runat="server" />
                         </Editor>
                     </ext:Column>
-                    <ext:DateColumn Header="Data de Nascimento" Width="75" DataIndex="dataNascimento" >
+
+                    <ext:DateColumn Header="Data de Nascimento" DataIndex="dataNascimento" />
                         
-                    </ext:DateColumn>
                     <ext:Column Header="Sexo" Width="75" DataIndex="sexo">
                         <Editor>
                             <ext:TextField ID="txtSexoEditar" runat="server" />
