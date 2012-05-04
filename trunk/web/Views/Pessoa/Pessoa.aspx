@@ -15,6 +15,11 @@
     //Variaveis GENERICAS
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
 
+    var formatDate = function (value) {
+       return String.format("Teste {0}", (value > 0) ? "green" : "red", value + "%");
+        //alert(value);
+    };
+
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 
@@ -66,7 +71,7 @@
                                                     <ext:RecordField Name="email" Type="String" />
                                                     <ext:RecordField Name="telefone" Type="String" />
                                                     <ext:RecordField Name="celular" Type="String" />
-                                                    <ext:RecordField Name="dataNascimento" Type="Date" />
+                                                    <ext:RecordField Name="dataNascimento" Type="Date"  />
                                                     <ext:RecordField Name="sexo" Type="Int" />
                                                 </Fields>
                                             </ext:JsonReader>
@@ -107,12 +112,13 @@
                                                 </Editor>
                                             </ext:Column>
 
-                                            <ext:DateColumn Header="Data de Nascimento" DataIndex="dataNascimento" />
+                                            <ext:DateColumn DataIndex="dataNascimento" Header="Data de Nascimento" Width="200" />
                         
                                             <ext:Column Header="Sexo" DataIndex="sexo" Width="150">
                                                 <Editor>
                                                     <ext:TextField ID="txtSexoEditar" runat="server" />
                                                 </Editor>
+                                                
                                             </ext:Column>
                                         </Columns>
                                     </ColumnModel>

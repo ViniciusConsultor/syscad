@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using Persistence.DAO;
 using Persistence.Entity;
+using System.Data;
+using Ext.Net;
+using System.Web.Services;
 
 namespace web.Controllers
 {
@@ -33,12 +36,13 @@ namespace web.Controllers
 
         }
 
-        [HttpGet]
-        public JsonResult FindAll()
-        {
 
-            IList<Pessoa> listaPessoa = dbPessoa.FindAll();
-            return Json(new { pessoas = listaPessoa, totalReg = listaPessoa.Count }, JsonRequestBehavior.AllowGet);
+        public string FindAll()
+        {
+           
+            List<Pessoa> listaPessoa = dbPessoa.FindAll();
+            return "{pessoas:"+ JSON.Serialize(listaPessoa) +", totalReg:"+ listaPessoa.Count() +"}";
+            //return Json(new { pessoas = lstPessoa, totalReg = listaPessoa.Count }, JsonRequestBehavior.AllowGet);
 
         }
 
