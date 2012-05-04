@@ -220,7 +220,7 @@
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="Money" Expanded="true" Text="Realizar Pagamento">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAbaPagamento','/Recepcao/RealizarPagamento','Realizar Pagamento')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaPagamento','/Pagamento/RealizarPagamento','Realizar Pagamento')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="BookOpenMark" Expanded="true" Text="Realizar Pré-Matrícula">

@@ -32,7 +32,7 @@ namespace Persistence.DAO
             : base("name=BDSysCadEntities", "BDSysCadEntities")
         {
             base.ContextOptions.ProxyCreationEnabled = false;
-            base.ContextOptions.LazyLoadingEnabled = false;
+            base.ContextOptions.LazyLoadingEnabled = true;
             _aluno = base.CreateObjectSet<Aluno>();
             _cargo = base.CreateObjectSet<Cargo>();
             _cobranca = base.CreateObjectSet<Cobranca>();

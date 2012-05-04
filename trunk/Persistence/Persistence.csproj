@@ -71,6 +71,7 @@
     <Compile Include="Entity\Cobranca.cs" />
     <Compile Include="Entity\Aluno.cs" />
     <Compile Include="Entity\Cargo.cs" />
+    <Compile Include="Entity\Responsavel.cs" />
     <Compile Include="Entity\Taxa.cs" />
     <Compile Include="Entity\TipoEndereco.cs" />
     <Compile Include="Entity\Endereco.cs" />

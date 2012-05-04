@@ -16,6 +16,7 @@ namespace Persistence.Entity
             Alunos = new List<Aluno>();
             Enderecos = new List<Endereco>();
             Funcionarios = new List<Funcionario>();
+            Responsaveis = new List<Responsavel>();
         }
 
         public virtual int idPessoa { get; set; }
@@ -29,6 +30,7 @@ namespace Persistence.Entity
         public virtual ICollection<Aluno> Alunos { get; private set; }
         public virtual ICollection<Endereco> Enderecos { get; private set; }
         public virtual ICollection<Funcionario> Funcionarios { get; private set; }
+        public virtual ICollection<Responsavel> Responsaveis { get; set; }
         
     }
 }
