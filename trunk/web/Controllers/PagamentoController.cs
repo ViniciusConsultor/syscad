@@ -28,15 +28,16 @@ namespace web.Controllers
         {
             int matricula;
             Matricula mat = new Matricula();
-            Pessoa p = new Pessoa();
             if (int.TryParse(query, out matricula))
             {
                 mat = dbMatricula.FindOne(x => x.idMatricula == matricula);
             }
 
-            List<Pessoa> listaAluno = (from a in dbAluno.Context.Aluno where a.Pessoa.nome.ToLower().Contains(query.ToLower()) select a.Pessoa).ToList();
-                //dbAluno.Context.Pessoa.Include("Alunos").Where(x => x.nome.ToLower().Contains(query.ToLower())).ToList();
-            //dbAluno.FindAll().Where(x => x.Pessoa.Equals(p) || x.Matriculas.Contains(mat)).ToList();
+            List<Aluno> listaAluno = (from a in dbAluno.Context.Aluno where a.Pessoa.nome.ToLower().Contains(query.ToLower()) || a.Matriculas.FirstOrDefault().idMatricula == matricula select a).ToList();
+            foreach(Aluno a in listaAluno)
+            {
+                a.Pessoa = (from p in dbPessoa.Context.Pessoa where p.Alunos.FirstOrDefault().idAluno == a.idAluno select p).FirstOrDefault();
+            }
             return Json(new { alunos = listaAluno, totalReg = listaAluno.Count() }, JsonRequestBehavior.AllowGet);
 
         }
