@@ -87,6 +87,7 @@
     <Compile Include="Controllers\ProfessorController.cs" />
     <Compile Include="Controllers\PagamentoController.cs" />
     <Compile Include="Controllers\TaxaController.cs" />
+    <Compile Include="Controllers\TipoEnderecoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
