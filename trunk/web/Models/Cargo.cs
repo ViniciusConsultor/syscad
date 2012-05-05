@@ -9,19 +9,18 @@ using System.Data.EntityClient;
 
 namespace web.Models
 {
-    public class Usuario
+    public class Cargo
     {
-        public Usuario()
+        public Cargo()
         {
             Funcionarios = new List<Funcionario>();
         }
 
-        public int idUsuario { get; set; }
-        public int idPerfil { get; set; }
-        public String login { get; set; }
-        public String senha { get; set; }
+        public int idCargo { get; set; }
+        public String nome { get; set; }
+        public String descricao { get; set; }
         public ICollection<Funcionario> Funcionarios { get; set; }
-        public Perfil Perfil { get; set; }
+
         
     }
 }

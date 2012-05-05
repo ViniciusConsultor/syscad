@@ -92,8 +92,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\AlunoViewData.cs" />
+    <Compile Include="Models\Cargo.cs" />
+    <Compile Include="Models\Cobranca.cs" />
+    <Compile Include="Models\Curso.cs" />
+    <Compile Include="Models\Endereco.cs" />
+    <Compile Include="Models\Especializacao.cs" />
+    <Compile Include="Models\Funcionario.cs" />
+    <Compile Include="Models\Matricula.cs" />
+    <Compile Include="Models\MatriculaTurma.cs" />
+    <Compile Include="Models\Modulo.cs" />
     <Compile Include="Models\ModuloViewData.cs" />
+    <Compile Include="Models\NotaFalta.cs" />
+    <Compile Include="Models\Perfil.cs" />
+    <Compile Include="Models\Pessoa.cs" />
+    <Compile Include="Models\Professor.cs" />
+    <Compile Include="Models\Responsavel.cs" />
+    <Compile Include="Models\Taxa.cs" />
+    <Compile Include="Models\TipoEndereco.cs" />
+    <Compile Include="Models\Turma.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
