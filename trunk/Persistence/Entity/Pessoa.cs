@@ -27,9 +27,9 @@ namespace Persistence.Entity
         public virtual String celular { get; set; }
         public virtual DateTime dataNascimento { get; set; }
         public virtual int sexo { get; set; }
-        public virtual ICollection<Aluno> Alunos { get; private set; }
-        public virtual ICollection<Endereco> Enderecos { get; private set; }
-        public virtual ICollection<Funcionario> Funcionarios { get; private set; }
+        public virtual ICollection<Aluno> Alunos { get; set; }
+        public virtual ICollection<Endereco> Enderecos { get; set; }
+        public virtual ICollection<Funcionario> Funcionarios { get; set; }
         public virtual ICollection<Responsavel> Responsaveis { get; set; }
         
     }
