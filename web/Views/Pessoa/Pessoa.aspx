@@ -9,16 +9,12 @@
 <head id="Head1" runat="server">
     <title>Pessoas</title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+    <link href="../../Content/Grid.css" rel="stylesheet" type="text/css" />
 </head>
 <script type="text/javascript">
 
     //Variaveis GENERICAS
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
-
-    var formatDate = function (value) {
-       return String.format("Teste {0}", (value > 0) ? "green" : "red", value + "%");
-        //alert(value);
-    };
 
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
@@ -148,26 +144,6 @@
                                                     <Click Handler="editar()" />
                                                 </Listeners>
                                             </ext:Button>
-
-                                            <ext:ToolbarFill ID="ToolbarFill2" runat="server" />
-
-                                            <ext:Button ID="Button7" runat="server" Text="To XML" Icon="PageCode">
-                                                <Listeners> 
-                                                    <Click Handler="submitValue(#{GridPanelEdicao}, #{FormatType}, 'xml');" />
-                                                </Listeners>
-                                            </ext:Button>
-                        
-                                            <ext:Button ID="Button8" runat="server" Text="To Excel" Icon="PageExcel">
-                                                <Listeners>
-                                                    <Click Handler="exportData('xls');" />
-                                                </Listeners>
-                                            </ext:Button>
-                        
-                                            <ext:Button ID="Button9" runat="server" Text="To CSV" Icon="PageAttach">
-                                                <Listeners>
-                                                    <Click Handler="exportData('csv');" />
-                                                </Listeners>
-                                            </ext:Button>
                                         </Items>
                                     </ext:Toolbar>            
                                 </TopBar>
@@ -248,6 +224,29 @@
                                     <SelectionModel>
                                         <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" SingleSelect="true" />
                                     </SelectionModel>
+
+                                    <TopBar>
+                                        <ext:Toolbar ID="Toolbar3" runat="server">
+                                            <Items>
+                                                <ext:Button ID="Button2" runat="server" Text="Novo" Icon="Add">
+                                                    <Listeners> 
+                                                        <Click Handler="winNovoEndereco.show()" />
+                                                    </Listeners>
+                                                </ext:Button>
+                                                <ext:Button ID="Button3" runat="server" Text="Excluir" Icon="Delete">
+                                                    <Listeners> 
+                                                        <Click Handler="excluirRegistro()" />
+                                                    </Listeners>
+                                                </ext:Button>
+                                                <ext:Button ID="Button5" runat="server" Text="Editar" Icon="Information">
+                                                    <Listeners> 
+                                                        <Click Handler="editar()" />
+                                                    </Listeners>
+                                                </ext:Button>
+                                            </Items>
+                                        </ext:Toolbar>
+                                    </TopBar>
+
                                     <LoadMask ShowMask="true" />
                                     <BottomBar>
                                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
@@ -260,9 +259,7 @@
         </Items>
     </ext:Viewport>
     
-    
-    
-    <form id="Novo" runat="server" >
+    <form id="Novo">
     
         <ext:Window 
                 ID="winNovo" 
@@ -311,6 +308,145 @@
         </ext:Window>
 
     </form>
+
+    <form id="FormNovoEndereco">
+    
+        <ext:Window 
+                ID="winNovoEndereco" 
+                runat="server" 
+                Icon="ApplicationAdd" 
+                Title="Novo Endereco" 
+                Hidden="true"
+                X="250"
+                Y="100"
+                Layout="FormLayout"
+                AutoHeight="true"
+                Frame="true"
+                Width="500"
+                Modal="true"
+                >
+                <Items>
+                    <ext:FormPanel ID="endereco" runat="server">
+
+                        <Items>
+                            <ext:ComboBox ID="cmbTipoEndereco" 
+                                runat="server" 
+                                DisplayField="nome" 
+                                ValueField="idTipoEndereco" 
+                                TypeAhead="false" 
+                                LoadingText="Procurando..." 
+                                Width="350" 
+                                PageSize="10"
+                                HideTrigger="false"
+                                ItemSelector="div.search-item"        
+                                MinChars="1"
+                                FieldLabel="Tipo de Endereco"
+                                TriggerAction="All"
+                                AllowBlank="false">
+                                <Store>
+                                    <ext:Store ID="Store3" runat="server" AutoLoad="false">
+                                        <Proxy>
+                                            <ext:HttpProxy Method="POST" Url="/TipoEndereco/Search" />
+                                        </Proxy>
+                                        <Reader>
+                                            <ext:JsonReader Root="tipoEnderecos" TotalProperty="totalReg">
+                                                <Fields>
+                                                    <ext:RecordField Name="idTipoEndereco" Type="Int" />
+                                                    <ext:RecordField Name="nome" Type="String" />
+                                                </Fields>
+                                            </ext:JsonReader>
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                                <Template ID="Template2" runat="server">
+                                   <Html>
+					                   <tpl for=".">
+						                  <div class="search-item">
+							                 <h3><span>{idTipoEndereco}</span>{nome}</h3>
+							                 Tipo de Endereço
+						                  </div>
+					                   </tpl>
+				                   </Html>
+                                </Template>
+                            </ext:ComboBox>
+
+                            <ext:ComboBox ID="cmbPessoa" 
+                                runat="server" 
+                                DisplayField="nome" 
+                                ValueField="idPessoa" 
+                                TypeAhead="false" 
+                                LoadingText="Procurando..." 
+                                Width="350" 
+                                PageSize="10"
+                                HideTrigger="false"
+                                ItemSelector="div.search-item"        
+                                MinChars="1"
+                                FieldLabel="Pessoa"
+                                TriggerAction="All"
+                                AllowBlank="false">
+                                <Store>
+                                    <ext:Store ID="Store2" runat="server" AutoLoad="false">
+                                        <Proxy>
+                                            <ext:HttpProxy Method="POST" Url="/Pessoa/Search" />
+                                        </Proxy>
+                                        <Reader>
+                                            <ext:JsonReader Root="pessoas" TotalProperty="totalReg">
+                                                <Fields>
+                                                    <ext:RecordField Name="idPessoa" Type="Int" />
+                                                    <ext:RecordField Name="nome" Type="String" />
+                                                    <ext:RecordField Name="cpf" Type="String" />
+                                                    <ext:RecordField Name="email" Type="String" />
+                                                    <ext:RecordField Name="telefone" Type="String" />
+                                                    <ext:RecordField Name="celular" Type="String" />
+                                                    <ext:RecordField Name="dataNascimento" Type="Date" />
+                                                    <ext:RecordField Name="sexo" Type="Int" />
+                                                </Fields>
+                                            </ext:JsonReader>
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                                <Template ID="Template1" runat="server">
+                                   <Html>
+					                   <tpl for=".">
+						                  <div class="search-item">
+							                 <h3><span>{cpf}</span>{nome}</h3>
+							                 {email}
+						                  </div>
+					                   </tpl>
+				                   </Html>
+                                </Template>
+                            </ext:ComboBox>
+
+                            <ext:TextField ID="txtLogradouro" runat="server" FieldLabel="Logradouro" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:NumberField ID="txtNumero" runat="server" FieldLabel="Numero" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtComplemento" runat="server" FieldLabel="Complemento" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtCep" runat="server" FieldLabel="CEP" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtBairro" runat="server" FieldLabel="Bairro" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtCidade" runat="server" FieldLabel="Cidade" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtUf" runat="server" FieldLabel="UF" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:NumberField ID="txtTipo" runat="server" FieldLabel="Tipo" Width="350" AllowBlank="false" AutoFocus="true" />
+
+                        </Items>
+
+                        <BottomBar>
+                            <ext:Toolbar ID="Toolbar4" runat="server">
+                                <Items>
+                                    <ext:ToolbarFill />
+                                        <ext:Button ID="Button10" Text="Salvar" Icon="Disk" runat="server">
+                                            <Listeners>
+                                                <Click Handler="salvar()" />
+                                            </Listeners>
+                                        </ext:Button>
+                                </Items>
+                            </ext:Toolbar>  
+                        </BottomBar>
+
+                    </ext:FormPanel>
+                </Items>
+
+        </ext:Window>
+
+    </form>    
                   
 </body>
 </html>
