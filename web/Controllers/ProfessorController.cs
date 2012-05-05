@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Persistence.DAO;
 using Persistence.Entity;
-using web.Models;
+using Models = web.Models;
 
 namespace web.Controllers
 {
@@ -35,7 +35,7 @@ namespace web.Controllers
                             join curso c on t.idCurso = c.idCurso
                             join modulo m on m.idCurso = c.idCurso
                             order by c.nome,t.descricao,m.nome";
-            var listModulos = dbModulo.Context.ExecuteStoreQuery<ModuloViewData>(sql).ToList();
+            var listModulos = dbModulo.Context.ExecuteStoreQuery<Models.ModuloViewData>(sql).ToList();
             return Json(new { modulos = listModulos },JsonRequestBehavior.AllowGet);
         }
 
@@ -54,7 +54,7 @@ namespace web.Controllers
                             and nt.idModulo = mo.idModulo and nt.idTurma = t.idTurma
                             where t.idTurma = {0} and mo.idModulo = {1}";
             Object[] parameters = { codigoTurma, codigoModulo };
-            var listAlunos = dbAluno.Context.ExecuteStoreQuery<AlunoViewData>(sql, parameters).ToList();
+            var listAlunos = dbAluno.Context.ExecuteStoreQuery<Models.AlunoViewData>(sql, parameters).ToList();
             return Json(new { alunos = listAlunos }, JsonRequestBehavior.AllowGet);
         }
 

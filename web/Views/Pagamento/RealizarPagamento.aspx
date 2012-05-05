@@ -67,7 +67,7 @@
                     <Items>
                        <ext:ComboBox ID="txtAluno" 
                                 runat="server" 
-                                DisplayField="Pessoa.nome" 
+                                DisplayField="nome" 
                                 ValueField="idAluno"
                                 FieldLabel="Aluno"
                                 TypeAhead="false" 
@@ -86,12 +86,11 @@
                                             <ext:HttpProxy Method="POST" Url="/Pagamento/Search" />
                                         </Proxy>
                                         <Reader>
-                                            <ext:JsonReader Root="alunos" TotalProperty="totalReg">
+                                            <ext:JsonReader Root="alunos" TotalProperty="totalReg" IDProperty="idAluno">
                                                 <Fields>
-                                                    <ext:RecordField Name="idAluno" Type="Int" />
-                                                    <ext:RecordField Name="Pessoa.nome" Type="String" Mapping="nome"/>
-                                                    <ext:RecordField Name="Pessoa.cpf" Type="String" Mapping="cpf"/>
-                                                    <ext:RecordField Name="Pessoa.email" Type="String" Mapping="email"/>
+                                                    <ext:RecordField Name="nome" Type="String" Mapping="nome"/>
+                                                    <ext:RecordField Name="cpf" Type="String" Mapping="cpf"/>
+                                                    <ext:RecordField Name="email" Type="String" Mapping="email"/>
                                                 </Fields>
                                             </ext:JsonReader>
                                         </Reader>
@@ -101,7 +100,7 @@
                                    <Html>
 					                   <tpl for=".">
 						                  <div class="search-item">
-							                 <h3><span>{Pessoa.cpf}</span>{nome}</h3>
+							                 <h3><span>{cpf}</span>{nome}</h3>
 							                 {email}
 						                  </div>
 					                   </tpl>

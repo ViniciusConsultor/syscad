@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Persistence.DAO;
 using Persistence.Entity;
+using Models = web.Models;
 
 namespace web.Controllers
 {
@@ -33,11 +34,15 @@ namespace web.Controllers
                 mat = dbMatricula.FindOne(x => x.idMatricula == matricula);
             }
 
-            List<Aluno> listaAluno = (from a in dbAluno.Context.Aluno where a.Pessoa.nome.ToLower().Contains(query.ToLower()) || a.Matriculas.FirstOrDefault().idMatricula == matricula select a).ToList();
-            foreach(Aluno a in listaAluno)
-            {
-                a.Pessoa = (from p in dbPessoa.Context.Pessoa where p.Alunos.FirstOrDefault().idAluno == a.idAluno select p).FirstOrDefault();
-            }
+            List<Models.Aluno> listaAluno = (from a in dbAluno.Context.Aluno 
+                                       where a.Pessoa.nome.ToLower().Contains(query.ToLower()) || a.Matriculas.FirstOrDefault().numeroMatricula == matricula 
+                                       select new Models.Aluno {
+                                            nome = a.Pessoa.nome,
+                                            cpf = a.Pessoa.cpf,
+                                            email = a.Pessoa.email,
+                                            idAluno = a.idAluno
+                                       }).ToList();
+
             return Json(new { alunos = listaAluno, totalReg = listaAluno.Count() }, JsonRequestBehavior.AllowGet);
 
         }
