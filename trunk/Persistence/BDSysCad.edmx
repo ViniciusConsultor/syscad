@@ -4,108 +4,113 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl" Alias="Self" Namespace="BDSysCadModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008">
+    <Schema Namespace="BDSysCadModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="BDSysCadModelStoreContainer">
-          <EntitySet Name="aluno" EntityType="BDSysCadModel.Store.aluno" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="cargo" EntityType="BDSysCadModel.Store.cargo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="cobranca" EntityType="BDSysCadModel.Store.cobranca" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="curso" EntityType="BDSysCadModel.Store.curso" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="endereco" EntityType="BDSysCadModel.Store.endereco" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="funcionario" EntityType="BDSysCadModel.Store.funcionario" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="matricula" EntityType="BDSysCadModel.Store.matricula" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="matriculaTurma" EntityType="BDSysCadModel.Store.matriculaTurma" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="modulo" EntityType="BDSysCadModel.Store.modulo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="notaFalta" EntityType="BDSysCadModel.Store.notaFalta" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="perfil" EntityType="BDSysCadModel.Store.perfil" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="pessoa" EntityType="BDSysCadModel.Store.pessoa" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="responsavel" EntityType="BDSysCadModel.Store.responsavel" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="taxa" EntityType="BDSysCadModel.Store.taxa" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tipoEndereco" EntityType="BDSysCadModel.Store.tipoEndereco" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="turma" EntityType="BDSysCadModel.Store.turma" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="usuario" EntityType="BDSysCadModel.Store.usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="aluno" EntityType="BDSysCadModel.Store.aluno" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="cargo" EntityType="BDSysCadModel.Store.cargo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="cobranca" EntityType="BDSysCadModel.Store.cobranca" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="curso" EntityType="BDSysCadModel.Store.curso" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="endereco" EntityType="BDSysCadModel.Store.endereco" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="funcionario" EntityType="BDSysCadModel.Store.funcionario" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="matricula" EntityType="BDSysCadModel.Store.matricula" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="matriculaTurma" EntityType="BDSysCadModel.Store.matriculaTurma" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="modulo" EntityType="BDSysCadModel.Store.modulo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="notaFalta" EntityType="BDSysCadModel.Store.notaFalta" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="pagamento" EntityType="BDSysCadModel.Store.pagamento" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="perfil" EntityType="BDSysCadModel.Store.perfil" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="pessoa" EntityType="BDSysCadModel.Store.pessoa" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="responsavel" EntityType="BDSysCadModel.Store.responsavel" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="taxa" EntityType="BDSysCadModel.Store.taxa" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="tipoEndereco" EntityType="BDSysCadModel.Store.tipoEndereco" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="turma" EntityType="BDSysCadModel.Store.turma" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="usuario" EntityType="BDSysCadModel.Store.usuario" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_aluno_pessoa" Association="BDSysCadModel.Store.FK_aluno_pessoa">
-            <End EntitySet="pessoa" Role="pessoa" />
-            <End EntitySet="aluno" Role="aluno" />
+            <End Role="pessoa" EntitySet="pessoa" />
+            <End Role="aluno" EntitySet="aluno" />
           </AssociationSet>
           <AssociationSet Name="FK_aluno_responsavel" Association="BDSysCadModel.Store.FK_aluno_responsavel">
-            <End EntitySet="responsavel" Role="responsavel" />
-            <End EntitySet="aluno" Role="aluno" />
+            <End Role="responsavel" EntitySet="responsavel" />
+            <End Role="aluno" EntitySet="aluno" />
           </AssociationSet>
           <AssociationSet Name="FK_cobranca_aluno" Association="BDSysCadModel.Store.FK_cobranca_aluno">
-            <End EntitySet="aluno" Role="aluno" />
-            <End EntitySet="cobranca" Role="cobranca" />
+            <End Role="aluno" EntitySet="aluno" />
+            <End Role="cobranca" EntitySet="cobranca" />
           </AssociationSet>
           <AssociationSet Name="FK_cobranca_taxa" Association="BDSysCadModel.Store.FK_cobranca_taxa">
-            <End EntitySet="taxa" Role="taxa" />
-            <End EntitySet="cobranca" Role="cobranca" />
+            <End Role="taxa" EntitySet="taxa" />
+            <End Role="cobranca" EntitySet="cobranca" />
           </AssociationSet>
           <AssociationSet Name="FK_endereco_pessoa" Association="BDSysCadModel.Store.FK_endereco_pessoa">
-            <End EntitySet="pessoa" Role="pessoa" />
-            <End EntitySet="endereco" Role="endereco" />
+            <End Role="pessoa" EntitySet="pessoa" />
+            <End Role="endereco" EntitySet="endereco" />
           </AssociationSet>
           <AssociationSet Name="FK_endereco_tipoEndereco" Association="BDSysCadModel.Store.FK_endereco_tipoEndereco">
-            <End EntitySet="tipoEndereco" Role="tipoEndereco" />
-            <End EntitySet="endereco" Role="endereco" />
+            <End Role="tipoEndereco" EntitySet="tipoEndereco" />
+            <End Role="endereco" EntitySet="endereco" />
           </AssociationSet>
           <AssociationSet Name="FK_funcionario_cargo" Association="BDSysCadModel.Store.FK_funcionario_cargo">
-            <End EntitySet="cargo" Role="cargo" />
-            <End EntitySet="funcionario" Role="funcionario" />
+            <End Role="cargo" EntitySet="cargo" />
+            <End Role="funcionario" EntitySet="funcionario" />
           </AssociationSet>
           <AssociationSet Name="FK_funcionario_pessoa" Association="BDSysCadModel.Store.FK_funcionario_pessoa">
-            <End EntitySet="pessoa" Role="pessoa" />
-            <End EntitySet="funcionario" Role="funcionario" />
+            <End Role="pessoa" EntitySet="pessoa" />
+            <End Role="funcionario" EntitySet="funcionario" />
           </AssociationSet>
           <AssociationSet Name="FK_funcionario_usuario" Association="BDSysCadModel.Store.FK_funcionario_usuario">
-            <End EntitySet="usuario" Role="usuario" />
-            <End EntitySet="funcionario" Role="funcionario" />
+            <End Role="usuario" EntitySet="usuario" />
+            <End Role="funcionario" EntitySet="funcionario" />
           </AssociationSet>
           <AssociationSet Name="FK_matricula_aluno" Association="BDSysCadModel.Store.FK_matricula_aluno">
-            <End EntitySet="aluno" Role="aluno" />
-            <End EntitySet="matricula" Role="matricula" />
+            <End Role="aluno" EntitySet="aluno" />
+            <End Role="matricula" EntitySet="matricula" />
           </AssociationSet>
           <AssociationSet Name="FK_matriculaTurma_matricula" Association="BDSysCadModel.Store.FK_matriculaTurma_matricula">
-            <End EntitySet="matricula" Role="matricula" />
-            <End EntitySet="matriculaTurma" Role="matriculaTurma" />
+            <End Role="matricula" EntitySet="matricula" />
+            <End Role="matriculaTurma" EntitySet="matriculaTurma" />
           </AssociationSet>
           <AssociationSet Name="FK_matriculaTurma_turma" Association="BDSysCadModel.Store.FK_matriculaTurma_turma">
-            <End EntitySet="turma" Role="turma" />
-            <End EntitySet="matriculaTurma" Role="matriculaTurma" />
+            <End Role="turma" EntitySet="turma" />
+            <End Role="matriculaTurma" EntitySet="matriculaTurma" />
           </AssociationSet>
           <AssociationSet Name="FK_modulo_curso" Association="BDSysCadModel.Store.FK_modulo_curso">
-            <End EntitySet="curso" Role="curso" />
-            <End EntitySet="modulo" Role="modulo" />
+            <End Role="curso" EntitySet="curso" />
+            <End Role="modulo" EntitySet="modulo" />
           </AssociationSet>
           <AssociationSet Name="FK_notaFalta_aluno" Association="BDSysCadModel.Store.FK_notaFalta_aluno">
-            <End EntitySet="aluno" Role="aluno" />
-            <End EntitySet="notaFalta" Role="notaFalta" />
+            <End Role="aluno" EntitySet="aluno" />
+            <End Role="notaFalta" EntitySet="notaFalta" />
           </AssociationSet>
           <AssociationSet Name="FK_notaFalta_modulo" Association="BDSysCadModel.Store.FK_notaFalta_modulo">
-            <End EntitySet="modulo" Role="modulo" />
-            <End EntitySet="notaFalta" Role="notaFalta" />
+            <End Role="modulo" EntitySet="modulo" />
+            <End Role="notaFalta" EntitySet="notaFalta" />
           </AssociationSet>
           <AssociationSet Name="FK_notaFalta_turma" Association="BDSysCadModel.Store.FK_notaFalta_turma">
-            <End EntitySet="turma" Role="turma" />
-            <End EntitySet="notaFalta" Role="notaFalta" />
+            <End Role="turma" EntitySet="turma" />
+            <End Role="notaFalta" EntitySet="notaFalta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pagamento_cobranca" Association="BDSysCadModel.Store.FK_pagamento_cobranca">
+            <End Role="cobranca" EntitySet="cobranca" />
+            <End Role="pagamento" EntitySet="pagamento" />
           </AssociationSet>
           <AssociationSet Name="FK_responsavel_pessoa" Association="BDSysCadModel.Store.FK_responsavel_pessoa">
-            <End EntitySet="pessoa" Role="pessoa" />
-            <End EntitySet="responsavel" Role="responsavel" />
+            <End Role="pessoa" EntitySet="pessoa" />
+            <End Role="responsavel" EntitySet="responsavel" />
           </AssociationSet>
           <AssociationSet Name="FK_turma_curso" Association="BDSysCadModel.Store.FK_turma_curso">
-            <End EntitySet="curso" Role="curso" />
-            <End EntitySet="turma" Role="turma" />
+            <End Role="curso" EntitySet="curso" />
+            <End Role="turma" EntitySet="turma" />
           </AssociationSet>
           <AssociationSet Name="FK_usuario_perfil" Association="BDSysCadModel.Store.FK_usuario_perfil">
-            <End EntitySet="perfil" Role="perfil" />
-            <End EntitySet="usuario" Role="usuario" />
+            <End Role="perfil" EntitySet="perfil" />
+            <End Role="usuario" EntitySet="usuario" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="aluno">
           <Key>
             <PropertyRef Name="idAluno" />
           </Key>
-          <Property Name="idAluno" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="idPessoa" Nullable="false" Type="int" />
+          <Property Name="idAluno" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idPessoa" Type="int" Nullable="false" />
           <Property Name="statusPedagogico" Type="int" />
           <Property Name="statusFinanceiro" Type="int" />
           <Property Name="idResponsavel" Type="int" />
@@ -114,28 +119,29 @@
           <Key>
             <PropertyRef Name="idCargo" />
           </Key>
-          <Property Name="idCargo" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="nome" Nullable="false" MaxLength="100" Type="varchar" />
-          <Property Name="descricao" MaxLength="100" Type="varchar" />
+          <Property Name="idCargo" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="descricao" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="cobranca">
           <Key>
             <PropertyRef Name="idCobranca" />
           </Key>
-          <Property Name="idCobranca" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="idTaxa" Nullable="false" Type="int" />
-          <Property Name="idAluno" Nullable="false" Type="int" />
+          <Property Name="idCobranca" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idTaxa" Type="int" Nullable="false" />
+          <Property Name="idAluno" Type="int" Nullable="false" />
           <Property Name="statusPagamento" Type="int" />
           <Property Name="valorTotal" Type="decimal" />
           <Property Name="juros" Type="decimal" />
+          <Property Name="dataVencimento" Type="datetime" />
         </EntityType>
         <EntityType Name="curso">
           <Key>
             <PropertyRef Name="idCurso" />
           </Key>
-          <Property Name="idCurso" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="nome" MaxLength="50" Type="varchar" />
-          <Property Name="descricao" MaxLength="100" Type="varchar" />
+          <Property Name="idCurso" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="varchar" MaxLength="50" />
+          <Property Name="descricao" Type="varchar" MaxLength="100" />
           <Property Name="valor" Type="decimal" />
           <Property Name="status" Type="int" />
         </EntityType>
@@ -143,138 +149,148 @@
           <Key>
             <PropertyRef Name="idEndereco" />
           </Key>
-          <Property Name="idEndereco" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="idTipoEndereco" Nullable="false" Type="int" />
-          <Property Name="idPessoa" Nullable="false" Type="int" />
-          <Property Name="logradouro" Nullable="false" MaxLength="100" Type="varchar" />
-          <Property Name="numero" Nullable="false" Type="int" />
-          <Property Name="complemento" MaxLength="100" Type="varchar" />
-          <Property Name="CEP" Nullable="false" MaxLength="9" Type="varchar" />
-          <Property Name="bairro" Nullable="false" MaxLength="50" Type="varchar" />
-          <Property Name="cidade" Nullable="false" MaxLength="50" Type="varchar" />
-          <Property Name="uf" Nullable="false" MaxLength="2" Type="char" />
+          <Property Name="idEndereco" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idTipoEndereco" Type="int" Nullable="false" />
+          <Property Name="idPessoa" Type="int" Nullable="false" />
+          <Property Name="logradouro" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="numero" Type="int" Nullable="false" />
+          <Property Name="complemento" Type="varchar" MaxLength="100" />
+          <Property Name="CEP" Type="varchar" Nullable="false" MaxLength="9" />
+          <Property Name="bairro" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="cidade" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="uf" Type="char" Nullable="false" MaxLength="2" />
           <Property Name="tipo" Type="int" />
         </EntityType>
         <EntityType Name="funcionario">
           <Key>
             <PropertyRef Name="idFuncionario" />
           </Key>
-          <Property Name="idFuncionario" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="idUsuario" Nullable="false" Type="int" />
-          <Property Name="idCargo" Nullable="false" Type="int" />
-          <Property Name="idPessoa" Nullable="false" Type="int" />
+          <Property Name="idFuncionario" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="idCargo" Type="int" Nullable="false" />
+          <Property Name="idPessoa" Type="int" Nullable="false" />
           <Property Name="salario" Type="decimal" />
         </EntityType>
         <EntityType Name="matricula">
           <Key>
             <PropertyRef Name="idMatricula" />
           </Key>
-          <Property Name="idMatricula" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="idAluno" Nullable="false" Type="int" />
-          <Property Name="numeroMatricula" Nullable="false" Type="int" />
-          <Property Name="dataRegistro" Nullable="false" Type="datetime" />
+          <Property Name="idMatricula" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idAluno" Type="int" Nullable="false" />
+          <Property Name="numeroMatricula" Type="int" Nullable="false" />
+          <Property Name="dataRegistro" Type="datetime" Nullable="false" />
           <Property Name="dataCancelamento" Type="datetime" />
-          <Property Name="tipo" Nullable="false" MaxLength="30" Type="varchar" />
+          <Property Name="tipo" Type="varchar" Nullable="false" MaxLength="30" />
         </EntityType>
         <EntityType Name="matriculaTurma">
           <Key>
             <PropertyRef Name="idMatriculaTurma" />
           </Key>
-          <Property Name="idTurma" Nullable="false" Type="int" />
-          <Property Name="idMatricula" Nullable="false" Type="int" />
-          <Property Name="idMatriculaTurma" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+          <Property Name="idTurma" Type="int" Nullable="false" />
+          <Property Name="idMatricula" Type="int" Nullable="false" />
+          <Property Name="idMatriculaTurma" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="modulo">
           <Key>
             <PropertyRef Name="idModulo" />
           </Key>
-          <Property Name="idModulo" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="nome" MaxLength="30" Type="varchar" />
+          <Property Name="idModulo" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="varchar" MaxLength="30" />
           <Property Name="tempoDuracao" Type="int" />
           <Property Name="statusModulo" Type="int" />
-          <Property Name="idCurso" Nullable="false" Type="int" />
+          <Property Name="idCurso" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="notaFalta">
           <Key>
             <PropertyRef Name="idNotaFalta" />
           </Key>
-          <Property Name="idNotaFalta" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="idTurma" Nullable="false" Type="int" />
-          <Property Name="idModulo" Nullable="false" Type="int" />
-          <Property Name="idAluno" Nullable="false" Type="int" />
+          <Property Name="idNotaFalta" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idTurma" Type="int" Nullable="false" />
+          <Property Name="idModulo" Type="int" Nullable="false" />
+          <Property Name="idAluno" Type="int" Nullable="false" />
           <Property Name="qtdFalta" Type="int" />
           <Property Name="nota1" Type="decimal" />
           <Property Name="nota2" Type="decimal" />
+        </EntityType>
+        <EntityType Name="pagamento">
+          <Key>
+            <PropertyRef Name="idPagamento" />
+          </Key>
+          <Property Name="idPagamento" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idCobranca" Type="int" Nullable="false" />
+          <Property Name="dataPagamento" Type="datetime" Nullable="false" />
+          <Property Name="valor" Type="decimal" Scale="2" />
+          <Property Name="formaPag" Type="int" />
         </EntityType>
         <EntityType Name="perfil">
           <Key>
             <PropertyRef Name="idPerfil" />
           </Key>
-          <Property Name="idPerfil" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="nome" MaxLength="50" Type="varchar" />
+          <Property Name="idPerfil" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="pessoa">
           <Key>
             <PropertyRef Name="idPessoa" />
           </Key>
-          <Property Name="idPessoa" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="nome" Nullable="false" MaxLength="100" Type="varchar" />
-          <Property Name="cpf" Nullable="false" MaxLength="15" Type="varchar" />
-          <Property Name="email" MaxLength="50" Type="varchar" />
-          <Property Name="telefone" MaxLength="14" Type="varchar" />
-          <Property Name="celular" MaxLength="14" Type="varchar" />
-          <Property Name="dataNascimento" Nullable="false" Type="datetime" />
-          <Property Name="sexo" Nullable="false" Type="int" />
+          <Property Name="idPessoa" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="cpf" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="telefone" Type="varchar" MaxLength="14" />
+          <Property Name="celular" Type="varchar" MaxLength="14" />
+          <Property Name="dataNascimento" Type="datetime" Nullable="false" />
+          <Property Name="sexo" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="responsavel">
           <Key>
             <PropertyRef Name="idResponsavel" />
           </Key>
-          <Property Name="idResponsavel" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="grauParentesco" MaxLength="100" Type="nvarchar" />
-          <Property Name="idPessoa" Nullable="false" Type="int" />
+          <Property Name="idResponsavel" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="grauParentesco" Type="nvarchar" MaxLength="100" />
+          <Property Name="idPessoa" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="taxa">
           <Key>
             <PropertyRef Name="idTaxa" />
           </Key>
-          <Property Name="idTaxa" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="nome" MaxLength="50" Type="nvarchar" />
-          <Property Name="descricao" MaxLength="100" Type="varchar" />
+          <Property Name="idTaxa" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="nvarchar" MaxLength="50" />
+          <Property Name="descricao" Type="varchar" MaxLength="100" />
           <Property Name="valor" Type="decimal" />
         </EntityType>
         <EntityType Name="tipoEndereco">
           <Key>
             <PropertyRef Name="idTipoEndereco" />
           </Key>
-          <Property Name="idTipoEndereco" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="nome" MaxLength="50" Type="varchar" />
+          <Property Name="idTipoEndereco" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="turma">
           <Key>
             <PropertyRef Name="idTurma" />
           </Key>
-          <Property Name="idTurma" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="idCurso" Nullable="false" Type="int" />
-          <Property Name="descricao" Nullable="false" MaxLength="100" Type="varchar" />
+          <Property Name="idTurma" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idCurso" Type="int" Nullable="false" />
+          <Property Name="descricao" Type="varchar" Nullable="false" MaxLength="100" />
           <Property Name="numeroVagas" Type="int" />
           <Property Name="vagasOcupadas" Type="int" />
-          <Property Name="dataInicio" Nullable="false" Type="datetime" />
-          <Property Name="dataFim" Nullable="false" Type="datetime" />
+          <Property Name="dataInicio" Type="datetime" Nullable="false" />
+          <Property Name="dataFim" Type="datetime" Nullable="false" />
           <Property Name="dataFechamento" Type="datetime" />
         </EntityType>
         <EntityType Name="usuario">
           <Key>
             <PropertyRef Name="idUsuario" />
           </Key>
-          <Property Name="idUsuario" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
-          <Property Name="idPerfil" Nullable="false" Type="int" />
-          <Property Name="login" Nullable="false" MaxLength="15" Type="varchar" />
-          <Property Name="senha" Nullable="false" MaxLength="100" Type="varchar" />
+          <Property Name="idUsuario" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="idPerfil" Type="int" Nullable="false" />
+          <Property Name="login" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="senha" Type="varchar" Nullable="false" MaxLength="100" />
         </EntityType>
         <Association Name="FK_aluno_pessoa">
-          <End Type="BDSysCadModel.Store.pessoa" Multiplicity="1" Role="pessoa" />
-          <End Type="BDSysCadModel.Store.aluno" Multiplicity="*" Role="aluno" />
+          <End Role="pessoa" Type="BDSysCadModel.Store.pessoa" Multiplicity="1" />
+          <End Role="aluno" Type="BDSysCadModel.Store.aluno" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="pessoa">
               <PropertyRef Name="idPessoa" />
@@ -285,8 +301,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_aluno_responsavel">
-          <End Type="BDSysCadModel.Store.responsavel" Multiplicity="0..1" Role="responsavel" />
-          <End Type="BDSysCadModel.Store.aluno" Multiplicity="*" Role="aluno" />
+          <End Role="responsavel" Type="BDSysCadModel.Store.responsavel" Multiplicity="0..1" />
+          <End Role="aluno" Type="BDSysCadModel.Store.aluno" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="responsavel">
               <PropertyRef Name="idResponsavel" />
@@ -297,8 +313,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_cobranca_aluno">
-          <End Type="BDSysCadModel.Store.aluno" Multiplicity="1" Role="aluno" />
-          <End Type="BDSysCadModel.Store.cobranca" Multiplicity="*" Role="cobranca" />
+          <End Role="aluno" Type="BDSysCadModel.Store.aluno" Multiplicity="1" />
+          <End Role="cobranca" Type="BDSysCadModel.Store.cobranca" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="aluno">
               <PropertyRef Name="idAluno" />
@@ -309,8 +325,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_cobranca_taxa">
-          <End Type="BDSysCadModel.Store.taxa" Multiplicity="1" Role="taxa" />
-          <End Type="BDSysCadModel.Store.cobranca" Multiplicity="*" Role="cobranca" />
+          <End Role="taxa" Type="BDSysCadModel.Store.taxa" Multiplicity="1" />
+          <End Role="cobranca" Type="BDSysCadModel.Store.cobranca" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="taxa">
               <PropertyRef Name="idTaxa" />
@@ -321,8 +337,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_endereco_pessoa">
-          <End Type="BDSysCadModel.Store.pessoa" Multiplicity="1" Role="pessoa" />
-          <End Type="BDSysCadModel.Store.endereco" Multiplicity="*" Role="endereco" />
+          <End Role="pessoa" Type="BDSysCadModel.Store.pessoa" Multiplicity="1" />
+          <End Role="endereco" Type="BDSysCadModel.Store.endereco" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="pessoa">
               <PropertyRef Name="idPessoa" />
@@ -333,8 +349,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_endereco_tipoEndereco">
-          <End Type="BDSysCadModel.Store.tipoEndereco" Multiplicity="1" Role="tipoEndereco" />
-          <End Type="BDSysCadModel.Store.endereco" Multiplicity="*" Role="endereco" />
+          <End Role="tipoEndereco" Type="BDSysCadModel.Store.tipoEndereco" Multiplicity="1" />
+          <End Role="endereco" Type="BDSysCadModel.Store.endereco" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tipoEndereco">
               <PropertyRef Name="idTipoEndereco" />
@@ -345,8 +361,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_funcionario_cargo">
-          <End Type="BDSysCadModel.Store.cargo" Multiplicity="1" Role="cargo" />
-          <End Type="BDSysCadModel.Store.funcionario" Multiplicity="*" Role="funcionario" />
+          <End Role="cargo" Type="BDSysCadModel.Store.cargo" Multiplicity="1" />
+          <End Role="funcionario" Type="BDSysCadModel.Store.funcionario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="cargo">
               <PropertyRef Name="idCargo" />
@@ -357,8 +373,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_funcionario_pessoa">
-          <End Type="BDSysCadModel.Store.pessoa" Multiplicity="1" Role="pessoa" />
-          <End Type="BDSysCadModel.Store.funcionario" Multiplicity="*" Role="funcionario" />
+          <End Role="pessoa" Type="BDSysCadModel.Store.pessoa" Multiplicity="1" />
+          <End Role="funcionario" Type="BDSysCadModel.Store.funcionario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="pessoa">
               <PropertyRef Name="idPessoa" />
@@ -369,8 +385,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_funcionario_usuario">
-          <End Type="BDSysCadModel.Store.usuario" Multiplicity="1" Role="usuario" />
-          <End Type="BDSysCadModel.Store.funcionario" Multiplicity="*" Role="funcionario" />
+          <End Role="usuario" Type="BDSysCadModel.Store.usuario" Multiplicity="1" />
+          <End Role="funcionario" Type="BDSysCadModel.Store.funcionario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="usuario">
               <PropertyRef Name="idUsuario" />
@@ -381,8 +397,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_matricula_aluno">
-          <End Type="BDSysCadModel.Store.aluno" Multiplicity="1" Role="aluno" />
-          <End Type="BDSysCadModel.Store.matricula" Multiplicity="*" Role="matricula" />
+          <End Role="aluno" Type="BDSysCadModel.Store.aluno" Multiplicity="1" />
+          <End Role="matricula" Type="BDSysCadModel.Store.matricula" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="aluno">
               <PropertyRef Name="idAluno" />
@@ -393,8 +409,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_matriculaTurma_matricula">
-          <End Type="BDSysCadModel.Store.matricula" Multiplicity="1" Role="matricula" />
-          <End Type="BDSysCadModel.Store.matriculaTurma" Multiplicity="*" Role="matriculaTurma" />
+          <End Role="matricula" Type="BDSysCadModel.Store.matricula" Multiplicity="1" />
+          <End Role="matriculaTurma" Type="BDSysCadModel.Store.matriculaTurma" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="matricula">
               <PropertyRef Name="idMatricula" />
@@ -405,8 +421,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_matriculaTurma_turma">
-          <End Type="BDSysCadModel.Store.turma" Multiplicity="1" Role="turma" />
-          <End Type="BDSysCadModel.Store.matriculaTurma" Multiplicity="*" Role="matriculaTurma" />
+          <End Role="turma" Type="BDSysCadModel.Store.turma" Multiplicity="1" />
+          <End Role="matriculaTurma" Type="BDSysCadModel.Store.matriculaTurma" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="turma">
               <PropertyRef Name="idTurma" />
@@ -417,8 +433,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_modulo_curso">
-          <End Type="BDSysCadModel.Store.curso" Multiplicity="1" Role="curso" />
-          <End Type="BDSysCadModel.Store.modulo" Multiplicity="*" Role="modulo" />
+          <End Role="curso" Type="BDSysCadModel.Store.curso" Multiplicity="1" />
+          <End Role="modulo" Type="BDSysCadModel.Store.modulo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="curso">
               <PropertyRef Name="idCurso" />
@@ -429,8 +445,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_notaFalta_aluno">
-          <End Type="BDSysCadModel.Store.aluno" Multiplicity="1" Role="aluno" />
-          <End Type="BDSysCadModel.Store.notaFalta" Multiplicity="*" Role="notaFalta" />
+          <End Role="aluno" Type="BDSysCadModel.Store.aluno" Multiplicity="1" />
+          <End Role="notaFalta" Type="BDSysCadModel.Store.notaFalta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="aluno">
               <PropertyRef Name="idAluno" />
@@ -441,8 +457,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_notaFalta_modulo">
-          <End Type="BDSysCadModel.Store.modulo" Multiplicity="1" Role="modulo" />
-          <End Type="BDSysCadModel.Store.notaFalta" Multiplicity="*" Role="notaFalta" />
+          <End Role="modulo" Type="BDSysCadModel.Store.modulo" Multiplicity="1" />
+          <End Role="notaFalta" Type="BDSysCadModel.Store.notaFalta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="modulo">
               <PropertyRef Name="idModulo" />
@@ -453,8 +469,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_notaFalta_turma">
-          <End Type="BDSysCadModel.Store.turma" Multiplicity="1" Role="turma" />
-          <End Type="BDSysCadModel.Store.notaFalta" Multiplicity="*" Role="notaFalta" />
+          <End Role="turma" Type="BDSysCadModel.Store.turma" Multiplicity="1" />
+          <End Role="notaFalta" Type="BDSysCadModel.Store.notaFalta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="turma">
               <PropertyRef Name="idTurma" />
@@ -464,9 +480,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_pagamento_cobranca">
+          <End Role="cobranca" Type="BDSysCadModel.Store.cobranca" Multiplicity="1" />
+          <End Role="pagamento" Type="BDSysCadModel.Store.pagamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cobranca">
+              <PropertyRef Name="idCobranca" />
+            </Principal>
+            <Dependent Role="pagamento">
+              <PropertyRef Name="idCobranca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_responsavel_pessoa">
-          <End Type="BDSysCadModel.Store.pessoa" Multiplicity="1" Role="pessoa" />
-          <End Type="BDSysCadModel.Store.responsavel" Multiplicity="*" Role="responsavel" />
+          <End Role="pessoa" Type="BDSysCadModel.Store.pessoa" Multiplicity="1" />
+          <End Role="responsavel" Type="BDSysCadModel.Store.responsavel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="pessoa">
               <PropertyRef Name="idPessoa" />
@@ -477,8 +505,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_turma_curso">
-          <End Type="BDSysCadModel.Store.curso" Multiplicity="1" Role="curso" />
-          <End Type="BDSysCadModel.Store.turma" Multiplicity="*" Role="turma" />
+          <End Role="curso" Type="BDSysCadModel.Store.curso" Multiplicity="1" />
+          <End Role="turma" Type="BDSysCadModel.Store.turma" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="curso">
               <PropertyRef Name="idCurso" />
@@ -489,8 +517,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_usuario_perfil">
-          <End Type="BDSysCadModel.Store.perfil" Multiplicity="1" Role="perfil" />
-          <End Type="BDSysCadModel.Store.usuario" Multiplicity="*" Role="usuario" />
+          <End Role="perfil" Type="BDSysCadModel.Store.perfil" Multiplicity="1" />
+          <End Role="usuario" Type="BDSysCadModel.Store.usuario" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="perfil">
               <PropertyRef Name="idPerfil" />
@@ -598,6 +626,11 @@
             <End Role="Pessoa" EntitySet="PessoaSet" />
             <End Role="responsavel" EntitySet="ResponsavelSet" />
           </AssociationSet>
+          <EntitySet Name="PagamentoSet" EntityType="BDSysCadModel.Pagamento" />
+          <AssociationSet Name="FK_pagamento_cobranca" Association="BDSysCadModel.FK_pagamento_cobranca">
+            <End Role="Cobranca" EntitySet="CobrancaSet" />
+            <End Role="pagamento" EntitySet="PagamentoSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Aluno">
           <Key>
@@ -635,6 +668,8 @@
           <Property Type="Decimal" Name="juros" Precision="18" Scale="0" />
           <NavigationProperty Name="Aluno" Relationship="BDSysCadModel.FK_cobranca_aluno" FromRole="cobranca" ToRole="aluno" />
           <NavigationProperty Name="Taxa" Relationship="BDSysCadModel.FK_cobranca_taxa" FromRole="cobranca" ToRole="taxa" />
+          <Property Type="DateTime" Name="dataVencimento" />
+          <NavigationProperty Name="Pagamentos" Relationship="BDSysCadModel.FK_pagamento_cobranca" FromRole="Cobranca" ToRole="pagamento" />
         </EntityType>
         <EntityType Name="Curso">
           <Key>
@@ -1037,6 +1072,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Pagamento">
+          <Key>
+            <PropertyRef Name="idPagamento" />
+          </Key>
+          <Property Type="Int32" Name="idPagamento" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="idCobranca" Nullable="false" />
+          <Property Type="DateTime" Name="dataPagamento" Nullable="false" />
+          <Property Type="Decimal" Name="valor" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="formaPag" />
+          <NavigationProperty Name="Cobranca" Relationship="BDSysCadModel.FK_pagamento_cobranca" FromRole="pagamento" ToRole="Cobranca" />
+        </EntityType>
+        <Association Name="FK_pagamento_cobranca">
+          <End Type="BDSysCadModel.Cobranca" Role="Cobranca" Multiplicity="1" />
+          <End Type="BDSysCadModel.Pagamento" Role="pagamento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cobranca">
+              <PropertyRef Name="idCobranca" />
+            </Principal>
+            <Dependent Role="pagamento">
+              <PropertyRef Name="idCobranca" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1066,6 +1124,7 @@
           <EntitySetMapping Name="CobrancaSet">
             <EntityTypeMapping TypeName="BDSysCadModel.Cobranca">
               <MappingFragment StoreEntitySet="cobranca">
+                <ScalarProperty Name="dataVencimento" ColumnName="dataVencimento" />
                 <ScalarProperty Name="juros" ColumnName="juros" />
                 <ScalarProperty Name="valorTotal" ColumnName="valorTotal" />
                 <ScalarProperty Name="statusPagamento" ColumnName="statusPagamento" />
@@ -1232,6 +1291,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PagamentoSet">
+            <EntityTypeMapping TypeName="BDSysCadModel.Pagamento">
+              <MappingFragment StoreEntitySet="pagamento">
+                <ScalarProperty Name="formaPag" ColumnName="formaPag" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="dataPagamento" ColumnName="dataPagamento" />
+                <ScalarProperty Name="idCobranca" ColumnName="idCobranca" />
+                <ScalarProperty Name="idPagamento" ColumnName="idPagamento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1253,7 +1323,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="BDSysCad" DisplayType="true" ZoomLevel="117">
+      <Diagram Name="BDSysCad" DisplayType="true" ZoomLevel="87">
         <EntityTypeShape EntityType="BDSysCadModel.Aluno" Width="1.875" PointX="3.375" PointY="9" Height="2.5571907552083317" />
         <EntityTypeShape EntityType="BDSysCadModel.Cargo" Width="1.5" PointX="0.75" PointY="12.875" Height="1.7879850260416674" />
         <EntityTypeShape EntityType="BDSysCadModel.Cobranca" Width="1.875" PointX="6.125" PointY="9" Height="2.5571907552083317" />
@@ -1273,10 +1343,10 @@
           <ConnectorPoint PointX="3.375" PointY="10.2881982421875" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_cobranca_aluno" >
-          <ConnectorPoint PointX="5.25" PointY="10.278595377604166" />
-          <ConnectorPoint PointX="5.541666666666667" PointY="10.278595377604166" />
-          <ConnectorPoint PointX="5.708333333333333" PointY="10.278595377604166" />
-          <ConnectorPoint PointX="6.125" PointY="10.278595377604166" />
+          <ConnectorPoint PointX="5.25" PointY="10.36091182772728" />
+          <ConnectorPoint PointX="5.541666666666667" PointY="10.36091182772728" />
+          <ConnectorPoint PointX="5.708333333333333" PointY="10.36091182772728" />
+          <ConnectorPoint PointX="6.125" PointY="10.36091182772728" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_matricula_aluno" >
           <ConnectorPoint PointX="5.25" PointY="11.7807421875" />
@@ -1287,8 +1357,8 @@
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_cobranca_taxa" >
           <ConnectorPoint PointX="4.5" PointY="2.2401432291666694" />
-          <ConnectorPoint PointX="7.78125" PointY="2.2401432291666694" />
-          <ConnectorPoint PointX="7.78125" PointY="9" />
+          <ConnectorPoint PointX="7.71093625" PointY="2.2401432291666694" />
+          <ConnectorPoint PointX="7.71093625" PointY="9" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_modulo_curso" >
           <ConnectorPoint PointX="5.25" PointY="18.307444661458334" />
@@ -1298,6 +1368,8 @@
           <ConnectorPoint PointX="5.25" PointY="18.307444661458334" />
           <ConnectorPoint PointX="5.625" PointY="18.307444661458334" />
           <ConnectorPoint PointX="5.625" PointY="7.7590950520833388" />
+          <ConnectorPoint PointX="5.947916666666667" PointY="7.7590950520833379" />
+          <ConnectorPoint PointX="6.114583333333333" PointY="7.7590950520833388" />
           <ConnectorPoint PointX="6.75" PointY="7.7590950520833388" />
           <ConnectorPoint PointX="6.75" PointY="7.3840950520833388" />
         </AssociationConnector>
@@ -1316,11 +1388,11 @@
           <ConnectorPoint PointX="9.375" PointY="13.740143229166666" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_matriculaTurma_turma" >
-          <ConnectorPoint PointX="7.5" PointY="5.8170475260416659" />
-          <ConnectorPoint PointX="7.697916666666667" PointY="5.817047526041665" />
-          <ConnectorPoint PointX="7.864583333333333" PointY="5.8170475260416659" />
-          <ConnectorPoint PointX="10.78125" PointY="5.8170475260416659" />
-          <ConnectorPoint PointX="10.78125" PointY="12.75" />
+          <ConnectorPoint PointX="7.5" PointY="4.78125" />
+          <ConnectorPoint PointX="7.6276029166666666" PointY="4.7812499999999991" />
+          <ConnectorPoint PointX="7.7942695833333326" PointY="4.78125" />
+          <ConnectorPoint PointX="11.09375" PointY="4.78125" />
+          <ConnectorPoint PointX="11.09375" PointY="12.75" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_usuario_perfil" >
           <ConnectorPoint PointX="1.875" PointY="18.75" />
@@ -1329,13 +1401,17 @@
         <EntityTypeShape EntityType="BDSysCadModel.Funcionario" Width="1.5" PointX="3.375" PointY="12.625" Height="2.5571907552083388" />
         <EntityTypeShape EntityType="BDSysCadModel.NotaFalta" Width="1.5" PointX="8.75" PointY="8.375" Height="2.9417936197916674" />
         <AssociationConnector Association="BDSysCadModel.FK_notaFalta_aluno" >
-          <ConnectorPoint PointX="5.25" PointY="11.668963971354167" />
-          <ConnectorPoint PointX="5.541666666666667" PointY="11.668963971354167" />
-          <ConnectorPoint PointX="5.708333333333333" PointY="11.668963971354167" />
-          <ConnectorPoint PointX="8.9479166666666661" PointY="11.668963971354167" />
-          <ConnectorPoint PointX="9.1145833333333339" PointY="11.668963971354167" />
-          <ConnectorPoint PointX="9.6718775" PointY="11.668963971354167" />
-          <ConnectorPoint PointX="9.6718775" PointY="11.316793619791667" />
+          <ConnectorPoint PointX="4.3125" PointY="9" />
+          <ConnectorPoint PointX="4.3125" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="5.541666666666667" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="5.708333333333333" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="5.947916666666667" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="6.114583333333333" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="7.6276029166666666" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="7.7942695833333326" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="7.8033872916666667" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="7.9700539583333327" PointY="8.5600967838541653" />
+          <ConnectorPoint PointX="8.75" PointY="8.5600967838541653" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_funcionario_cargo" >
           <ConnectorPoint PointX="2.25" PointY="13.768992513020834" />
@@ -1365,11 +1441,13 @@
           <ConnectorPoint PointX="9.03125" PointY="11.316793619791667" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_notaFalta_turma" >
-          <ConnectorPoint PointX="6.75" PointY="7.3840950520833388" />
-          <ConnectorPoint PointX="6.75" PointY="8.8281262499999933" />
-          <ConnectorPoint PointX="7.697916666666667" PointY="8.8281262499999933" />
-          <ConnectorPoint PointX="7.864583333333333" PointY="8.8281262499999933" />
-          <ConnectorPoint PointX="8.75" PointY="8.8281262499999933" />
+          <ConnectorPoint PointX="6.03125" PointY="7.3840950520833388" />
+          <ConnectorPoint PointX="6.03125" PointY="8.8076985677083321" />
+          <ConnectorPoint PointX="7.6276029166666666" PointY="8.8076985677083321" />
+          <ConnectorPoint PointX="7.7942695833333326" PointY="8.8076985677083321" />
+          <ConnectorPoint PointX="7.8033872916666667" PointY="8.8076985677083321" />
+          <ConnectorPoint PointX="7.9700539583333327" PointY="8.8076985677083321" />
+          <ConnectorPoint PointX="8.75" PointY="8.8076985677083321" />
         </AssociationConnector>
         <EntityTypeShape EntityType="BDSysCadModel.Responsavel" Width="1.5" PointX="2.375" PointY="21.375" Height="1.9802864583333388" />
         <AssociationConnector Association="BDSysCadModel.FK_aluno_responsavel" >
@@ -1385,6 +1463,12 @@
           <ConnectorPoint PointX="0.59375" PointY="11.576396484375" />
           <ConnectorPoint PointX="0.59375" PointY="22.365143229166669" />
           <ConnectorPoint PointX="2.375" PointY="22.365143229166669" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="BDSysCadModel.Pagamento" Width="2.125" PointX="8.75" PointY="5.375" Height="2.1725878906250031" />
+        <AssociationConnector Association="BDSysCadModel.FK_pagamento_cobranca" >
+          <ConnectorPoint PointX="7.886720625" PointY="9" />
+          <ConnectorPoint PointX="7.886720625" PointY="7.497091471354171" />
+          <ConnectorPoint PointX="8.75" PointY="7.497091471354171" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
