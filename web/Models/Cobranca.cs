@@ -11,13 +11,19 @@ namespace web.Models
 {
     public class Cobranca
     {
+        public Cobranca()
+        {
+            Pagamentos = new List<Pagamento>();
+        }
         public int idCobranca { get; set; }
         public int idAluno { get; set; }
         public int idTaxa { get; set; }
         public int statusPagamento { get; set; }
+        public DateTime dataVencimento { get; set; }
         public Decimal valorTotal { get; set; }
         public Decimal juros { get; set; }
         public Aluno Aluno { get; set; }
         public Taxa Taxa { get; set; }
+        public ICollection<Pagamento> Pagamentos { get; set; }
     }
 }

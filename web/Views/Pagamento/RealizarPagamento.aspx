@@ -20,12 +20,16 @@
             }
         };
 
-        function salvarAlteracoes(IdAluno, IdTurma, IdModulo, field, newValue) {
+        var realizarPagamento = function (serialize) {
 
-            grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
+            // grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
 
-            $.post('/Professor/EnviarNotaFalta', { idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function () {
-                grdNotaFalta.el.unmask();
+            $.post('/Pagamento/Pagar', serialize, function (result) {
+                //grdNotaFalta.el.unmask();
+                success:
+                {
+                    alert("Pagamento realizar com sucesso!");
+                }
             });
 
         };
@@ -79,7 +83,8 @@
                                 MinChars="1"
                                 PageSize="10"
                                 TriggerAction="Query"
-                                TriggerIcon="Search">
+                                TriggerIcon="Search"
+                                AutoFocus="true">
                                 <Store>
                                     <ext:Store ID="StoreAluno" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -88,9 +93,10 @@
                                         <Reader>
                                             <ext:JsonReader Root="alunos" TotalProperty="totalReg" IDProperty="idAluno">
                                                 <Fields>
-                                                    <ext:RecordField Name="nome" Type="String" Mapping="nome"/>
-                                                    <ext:RecordField Name="cpf" Type="String" Mapping="cpf"/>
-                                                    <ext:RecordField Name="email" Type="String" Mapping="email"/>
+                                                    <ext:RecordField Name="idAluno" Type="Int" />
+                                                    <ext:RecordField Name="nome" Type="String" />
+                                                    <ext:RecordField Name="cpf" Type="String"/>
+                                                    <ext:RecordField Name="email" Type="String" />
                                                 </Fields>
                                             </ext:JsonReader>
                                         </Reader>
@@ -106,45 +112,60 @@
 					                   </tpl>
 				                   </Html>
                                 </Template>
+                                <Listeners>
+                                    <Select Handler="#{StoreCobrancas}.reload()" />
+                                </Listeners>
                             </ext:ComboBox>
                     </Items>
                 </ext:Panel>
                 <ext:GridPanel ID="GridPanel1" 
                     runat="server" 
-                    Title="Employees"
+                    Title="Cobranças"
                     Margins="0 0 5 5"
-                    Icon="UserSuit"
+                    Icon="Money"
                     Region="Center"
-                    AutoExpandColumn="LastName" 
+                    AutoExpandColumn="Taxa.nome" 
                     Frame="true">
                     <Store>
-                        <ext:Store 
-                            ID="Store1" 
-                            runat="server" 
-                           
-                           
-                            AutoLoad="false">
+                        <ext:Store ID="StoreCobrancas" runat="server" AutoLoad="false">
+                            <Proxy>
+                                <ext:HttpProxy Method="GET" Url="/Pagamento/FindAllCobrancas" />
+                            </Proxy>
                             <Reader>
-                                <ext:JsonReader IDProperty="EmployeeID">
+                                <ext:JsonReader Root="cobrancas" TotalProperty="totalReg" IDProperty="idCobranca">
                                     <Fields>
-                                        <ext:RecordField Name="LastName" />
-                                        <ext:RecordField Name="FirstName" />
+                                        <ext:RecordField Name="idCobranca" Type="int"/>
+                                        <ext:RecordField Name="Taxa.nome" Type="String"/>
+                                        <ext:RecordField Name="dataVencimento" Type="Date"/>
+                                        <ext:RecordField Name="Taxa.valor" Type="Float" />
+                                        <ext:RecordField Name="juros" Type="Float" />
+                                        <ext:RecordField Name="valorTotal" Type="Float" />
+                                        <ext:RecordField Name="Aluno.nome" Type="string" />
                                     </Fields>
                                 </ext:JsonReader>
                             </Reader>
+                            <BaseParams>
+                                <ext:Parameter Name="idAluno" Value="#{txtAluno}.getValue()" Mode="Raw" /> 
+                            </BaseParams>
                         </ext:Store>
                     </Store>
                     <ColumnModel ID="ColumnModel1" runat="server">
                         <Columns>
-                            <ext:Column ColumnID="LastName" DataIndex="LastName" Header="Last Name" />
-                            <ext:Column DataIndex="FirstName" Header="First Name" Width="150" />
+                            <ext:Column DataIndex="idCobranca" Header="Id" Width="50" />
+                            <ext:Column DataIndex="Taxa.nome" Header="Cobrança" />
+                            <ext:DateColumn DataIndex="dataVencimento" Header="Data de Vencimento" Width="150" Format="d/M/Y" />
+                            <ext:Column DataIndex="Taxa.valor" Header="Valor" Width="150" />
+                            <ext:Column DataIndex="juros" Header="Juros" Width="150" />
+                            <ext:Column DataIndex="valorTotal" Header="ValorTotal" Width="150" />
                         </Columns>
                     </ColumnModel>
                     <SelectionModel>
                         <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true">
-   
+                            <Listeners>
+                                <RowSelect Handler="#{FormPanel1}.getForm().loadRecord(record);" />
+                            </Listeners>
                         </ext:RowSelectionModel>
-                    </SelectionModel>
+                    </SelectionModel>   
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                     </BottomBar>
@@ -157,27 +178,28 @@
                     Split="true"
                     Margins="0 5 5 5"
                     Frame="true" 
-                    Title="Employee Details" 
+                    Title="Pagamento" 
                     Width="280"
-                    Icon="User"
+                    Icon="MoneyDollar"
                     DefaultAnchor="100%">
                     <Items>
-                        <ext:DisplayField ID="DisplayField1" runat="server" FieldLabel="Employee ID" DataIndex="EmployeeID" />
-                        <ext:TextField ID="TextField1" runat="server" FieldLabel="First Name" DataIndex="FirstName" />
-                        <ext:TextField ID="TextField2" runat="server" FieldLabel="Last Name" DataIndex="LastName" />
-                        <ext:TextField ID="TextField3" runat="server" FieldLabel="Title" DataIndex="Title" />
-                        <ext:TextField ID="TextField4" runat="server" FieldLabel="Reports to" DataIndex="ReportsTo" />
-                        <ext:DateField ID="DateField1" runat="server" FieldLabel="Hire date" Format="yyyy-MM-dd" DataIndex="HireDate" />
-                        <ext:TextField ID="TextField5" runat="server" FieldLabel="Extension" DataIndex="Extension" />
-                        <ext:TextField ID="TextField6" runat="server" FieldLabel="Address" DataIndex="Address" />
-                        <ext:TextField ID="TextField7" runat="server" FieldLabel="City" DataIndex="City" />
-                        <ext:TextField ID="TextField8" runat="server" FieldLabel="Post Code" DataIndex="PostalCode" />
-                        <ext:TextField ID="TextField9" runat="server" FieldLabel="Home Phone" DataIndex="HomePhone" />
-                        <ext:TextField ID="TextField10" runat="server" FieldLabel="Title Of Courtesy" DataIndex="TitleOfCourtesy" />
-                        <ext:DateField ID="DateField2" runat="server" FieldLabel="Birth date" Format="yyyy-MM-dd" DataIndex="BirthDate" />
-                        <ext:TextField ID="TextField11" runat="server" FieldLabel="Region" DataIndex="Region" />
-                        <ext:TextField ID="TextField12" runat="server" FieldLabel="Country" DataIndex="Country" />
-                        <ext:TextArea ID="TextArea1" runat="server" FieldLabel="Note" Height="50" DataIndex="Notes" />
+                        <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />
+                        <ext:DisplayField ID="DisplayField1" runat="server" FieldLabel="Aluno" DataIndex="Aluno.nome" />
+                        <ext:DisplayField ID="DisplayField2" runat="server" FieldLabel="Cobrança" DataIndex="Taxa.nome" />
+                        <ext:DisplayField ID="DisplayField4" runat="server" FieldLabel="Data Vencimento" DataIndex="dataVencimento" LabelWidth="150"  />
+                        <ext:DisplayField ID="DisplayField3" runat="server" FieldLabel="Valor Cobrança" DataIndex="valorTotal" />
+                        <ext:NumberField ID="valorPago" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" />
+                        <ext:ComboBox ID="formaPag" runat="server" FieldLabel="Forma Pagto" AllowBlank="false">
+                            <Items>
+                                <ext:ListItem Text="Dinheiro" Value="1" />
+                                <ext:ListItem Text="Cartão de Crédito" Value="2" />
+                            </Items>
+                        </ext:ComboBox>
+                        <ext:Button ID="btnPagar" Text="Realizar Pagamento" Icon="MoneyAdd" runat="server" >
+                            <Listeners>
+                                <Click Handler="realizarPagamento(#{FormPanel1}.getForm().getValues());" />
+                            </Listeners>
+                        </ext:Button>
                     </Items>
                 </ext:FormPanel>
             </Items>

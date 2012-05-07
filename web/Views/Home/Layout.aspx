@@ -207,7 +207,7 @@
                                              <Nodes>
                                                 <ext:TreeNode Icon="BookAddresses" Expanded="true" Text="Lançar Nota/Falta">
                                                      <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAba3','/Professor/lancarNotaFalta','Lançar Nota/Falta')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAba3','/LancarNotaFalta/lancarNotaFalta','Lançar Nota/Falta')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                             </Nodes>

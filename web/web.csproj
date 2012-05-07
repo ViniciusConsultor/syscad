@@ -84,7 +84,7 @@
     <Compile Include="Controllers\ModuloController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
-    <Compile Include="Controllers\ProfessorController.cs" />
+    <Compile Include="Controllers\LancarNotaFaltaController.cs" />
     <Compile Include="Controllers\PagamentoController.cs" />
     <Compile Include="Controllers\TaxaController.cs" />
     <Compile Include="Controllers\TipoEnderecoController.cs" />
@@ -105,6 +105,7 @@
     <Compile Include="Models\Modulo.cs" />
     <Compile Include="Models\ModuloViewData.cs" />
     <Compile Include="Models\NotaFalta.cs" />
+    <Compile Include="Models\Pagamento.cs" />
     <Compile Include="Models\Perfil.cs" />
     <Compile Include="Models\Pessoa.cs" />
     <Compile Include="Models\Professor.cs" />
@@ -177,7 +178,7 @@
     <Content Include="Views\Home\Layout.aspx" />
     <Content Include="Views\Modulo\Modulo.aspx" />
     <Content Include="Views\Pessoa\Pessoa.aspx" />
-    <Content Include="Views\Professor\LancarNotaFalta.aspx" />
+    <Content Include="Views\LancarNotaFalta\LancarNotaFalta.aspx" />
     <Content Include="Views\Pagamento\RealizarPagamento.aspx" />
     <Content Include="Views\Taxa\Taxa.aspx" />
     <Content Include="Web.config">
