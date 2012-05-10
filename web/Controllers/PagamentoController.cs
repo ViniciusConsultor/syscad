@@ -76,25 +76,22 @@ namespace web.Controllers
                                                        Aluno = new Models.Aluno
                                                        {
                                                            nome = c.Aluno.Pessoa.nome
-                                                       }
+                                                       },
+                                                       valorPago = c.Pagamentos.Sum(x => x.valor),
+                                                       valorFaltante = c.Pagamentos.Sum(x => x.valor) - c.valorTotal
                                                    }).ToList();
             string jsonResult = JSON.Serialize(listaCobranca);
             return "{cobrancas:" + jsonResult + ", totalReg:" + listaCobranca.Count() + " }";
         }
 
-        public JsonResult Pagar(int idCobranca, decimal valorPago, int formaPag_Value)
+        public JsonResult Pagar(int idCobranca, decimal valorPagar, int formaPag_Value)
         {
             string mensagem;
             try
             {
-                Pagamento p = new Pagamento();
-                p.valor = valorPago;
-                p.formaPag = formaPag_Value;
-                p.dataPagamento = DateTime.Now;
-                p.idCobranca = idCobranca;
-
-                dbPagamento.Adicionar(p);
-                dbPagamento.SaveChanges();
+                string sql = "INSERT INTO Pagamento (idCobranca,valor,formaPag) VALUES ({0},{1},{2})";
+                Object[] parameters = { idCobranca, valorPagar, formaPag_Value };
+                dbPagamento.Context.ExecuteStoreCommand(sql, parameters);
 
                 mensagem = "Pagamento realizado com sucesso!";
             }
