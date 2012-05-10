@@ -16,6 +16,47 @@
     //Variaveis GENERICAS
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
 
+    function salvarEndereco() {
+
+        winNovoEndereco.hide();
+
+        GridPanelEndereco.el.mask('Salvando', 'x-mask-loading');
+
+        $.post('/Endereco/Save', $("#FormNovoEndereco").serialize(), function (valor) {
+            Ext.Msg.show({
+                title: 'Sucesso',
+                msg: 'Endereço salvo com sucesso',
+                buttons: Ext.Msg.OK
+            });
+            GridPanel.reload();
+            GridPanel.el.unmask();
+        });
+
+    };
+
+    function novoEndereco() {
+
+        if (GridPanel.getSelectionModel().hasSelection()) {
+
+            var pessoa = GridPanel.getSelectionModel().getSelected();
+
+            this.cmbPessoa.ValueField = pessoa.data.idPessoa;
+            this.cmbPessoa.DisplayField = pessoa.data.nome;
+
+            winNovoEndereco.show();
+
+        }else{
+
+            Ext.Msg.show({
+                title: 'Aviso',
+                msg: 'Selecione uma Pessoa antes de cadastrar um novo endereço!',
+                buttons: Ext.Msg.OK
+            });
+
+        }
+
+    }
+
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 
@@ -190,7 +231,6 @@
                                                         <ext:RecordField Name="bairro" Type="String" />
                                                         <ext:RecordField Name="cidade" Type="String" />
                                                         <ext:RecordField Name="uf" Type="String" />
-                                                        <ext:RecordField Name="tipo" Type="Int" />
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>
@@ -202,7 +242,7 @@
                                     <Listeners>
                                         <KeyDown Fn="startEditing" />
                                         <AfterEdit Fn="afterEdit" />
-                                    </Listeners>
+                                    </Listeners>                                    
                                     <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                                         <Columns>
 
@@ -216,8 +256,7 @@
                                             <ext:Column ColumnID="CEP" Header="CEP" DataIndex="CEP" Width="100"/>
                                             <ext:Column ColumnID="bairro" Header="Bairro" DataIndex="bairro" Width="100"/>
                                             <ext:Column ColumnID="cidade" Header="Cidade" DataIndex="cidade" Width="100"/>
-                                            <ext:Column ColumnID="uf" Header="UF" DataIndex="uf" Width="100"/>
-                                            <ext:Column ColumnID="tipo" Header="Tipo" DataIndex="tipo" Width="100"/>
+                                            <ext:Column ColumnID="uf" Header="UF" DataIndex="uf" Width="100"/>                                            
 
                                         </Columns>
                                     </ColumnModel>
@@ -230,7 +269,7 @@
                                             <Items>
                                                 <ext:Button ID="Button2" runat="server" Text="Novo" Icon="Add">
                                                     <Listeners> 
-                                                        <Click Handler="winNovoEndereco.show()" />
+                                                        <Click Handler="novoEndereco()" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button ID="Button3" runat="server" Text="Excluir" Icon="Delete">
@@ -259,7 +298,7 @@
         </Items>
     </ext:Viewport>
     
-    <form id="Novo">
+    <form id="Novo" runat="server">
     
         <ext:Window 
                 ID="winNovo" 
@@ -383,7 +422,8 @@
                                 MinChars="1"
                                 FieldLabel="Pessoa"
                                 TriggerAction="All"
-                                AllowBlank="false">
+                                AllowBlank="false"
+                                Disabled="true">
                                 <Store>
                                     <ext:Store ID="Store2" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -424,7 +464,6 @@
                             <ext:TextField ID="txtBairro" runat="server" FieldLabel="Bairro" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
                             <ext:TextField ID="txtCidade" runat="server" FieldLabel="Cidade" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
                             <ext:TextField ID="txtUf" runat="server" FieldLabel="UF" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:NumberField ID="txtTipo" runat="server" FieldLabel="Tipo" Width="350" AllowBlank="false" AutoFocus="true" />
 
                         </Items>
 
@@ -434,7 +473,7 @@
                                     <ext:ToolbarFill />
                                         <ext:Button ID="Button10" Text="Salvar" Icon="Disk" runat="server">
                                             <Listeners>
-                                                <Click Handler="salvar()" />
+                                                <Click Handler="salvarEndereco()" />
                                             </Listeners>
                                         </ext:Button>
                                 </Items>

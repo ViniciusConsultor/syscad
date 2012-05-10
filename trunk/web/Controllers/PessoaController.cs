@@ -79,7 +79,7 @@ namespace web.Controllers
             pessoa.telefone = txtTelefone;
             pessoa.celular = txtCelular;
             pessoa.dataNascimento = Convert.ToDateTime(dtnascimento);
-            pessoa.sexo = Convert.ToInt32(txtSexo);
+            pessoa.sexo = txtSexo;
 
             try
             {
