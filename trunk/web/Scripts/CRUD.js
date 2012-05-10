@@ -42,7 +42,7 @@ function salvar() {
     $.post(metodoSalvar, $("#Novo").serialize(), function (valor) {
         Ext.Msg.show({
             title: 'Sucesso',
-            msg: controller + ' salvo com sucesso',
+            msg: controller + ' salvo(a) com sucesso',
             buttons: Ext.Msg.OK
         });
         GridPanel.reload();

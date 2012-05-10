@@ -43,12 +43,12 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save(int cmbTipoEndereco, int cmbPessoa, string txtLogradouro, int txtNumero, string txtComplemento, string txtCep, string txtBairro, string txtCidade, string txtUf)
+        public JsonResult Save(int cmbTipoEndereco_Value, int idPessoa_Value, string txtLogradouro, int txtNumero, string txtComplemento, string txtCep, string txtBairro, string txtCidade, string txtUf)
         {
 
             Endereco endereco = new Endereco();
-            endereco.idTipoEndereco = cmbTipoEndereco;
-            endereco.idPessoa = cmbPessoa;
+            endereco.idTipoEndereco = cmbTipoEndereco_Value;
+            endereco.idPessoa = idPessoa_Value;
             endereco.logradouro = txtLogradouro;
             endereco.numero = txtNumero;
             endereco.complemento = txtComplemento;
@@ -61,6 +61,29 @@ namespace web.Controllers
             {
 
                 dbEndereco.Adicionar(endereco);
+                dbEndereco.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult Excluir(int id)
+        {
+
+            Endereco endereco = dbEndereco.FindOne(end => end.idEndereco == id);
+
+            try
+            {
+                dbEndereco.Remover(endereco);
                 dbEndereco.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
