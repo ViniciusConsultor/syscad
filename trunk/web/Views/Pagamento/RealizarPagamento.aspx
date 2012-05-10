@@ -8,6 +8,13 @@
 <head id="Head1" runat="server">
     <title>Realizar Pagamento</title>
     <link href="../../Content/Grid.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+        .faltante
+        {
+            font-weight:bold;
+            color:Red;
+        }
+    </style>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         var startEditing = function (e) {
@@ -20,20 +27,42 @@
             }
         };
 
-        var realizarPagamento = function (serialize) {
+        var realizarPagamento = function (serialize) {          
 
-            // grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
-
-            $.post('/Pagamento/Pagar', serialize, function (result) {
-                //grdNotaFalta.el.unmask();
-                success:
-                {
-                    alert("Pagamento realizar com sucesso!");
-                }
-            });
+            if (validaTotal()) {
+                
+                $.post('/Pagamento/Pagar', serialize, function (result) {
+                    //grdNotaFalta.el.unmask();
+                    success:
+                    {
+                        alert(result.message);
+                    }
+                });
+            }
 
         };
 
+        var validaTotal = function () {
+            var valorTotal = $("#valorTotal").text();
+            var valorPago = $("#valorPagar").val();
+
+            if (valorPago < validaTotal) {
+                if (confirm("O valor pago é menor que o valor total, deseja continuar?")) {
+                    $("#valorPago").text(valorPago);
+                    $("#valorFaltante").text(valorTotal - valorPago);
+                    return true;
+                }
+            }
+        }
+
+        var LoadFormulario = function () {
+            alert($("#valorPago").text());
+        }
+
+        var mostrarCampos = function (cmpFaltante, cmpValorPago) {
+            cmpFaltante.show();
+            cmpValorPago.show();
+        }
         var afterEdit = function (e) {
             /*
             Properties of 'e' include:
@@ -141,6 +170,8 @@
                                         <ext:RecordField Name="juros" Type="Float" />
                                         <ext:RecordField Name="valorTotal" Type="Float" />
                                         <ext:RecordField Name="Aluno.nome" Type="string" />
+                                        <ext:RecordField Name="valorPago" Type="Float" />
+                                        <ext:RecordField Name="valorFaltante" Type="Float" />
                                     </Fields>
                                 </ext:JsonReader>
                             </Reader>
@@ -181,14 +212,17 @@
                     Title="Pagamento" 
                     Width="280"
                     Icon="MoneyDollar"
-                    DefaultAnchor="100%">
+                    DefaultAnchor="100%"
+                    >
                     <Items>
-                        <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />
+                        <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />                       
                         <ext:DisplayField ID="DisplayField1" runat="server" FieldLabel="Aluno" DataIndex="Aluno.nome" />
                         <ext:DisplayField ID="DisplayField2" runat="server" FieldLabel="Cobrança" DataIndex="Taxa.nome" />
                         <ext:DisplayField ID="DisplayField4" runat="server" FieldLabel="Data Vencimento" DataIndex="dataVencimento" LabelWidth="150"  />
-                        <ext:DisplayField ID="DisplayField3" runat="server" FieldLabel="Valor Cobrança" DataIndex="valorTotal" />
-                        <ext:NumberField ID="valorPago" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" />
+                        <ext:DisplayField ID="valorTotal" runat="server" FieldLabel="Valor Total" DataIndex="valorTotal" />
+                        <ext:DisplayField ID="valorPago" runat="server" FieldLabel="Valor Pago" DataIndex="valorPago" Hidden="true" />
+                        <ext:DisplayField ID="valorFaltante" runat="server" FieldLabel="Valor Faltante" DataIndex="valorFaltante" Hidden="true" Cls="faltante" />
+                        <ext:NumberField ID="valorPagar" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" />
                         <ext:ComboBox ID="formaPag" runat="server" FieldLabel="Forma Pagto" AllowBlank="false">
                             <Items>
                                 <ext:ListItem Text="Dinheiro" Value="1" />
@@ -197,7 +231,7 @@
                         </ext:ComboBox>
                         <ext:Button ID="btnPagar" Text="Realizar Pagamento" Icon="MoneyAdd" runat="server" >
                             <Listeners>
-                                <Click Handler="realizarPagamento(#{FormPanel1}.getForm().getValues());" />
+                                <Click Handler="mostrarCampos(#{valorFaltante},#{valorPago}); realizarPagamento(#{FormPanel1}.getForm().getValues());" />
                             </Listeners>
                         </ext:Button>
                     </Items>

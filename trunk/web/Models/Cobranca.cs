@@ -20,7 +20,9 @@ namespace web.Models
         public int idTaxa { get; set; }
         public int statusPagamento { get; set; }
         public DateTime dataVencimento { get; set; }
-        public Decimal valorTotal { get; set; }
+        public decimal valorTotal { get; set; }
+        public decimal valorFaltante { get; set; }
+        public decimal valorPago { get; set; }
         public Decimal juros { get; set; }
         public Aluno Aluno { get; set; }
         public Taxa Taxa { get; set; }
