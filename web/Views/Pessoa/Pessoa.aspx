@@ -16,32 +16,49 @@
     //Variaveis GENERICAS
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
 
-    function salvarEndereco() {
+    function salvarEndereco(fooorm) {
 
         winNovoEndereco.hide();
 
         GridPanelEndereco.el.mask('Salvando', 'x-mask-loading');
 
-        $.post('/Endereco/Save', $("#FormNovoEndereco").serialize(), function (valor) {
+        $.post('/Endereco/Save', fooorm, function (valor) {
             Ext.Msg.show({
                 title: 'Sucesso',
                 msg: 'Endereço salvo com sucesso',
                 buttons: Ext.Msg.OK
             });
-            GridPanel.reload();
-            GridPanel.el.unmask();
+            GridPanelEndereco.reload();
+            GridPanelEndereco.el.unmask();
         });
 
+    };
+
+    function excluirEndereco() {
+        var confirm = Ext.Msg.confirm('Confirmação', 'Tem certeza que deseja excluir endereco ?', function (btn) {
+
+            if (btn == 'yes') {
+                if (GridPanelEndereco.getSelectionModel().hasSelection()) {
+
+                    GridPanelEndereco.el.mask('Excluindo endereco', 'x-mask-loading');
+
+                    var record = GridPanelEndereco.getSelectionModel().getSelected();
+
+                    $.post('/Endereco/Excluir', { id: record.data.idEndereco }, function () {
+                        GridPanelEndereco.reload();
+                        GridPanelEndereco.el.unmask();
+                    });
+
+                }
+            }
+
+        });
+                   
     };
 
     function novoEndereco() {
 
         if (GridPanel.getSelectionModel().hasSelection()) {
-
-            var pessoa = GridPanel.getSelectionModel().getSelected();
-
-            this.cmbPessoa.ValueField = pessoa.data.idPessoa;
-            this.cmbPessoa.DisplayField = pessoa.data.nome;
 
             winNovoEndereco.show();
 
@@ -56,7 +73,6 @@
         }
 
     }
-
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 
@@ -154,15 +170,15 @@
                                             <ext:Column Header="Sexo" DataIndex="sexo" Width="150">
                                                 <Editor>
                                                     <ext:TextField ID="txtSexoEditar" runat="server" />
-                                                </Editor>
-                                                
+                                                </Editor>                                                
                                             </ext:Column>
+
                                         </Columns>
                                     </ColumnModel>
                                 <SelectionModel>
                                     <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true">
                                         <Listeners>
-                                            <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{StoreEndereco}.reload();}" Buffer="250" />
+                                            <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{StoreEndereco}.reload();}; #{endereco}.getForm().loadRecord(record);" Buffer="250" />
                                         </Listeners>
                                     </ext:RowSelectionModel>
                                 </SelectionModel>
@@ -274,7 +290,7 @@
                                                 </ext:Button>
                                                 <ext:Button ID="Button3" runat="server" Text="Excluir" Icon="Delete">
                                                     <Listeners> 
-                                                        <Click Handler="excluirRegistro()" />
+                                                        <Click Handler="excluirEndereco()" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button ID="Button5" runat="server" Text="Editar" Icon="Information">
@@ -348,7 +364,7 @@
 
     </form>
 
-    <form id="FormNovoEndereco">
+    <form id="FormNovoEndereco" >
     
         <ext:Window 
                 ID="winNovoEndereco" 
@@ -409,7 +425,7 @@
                                 </Template>
                             </ext:ComboBox>
 
-                            <ext:ComboBox ID="cmbPessoa" 
+                            <ext:ComboBox ID="idPessoa" 
                                 runat="server" 
                                 DisplayField="nome" 
                                 ValueField="idPessoa" 
@@ -423,7 +439,8 @@
                                 FieldLabel="Pessoa"
                                 TriggerAction="All"
                                 AllowBlank="false"
-                                Disabled="true">
+                                Disabled="true"
+                                Hidden ="true">
                                 <Store>
                                     <ext:Store ID="Store2" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -473,7 +490,7 @@
                                     <ext:ToolbarFill />
                                         <ext:Button ID="Button10" Text="Salvar" Icon="Disk" runat="server">
                                             <Listeners>
-                                                <Click Handler="salvarEndereco()" />
+                                                <Click Handler="salvarEndereco(#{endereco}.getForm().getValues())" />
                                             </Listeners>
                                         </ext:Button>
                                 </Items>
