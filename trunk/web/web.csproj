@@ -81,6 +81,7 @@
     <Compile Include="Controllers\EnderecoController.cs" />
     <Compile Include="Controllers\FuncionarioController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MatriculaController.cs" />
     <Compile Include="Controllers\ModuloController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
@@ -176,6 +177,7 @@
     <Content Include="Views\Funcionario\Funcionario.aspx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Home\Layout.aspx" />
+    <Content Include="Views\Matricula\Matricula.aspx" />
     <Content Include="Views\Modulo\Modulo.aspx" />
     <Content Include="Views\Pessoa\Pessoa.aspx" />
     <Content Include="Views\LancarNotaFalta\LancarNotaFalta.aspx" />

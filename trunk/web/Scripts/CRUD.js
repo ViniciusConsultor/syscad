@@ -57,7 +57,7 @@ function editar() {
 
     Ext.Msg.show({
         title: 'Como Editar',
-        msg: 'Para editar qualquer registro basta selecionar aquele que deseja editar e dar dois cliques na em cima do registro que deseja alterar, ou se preferir pressione o botão ENTER.',
+        msg: 'Para editar qualquer registro basta selecionar aquele que deseja editar e dar dois cliques em cima do registro que deseja alterar, ou se preferir pressione o botão ENTER.',
         buttons: Ext.Msg.OK
     });
 
