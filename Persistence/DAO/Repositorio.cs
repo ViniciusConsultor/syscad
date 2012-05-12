@@ -81,13 +81,13 @@ namespace Persistence.DAO
 
         public virtual T FindOne(Expression<Func<T, bool>> where)
         {
-            return context.CreateQuery<T>(EntitySetName).Where(where).FirstOrDefault();
+           return context.CreateQuery<T>(EntitySetName).Where(where).FirstOrDefault();
         }
 
        // public T FindOne(object id)
        // {
        //     return context.CreateQuery<T>(EntitySetName, new ObjectParameter("idUsuario", id)).First<T>();
-      //  }
+       // }
 
         public virtual List<T> FindAll()
         {

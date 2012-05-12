@@ -217,6 +217,9 @@
                                                 <ext:TreeNode Icon="Clock" Expanded="true" Text="Consultar disponibilidade horário/turma">
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="BookOpen" Expanded="true" Text="Realizar Matrícula">
+                                                  <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaRealizarMatricula','/Matricula/Matricula','Realizar Matrícula')" />
+                                                  </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="Money" Expanded="true" Text="Realizar Pagamento">
                                                     <Listeners>
