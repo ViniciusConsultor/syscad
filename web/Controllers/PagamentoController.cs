@@ -78,7 +78,7 @@ namespace web.Controllers
                                                            nome = c.Aluno.Pessoa.nome
                                                        },
                                                        valorPago = c.Pagamentos.Sum(x => x.valor),
-                                                       valorFaltante = c.Pagamentos.Sum(x => x.valor) - c.valorTotal
+                                                       valorFaltante = c.valorTotal - c.Pagamentos.Sum(x => x.valor)
                                                    }).ToList();
             string jsonResult = JSON.Serialize(listaCobranca);
             return "{cobrancas:" + jsonResult + ", totalReg:" + listaCobranca.Count() + " }";
@@ -101,6 +101,16 @@ namespace web.Controllers
             }
 
             return Json(new { success= true, message = mensagem });
+        }
+
+        public JsonResult MudarStatus(int idCobranca, int status)
+        {
+            Cobranca c = dbCobranca.FindOne(x => x.idCobranca == idCobranca);
+            c.statusPagamento = status;
+            dbCobranca.Atualizar(c);
+            dbCobranca.SaveChanges();
+
+            return Json(new { success = true });
         }
     }
 }
