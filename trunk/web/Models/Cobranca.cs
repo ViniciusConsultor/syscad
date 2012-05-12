@@ -21,8 +21,8 @@ namespace web.Models
         public int statusPagamento { get; set; }
         public DateTime dataVencimento { get; set; }
         public decimal valorTotal { get; set; }
-        public decimal valorFaltante { get; set; }
-        public decimal valorPago { get; set; }
+        public decimal? valorFaltante { get; set; }
+        public decimal? valorPago { get; set; }
         public Decimal juros { get; set; }
         public Aluno Aluno { get; set; }
         public Taxa Taxa { get; set; }
