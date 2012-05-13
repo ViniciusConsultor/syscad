@@ -70,7 +70,7 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save(string txtNome, string txtCpf, string txtEmail, string txtTelefone, string txtCelular, string dtnascimento, int txtSexo)
+        public JsonResult Save(string txtNome, string txtCpf, string txtEmail, string txtTelefone, string txtCelular, string dtnascimento, int txtSexo_Value)
         {
             Pessoa pessoa = new Pessoa();
             pessoa.nome = txtNome;
@@ -79,7 +79,7 @@ namespace web.Controllers
             pessoa.telefone = txtTelefone;
             pessoa.celular = txtCelular;
             pessoa.dataNascimento = Convert.ToDateTime(dtnascimento);
-            pessoa.sexo = txtSexo;
+            pessoa.sexo = txtSexo_Value;
 
             try
             {

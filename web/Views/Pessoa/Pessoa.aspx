@@ -73,6 +73,18 @@
         }
 
     }
+
+    function formataSexo(sexo) {
+
+        if (sexo == 1) {
+            return "Masculino";
+
+        } else {
+            return "Feminino";
+        }
+
+    }
+
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 
@@ -141,35 +153,45 @@
 
                                             <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" Width="150" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtNomeEditar" runat="server" />
+                                                    <ext:TextField ID="txtNomeEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="cpf" Header="CPF" DataIndex="cpf" Width="150" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtCPFEditar" runat="server" />
+                                                    <ext:TextField ID="txtCPFEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column Header="Email" DataIndex="email" Width="200" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtEmailEditar" runat="server" />
+                                                    <ext:TextField ID="txtEmailEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column Header="Telefone" DataIndex="telefone" Width="75" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtTelefoneEditar" runat="server" />
+                                                    <ext:TextField ID="txtTelefoneEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column Header="Celular" DataIndex="celular" Width="75" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtCelularEditar" runat="server" />
+                                                    <ext:TextField ID="txtCelularEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
 
-                                            <ext:DateColumn DataIndex="dataNascimento" Header="Data de Nascimento" Width="200" Format="d/m/Y" />
+                                            <ext:DateColumn DataIndex="dataNascimento" Header="Data de Nascimento" Width="200" Format="d/m/Y">
+                                                <Editor>
+                                                    <ext:DateField ID="dtNascimentoEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" /> 
+                                                </Editor>
+                                            </ext:DateColumn>
                         
                                             <ext:Column Header="Sexo" DataIndex="sexo" Width="150">
+                                                <Renderer Fn="formataSexo" />
                                                 <Editor>
-                                                    <ext:TextField ID="txtSexoEditar" runat="server" />
+                                                    <ext:ComboBox ID="txtSexoEditar" runat="server" Width="175" AnchorHorizontal="100%" AllowBlank="false">
+                                                        <Items>
+                                                            <ext:ListItem Text="Masculino" Value="1" />
+                                                            <ext:ListItem Text="Feminino" Value="0" />
+                                                        </Items>
+                                                    </ext:ComboBox>
                                                 </Editor>                                                
                                             </ext:Column>
 
@@ -339,9 +361,13 @@
                             <ext:TextField ID="txtEmail" runat="server" FieldLabel="Email" Width="175" AllowBlank="false" />
                             <ext:TextField ID="txtTelefone" runat="server" FieldLabel="Telefone" Width="175" AllowBlank="false" />
                             <ext:TextField ID="txtCelular" runat="server" FieldLabel="Celular" Width="175" AllowBlank="false" />
-                            
-                            <ext:DateField ID="dtNascimento" runat="server" FieldLabel="Data de Nascimento" AnchorHorizontal="100%" EnableKeyEvents="true" /> 
-                            <ext:TextField ID="txtSexo" runat="server" FieldLabel="Sexo" Width="175" AllowBlank="false" />
+                            <ext:DateField ID="dtNascimento" runat="server" FieldLabel="Data de Nascimento" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
+                            <ext:ComboBox ID="txtSexo" runat="server" FieldLabel="Sexo" AllowBlank="false" Width="175">
+                                <Items>
+                                    <ext:ListItem Text="Masculino" Value="1" />
+                                    <ext:ListItem Text="Feminino" Value="0" />
+                                </Items>
+                            </ext:ComboBox>
                         </Items>
 
                         <BottomBar>

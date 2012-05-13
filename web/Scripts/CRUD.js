@@ -67,6 +67,8 @@ function editar() {
 
 function salvarAlteracoes(id, field, newValue) {
 
+    newValue = newValue.dateFormat('d/m/Y').toString();
+
     GridPanel.el.mask('Alterando ...', 'x-mask-loading');
 
     $.post(metodoEditar, { id: id, campo: field, valor: newValue }, function () {
