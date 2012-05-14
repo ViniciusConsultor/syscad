@@ -16,38 +16,41 @@
         }
     </style>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+    <script src="../../Scripts/jquery.maskMoney.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var startEditing = function (e) {
-            if (e.getKey() === e.ENTER) {
-                var grid = grdNotaFalta,
-                    record = grid.getSelectionModel().getSelected(),
-                    index = grid.store.indexOf(record);
+        $(document).ready(function () {
+            $("#valorPagar").maskMoney();
+        });
 
-                grid.startEditing(index, 1);
-            }
+       var formataDinheiro = function(num) {
+            num = num.toString().replace(/\R$|\,/g, '');
+            if (isNaN(num)) num = "0";
+            sign = (num == (num = Math.abs(num)));
+            num = Math.floor(num * 100 + 0.50000000001);
+            cents = num % 100;
+            num = Math.floor(num / 100).toString();
+            if (cents < 10) cents = "0" + cents;
+            for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+                num = num.substring(0, num.length - (4 * i + 3)) + '.' + num.substring(num.length - (4 * i + 3));
+            return (((sign) ? '' : '-') + 'R$ ' + num + ',' + cents);
+        }
+
+        var pagar = function (serialize) {
+            $.post('/Pagamento/Pagar', serialize, function (result) {
+                success:
+                {
+                    Ext.Msg.show({
+                        title: 'Sucesso',
+                        msg: result.message,
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.Msg.INFO
+                    });
+                    Ext.getCmp('grdCobrancas').getStore().reload();
+                }
+            });
         };
 
         var realizarPagamento = function (serialize) {
-
-            if (validaTotal()) {
-
-                $.post('/Pagamento/Pagar', serialize, function (result) {
-                    //grdNotaFalta.el.unmask();
-                    success:
-                    {
-                        Ext.Msg.show({
-                            title: 'Sucesso',
-                            msg: result.message,
-                            buttons: Ext.Msg.OK,
-                            icon: Ext.Msg.INFO
-                        });
-                    }
-                });
-            }
-
-        };
-
-        var validaTotal = function () {
             var valorTotal = parseFloat($("#valorTotal").text());
             var valorPagar = parseFloat($("#valorPagar").val());
             var valorPago = parseFloat($("#valorPago").text());
@@ -60,7 +63,6 @@
                     buttons: Ext.Msg.OK,
                     icon: Ext.Msg.ERROR
                 });
-                return false;
 
             } else if ((valorPagar + valorPago) < valorTotal) {
                 Ext.Msg.confirm("Atenção", "O valor pago é menor que o valor total, deseja continuar?", function (btn) {
@@ -70,49 +72,39 @@
                         $("#valorFaltante").text(valorTotal - valorPagoSum);
                         $("#valorPagar").val('');
                         $("#formaPag").val('');
-                        return true;
+                        pagar(serialize);
                     }
                 });
             } else if ((valorPagar + valorPago) == valorTotal) {
-                var idCobranca = Ext.getCmp("idCobranca").getValue();
-                Ext.getCmp("FormPanel1").getForm().reset();
                 Ext.getCmp("FormPanel1").toggleCollapse();
-                
-                alert(idCobranca);
-                $.post('/Pagamento/MudarStatus', { idCobranca: idCobranca, status: 6 }, function (result) {
-                });
-                return true;
+                Ext.getCmp("valorPago").hide();
+                Ext.getCmp("valorFaltante").hide();
+                pagar(serialize);
+                mudarStatus();
+                Ext.getCmp("FormPanel1").getForm().reset();
             }
         }
+
+        var mudarStatus = function () {
+            var idCobranca = Ext.getCmp("idCobranca").getValue();
+            $.post("/Pagamento/MudarStatus", { idCobranca: idCobranca, status: 6 }, function (result) {
+            });
+        };
 
         var LoadFormulario = function (record, cmpFaltante, cmpValorPago) {
-            Ext.getCmp("FormPanel1").toggleCollapse();
-            $("#valorPagar").focus();
+            Ext.getCmp("FormPanel1").expand();
             if (record.data.valorPago != "") {
-                mostrarCampos(cmpFaltante, cmpValorPago);
+                mostrarCampos();
             }
         }
 
-        var mostrarCampos = function (cmpFaltante, cmpValorPago) {
-            cmpFaltante.show();
-            cmpValorPago.show();
+        var mostrarCampos = function () {
+            Ext.getCmp("valorPago").show();
+            Ext.getCmp("valorFaltante").show();
         }
-        var afterEdit = function (e) {
-            /*
-            Properties of 'e' include:
-            e.grid - This grid
-            e.record - The record being edited
-            e.field - The field name being edited
-            e.value - The value being set
-            e.originalValue - The original value for the field, before the edit.
-            e.row - The grid row index
-            e.column - The grid column index
-            */
-            salvarAlteracoes(e.record.data.IdAluno, e.record.data.IdTurma, e.record.data.IdModulo, e.field, e.value);
-            var mensagem = "<b>Campo Editado:&nbsp;</b> " + e.field + "<br /><b>Valor Anterior:</b>&nbsp; " + e.originalValue + "<br /><b>Valor Atual:</b>&nbsp; " + e.value;
-            Ext.Msg.notify("Cadastrado com sucesso!", mensagem);
 
-            grdNotaFalta.store.commitChanges();
+        var renderForm = function (obj) {
+            alert(obj.getValue());
         };
     </script>
 </head>
@@ -203,7 +195,7 @@
                                             <Fields>
                                                 <ext:RecordField Name="idCobranca" Type="int"/>
                                                 <ext:RecordField Name="Taxa.nome" Type="String"/>
-                                                <ext:RecordField Name="dataVencimento" Type="Date"/>
+                                                <ext:RecordField Name="dataVencimento" DateFormat="dd/MM/yyyy" />
                                                 <ext:RecordField Name="Taxa.valor" Type="Float" />
                                                 <ext:RecordField Name="juros" Type="Float" />
                                                 <ext:RecordField Name="valorTotal" Type="Float" />
@@ -222,10 +214,16 @@
                                 <Columns>
                                     <ext:Column DataIndex="idCobranca" Header="Id" Width="50" />
                                     <ext:Column DataIndex="Taxa.nome" Header="Cobrança" />
-                                    <ext:DateColumn DataIndex="dataVencimento" Header="Data de Vencimento" Width="150" Format="d/M/Y" />
-                                    <ext:Column DataIndex="Taxa.valor" Header="Valor" Width="150" />
-                                    <ext:Column DataIndex="juros" Header="Juros" Width="150" />
-                                    <ext:Column DataIndex="valorTotal" Header="ValorTotal" Width="150" />
+                                    <ext:DateColumn DataIndex="dataVencimento" Header="Data de Vencimento" Width="150" Format="dd/MM/yyyy" />
+                                    <ext:Column DataIndex="Taxa.valor" Header="Valor" Width="150">
+                                        <Renderer Fn="formataDinheiro" />
+                                    </ext:Column>
+                                    <ext:Column DataIndex="juros" Header="Juros" Width="150" >
+                                        <Renderer Fn="formataDinheiro" />
+                                    </ext:Column>
+                                    <ext:Column DataIndex="valorTotal" Header="ValorTotal" Width="150" >
+                                        <Renderer Fn="formataDinheiro" />
+                                    </ext:Column>
                                 </Columns>
                             </ColumnModel>
                             <SelectionModel>
@@ -254,11 +252,11 @@
                             Collapsed="true"
                             >
                             <Items>
-                                <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />                       
+                                <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />                                                     
                                 <ext:DisplayField ID="DisplayField1" runat="server" FieldLabel="Aluno" DataIndex="Aluno.nome" />
                                 <ext:DisplayField ID="DisplayField2" runat="server" FieldLabel="Cobrança" DataIndex="Taxa.nome" />
-                                <ext:DisplayField ID="DisplayField4" runat="server" FieldLabel="Data Vencimento" DataIndex="dataVencimento" LabelWidth="150"  />
-                                <ext:DisplayField ID="valorTotal" runat="server" FieldLabel="Valor Total" DataIndex="valorTotal" />
+                                <ext:DisplayField ID="dataVencimento" runat="server" FieldLabel="Data Vencimento" />
+                                <ext:DisplayField ID="valorTotal" runat="server" FieldLabel="Valor Total" DataIndex="valorTotal"/>
                                 <ext:DisplayField ID="valorPago" runat="server" FieldLabel="Valor Pago" DataIndex="valorPago" Hidden="true" />
                                 <ext:DisplayField ID="valorFaltante" runat="server" FieldLabel="Valor Faltante" DataIndex="valorFaltante" Hidden="true" Cls="faltante" />
                                 <ext:NumberField ID="valorPagar" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" />
@@ -270,7 +268,7 @@
                                 </ext:ComboBox>
                                 <ext:Button ID="btnPagar" Text="Realizar Pagamento" Icon="MoneyAdd" runat="server" >
                                     <Listeners>
-                                        <Click Handler="mostrarCampos(#{valorFaltante},#{valorPago}); realizarPagamento(#{FormPanel1}.getForm().getValues());" />
+                                        <Click Handler="mostrarCampos(); realizarPagamento(#{FormPanel1}.getForm().getValues());" />
                                     </Listeners>
                                 </ext:Button>
                             </Items>
@@ -281,5 +279,4 @@
         </ext:Viewport>
     </form>
 </body>
-</html>
 </html>

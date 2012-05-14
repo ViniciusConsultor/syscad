@@ -18,7 +18,7 @@ namespace web.Models
             Turmas = new List<Turma>();
         }
         public int idCurso { get; set; }
-        public ICollection<Modulo> Modulos { get; set; } // muitos modulos
+        public List<Modulo> Modulos { get; set; } // muitos modulos
         public ICollection<Turma> Turmas { get; set; } // muitas turmas
         public string nome { get; set; }
         public string descricao { get; set; }

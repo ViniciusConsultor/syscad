@@ -165,12 +165,14 @@
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\CRUD.js" />
+    <Content Include="Scripts\Ext.ux.TextMask.js" />
     <Content Include="Scripts\funcoes_ready.js" />
     <Content Include="Scripts\jquery-1.4.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.4.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
+    <Content Include="Scripts\jquery.maskMoney.js" />
     <Content Include="Views\Cargo\Cargo.aspx" />
     <Content Include="Views\Curso\Curso.aspx" />
     <Content Include="Views\Endereco\Endereco.aspx" />

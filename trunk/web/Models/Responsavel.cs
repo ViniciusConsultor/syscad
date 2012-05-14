@@ -9,7 +9,6 @@ namespace web.Models
     {
 
         public int idResponsavel { get; set; }
-        public int idPessoa { get; set; }
         public string grauParentesco { get; set; }
         public Aluno Aluno { get; set; }
     }
