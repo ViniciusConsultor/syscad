@@ -14,7 +14,6 @@ namespace web.Models
         public int idFuncionario { get; set; }
         public int idUsuario { get; set; }
         public int idCargo { get; set; }
-        public int idPessoa { get; set; }
         public decimal? salario { get; set; }
         public Cargo Cargo { get; set; }
         public Usuario Usuario { get; set; }

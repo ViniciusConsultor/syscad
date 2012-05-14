@@ -31,11 +31,35 @@ namespace web.Controllers
         [HttpGet]
         public JsonResult FindTurmaByProfessor(int codigoTurma)
         {
-            string sql = @"select m.idModulo as IdModulo, t.idTurma as IdTurma, t.descricao as nomeTurma, c.nome as nomeCurso, m.nome as nomeModulo from turma t
-                            join curso c on t.idCurso = c.idCurso
-                            join modulo m on m.idCurso = c.idCurso
-                            order by c.nome,t.descricao,m.nome";
-            var listModulos = dbModulo.Context.ExecuteStoreQuery<Models.ModuloViewData>(sql).ToList();
+//            string sql = @"select m.idModulo as IdModulo, t.idTurma as IdTurma, t.descricao as nomeTurma, c.nome as nomeCurso, m.nome as nomeModulo from turma t
+//                            join curso c on t.idCurso = c.idCurso
+//                            join modulo m on m.idCurso = c.idCurso
+//                            order by c.nome,t.descricao,m.nome";
+//            var listModulos = dbModulo.Context.ExecuteStoreQuery<Models.ModuloViewData>(sql).ToList();
+
+            List<Models.Modulo> listModulos = (from m in dbModulo.Context.Modulo
+                                               where m.Curso.Turmas.Where(t => t.idTurma == codigoTurma).Count() > 0
+                                               select new Models.Modulo
+                                               {
+                                                   idModulo = m.idModulo,
+                                                   nome = m.nome,
+                                                   Curso = new Models.Curso
+                                                   {
+                                                       idCurso = m.Curso.idCurso,
+                                                       nome = m.Curso.nome,
+                                                       Turmas = (m.Curso.Turmas.Select(x => new Models.Turma
+                                                       {
+                                                           idTurma = x.idTurma,
+                                                           descricao = x.descricao
+                                                       }).ToList())
+                                                       //Modulos = m.Curso.Modulos.Select(x => new Models.Modulo
+                                                       //                                {
+                                                       //                                    idModulo = x.idModulo,
+                                                       //                                    nome = x.nome
+                                                       //                                }).AsEnumerable().ToList()
+                                                   }
+                                               }).ToList();
+
             return Json(new { modulos = listModulos },JsonRequestBehavior.AllowGet);
         }
 

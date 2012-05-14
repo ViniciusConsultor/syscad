@@ -19,7 +19,6 @@ namespace web.Models
         }
 
         public int idAluno { get; set; }
-        public int idPessoa { get; set; }
         public int? idResponsavel { get; set; }
         public int statusPedagogico { get; set; } 
         public int statusFinanceiro { get; set; }

@@ -48,8 +48,7 @@ namespace Persistence.DAO
             _taxa = base.CreateObjectSet<Taxa>();
             _tipoEndereco = base.CreateObjectSet<TipoEndereco>();
             _turma = base.CreateObjectSet<Turma>();
-            _usuario = base.CreateObjectSet<Usuario>();
-            
+            _usuario = base.CreateObjectSet<Usuario>();            
         }
 
         public ObjectSet<Aluno> Aluno
@@ -244,7 +243,5 @@ namespace Persistence.DAO
                 _usuario = value;
             }
         }
-
-
     }
 }

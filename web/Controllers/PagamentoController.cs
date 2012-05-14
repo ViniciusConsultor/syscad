@@ -16,7 +16,7 @@ namespace web.Controllers
         private Repositorio<Matricula> dbMatricula;
         private Repositorio<Pessoa> dbPessoa;
         private Repositorio<Cobranca> dbCobranca;
-        private Repositorio<Pagamento> dbPagamento;
+        private IRepositorio<Pagamento> dbPagamento;
         public PagamentoController()
         {
             dbAluno = new Repositorio<Aluno>();
@@ -58,7 +58,7 @@ namespace web.Controllers
         {
 
             List<Models.Cobranca> listaCobranca = (from c in dbCobranca.Context.Cobranca
-                                                   where c.idAluno == idAluno
+                                                   where c.idAluno == idAluno && c.statusPagamento == 7
                                                    select new Models.Cobranca
                                                    {
                                                        idCobranca = c.idCobranca,
@@ -87,11 +87,20 @@ namespace web.Controllers
         public JsonResult Pagar(int idCobranca, decimal valorPagar, int formaPag_Value)
         {
             string mensagem;
+            Pagamento p = new Pagamento();
+            p.idCobranca = idCobranca;
+            p.valor = valorPagar;
+            p.formaPag = formaPag_Value;
+            p.dataPagamento = DateTime.Now;
+
             try
             {
-                string sql = "INSERT INTO Pagamento (idCobranca,valor,formaPag) VALUES ({0},{1},{2})";
-                Object[] parameters = { idCobranca, valorPagar, formaPag_Value };
-                dbPagamento.Context.ExecuteStoreCommand(sql, parameters);
+                //string sql = "INSERT INTO Pagamento (idCobranca,valor,formaPag) VALUES ({0},{1},{2})";
+                //Object[] parameters = { idCobranca, valorPagar, formaPag_Value };
+                //dbPagamento.Context.ExecuteStoreCommand(sql, parameters);
+
+                dbPagamento.Adicionar(p);
+                dbPagamento.SaveChanges();
 
                 mensagem = "Pagamento realizado com sucesso!";
             }

@@ -23,7 +23,7 @@
 
             grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
 
-            $.post('/Professor/EnviarNotaFalta', { idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function () {
+            $.post('/LancarNotaFalta/EnviarNotaFalta', { idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function () {
                 grdNotaFalta.el.unmask();
             });
 
@@ -77,7 +77,7 @@
                                     runat="server" 
                                     AutoExpandColumn="nomeModulo"
                                     Height="300"
-                                    OnRefreshData="/Professor/FindTurmaByProfessor"
+                                    OnRefreshData="/LancarNotaFalta/FindTurmaByProfessor"
                                     >
                                     <Store>
                                         <ext:Store 
@@ -86,7 +86,7 @@
                                             AutoLoad="true"
                                             >
                                             <Proxy>
-                                                <ext:HttpProxy Json="true" Method="GET" Url="/Professor/FindTurmaByProfessor" />
+                                                <ext:HttpProxy Json="true" Method="GET" Url="/LancarNotaFalta/FindTurmaByProfessor" />
                                             </Proxy>
                                             <Reader>
                                                 <ext:JsonReader Root="modulos" TotalProperty="totalReg">
@@ -142,7 +142,7 @@
                                     ID="grdNotaFalta"
                                     runat="server" 
                                     AutoExpandColumn="Nome"
-                                    OnRefreshData="/Professor/FindAlunos">
+                                    OnRefreshData="/LancarNotaFalta/FindAlunos">
                                     <Store>
                                         <ext:Store 
                                             ID="StoreALuno" 
@@ -150,7 +150,7 @@
                                             AutoLoad="false"
                                             >
                                             <Proxy>
-                                                <ext:HttpProxy Json="true" Method="GET" Url="/Professor/FindAlunos" />
+                                                <ext:HttpProxy Json="true" Method="GET" Url="/LancarNotaFalta/FindAlunos" />
                                             </Proxy>
                                             <Reader>
                                                 <ext:JsonReader Root="alunos" TotalProperty="totalReg">

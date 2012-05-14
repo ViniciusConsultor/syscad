@@ -15,11 +15,10 @@ namespace Persistence.Entity
         public Curso()
         {
             Modulos = new List<Modulo>();
-            Turmas = new List<Turma>();
         }
         public int idCurso { get; set; }
-        public ICollection<Modulo> Modulos { get; private set; } // muitos modulos
-        public ICollection<Turma> Turmas { get; private set; } // muitas turmas
+        public ICollection<Modulo> Modulos { get; set; } // muitos modulos
+        public ICollection<Turma> Turmas { get; set; } // muitas turmas
         public string nome { get; set; }
         public string descricao { get; set; }
         public decimal valor { get; set; }
