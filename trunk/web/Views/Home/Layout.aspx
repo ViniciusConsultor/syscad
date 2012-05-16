@@ -169,7 +169,7 @@
                                                         <Click Handler="addTab(#{TabPanel1},'idAbaModulo','/Modulo/Modulo','Modulo')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
-                                                <ext:TreeNode Icon="User" Expanded="true" Text="Pessoa">
+                                                <ext:TreeNode Icon="User" Expanded="true" Text="Pessoa/Endereco">
                                                     <Listeners>
                                                         <Click Handler="addTab(#{TabPanel1},'idAbaPessoa','/Pessoa/Pessoa','Pessoa')" />
                                                     </Listeners>

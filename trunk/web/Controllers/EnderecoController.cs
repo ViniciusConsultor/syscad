@@ -98,5 +98,56 @@ namespace web.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult Editar(int id, string campo, string valor)
+        {
+
+            Endereco endereco = dbEndereco.FindOne(end => end.idEndereco == id);
+
+            try
+            {
+                switch (campo)
+                {
+                    case "TipoEndereco.nome":
+                        endereco.idTipoEndereco = Convert.ToInt32(valor);
+                        break;
+                    case "logradouro":
+                        endereco.logradouro = valor;
+                        break;
+                    case "numero":
+                        endereco.numero = Convert.ToInt32(valor);
+                        break;
+                    case "complemento":
+                        endereco.complemento = valor;
+                        break;
+                    case "CEP":
+                        endereco.CEP = valor;
+                        break;
+                    case "bairro":
+                        endereco.bairro = valor;
+                        break;
+                    case "cidade":
+                        endereco.cidade = valor;
+                        break;
+                    case "uf":
+                        endereco.uf = valor;
+                        break;
+                }
+
+                dbEndereco.Atualizar(endereco);
+                dbEndereco.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
     }
 }
