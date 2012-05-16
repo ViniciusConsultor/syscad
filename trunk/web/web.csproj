@@ -164,6 +164,7 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\CRUD-Endereco.js" />
     <Content Include="Scripts\CRUD.js" />
     <Content Include="Scripts\Ext.ux.TextMask.js" />
     <Content Include="Scripts\funcoes_ready.js" />
