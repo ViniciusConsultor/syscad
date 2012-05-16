@@ -16,77 +16,9 @@
     //Variaveis GENERICAS
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
 
-    function salvarEndereco(fooorm) {
-
-        winNovoEndereco.hide();
-
-        GridPanelEndereco.el.mask('Salvando', 'x-mask-loading');
-
-        $.post('/Endereco/Save', fooorm, function (valor) {
-            Ext.Msg.show({
-                title: 'Sucesso',
-                msg: 'Endereço salvo com sucesso',
-                buttons: Ext.Msg.OK
-            });
-            GridPanelEndereco.reload();
-            GridPanelEndereco.el.unmask();
-        });
-
-    };
-
-    function excluirEndereco() {
-        var confirm = Ext.Msg.confirm('Confirmação', 'Tem certeza que deseja excluir endereco ?', function (btn) {
-
-            if (btn == 'yes') {
-                if (GridPanelEndereco.getSelectionModel().hasSelection()) {
-
-                    GridPanelEndereco.el.mask('Excluindo endereco', 'x-mask-loading');
-
-                    var record = GridPanelEndereco.getSelectionModel().getSelected();
-
-                    $.post('/Endereco/Excluir', { id: record.data.idEndereco }, function () {
-                        GridPanelEndereco.reload();
-                        GridPanelEndereco.el.unmask();
-                    });
-
-                }
-            }
-
-        });
-                   
-    };
-
-    function novoEndereco() {
-
-        if (GridPanel.getSelectionModel().hasSelection()) {
-
-            winNovoEndereco.show();
-
-        }else{
-
-            Ext.Msg.show({
-                title: 'Aviso',
-                msg: 'Selecione uma Pessoa antes de cadastrar um novo endereço!',
-                buttons: Ext.Msg.OK
-            });
-
-        }
-
-    }
-
-    function formataSexo(sexo) {
-
-        if (sexo == 1) {
-            return "Masculino";
-
-        } else {
-            return "Feminino";
-        }
-
-    }
-
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
+<script src="../../Scripts/CRUD-Endereco.js" type="text/javascript"></script>
 
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" RemoveViewState="true" IDMode="Explicit" />
@@ -177,7 +109,7 @@
                                                 </Editor>
                                             </ext:Column>
 
-                                            <ext:DateColumn DataIndex="dataNascimento" Header="Data de Nascimento" Width="200" Format="d/m/Y">
+                                            <ext:DateColumn DataIndex="dataNascimento" Header="Data de Nascimento" Width="200" Format="dd/MM/yyyy">
                                                 <Editor>
                                                     <ext:DateField ID="dtNascimentoEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" /> 
                                                 </Editor>
@@ -278,23 +210,91 @@
                                         </ext:Store>
                                     </Store>
                                     <Listeners>
-                                        <KeyDown Fn="startEditing" />
-                                        <AfterEdit Fn="afterEdit" />
+                                        <KeyDown Fn="startEditingEndereco" />
+                                        <AfterEdit Fn="afterEditEndereco" />
                                     </Listeners>                                    
                                     <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                                         <Columns>
 
                                             <ext:Column ColumnID="idEndereco" Header="IdEndereco" DataIndex="idEndereco" Width="50" Hidden="true"/>
 
-                                            <ext:Column ColumnID="idTipoEndereco" Header="Tipo Endereço" DataIndex="TipoEndereco.nome" Width="125"/>
-                                            <ext:Column ColumnID="idPessoa" Header="Pessoa" DataIndex="Pessoa.nome" Width="125"/>
-                                            <ext:Column ColumnID="logradouro" Header="Logradouro" DataIndex="logradouro" Width="150"/>
-                                            <ext:Column ColumnID="numero" Header="Numero" DataIndex="numero" Width="100"/>
-                                            <ext:Column ColumnID="complemento" Header="Complemento" DataIndex="complemento" Width="100"/>
-                                            <ext:Column ColumnID="CEP" Header="CEP" DataIndex="CEP" Width="100"/>
-                                            <ext:Column ColumnID="bairro" Header="Bairro" DataIndex="bairro" Width="100"/>
-                                            <ext:Column ColumnID="cidade" Header="Cidade" DataIndex="cidade" Width="100"/>
-                                            <ext:Column ColumnID="uf" Header="UF" DataIndex="uf" Width="100"/>                                            
+                                            <ext:Column ColumnID="idTipoEndereco" Header="Tipo Endereço" DataIndex="TipoEndereco.nome" Width="125">
+                                                <Editor>
+                                                    <ext:ComboBox ID="cmbTipoEnderecoEditar" 
+                                                        runat="server" 
+                                                        DisplayField="nome" 
+                                                        ValueField="idTipoEndereco" 
+                                                        TypeAhead="false" 
+                                                        LoadingText="Procurando..." 
+                                                        Width="350" 
+                                                        PageSize="10"
+                                                        HideTrigger="false"
+                                                        ItemSelector="div.search-item"        
+                                                        MinChars="1"
+                                                        TriggerAction="All"
+                                                        AllowBlank="false">
+                                                        <Store>
+                                                            <ext:Store ID="Store4" runat="server" AutoLoad="false">
+                                                                <Proxy>
+                                                                    <ext:HttpProxy Method="POST" Url="/TipoEndereco/Search" />
+                                                                </Proxy>
+                                                                <Reader>
+                                                                    <ext:JsonReader Root="tipoEnderecos" TotalProperty="totalReg">
+                                                                        <Fields>
+                                                                            <ext:RecordField Name="idTipoEndereco" Type="Int" />
+                                                                            <ext:RecordField Name="nome" Type="String" />
+                                                                        </Fields>
+                                                                    </ext:JsonReader>
+                                                                </Reader>
+                                                            </ext:Store>
+                                                        </Store>
+                                                        <Template ID="Template3" runat="server">
+                                                           <Html>
+					                                           <tpl for=".">
+						                                          <div class="search-item">
+							                                         <h3>{nome}</h3>
+						                                          </div>
+					                                           </tpl>
+				                                           </Html>
+                                                        </Template>
+                                                    </ext:ComboBox>
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:Column ColumnID="logradouro" Header="Logradouro" DataIndex="logradouro" Width="150">
+                                                <Editor>
+                                                    <ext:TextField ID="txtLogradouroEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:Column ColumnID="numero" Header="Numero" DataIndex="numero" Width="100">
+                                                <Editor>
+                                                    <ext:NumberField ID="txtNumeroEditar" runat="server" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:Column ColumnID="complemento" Header="Complemento" DataIndex="complemento" Width="100">
+                                                <Editor>
+                                                    <ext:TextField ID="txtComplementoEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:Column ColumnID="CEP" Header="CEP" DataIndex="CEP" Width="100">
+                                                <Editor>
+                                                    <ext:TextField ID="txtCepEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:Column ColumnID="bairro" Header="Bairro" DataIndex="bairro" Width="100">
+                                                <Editor>
+                                                    <ext:TextField ID="txtBairroEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:Column ColumnID="cidade" Header="Cidade" DataIndex="cidade" Width="100">
+                                                <Editor>
+                                                    <ext:TextField ID="txtCidadeEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                </Editor>
+                                            </ext:Column>
+                                            <ext:Column ColumnID="uf" Header="UF" DataIndex="uf" Width="100">
+                                                <Editor>
+                                                    <ext:TextField ID="txtUFEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                </Editor>
+                                            </ext:Column>
 
                                         </Columns>
                                     </ColumnModel>
