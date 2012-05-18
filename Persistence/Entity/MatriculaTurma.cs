@@ -16,5 +16,6 @@ namespace Persistence.Entity
         public virtual int idMatricula { get; set; }
         public virtual Matricula Matricula { get; set; }
         public virtual Turma Turma { get; set; }
+        public virtual int situacaoAluno { get; set; }
     }
 }

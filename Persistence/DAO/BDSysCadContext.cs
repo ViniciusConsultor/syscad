@@ -27,6 +27,7 @@ namespace Persistence.DAO
         private ObjectSet<TipoEndereco> _tipoEndereco;
         private ObjectSet<Turma> _turma;
         private ObjectSet<Usuario> _usuario;
+        private ObjectSet<Status> _status;
 
         public BDSysCadContext()
             : base("name=BDSysCadEntities", "BDSysCadEntities")
@@ -48,7 +49,8 @@ namespace Persistence.DAO
             _taxa = base.CreateObjectSet<Taxa>();
             _tipoEndereco = base.CreateObjectSet<TipoEndereco>();
             _turma = base.CreateObjectSet<Turma>();
-            _usuario = base.CreateObjectSet<Usuario>();            
+            _usuario = base.CreateObjectSet<Usuario>();
+            _status = base.CreateObjectSet<Status>();
         }
 
         public ObjectSet<Aluno> Aluno
@@ -241,6 +243,18 @@ namespace Persistence.DAO
             set
             {
                 _usuario = value;
+            }
+        }
+
+        public ObjectSet<Status> Status
+        {
+            get
+            {
+                return _status;
+            }
+            set
+            {
+                _status = value;
             }
         }
     }

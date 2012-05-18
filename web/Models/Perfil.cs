@@ -11,14 +11,9 @@ namespace web.Models
 {
     public class Perfil
     {
-        public Perfil()
-        {
-            Usuarios = new List<Usuario>();
-        }
-
         public int idPerfil { get; set; }
-        public String nome { get; set; }
-        public ICollection<Usuario> Usuarios { get; set; }
+        public string nome { get; set; }
+        public IList<Usuario> Usuarios { get; set; }
         
     }
 }
