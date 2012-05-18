@@ -24,10 +24,26 @@
             grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
 
             $.post('/LancarNotaFalta/EnviarNotaFalta', { idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function () {
-                grdNotaFalta.el.unmask();
+                success: 
+                {
+                    grdNotaFalta.el.unmask();
+                }
             });
 
         };
+
+        function teste(data) {
+           // alert(data.(Curso.Turmas[0].idTurma));
+        }
+
+        var traduzSituacaoAluno = function (value) {
+            $.post("LancarNotaFalta/traduzSituacaoAluno", { idStatus: value }, function (result) {
+                success:
+                {
+                    return result.descricao
+                }
+            });
+        }
 
         var afterEdit = function (e) {
             /*
@@ -41,11 +57,17 @@
             e.column - The grid column index
             */
             salvarAlteracoes(e.record.data.IdAluno, e.record.data.IdTurma, e.record.data.IdModulo, e.field, e.value);
-            var mensagem = "<b>Campo Editado:&nbsp;</b> " + e.field + "<br /><b>Valor Anterior:</b>&nbsp; " + e.originalValue + "<br /><b>Valor Atual:</b>&nbsp; " + e.value;
-            Ext.Msg.notify("Cadastrado com sucesso!", mensagem);
+            var mensagem = "<b>Nota Cadastrada com sucesso!</b>";
+            Ext.Msg.notify("Mensagem", mensagem);
 
             grdNotaFalta.store.commitChanges();
         };
+
+//        var RenderGrid = function (e) {
+//            if (parseFloat(e.record.data.Nota1) > 0) {
+//                Ext.getCmp("Nota2").Editable = true;
+//            }
+//        }
     </script>
 </head>
 <body>
@@ -75,7 +97,7 @@
                                 <ext:GridPanel 
                                     ID="grdTurmas"
                                     runat="server" 
-                                    AutoExpandColumn="nomeModulo"
+                                    AutoExpandColumn="nome"
                                     Height="300"
                                     OnRefreshData="/LancarNotaFalta/FindTurmaByProfessor"
                                     >
@@ -106,9 +128,8 @@
                                     </Store>
                                     <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                                         <Columns>
-                                            <ext:Column ColumnID="IdModulo" Header="Id" DataIndex="IdModulo" Width="50"/>
-                                            <ext:Column ColumnID="IdTurma" Header="Id" DataIndex="IdTurma" Hidden="true" Width="50"/>
-                                            <ext:Column ColumnID="nomeModulo" Header="Modulo" DataIndex="nomeModulo" />
+                                            <ext:Column ColumnID="idModulo" Header="Id" DataIndex="IdModulo" Width="50"/>
+                                            <ext:Column ColumnID="nome" Header="Modulo" DataIndex="nomeModulo" />
                                             <ext:Column ColumnID="nomeTurma" Header="Turma" DataIndex="nomeTurma" Width="200" />
                                             <ext:Column ColumnID="nomeCurso" Header="Curso" DataIndex="nomeCurso" Width="200"/>
                                             
@@ -147,8 +168,7 @@
                                         <ext:Store 
                                             ID="StoreALuno" 
                                             runat="server"
-                                            AutoLoad="false"
-                                            >
+                                            AutoLoad="false">
                                             <Proxy>
                                                 <ext:HttpProxy Json="true" Method="GET" Url="/LancarNotaFalta/FindAlunos" />
                                             </Proxy>
@@ -159,9 +179,10 @@
                                                         <ext:RecordField Name="IdTurma" Type="Int" />
                                                         <ext:RecordField Name="IdModulo" Type="Int" />
                                                         <ext:RecordField Name="Nome" Type="String" />
-                                                         <ext:RecordField Name="Nota1" Type="Int" />
-                                                        <ext:RecordField Name="Nota2" Type="Int" />
+                                                         <ext:RecordField Name="Nota1" Type="Float" />
+                                                        <ext:RecordField Name="Nota2" Type="Float" />
                                                         <ext:RecordField Name="Faltas" Type="Int" />
+                                                        <ext:RecordField Name="situacaoAluno" Type="Int" />
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>
@@ -179,12 +200,15 @@
                                         <Columns>
                                             <ext:Column ColumnID="IdAluno" Header="Id" DataIndex="IdAluno" Width="50"/>
                                             <ext:Column ColumnID="Nome" Header="Nome" DataIndex="Nome" />
+                                            <ext:Column ColumnID="situacaoAluno" Header="Situação" >
+                                                <Renderer Fn="traduzSituacaoAluno" />
+                                            </ext:Column>
                                             <ext:Column ColumnID="Nota1" Header="Nota" DataIndex="Nota1" Width="150">
                                                 <Editor>
                                                     <ext:NumberField ID="txtNota1" runat="server" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column ColumnID="Nota2" Header="Nota de Recuperação" DataIndex="Nota2" Width="150">
+                                            <ext:Column ColumnID="Nota2" Header="Nota de Recuperação" DataIndex="Nota2" Width="150" Editable="false">
                                                 <Editor>
                                                     <ext:NumberField ID="TextNota2" runat="server" />
                                                 </Editor>

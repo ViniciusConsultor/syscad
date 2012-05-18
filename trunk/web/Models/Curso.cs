@@ -12,14 +12,10 @@ namespace web.Models
 {
     public class Curso
     {
-        public Curso()
-        {
-            Modulos = new List<Modulo>();
-            Turmas = new List<Turma>();
-        }
+
         public int idCurso { get; set; }
-        public List<Modulo> Modulos { get; set; } // muitos modulos
-        public ICollection<Turma> Turmas { get; set; } // muitas turmas
+        public IEnumerable<Modulo> Modulos { get; set; } // muitos modulos
+        public IEnumerable<Turma> Turmas { get; set; } // muitas turmas
         public string nome { get; set; }
         public string descricao { get; set; }
         public decimal valor { get; set; }

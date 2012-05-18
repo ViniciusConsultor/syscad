@@ -12,16 +12,13 @@ namespace Persistence.Entity
 {
     public class Modulo
     {
-        public Modulo()
-        {
-            NotaFaltas = new List<NotaFalta>();
-        }
+
         public int idModulo { get; set; }
         public int idCurso { get; set; }
         public string nome { get; set; }
         public int tempoDuracao { get; set; }
         public int statusModulo { get; set; }
         public Curso Curso { get; set; } //um cara só
-        public ICollection<NotaFalta> NotaFaltas { get; set; }
+        public IEnumerable<NotaFalta> NotaFaltas { get; set; }
     }
 }
