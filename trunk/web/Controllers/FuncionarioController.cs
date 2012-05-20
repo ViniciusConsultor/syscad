@@ -50,11 +50,14 @@ namespace web.Controllers
         {
 
             Funcionario funcionario = dbFuncionario.FindOne(cur => cur.idFuncionario == id);
+            Usuario usuario = dbUsuario.FindOne(usu => usu.idUsuario == funcionario.idUsuario);
 
             try
             {
                 dbFuncionario.Remover(funcionario);
+                dbUsuario.Remover(usuario);
                 dbFuncionario.SaveChanges();
+                dbUsuario.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
 
@@ -69,11 +72,11 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save(string cmbPessoa_Value, string cmbCargo_Value, string txtSalario, string txtLogin, string txtSenha, string cmbPerfil_Value)
+        public JsonResult Save(string cmbPessoa_Value, string idCargo_Value, string txtSalario, string txtLogin, string txtSenha, string cmbPerfil_Value)
         {           
 
             Funcionario funcionario = new Funcionario();
-            funcionario.idCargo = Convert.ToInt32(cmbCargo_Value);
+            funcionario.idCargo = Convert.ToInt32(idCargo_Value);
             funcionario.idPessoa = Convert.ToInt32(cmbPessoa_Value);
             funcionario.salario = Convert.ToDecimal(txtSalario);
 
@@ -149,6 +152,21 @@ namespace web.Controllers
 
             }
 
+        }
+
+        [HttpGet]
+        public JsonResult FindFuncionarios(int idCargo)
+        {
+            IList<Funcionario> listaFuncionarios = dbFuncionario.FindAll().Where(fun => fun.idCargo == idCargo).ToList();
+
+            foreach (Funcionario f in listaFuncionarios)
+            {
+                f.Usuario = dbUsuario.FindOne(usu => usu.idUsuario == f.idUsuario);
+                f.Pessoa = dbPessoa.FindOne(pes => pes.idPessoa == f.idPessoa);
+                f.Cargo = dbCargo.FindOne(car => car.idCargo == f.idCargo);
+            }
+
+            return Json(new { funcionarios = listaFuncionarios, totalReg = listaFuncionarios.Count }, JsonRequestBehavior.AllowGet);
         }
 
     }

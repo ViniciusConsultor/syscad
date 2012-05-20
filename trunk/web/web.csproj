@@ -164,6 +164,8 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\CRUD-Modulo.js" />
+    <Content Include="Scripts\CRUD-Funcionario.js" />
     <Content Include="Scripts\CRUD-Endereco.js" />
     <Content Include="Scripts\CRUD.js" />
     <Content Include="Scripts\Ext.ux.TextMask.js" />
@@ -176,6 +178,7 @@
     <Content Include="Scripts\jquery.maskMoney.js" />
     <Content Include="Views\Cargo\Cargo.aspx" />
     <Content Include="Views\Curso\Curso.aspx" />
+    <Content Include="Views\Curso\Curso_FUNCIONANDO.aspx" />
     <Content Include="Views\Endereco\Endereco.aspx" />
     <Content Include="Views\Funcionario\Funcionario.aspx" />
     <Content Include="Views\Home\Index.aspx" />

@@ -11,9 +11,11 @@ namespace web.Controllers
     public class ModuloController : Controller
     {
         IRepositorio<Modulo> dbModulo;
+        IRepositorio<Curso> dbCurso;
         public ModuloController()
         {
             dbModulo = new Repositorio<Modulo>();
+            dbCurso = new Repositorio<Curso>();
         }
 
         [HttpGet]
@@ -31,13 +33,13 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save(string txtNome, int txtTempoDuracao, int txtStatusModulo, int cmbCurso_Value)
+        public JsonResult Save(string txtNomeModulo, int txtTempoDuracao, int txtStatusModulo, int idCurso_Value)
         {
             Modulo modulo = new Modulo();
-            modulo.nome = txtNome;
+            modulo.nome = txtNomeModulo;
             modulo.tempoDuracao = txtTempoDuracao;
             modulo.statusModulo = txtStatusModulo;
-            modulo.idCurso = cmbCurso_Value;
+            modulo.idCurso = idCurso_Value;
 
             try
             {
@@ -56,7 +58,6 @@ namespace web.Controllers
             }
 
         }
-
 
         [HttpPost]
         public JsonResult Editar(int id, string campo, string valor)
@@ -125,6 +126,19 @@ namespace web.Controllers
 
             }
 
+        }
+
+        [HttpGet]
+        public JsonResult FindModulos(int idCurso)
+        {
+            IList<Modulo> listaModulo = dbModulo.FindAll().Where(mod => mod.idCurso == idCurso).ToList();
+
+            foreach (Modulo m in listaModulo)
+            {
+                m.Curso = dbCurso.FindOne(cur => cur.idCurso == m.idCurso);
+            }
+
+            return Json(new { modulos = listaModulo, totalReg = listaModulo.Count }, JsonRequestBehavior.AllowGet);
         }
        
         public ActionResult Modulo()
