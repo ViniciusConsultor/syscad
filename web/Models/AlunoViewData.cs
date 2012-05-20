@@ -15,5 +15,6 @@ namespace web.Models
         public decimal? Nota2 { get; set; }
         public int? Faltas { get; set; }
         public int? situacaoAluno { get; set; }
+        public decimal? notaFinal { get; set; }
     }
 }

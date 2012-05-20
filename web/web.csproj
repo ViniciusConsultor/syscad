@@ -176,6 +176,7 @@
     <Content Include="Scripts\jquery-ui-1.8.18.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Scripts\jquery.maskMoney.js" />
+    <Content Include="Scripts\JSON2.js" />
     <Content Include="Views\Cargo\Cargo.aspx" />
     <Content Include="Views\Curso\Curso.aspx" />
     <Content Include="Views\Curso\Curso_FUNCIONANDO.aspx" />

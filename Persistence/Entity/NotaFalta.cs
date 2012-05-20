@@ -16,9 +16,11 @@ namespace Persistence.Entity
         public virtual int idTurma { get; set; }
         public virtual int idModulo { get; set; }
         public virtual int idAluno { get; set; }
-        public virtual int qtdFalta { get; set; }
-        public virtual decimal nota1 { get; set; }
-        public virtual decimal nota2 { get; set; }
+        public virtual int? qtdFalta { get; set; }
+        public virtual decimal? nota1 { get; set; }
+        public virtual decimal? nota2 { get; set; }
+        public virtual int? situacaoAluno { get; set; }
+        public virtual decimal? notaFinal { get; set; }
         public virtual Aluno Aluno { get; set; }
         public virtual Modulo Modulo { get; set; }
         public virtual Turma Turma { get; set; }

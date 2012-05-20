@@ -118,5 +118,12 @@ namespace Persistence.DAO
 
             return entitySetName;
         }
+
+        /// Libera os recursos do Entity Framework.
+        public void Dispose()
+        {
+            if (context != null)
+                context.Dispose();
+        }
     }
 }
