@@ -14,12 +14,14 @@ namespace web.Controllers
     public class LancarNotaFaltaController : Controller
     {
         const string CONNECTIONSTR = @"Data Source=.\SQLEXPRESS;Initial Catalog=SysCad;Integrated Security=True;MultipleActiveResultSets=True";
+        SqlConnection conn;
         private Repositorio<Modulo> dbModulo;
         private Repositorio<Turma> dbTurma;
         private Repositorio<Aluno> dbAluno;
-        private Repositorio<Status> dbStatus;
-        private Repositorio<MatriculaTurma> dbMatriculaTurma;
+        private IRepositorio<Status> dbStatus;
         private Repositorio<Matricula> dbMatricula;
+        private Repositorio<NotaFalta> dbNotaFalta;
+        private Repositorio<Curso> dbCurso;
         public LancarNotaFaltaController()
         {
             dbModulo = new Repositorio<Modulo>();
@@ -27,6 +29,9 @@ namespace web.Controllers
             dbAluno = new Repositorio<Aluno>();
             dbStatus = new Repositorio<Status>();
             dbMatricula = new Repositorio<Matricula>();
+            dbNotaFalta = new Repositorio<NotaFalta>();
+            dbCurso = new Repositorio<Curso>();
+            conn = new SqlConnection(CONNECTIONSTR);
         }
 
         [HttpGet]
@@ -39,13 +44,6 @@ namespace web.Controllers
         [HttpGet]
         public JsonResult FindTurmaByProfessor(int codigoTurma)
         {
-//            string sql = @"select m.idModulo as IdModulo, t.idTurma as IdTurma, t.descricao as nomeTurma, c.nome as nomeCurso, m.nome as nomeModulo 
-//                            from dbo.turma t
-//                            join dbo.curso c on t.idCurso = c.idCurso
-//                            join dbo.modulo m on m.idCurso = c.idCurso
-//                            order by c.nome,t.descricao,m.nome";
-//            var listModulos = dbModulo.Context.ExecuteStoreQuery<Models.Modulo>(sql).ToList();
-
             List<Models.ModuloViewData> listModulos = (from m in dbModulo.Context.Modulo
                                                where m.Curso.Turmas.Where(t => t.idTurma == codigoTurma).Count() > 0
                                                select new Models.ModuloViewData
@@ -63,9 +61,9 @@ namespace web.Controllers
         [HttpGet]
         public JsonResult FindAlunos(int codigoTurma, int codigoModulo)
         {
-            SqlConnection conn = new SqlConnection(CONNECTIONSTR);
+            
             conn.Open();
-            string sql = @"select a.idAluno as IdAluno, t.idTurma as IdTurma, mo.idModulo as IdModulo, p.nome as Nome, nt.nota1 as Nota1, nt.nota2 as Nota2, nt.qtdFalta as Faltas, mt.situacaoAluno as situacaoAluno 
+            string sql = @"select a.idAluno, t.idTurma, mo.idModulo, p.nome, nt.nota1, nt.nota2, nt.qtdFalta, nt.situacaoAluno, nt.notaFinal 
                             from aluno a
                             join pessoa p on a.idPessoa = p.idPessoa
                             join matricula m on a.idAluno = m.idAluno
@@ -94,14 +92,17 @@ namespace web.Controllers
                 a.Nota1 = !dr.IsDBNull(4) ? dr.GetDecimal(4) : 0;
                 a.Nota2 = !dr.IsDBNull(5) ? dr.GetDecimal(5) : 0;
                 a.Faltas = !dr.IsDBNull(6) ? dr.GetInt32(6) : 0;
+                a.situacaoAluno = !dr.IsDBNull(7) ? dr.GetInt32(7) : 0;
+                a.notaFinal = !dr.IsDBNull(8) ? dr.GetDecimal(8) : 0;
 
                 listAlunos.Add(a);
             }
 
+            conn.Close();
+
             return Json(new { alunos = listAlunos }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
         public JsonResult EnviarNotaFalta(int idAluno, int idTurma, int idModulo, string campo, string valor)
         {
             try
@@ -115,6 +116,9 @@ namespace web.Controllers
                     nt.idAluno = idAluno;
                     nt.idTurma = idTurma;
                     nt.idModulo = idModulo;
+                    nt.nota1 = 0;
+                    nt.nota2 = 0;
+                    nt.qtdFalta = 0;
                 }
                 else
                 {
@@ -125,7 +129,7 @@ namespace web.Controllers
                 {
                     case "Nota1":
                         nt.nota1 = Convert.ToDecimal(valor.Replace(".",","));
-                        atualizaSituacaoAluno(idAluno, idTurma, EnumStatus.Aprovado);
+                        nt.notaFinal = Convert.ToDecimal(valor.Replace(".", ","));
                         break;
                     case "Nota2":
                         nt.nota2 = Convert.ToDecimal(valor.Replace(".", ","));
@@ -144,7 +148,10 @@ namespace web.Controllers
                 }
                 dbNT.SaveChanges();
 
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                //Verifica a situação do aluno
+                var ntFalta = verificaSituacao(idAluno, idTurma, idModulo);
+
+                return Json(new { notaFalta = ntFalta, success = true }, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception e)
@@ -165,17 +172,131 @@ namespace web.Controllers
         {
             var dscStatus = dbStatus.FindOne(x => x.idStatus == idStatus).descricao;
 
-            return Json(new { descricao = dbStatus });
+            return Json(new { descricao = dscStatus });
         }
 
-        private void atualizaSituacaoAluno(int idAluno, int idTurma, EnumStatus status)
+        //Implementação das regras de negocio
+        private NotaFalta verificaSituacao(int idAluno, int idTurma, int idModulo)
         {
-            Matricula m = dbMatricula.FindOne(x => x.idAluno == idAluno);
-            MatriculaTurma mt = dbMatriculaTurma.FindOne(x => x.idMatricula == m.idMatricula && x.idTurma == idTurma);
-            mt.situacaoAluno = (int)status;
-            dbMatriculaTurma.Atualizar(mt);
-            dbMatriculaTurma.SaveChanges();
+            NotaFalta nt = dbNotaFalta.FindOne(x => x.idAluno == idAluno && x.idTurma == idTurma && x.idModulo == idModulo);
+            if (nt.nota1 != null && nt.qtdFalta != null)
+            {
+                Turma t = dbTurma.FindOne(x => x.idTurma == idTurma);
+                Modulo m = dbModulo.FindOne(x => x.idModulo == idModulo);
+                decimal percFaltas = (decimal)((nt.qtdFalta * 100) / m.tempoDuracao);
+                if (nt.nota1 >= 7 && percFaltas <= 25)
+                {
+                    //Aprovado
+                    atualizaSituacaoAluno(idAluno, idTurma, idModulo, EnumStatus.Aprovado);
+                    nt.situacaoAluno = (int)EnumStatus.Aprovado;
+                }
+                else if (nt.nota1 >= 2 && nt.nota1 < 7 && percFaltas <= 25)
+                {
+                    if (nt.situacaoAluno == (int)EnumStatus.Recuperacao && ((nt.nota2 / 2) + nt.nota1) >= 7 && percFaltas <= 25)
+                    {
+                        //Aprovado após recuperação
+                        atualizaSituacaoAluno(idAluno, idTurma, idModulo, EnumStatus.Aprovado);
+                        nt.situacaoAluno = (int)EnumStatus.Aprovado;
+                        if (nt.nota2 > 0)
+                        {
+                            nt.notaFinal = 7;
+                            dbNotaFalta.Atualizar(nt);
+                            dbNotaFalta.SaveChanges();
+                        }
+                    }
+                    else
+                    {
+                        //Recuperacao
+                        atualizaSituacaoAluno(idAluno, idTurma, idModulo, EnumStatus.Recuperacao);
+                        nt.situacaoAluno = (int)EnumStatus.Recuperacao;
+                    }
+                }
+                else if (nt.nota1 < 2 || (nt.nota2 < 10 && nt.nota2 > 0) || percFaltas > 25)
+                {
+                    //Reprovado
+                    atualizaSituacaoAluno(idAluno, idTurma, idModulo, EnumStatus.Reprovado);
+                    nt.situacaoAluno = (int)EnumStatus.Reprovado;
+                }
+                
+                //Calcula média final
+                int qtdModulos = dbModulo.FindAll(x => x.idCurso == t.idCurso).Count;
+                int qtdModulosCursados = dbNotaFalta.FindAll(x => x.idTurma == idTurma && x.idAluno == idAluno && x.nota1 != null).Count;
+                if (qtdModulos == qtdModulosCursados)
+                {
+                    List<NotaFalta> lstNotaFalta = dbNotaFalta.FindAll(x => x.idTurma == idTurma && x.idAluno == idAluno);
+                    int modulosAprovados = lstNotaFalta.Where(x => x.situacaoAluno == (int)EnumStatus.Aprovado).Count();
+                    var notaFinal = lstNotaFalta.Average(x => x.notaFinal);
+                    if (modulosAprovados == qtdModulosCursados)
+                    {    
+                        //Aprovado no curso
+                        atualizaSituacaoFinalAluno(idAluno, idTurma, EnumStatus.Aprovado, notaFinal.Value);
+                    }
+                    else
+                    {
+                        //Reprovado no curso
+                        atualizaSituacaoFinalAluno(idAluno, idTurma, EnumStatus.Reprovado, notaFinal.Value);
+                    }
+                }
+            }
+            
+            return nt;
         }
+
+        private void atualizaSituacaoAluno(int idAluno, int idTurma, int idModulo, EnumStatus status)
+        {
+            try
+            {
+                var sql = @"UPDATE nt
+                            SET situacaoAluno = @situacaoAluno
+                            FROM dbo.notaFalta nt
+                            WHERE idAluno = @idAluno AND idTurma = @idTurma AND idModulo = @idModulo";
+                conn.Open();
+                SqlCommand comm = conn.CreateCommand();
+                comm.CommandText = sql;
+                comm.Parameters.Add(new SqlParameter("@situacaoAluno", status));
+                comm.Parameters.Add(new SqlParameter("@idAluno", idAluno));
+                comm.Parameters.Add(new SqlParameter("@idTurma", idTurma));
+                comm.Parameters.Add(new SqlParameter("@idModulo", idModulo));
+                comm.ExecuteNonQuery();                
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        private void atualizaSituacaoFinalAluno(int idAluno, int idTurma, EnumStatus status, decimal notaFinal)
+        {
+            try
+            {
+                Matricula m = dbMatricula.FindOne(x => x.idAluno == idAluno);
+                var sql = @"UPDATE mt
+                            SET situacaoAluno = @situacaoAluno, notaFinal = @notaFinal
+                            FROM dbo.matriculaTurma mt
+                            WHERE idMatricula = @idMatricula AND idTurma = @idTurma";
+                conn.Open();
+                SqlCommand comm = conn.CreateCommand();
+                comm.CommandText = sql;
+                comm.Parameters.Add(new SqlParameter("@situacaoAluno", status));
+                comm.Parameters.Add(new SqlParameter("@idMatricula", m.idMatricula));
+                comm.Parameters.Add(new SqlParameter("@idTurma", idTurma));
+                comm.Parameters.Add(new SqlParameter("@notaFinal", notaFinal));
+                comm.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
 
     }
 }
