@@ -44,8 +44,7 @@
                         msg: result.message,
                         buttons: Ext.Msg.OK,
                         icon: Ext.Msg.INFO
-                    });
-                    Ext.getCmp('grdCobrancas').getStore().reload();
+                    });                    
                 }
             });
         };
@@ -88,6 +87,10 @@
         var mudarStatus = function () {
             var idCobranca = Ext.getCmp("idCobranca").getValue();
             $.post("/Pagamento/MudarStatus", { idCobranca: idCobranca, status: 6 }, function (result) {
+                complete:
+                {
+                    Ext.getCmp('grdCobrancas').getStore().reload();
+                }
             });
         };
 
@@ -255,7 +258,9 @@
                                 <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />                                                     
                                 <ext:DisplayField ID="DisplayField1" runat="server" FieldLabel="Aluno" DataIndex="Aluno.nome" />
                                 <ext:DisplayField ID="DisplayField2" runat="server" FieldLabel="Cobrança" DataIndex="Taxa.nome" />
-                                <ext:DisplayField ID="dataVencimento" runat="server" FieldLabel="Data Vencimento" />
+                                <ext:DisplayField ID="dataVencimento" runat="server" FieldLabel="Data Vencimento">                                    
+
+                                </ext:DisplayField>
                                 <ext:DisplayField ID="valorTotal" runat="server" FieldLabel="Valor Total" DataIndex="valorTotal"/>
                                 <ext:DisplayField ID="valorPago" runat="server" FieldLabel="Valor Pago" DataIndex="valorPago" Hidden="true" />
                                 <ext:DisplayField ID="valorFaltante" runat="server" FieldLabel="Valor Faltante" DataIndex="valorFaltante" Hidden="true" Cls="faltante" />

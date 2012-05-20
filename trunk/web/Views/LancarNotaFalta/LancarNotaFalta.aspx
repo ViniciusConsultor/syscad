@@ -72,8 +72,8 @@
         };
 
         var beforeEdit = function (e) {
-            if (e.column === 4 && e.record.data.situacaoAluno != 3) {
-                return false;
+            if (e.column === 5 && e.record.data.Faltas == "") {
+                return 0;
             }
         };
     </script>
@@ -100,7 +100,7 @@
                         </ext:Panel>
                     </North>
                     <Center MarginsSummary="0 5 0 5">
-                        <ext:Panel ID="pnlCenter" runat="server" Frame="true" Title="Modulo / Turma" Icon="Email" Layout="Fit">
+                        <ext:Panel ID="pnlCenter" runat="server" Frame="true" Title="Modulo / Turma" Icon="Cog" Layout="Fit">
                             <Items>
                                 <ext:GridPanel 
                                     ID="grdTurmas"
@@ -136,7 +136,8 @@
                                     </Store>
                                     <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                                         <Columns>
-                                            <ext:Column ColumnID="idModulo" Header="Id" DataIndex="IdModulo" Width="50"/>
+                                            <ext:RowNumbererColumn ColumnID="number" />
+                                            <ext:Column ColumnID="idModulo" Header="Id" DataIndex="IdModulo" Width="50" Hidden="true"/>
                                             <ext:Column ColumnID="nome" Header="Modulo" DataIndex="nomeModulo" />
                                             <ext:Column ColumnID="nomeTurma" Header="Turma" DataIndex="nomeTurma" Width="200" />
                                             <ext:Column ColumnID="nomeCurso" Header="Curso" DataIndex="nomeCurso" Width="200"/>
@@ -163,7 +164,7 @@
                             runat="server" 
                             Title="Alunos" 
                             Height="200" 
-                            Icon="Clipboard" 
+                            Icon="UserTick" 
                             Layout="Fit">
                             <Items>
                                 <ext:GridPanel 
@@ -186,11 +187,11 @@
                                                         <ext:RecordField Name="IdTurma" Type="Int" />
                                                         <ext:RecordField Name="IdModulo" Type="Int" />
                                                         <ext:RecordField Name="Nome" Type="String" />
-                                                        <ext:RecordField Name="Nota1" Type="Float" />
-                                                        <ext:RecordField Name="Nota2" Type="Float" />
+                                                        <ext:RecordField Name="Nota1"  />
+                                                        <ext:RecordField Name="Nota2"  />
                                                         <ext:RecordField Name="Faltas" Type="Int" />
                                                         <ext:RecordField Name="situacaoAluno" Type="Int" />
-                                                        <ext:RecordField Name="notaFinal" Type="Float" />
+                                                        <ext:RecordField Name="notaFinal"  />
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>
@@ -207,7 +208,8 @@
                                     </Listeners>
                                     <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                                         <Columns>
-                                            <ext:Column ColumnID="IdAluno" Header="Id" DataIndex="IdAluno" Width="50"/>
+                                            <ext:RowNumbererColumn ColumnID="number" />
+                                            <ext:Column ColumnID="IdAluno" Header="Id" DataIndex="IdAluno" Width="50" Hidden="true"/>
                                             <ext:Column ColumnID="Nome" Header="Nome" DataIndex="Nome" />
                                             <ext:Column ColumnID="situacaoAluno" Header="Situação" DataIndex="situacaoAluno" >
                                                 <Renderer Fn="traduzSituacaoAluno" />

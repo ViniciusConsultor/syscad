@@ -89,11 +89,11 @@ namespace web.Controllers
                 a.IdTurma = dr.GetInt32(1);
                 a.IdModulo = dr.GetInt32(2);
                 a.Nome = dr.GetString(3);
-                a.Nota1 = !dr.IsDBNull(4) ? dr.GetDecimal(4) : 0;
-                a.Nota2 = !dr.IsDBNull(5) ? dr.GetDecimal(5) : 0;
+                a.Nota1 = !dr.IsDBNull(4) ? dr.GetDecimal(4) : (decimal?)null;
+                a.Nota2 = !dr.IsDBNull(5) ? dr.GetDecimal(5) : (decimal?)null;
                 a.Faltas = !dr.IsDBNull(6) ? dr.GetInt32(6) : 0;
                 a.situacaoAluno = !dr.IsDBNull(7) ? dr.GetInt32(7) : 0;
-                a.notaFinal = !dr.IsDBNull(8) ? dr.GetDecimal(8) : 0;
+                a.notaFinal = !dr.IsDBNull(8) ? dr.GetDecimal(8) : (decimal?)null;
 
                 listAlunos.Add(a);
             }
@@ -116,9 +116,10 @@ namespace web.Controllers
                     nt.idAluno = idAluno;
                     nt.idTurma = idTurma;
                     nt.idModulo = idModulo;
-                    nt.nota1 = 0;
-                    nt.nota2 = 0;
+                    nt.nota1 = null;
+                    nt.nota2 = null;
                     nt.qtdFalta = 0;
+                    nt.notaFinal = null;
                 }
                 else
                 {
@@ -128,11 +129,11 @@ namespace web.Controllers
                 switch (campo)
                 {
                     case "Nota1":
-                        nt.nota1 = Convert.ToDecimal(valor.Replace(".",","));
-                        nt.notaFinal = Convert.ToDecimal(valor.Replace(".", ","));
+                        nt.nota1 = !string.IsNullOrEmpty(valor) ?  Convert.ToDecimal(valor.Replace(".",",")) : (decimal?)null;
+                        nt.notaFinal = nt.nota1;
                         break;
                     case "Nota2":
-                        nt.nota2 = Convert.ToDecimal(valor.Replace(".", ","));
+                        nt.nota2 = !string.IsNullOrEmpty(valor) ?  Convert.ToDecimal(valor.Replace(".",",")) : (decimal?)null;
                         break;
                     case "Faltas":
                         nt.qtdFalta = Convert.ToInt32(valor);
@@ -192,7 +193,7 @@ namespace web.Controllers
                 }
                 else if (nt.nota1 >= 2 && nt.nota1 < 7 && percFaltas <= 25)
                 {
-                    if (nt.situacaoAluno == (int)EnumStatus.Recuperacao && ((nt.nota2 / 2) + nt.nota1) >= 7 && percFaltas <= 25)
+                    if (((nt.nota2 / 2) + nt.nota1) >= 7)
                     {
                         //Aprovado após recuperação
                         atualizaSituacaoAluno(idAluno, idTurma, idModulo, EnumStatus.Aprovado);
@@ -204,6 +205,12 @@ namespace web.Controllers
                             dbNotaFalta.SaveChanges();
                         }
                     }
+                    else if (nt.nota2 != null && ((nt.nota2 / 2) + nt.nota1) < 7)
+                    {
+                        //Aprovado após recuperação
+                        atualizaSituacaoAluno(idAluno, idTurma, idModulo, EnumStatus.Reprovado);
+                        nt.situacaoAluno = (int)EnumStatus.Reprovado;  
+                    }
                     else
                     {
                         //Recuperacao
@@ -211,7 +218,7 @@ namespace web.Controllers
                         nt.situacaoAluno = (int)EnumStatus.Recuperacao;
                     }
                 }
-                else if (nt.nota1 < 2 || (nt.nota2 < 10 && nt.nota2 > 0) || percFaltas > 25)
+                else if (nt.nota1 < 2 || percFaltas > 25)
                 {
                     //Reprovado
                     atualizaSituacaoAluno(idAluno, idTurma, idModulo, EnumStatus.Reprovado);
