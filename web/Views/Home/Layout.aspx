@@ -149,29 +149,19 @@
                                     <Nodes>
                                         <ext:TreeNode Icon="Folder" Expanded="true" Text="Cadastro">
                                             <Nodes>
-                                                <ext:TreeNode Icon="UserSuitBlack" Expanded="true" Text="Cargo">
+                                                <ext:TreeNode Icon="UserSuitBlack" Expanded="true" Text="Cargo/Funcionário">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAbaCargo','/Cargo/Cargo','Cargo')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaCargo','/Cargo/Cargo','Cargo/Funcionário')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
-                                                <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso">
+                                                <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso/Modulo">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAbaCurso','/Curso/Curso','Curso')" />
-                                                    </Listeners>
-                                                </ext:TreeNode>
-                                                <ext:TreeNode Icon="UserAlert" Expanded="true" Text="Funcionario">
-                                                    <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAbaFuncionario','/Funcionario/Funcionario','Funcionario')" />
-                                                    </Listeners>
-                                                </ext:TreeNode>
-                                                <ext:TreeNode Icon="ApplicationDouble" Expanded="true" Text="Modulo">
-                                                    <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAbaModulo','/Modulo/Modulo','Modulo')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaCurso','/Curso/Curso','Curso/Modulo')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="User" Expanded="true" Text="Pessoa/Endereco">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAbaPessoa','/Pessoa/Pessoa','Pessoa')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaPessoa','/Pessoa/Pessoa','Pessoa/Endereço')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="MoneyAdd" Expanded="true" Text="Taxas">
