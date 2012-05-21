@@ -75,10 +75,7 @@
         };
 
         var beforeEdit = function (e) {
-            //alert(e.record.data.Nota1);
-            //alert(e.column);
             if (e.column === 5 && (e.record.data.Nota1 >= 7 || e.record.data.Nota1 < 2)) {
-                traduzSituacaoAluno();
                 return false;
             }
         };
