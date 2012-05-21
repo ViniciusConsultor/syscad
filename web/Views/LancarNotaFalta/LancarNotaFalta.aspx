@@ -8,7 +8,6 @@
 <head runat="server">
     <title>Professor</title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
-    <script src="../../Scripts/JSON2.js" type="text/javascript"></script>
     <script type="text/javascript">
         var startEditing = function (e) {
             if (e.getKey() === e.ENTER) {
@@ -69,11 +68,18 @@
                     grdNotaFalta.store.commitChanges();
                 }
             });
+
+            if (e.column === 4 && e.record.data.Faltas == "") {
+                return 0;
+            }
         };
 
         var beforeEdit = function (e) {
-            if (e.column === 5 && e.record.data.Faltas == "") {
-                return 0;
+            //alert(e.record.data.Nota1);
+            //alert(e.column);
+            if (e.column === 5 && (e.record.data.Nota1 >= 7 || e.record.data.Nota1 < 2)) {
+                traduzSituacaoAluno();
+                return false;
             }
         };
     </script>
@@ -130,7 +136,7 @@
                                                 </ext:JsonReader>
                                             </Reader>
                                             <BaseParams>
-                                                <ext:Parameter Name="codigoTurma" Value="1" Mode="Value" />               
+                                                <ext:Parameter Name="codigoTurma" Value="2" Mode="Value" />               
                                             </BaseParams>
                                         </ext:Store>
                                     </Store>
