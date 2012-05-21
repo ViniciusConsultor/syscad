@@ -24,10 +24,12 @@ namespace web.Controllers
             IRepositorio<Usuario> dbUsuario = new Repositorio<Usuario>();
             IRepositorio<Perfil> dbPerfil = new Repositorio<Perfil>();
             Usuario usuario = dbUsuario.FindOne(usu => usu.login == login);
-            Perfil perfil = dbPerfil.FindOne(per => per.idPerfil == usuario.idPerfil);
+            
 
             if (usuario != null)
             {
+                Perfil perfil = dbPerfil.FindOne(per => per.idPerfil == usuario.idPerfil);
+
                 resposta = usuario.login;
 
                 Session["login_usuario"] = usuario.login;
