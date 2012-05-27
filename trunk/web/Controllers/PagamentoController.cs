@@ -7,11 +7,16 @@ using Persistence.DAO;
 using Persistence.Entity;
 using Models = web.Models;
 using Ext.Net;
+using BoletoNet;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace web.Controllers
 {
     public class PagamentoController : Controller
     {
+        const string CONNECTIONSTR = @"Data Source=.\SQLEXPRESS;Initial Catalog=SysCad;Integrated Security=True;MultipleActiveResultSets=True";
+        SqlConnection conn;
         private Repositorio<Aluno> dbAluno;
         private Repositorio<Matricula> dbMatricula;
         private Repositorio<Pessoa> dbPessoa;
@@ -24,6 +29,7 @@ namespace web.Controllers
             dbPessoa = new Repositorio<Pessoa>();
             dbCobranca = new Repositorio<Cobranca>();
             dbPagamento = new Repositorio<Pagamento>();
+            conn = new SqlConnection(CONNECTIONSTR);
         }
         public ActionResult RealizarPagamento()
         {
@@ -120,6 +126,90 @@ namespace web.Controllers
             dbCobranca.SaveChanges();
 
             return Json(new { success = true });
+        }
+
+        public ActionResult GerarBoleto(int idCobranca)
+        {
+
+            conn.Open();
+            string sql = @"select nome, cpf, bairro, cep, cidade, uf, logradouro, numero, complemento, valorTotal, datavencimento, idCobranca from dbo.aluno a
+                        join dbo.pessoa p on a.idPessoa = p.idPessoa
+                        join dbo.cobranca c on a.idAluno = c.idAluno
+                        join dbo.endereco e on a.idPessoa = e.idPessoa and e.idTipoEndereco = 1
+                        where idCobranca = @idCobranca";
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            comm.Parameters.Add(new SqlParameter("@idCobranca", idCobranca));
+            SqlDataReader dr = comm.ExecuteReader();
+            Models.Cobranca cobranca = new Models.Cobranca();
+            if (dr.Read())
+            {                
+                cobranca.valorTotal = dr.GetDecimal(9);
+                cobranca.dataVencimento = dr.GetDateTime(10);
+                cobranca.idCobranca = dr.GetInt32(11);
+                Models.Aluno aluno = new Models.Aluno();
+                aluno.nome = dr.GetString(0);
+                aluno.cpf = dr.GetString(1);
+                aluno.Enderecos.Add(new Models.Endereco
+                {
+                    bairro = dr.GetString(2),
+                    CEP = dr.GetString(3),
+                    cidade = dr.GetString(4),
+                    uf = dr.GetString(5),
+                    logradouro = dr.GetString(6),
+                    numero = dr.GetInt32(7),
+                    complemento = dr.GetString(8)
+                });
+                cobranca.Aluno = aluno;    
+            }
+
+            //HttpContext context = HttpContext.curre
+            DateTime vencimento = cobranca.dataVencimento;
+            Double valorBoleto = Convert.ToDouble(cobranca.valorTotal);
+            string nossoNumero = cobranca.idCobranca.ToString().PadLeft(8, '0');
+
+            Instrucao_Itau item1 = new Instrucao_Itau(9, 5);
+            Instrucao_Itau item2 = new Instrucao_Itau(81, 10);
+            Cedente c = new Cedente("10.668.613/0001-55", "V Mendonsa da Costa Idiomas e Informática", "4406", "22324");
+            //Na carteira 198 o código do Cedente é a conta bancária
+            c.Codigo = 13000;
+
+            Boleto b = new Boleto(vencimento, valorBoleto, "176", nossoNumero, c, new EspecieDocumento(341, 1));
+            b.NumeroDocumento = nossoNumero;
+
+            b.Sacado = new Sacado(cobranca.Aluno.cpf, cobranca.Aluno.nome);
+            b.Sacado.Endereco.End = String.Format("{0}, {1} {2}", cobranca.Aluno.Enderecos.FirstOrDefault().logradouro, cobranca.Aluno.Enderecos.FirstOrDefault().numero, cobranca.Aluno.Enderecos.FirstOrDefault().complemento);
+            b.Sacado.Endereco.Bairro = cobranca.Aluno.Enderecos.FirstOrDefault().bairro;
+            b.Sacado.Endereco.Cidade = cobranca.Aluno.Enderecos.FirstOrDefault().cidade;
+            b.Sacado.Endereco.CEP = cobranca.Aluno.Enderecos.FirstOrDefault().CEP;
+            b.Sacado.Endereco.UF = cobranca.Aluno.Enderecos.FirstOrDefault().uf;
+
+            // Exemplo de como adicionar mais informações ao sacado
+            //b.Sacado.InformacoesSacado.Add(new InfoSacado("TÍTULO: " + "2541245"));
+
+            item2.Descricao += " " + item2.QuantidadeDias.ToString() + " dias corridos do vencimento.";
+            b.Instrucoes.Add(item1);
+            b.Instrucoes.Add(item2);
+
+            // juros/descontos
+            if (b.ValorDesconto == 0)
+            {
+                Instrucao_Itau item3 = new Instrucao_Itau(999, 1);
+                item3.Descricao += ("1,00 por dia de antecipação.");
+                b.Instrucoes.Add(item3);
+            }
+
+            BoletoBancario boletoBancario = new BoletoBancario();
+            boletoBancario.CodigoBanco = 341;
+            boletoBancario.OcultarEnderecoSacado = false;
+            boletoBancario.OcultarReciboSacado = false;
+            boletoBancario.OcultarInstrucoes = false;
+            boletoBancario.Boleto = b;
+            boletoBancario.Boleto.Valida();
+
+            boletoBancario.MostrarComprovanteEntrega = false;
+            boletoBancario.FormatoCarne = false;
+            return View("Boleto",boletoBancario);
         }
     }
 }

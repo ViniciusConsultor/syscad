@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Boleto.Net, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Boleto.Net.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
@@ -124,6 +128,7 @@
     <Content Include="Content\imagens\bar_login_separador.jpg" />
     <Content Include="Content\imagens\bg_login.jpg" />
     <Content Include="Content\imagens\bg_login_2.jpg" />
+    <Content Include="Content\imagens\logo-itau.jpg" />
     <Content Include="Content\imagens\logo_syscad.png" />
     <Content Include="Content\imagens\logo_syscad_2.png" />
     <Content Include="Content\imagens\logo_syscad_peq.png" />
@@ -165,6 +170,8 @@
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\CRUD-Endereco.js" />
+    <Content Include="Scripts\CRUD-Funcionario.js" />
+    <Content Include="Scripts\CRUD-Modulo.js" />
     <Content Include="Scripts\CRUD.js" />
     <Content Include="Scripts\funcoes_ready.js" />
     <Content Include="Scripts\jquery-1.4.4-vsdoc.js" />
@@ -181,6 +188,7 @@
     <Content Include="Views\Home\Layout.aspx" />
     <Content Include="Views\Matricula\Matricula.aspx" />
     <Content Include="Views\Modulo\Modulo.aspx" />
+    <Content Include="Views\Pagamento\Boleto.aspx" />
     <Content Include="Views\Pessoa\Pessoa.aspx" />
     <Content Include="Views\LancarNotaFalta\LancarNotaFalta.aspx" />
     <Content Include="Views\Pagamento\RealizarPagamento.aspx" />
