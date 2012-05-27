@@ -14,6 +14,14 @@
             font-weight:bold;
             color:Red;
         }
+        .x-window-mc
+        {
+            background:#fff
+        }
+        .frameBoleto
+        {
+            height:525px
+        }
     </style>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
     <script src="../../Scripts/jquery.maskMoney.js" type="text/javascript"></script>
@@ -50,10 +58,10 @@
         };
 
         var realizarPagamento = function (serialize) {
-            var valorTotal = parseFloat($("#valorTotal").text());
+            var valorTotal = parseFloat(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected().data.valorTotal);
             var valorPagar = parseFloat($("#valorPagar").val());
-            var valorPago = parseFloat($("#valorPago").text());
-            var valorFaltante = parseFloat($("#valorFaltante").text());
+            var valorPago = parseFloat($("#_valorPago").val());
+            var valorFaltante = parseFloat($("#_valorFaltante").val());
 
             if ((valorPagar + valorPago) > valorTotal) {
                 Ext.Msg.show({
@@ -66,9 +74,11 @@
             } else if ((valorPagar + valorPago) < valorTotal) {
                 Ext.Msg.confirm("Atenção", "O valor pago é menor que o valor total, deseja continuar?", function (btn) {
                     if (btn == "yes") {
-                        $("#valorPago").text(valorPago + valorPagar);
-                        var valorPagoSum = parseFloat($("#valorPago").text());
-                        $("#valorFaltante").text(valorTotal - valorPagoSum);
+                        mostrarCampos(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected());
+                        $("#valorPago").text(formataDinheiro(valorPago + valorPagar));
+                        $("#_valorPago").text(valorPago + valorPagar);
+                        $("#valorFaltante").text(formataDinheiro(valorTotal - (valorPago + valorPagar)));
+                        $("#_valorFaltante").text(valorTotal - (valorPago + valorPagar));
                         $("#valorPagar").val('');
                         $("#formaPag").val('');
                         pagar(serialize);
@@ -94,27 +104,44 @@
             });
         };
 
-        var LoadFormulario = function (record, cmpFaltante, cmpValorPago) {
+        var LoadFormulario = function (record) {
             Ext.getCmp("FormPanel1").expand();
+            var dataVenc = new Date(record.data.dataVencimento);
+            Ext.getCmp("dataVencimento").setValue(dataVenc.format("d/m/Y"));
+            Ext.getCmp("valorTotal").setValue(formataDinheiro(record.data.valorTotal));
             if (record.data.valorPago != "") {
-                mostrarCampos();
+                mostrarCampos(record);
+            } else {
+                esconderCampos();
             }
         }
 
-        var mostrarCampos = function () {
+        var mostrarCampos = function (record) {
             Ext.getCmp("valorPago").show();
             Ext.getCmp("valorFaltante").show();
+            Ext.getCmp("valorPago").setValue(formataDinheiro(record.data.valorPago));
+            Ext.getCmp("_valorPago").setValue(record.data.valorPago);
+            Ext.getCmp("valorFaltante").setValue(formataDinheiro(record.data.valorFaltante));
+            Ext.getCmp("_valorFaltante").setValue(record.data.valorFaltante);
         }
 
-        var renderForm = function (obj) {
-            alert(obj.getValue());
-        };
+        var esconderCampos = function () {
+            Ext.getCmp("valorPago").hide();
+            Ext.getCmp("valorFaltante").hide();
+        }
+
+        var GerarBoleto = function (idCobranca) {
+
+            window.open("/Pagamento/GerarBoleto/?idCobranca=" + idCobranca, "Boleto Bancário", "Width=750px,height=550px,scrollbars=yes,resizable=no,location=no");
+
+        }
+
     </script>
 </head>
 <body>
     <form id="Form1" runat="server">
         <ext:ResourceManager ID="ResourceManager1" runat="server" />
-            
+
         <ext:Viewport ID="Viewport1" runat="server">
             <Items>
                 <ext:BorderLayout ID="BorderLayout1" runat="server">
@@ -215,7 +242,8 @@
                             </Store>
                             <ColumnModel ID="ColumnModel1" runat="server">
                                 <Columns>
-                                    <ext:Column DataIndex="idCobranca" Header="Id" Width="50" />
+                                    <ext:RowNumbererColumn ColumnID="number" />
+                                    <ext:Column DataIndex="idCobranca" Header="Id" Width="50" Hidden="true" />
                                     <ext:Column DataIndex="Taxa.nome" Header="Cobrança" />
                                     <ext:DateColumn DataIndex="dataVencimento" Header="Data de Vencimento" Width="150" Format="dd/MM/yyyy" />
                                     <ext:Column DataIndex="Taxa.valor" Header="Valor" Width="150">
@@ -227,15 +255,23 @@
                                     <ext:Column DataIndex="valorTotal" Header="ValorTotal" Width="150" >
                                         <Renderer Fn="formataDinheiro" />
                                     </ext:Column>
+                                    <ext:CommandColumn Width="110" Align="Center">
+                                        <Commands>
+                                            <ext:GridCommand Icon="Money" CommandName="Boleto" Text="Boleto"  />
+                                        </Commands>
+                                    </ext:CommandColumn>
                                 </Columns>
                             </ColumnModel>
                             <SelectionModel>
                                 <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true">
                                     <Listeners>
-                                        <RowSelect Handler="#{FormPanel1}.getForm().loadRecord(record); LoadFormulario(record,#{valorFaltante},#{valorPago});" />
+                                        <RowSelect Handler="#{FormPanel1}.getForm().loadRecord(record); LoadFormulario(record);" />
                                     </Listeners>
                                 </ext:RowSelectionModel>
-                            </SelectionModel>   
+                            </SelectionModel> 
+                            <Listeners>
+                                <Command Handler="#{boletoWindow}.load('/Pagamento/GerarBoleto/?idCobranca='+record.data.idCobranca).show();" />
+                            </Listeners>  
                             <BottomBar>
                                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                             </BottomBar>
@@ -258,12 +294,12 @@
                                 <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />                                                     
                                 <ext:DisplayField ID="DisplayField1" runat="server" FieldLabel="Aluno" DataIndex="Aluno.nome" />
                                 <ext:DisplayField ID="DisplayField2" runat="server" FieldLabel="Cobrança" DataIndex="Taxa.nome" />
-                                <ext:DisplayField ID="dataVencimento" runat="server" FieldLabel="Data Vencimento">                                    
-
-                                </ext:DisplayField>
+                                <ext:DisplayField ID="dataVencimento" runat="server" FieldLabel="Data Vencimento" />
                                 <ext:DisplayField ID="valorTotal" runat="server" FieldLabel="Valor Total" DataIndex="valorTotal"/>
                                 <ext:DisplayField ID="valorPago" runat="server" FieldLabel="Valor Pago" DataIndex="valorPago" Hidden="true" />
+                                <ext:Hidden ID="_valorPago" runat="server" />
                                 <ext:DisplayField ID="valorFaltante" runat="server" FieldLabel="Valor Faltante" DataIndex="valorFaltante" Hidden="true" Cls="faltante" />
+                                <ext:Hidden ID="_valorFaltante" runat="server" />
                                 <ext:NumberField ID="valorPagar" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" />
                                 <ext:ComboBox ID="formaPag" runat="server" FieldLabel="Forma Pagto" AllowBlank="false">
                                     <Items>
@@ -273,7 +309,7 @@
                                 </ext:ComboBox>
                                 <ext:Button ID="btnPagar" Text="Realizar Pagamento" Icon="MoneyAdd" runat="server" >
                                     <Listeners>
-                                        <Click Handler="mostrarCampos(); realizarPagamento(#{FormPanel1}.getForm().getValues());" />
+                                        <Click Handler="realizarPagamento(#{FormPanel1}.getForm().getValues());" />
                                     </Listeners>
                                 </ext:Button>
                             </Items>
@@ -283,5 +319,28 @@
             </Items>
         </ext:Viewport>
     </form>
+    <ext:Window ID="boletoWindow" runat="server" IDMode="Static" Title="Boleto Bancário"
+      Hidden="true" Modal="true" Height="550px" Width="750px">
+        <AutoLoad Url="/Pagamento/GerarBoleto" TriggerEvent="show" NoCache="true" ReloadOnEvent="true" ShowMask="true" MaskMsg="Carregando Boleto..."  Mode="IFrame">
+            <Params>
+                <ext:Parameter Name="idCobranca" Value="1" Mode="Raw" />
+            </Params>
+        </AutoLoad>              
+        <Listeners>
+            <Show Handler="boletoWindow.reload()" />
+        </Listeners>
+        <BottomBar>
+        <ext:Toolbar ID="botoesBar" runat="server">
+            <Items>
+                <ext:ToolbarFill />
+                <ext:Button ID="Button1" runat="server" Text="Imprimir" Icon="Printer">
+                    <Listeners>
+                        <Click Handler="#{boletoWindow}.getBody().print();" />
+                    </Listeners>
+                </ext:Button>
+            </Items>
+        </ext:Toolbar>
+        </BottomBar>
+  </ext:Window>
 </body>
 </html>
