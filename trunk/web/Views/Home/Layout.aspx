@@ -177,6 +177,11 @@
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="MoneyDollar" Expanded="true" Text="Processar cobrança de mensalidade">                                         
                                                 </ext:TreeNode>
+                                                <ext:TreeNode Icon="ApplicationDelete" Expanded="true" Text="Fechamento de Turma">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaFecharTurma','/Turma/FecharTurma','Fechar Turma')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
                                             </Nodes>
                                         </ext:TreeNode>
                                          <ext:TreeNode Icon="Folder" Expanded="true" Text="Diretoria">
