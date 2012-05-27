@@ -93,6 +93,7 @@
     <Compile Include="Controllers\PagamentoController.cs" />
     <Compile Include="Controllers\TaxaController.cs" />
     <Compile Include="Controllers\TipoEnderecoController.cs" />
+    <Compile Include="Controllers\TurmaController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -193,6 +194,7 @@
     <Content Include="Views\LancarNotaFalta\LancarNotaFalta.aspx" />
     <Content Include="Views\Pagamento\RealizarPagamento.aspx" />
     <Content Include="Views\Taxa\Taxa.aspx" />
+    <Content Include="Views\Turma\FecharTurma.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
