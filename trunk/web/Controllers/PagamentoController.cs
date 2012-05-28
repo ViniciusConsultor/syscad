@@ -70,6 +70,7 @@ namespace web.Controllers
                                                        idCobranca = c.idCobranca,
                                                        idAluno = c.idAluno,
                                                        idTaxa = c.idTaxa,
+                                                       idCurso = c.idCurso,
                                                        juros = c.juros,
                                                        valorTotal = c.valorTotal,
                                                        dataVencimento = c.dataVencimento,
@@ -78,6 +79,10 @@ namespace web.Controllers
                                                            idTaxa = c.Taxa.idTaxa,
                                                            nome = c.Taxa.nome,
                                                            valor = c.Taxa.valor
+                                                       },
+                                                       Curso = new Models.Curso{
+                                                           nome = c.Curso.nome,
+                                                           valor = c.Curso.valor
                                                        },
                                                        Aluno = new Models.Aluno
                                                        {
@@ -209,7 +214,61 @@ namespace web.Controllers
 
             boletoBancario.MostrarComprovanteEntrega = false;
             boletoBancario.FormatoCarne = false;
+
+            conn.Close();
             return View("Boleto",boletoBancario);
+        }
+
+        public ActionResult Recibo(int idCobranca)
+        {            
+            conn.Open();
+            string sql = @"select formaPag, p.valor as valorPago, t.nome as descTaxa, valorTotal, juros, t.valor as valorTaxa, pe.nome, 
+                            m.numeroMatricula, cu.nome, cu.valor as valorCurso 
+                            from dbo.pagamento p
+                            join dbo.cobranca c on p.idCobranca = c.idCobranca
+                            join dbo.aluno a on c.idAluno = a.idAluno
+                            join dbo.pessoa pe on a.idPessoa = pe.idPessoa
+                            join dbo.matricula m on m.idAluno = a.idAluno
+                            left join dbo.curso cu on c.idCurso = cu.idCurso
+                            left join dbo.taxa t on c.idTaxa = t.idTaxa
+                            where c.idCobranca = @idCobranca";
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            comm.Parameters.Add(new SqlParameter("@idCobranca", idCobranca));
+            SqlDataReader dr = comm.ExecuteReader();
+            List<Models.Pagamento> lstPagamento = new List<Models.Pagamento>();
+            while (dr.Read())
+            {
+                Models.Pagamento p = new Models.Pagamento();
+                p.formaPag = dr.GetInt32(0);
+                p.valor = dr.GetDecimal(1);
+                p.Cobranca = new Models.Cobranca
+                {
+                    valorTotal = dr.GetDecimal(3),
+                    juros = dr.GetDecimal(4),
+                    Taxa = new Models.Taxa
+                    {
+                        nome = !dr.IsDBNull(2) ? dr.GetString(2) : "",
+                        valor = !dr.IsDBNull(5) ? dr.GetDecimal(5) : 0
+                    },
+                    Curso = new Models.Curso
+                    {
+                        valor = !dr.IsDBNull(9) ? dr.GetDecimal(9) : 0,
+                        nome = !dr.IsDBNull(8) ? dr.GetString(8) : ""
+                    },
+                    Aluno = new Models.Aluno
+                    {
+                        nome = dr.GetString(6),
+                        Matricula = new Models.Matricula
+                        {
+                            numeroMatricula = dr.GetInt32(7)
+                        }
+                    }
+                };                
+                lstPagamento.Add(p);
+            }
+
+            return View(lstPagamento);
         }
     }
 }

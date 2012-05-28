@@ -18,7 +18,8 @@ namespace web.Models
         public IEnumerable<Turma> Turmas { get; set; } // muitas turmas
         public string nome { get; set; }
         public string descricao { get; set; }
-        public decimal valor { get; set; }
+        public decimal? valor { get; set; }
         public int status { get; set; }
+        public Cobranca Cobranca { get; set; }
     }
 }

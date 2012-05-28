@@ -91,6 +91,8 @@
                 pagar(serialize);
                 mudarStatus();
                 Ext.getCmp("FormPanel1").getForm().reset();
+                var record = Ext.getCmp("grdCobrancas").getSelectionModel().getSelected();
+                Ext.getCmp("WindowRecibo").load("/Pagamento/Recibo/?idCobranca="+record.data.idCobranca).show();
             }
         }
 
@@ -109,6 +111,8 @@
             var dataVenc = new Date(record.data.dataVencimento);
             Ext.getCmp("dataVencimento").setValue(dataVenc.format("d/m/Y"));
             Ext.getCmp("valorTotal").setValue(formataDinheiro(record.data.valorTotal));
+            Ext.getCmp("_valorPago").setValue(record.data.valorPago);
+            Ext.getCmp("_valorFaltante").setValue(record.data.valorFaltante);
             if (record.data.valorPago != "") {
                 mostrarCampos(record);
             } else {
@@ -120,9 +124,7 @@
             Ext.getCmp("valorPago").show();
             Ext.getCmp("valorFaltante").show();
             Ext.getCmp("valorPago").setValue(formataDinheiro(record.data.valorPago));
-            Ext.getCmp("_valorPago").setValue(record.data.valorPago);
             Ext.getCmp("valorFaltante").setValue(formataDinheiro(record.data.valorFaltante));
-            Ext.getCmp("_valorFaltante").setValue(record.data.valorFaltante);
         }
 
         var esconderCampos = function () {
@@ -130,12 +132,15 @@
             Ext.getCmp("valorFaltante").hide();
         }
 
-        var GerarBoleto = function (idCobranca) {
-
-            window.open("/Pagamento/GerarBoleto/?idCobranca=" + idCobranca, "Boleto Bancário", "Width=750px,height=550px,scrollbars=yes,resizable=no,location=no");
-
+        var trataDados = function (value, rec) {
+            if (value == null) {
+                rec.nomeCobranca = "Mensalidade";
+                rec.valorCobranca = rec.Curso.valor;
+            } else {
+                rec.nomeCobranca = rec.Taxa.nome;
+                rec.valorCobranca = rec.Taxa.valor;               
+            }
         }
-
     </script>
 </head>
 <body>
@@ -213,7 +218,7 @@
                             Margins="0 0 5 5"
                             Icon="Money"
                             Region="Center"
-                            AutoExpandColumn="Taxa.nome" 
+                            AutoExpandColumn="nomeCobranca" 
                             Frame="true">
                             <Store>
                                 <ext:Store ID="StoreCobrancas" runat="server" AutoLoad="false">
@@ -232,6 +237,13 @@
                                                 <ext:RecordField Name="Aluno.nome" Type="string" />
                                                 <ext:RecordField Name="valorPago" Type="Float" />
                                                 <ext:RecordField Name="valorFaltante" Type="Float" />
+                                                <ext:RecordField Name="idTaxa" Type="Int" >
+                                                    <Convert fn="trataDados" />
+                                                </ext:RecordField>
+                                                <ext:RecordField Name="idCurso" Type="Int" />
+                                                <ext:RecordField Name="Curso.valor" Type="Float" />
+                                                <ext:RecordField Name="valorCobranca" Type="Float" />
+                                                <ext:RecordField Name="nomeCobranca" Type="String" />
                                             </Fields>
                                         </ext:JsonReader>
                                     </Reader>
@@ -244,15 +256,16 @@
                                 <Columns>
                                     <ext:RowNumbererColumn ColumnID="number" />
                                     <ext:Column DataIndex="idCobranca" Header="Id" Width="50" Hidden="true" />
-                                    <ext:Column DataIndex="Taxa.nome" Header="Cobrança" />
+                                    <ext:Column DataIndex="nomeCobranca" Header="Cobrança" >                                     
+                                    </ext:Column>
                                     <ext:DateColumn DataIndex="dataVencimento" Header="Data de Vencimento" Width="150" Format="dd/MM/yyyy" />
-                                    <ext:Column DataIndex="Taxa.valor" Header="Valor" Width="150">
+                                    <ext:Column DataIndex="valorCobranca" Header="Valor" Width="100">
                                         <Renderer Fn="formataDinheiro" />
                                     </ext:Column>
-                                    <ext:Column DataIndex="juros" Header="Juros" Width="150" >
+                                    <ext:Column DataIndex="juros" Header="Juros" Width="100" >
                                         <Renderer Fn="formataDinheiro" />
                                     </ext:Column>
-                                    <ext:Column DataIndex="valorTotal" Header="ValorTotal" Width="150" >
+                                    <ext:Column DataIndex="valorTotal" Header="ValorTotal" Width="100" >
                                         <Renderer Fn="formataDinheiro" />
                                     </ext:Column>
                                     <ext:CommandColumn Width="110" Align="Center">
@@ -342,5 +355,29 @@
         </ext:Toolbar>
         </BottomBar>
   </ext:Window>
+  <ext:Window ID="WindowRecibo" runat="server" IDMode="Static" Title="Recibo de Pagamento"
+      Hidden="true" Modal="true" Height="550px" Width="350px">
+        <AutoLoad Url="/Pagamento/Recibo" TriggerEvent="show" NoCache="true" ReloadOnEvent="true" ShowMask="true" MaskMsg="Carregando Recibo..."  Mode="IFrame">
+            <Params>
+                <ext:Parameter Name="idCobranca" Value="1" Mode="Raw" />
+            </Params>
+        </AutoLoad>              
+        <Listeners>
+            <Show Handler="WindowRecibo.reload()" />
+        </Listeners>
+        <BottomBar>
+        <ext:Toolbar ID="Toolbar1" runat="server">
+            <Items>
+                <ext:ToolbarFill />
+                <ext:Button ID="Button2" runat="server" Text="Imprimir" Icon="Printer">
+                    <Listeners>
+                        <Click Handler="#{WindowRecibo}.getBody().print();" />
+                    </Listeners>
+                </ext:Button>
+            </Items>
+        </ext:Toolbar>
+        </BottomBar>
+  </ext:Window>
+
 </body>
 </html>

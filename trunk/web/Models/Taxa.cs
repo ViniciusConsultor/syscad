@@ -16,10 +16,10 @@ namespace web.Models
             Cobrancas = new List<Cobranca>();
         }
 
-        public int idTaxa { get; set; }
+        public int? idTaxa { get; set; }
         public String nome { get; set; }
         public String descricao { get; set; }
-        public Decimal valor { get; set; }
+        public Decimal? valor { get; set; }
         public ICollection<Cobranca> Cobrancas { get; set; }
         
     }

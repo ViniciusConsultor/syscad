@@ -14,7 +14,6 @@ namespace web.Models
         public Aluno()
         {
             Cobrancas = new List<Cobranca>();
-            Matriculas = new List<Matricula>();
             NotaFaltas = new List<NotaFalta>();
         }
 
@@ -23,7 +22,7 @@ namespace web.Models
         public int statusPedagogico { get; set; } 
         public int statusFinanceiro { get; set; }
         public ICollection<Cobranca> Cobrancas { get; set; }
-        public ICollection<Matricula> Matriculas { get; set; }
+        public Matricula Matricula { get; set; }
         public ICollection<NotaFalta> NotaFaltas { get; set; }
         public Responsavel Responsavel { get; set; }
 

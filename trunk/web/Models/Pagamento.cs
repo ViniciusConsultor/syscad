@@ -11,6 +11,7 @@ namespace web.Models
         public int idCobranca { get; set; }
         public DateTime dataPagamento { get; set; }
         public decimal valor { get; set; }
+        public int formaPag { get; set; }
         public Cobranca Cobranca { get; set; }
     }
 }

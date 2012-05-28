@@ -13,10 +13,7 @@ namespace web.Models
     {
         public Pessoa()
         {
-            Alunos = new List<Aluno>();
             Enderecos = new List<Endereco>();
-            Funcionarios = new List<Funcionario>();
-            Responsaveis = new List<Responsavel>();
         }
 
         public int idPessoa { get; set; }
@@ -27,10 +24,10 @@ namespace web.Models
         public String celular { get; set; }
         public DateTime dataNascimento { get; set; }
         public int sexo { get; set; }
-        public ICollection<Aluno> Alunos { get; set; }
+        public Aluno Aluno { get; set; }
         public ICollection<Endereco> Enderecos { get; set; }
-        public ICollection<Funcionario> Funcionarios { get; set; }
-        public ICollection<Responsavel> Responsaveis { get; set; }
+        public Funcionario Funcionario { get; set; }
+        public Responsavel Responsavel { get; set; }
         
     }
 }

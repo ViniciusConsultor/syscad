@@ -11,12 +11,6 @@ namespace Persistence.Entity
 {
     public class Aluno
     {
-        public Aluno()
-        {
-            Cobrancas = new List<Cobranca>();
-            Matriculas = new List<Matricula>();
-            NotaFaltas = new List<NotaFalta>();
-        }
 
         public virtual int idAluno { get; set; }
         public virtual int idPessoa { get; set; }

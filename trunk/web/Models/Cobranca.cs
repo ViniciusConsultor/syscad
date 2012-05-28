@@ -17,7 +17,8 @@ namespace web.Models
         }
         public int idCobranca { get; set; }
         public int idAluno { get; set; }
-        public int idTaxa { get; set; }
+        public int? idTaxa { get; set; }
+        public int? idCurso { get; set; }
         public int statusPagamento { get; set; }
         public DateTime dataVencimento { get; set; }
         public decimal valorTotal { get; set; }
@@ -27,5 +28,6 @@ namespace web.Models
         public Aluno Aluno { get; set; }
         public Taxa Taxa { get; set; }
         public ICollection<Pagamento> Pagamentos { get; set; }
+        public Curso Curso { get; set; }
     }
 }
