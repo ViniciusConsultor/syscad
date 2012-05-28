@@ -16,12 +16,14 @@ namespace web.Controllers
         IRepositorio<Matricula> dbMatricula;
         IRepositorio<Aluno> dbAluno;
         IRepositorio<Pessoa> dbPessoa;
+        IRepositorio<Responsavel> dbResponsavel;
 
         public MatriculaController()
         {
             dbMatricula = new Repositorio<Matricula>();
             dbAluno = new Repositorio<Aluno>();
             dbPessoa = new Repositorio<Pessoa>();
+            dbResponsavel = new Repositorio<Responsavel>();
         }
         
         public ActionResult Matricula()
@@ -38,6 +40,7 @@ namespace web.Controllers
             foreach (Matricula m in listaMatricula){
                 m.Aluno = new Repositorio<Aluno>().FindOne(x => x.idAluno == m.idAluno);
                 m.Aluno.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.idPessoa);
+                m.Aluno.Responsavel.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.Responsavel.idPessoa);
             }
 
             return Json(new { matriculas = listaMatricula, totalReg = listaMatricula.Count }, JsonRequestBehavior.AllowGet);
@@ -59,7 +62,7 @@ namespace web.Controllers
             }
             catch (Exception e)
             {
-
+                
                 return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
 
             }
@@ -90,10 +93,7 @@ namespace web.Controllers
             matricula.numeroMatricula = numeroMatricula;
             matricula.Aluno = aluno;
             matricula.dataRegistro = Convert.ToDateTime(txtDataRegistro);
-            //matricula.dataCancelamento = String.IsNullOrEmpty(dataCancelamento) ? Convert.ToDateTime(dataCancelamento) : null;
             matricula.tipo = txtTipo;
-
-            //funcionario.Usuario = usuario;
 
             try
             {
@@ -117,33 +117,35 @@ namespace web.Controllers
         {
 
             Matricula matricula = dbMatricula.FindOne(mat => mat.idMatricula == id);
+            Aluno aluno = dbAluno.FindOne(alu => alu.idAluno == matricula.idAluno);
+            //Aluno exAluno = dbMatricula.FindOne(exAlu => exAlu.idAluno == valor);
 
             try
             {
 
                 switch (campo)
                 {
-                    case "Aluno.nome":
-
-                        matricula.idAluno = Convert.ToInt32(valor);
-                        break;
-
-                    case "Matricula":
+                    case "numeroMatricula":
 
                         matricula.numeroMatricula = Convert.ToInt32(valor);
                         break;
 
-                    case "DataRegistro":
+                    case "Aluno.Pessoa.nome":
+                        aluno.idPessoa = Convert.ToInt32(valor);
+                        matricula.Aluno = aluno;
+                        break;
+
+                    case "dataRegistro":
 
                         matricula.dataRegistro = Convert.ToDateTime(valor);
                         break;
 
-                    case "DataCancelamento":
+                    case "dataCancelamento":
 
                         matricula.dataCancelamento = Convert.ToDateTime(valor);
                         break;
-                
-                    case "Tipo":
+
+                    case "tipo":
 
                         matricula.tipo = valor;
                         break;

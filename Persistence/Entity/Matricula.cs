@@ -11,11 +11,7 @@ namespace Persistence.Entity
 {
     public class Matricula
     {
-        public Matricula()
-        {
-            MatriculaTurmas = new List<MatriculaTurma>();
-        }
-
+       
         public virtual int idMatricula { get; set; }
         public virtual int idAluno { get; set; }
         public virtual int numeroMatricula { get; set; }

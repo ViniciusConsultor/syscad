@@ -23,5 +23,6 @@ namespace Persistence.Entity
         public string descricao { get; set; }
         public decimal valor { get; set; }
         public int status { get; set; }
+        public Cobranca Cobranca { get; set; }
     }
 }

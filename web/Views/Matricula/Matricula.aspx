@@ -16,6 +16,17 @@
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
+<script type="text/javascript">
+    /*var alunoRenderer = function (value) {
+        var r = cmbAluno.getById(value);
+
+        if (Ext.isEmpty(r)) {
+            return "";
+        }
+
+        return r.data.nome;
+    };*/
+</script>
 
 <body>
 <ext:ResourceManager ID="ResourceManager1" runat="server" RemoveViewState="true" IDMode="Explicit" />
@@ -59,18 +70,12 @@
                 <Columns>
                     <ext:Column ColumnID="idMatricula" Header="Id" DataIndex="idMatricula" Hidden="true" />
 
-                    <ext:Column ColumnID="matricula" Header="Matrícula" DataIndex="numeroMatricula">
-                        <Editor>
-                            <ext:TextField ID="txtMatricula" runat="server" MaxLength="15" />
-                        </Editor>
-                    </ext:Column>
+                    <ext:Column ColumnID="matricula" Header="Matrícula" DataIndex="numeroMatricula"></ext:Column>
 
-                    <ext:Column ColumnID="aluno" Header="Aluno" DataIndex="Aluno.Pessoa.nome">
-                        <Editor>
-                            <ext:TextField ID="TextField1" runat="server" MaxLength="15" />
-                        </Editor>
-                    </ext:Column>
+                    <ext:Column ColumnID="aluno" Header="Aluno" DataIndex="Aluno.Pessoa.nome" width="180px"></ext:Column>
 
+                    <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Aluno.Responsavel.Pessoa.nome" width="180px"></ext:Column>
+                    
                     <ext:DateColumn DataIndex="dataRegistro" Header="Data de Registro" Format="d/m/Y" />
                      
                     <ext:DateColumn DataIndex="dataCancelamento" Header="Data de Cancelamento" Format="d/m/Y" />
@@ -78,12 +83,6 @@
                     <ext:Column ColumnID="tipo" Header="Tipo" DataIndex="tipo">
                         <Editor>
                             <ext:TextField ID="TextField4" runat="server" MaxLength="15" />
-                        </Editor>
-                    </ext:Column>
-
-                    <ext:Column ColumnID="MatriculaTurmas" Header="Matriculas de Turmas" DataIndex="MatriculaTurmas">
-                        <Editor>
-                            <ext:TextField ID="TextField5" runat="server" MaxLength="15" />
                         </Editor>
                     </ext:Column>
 
@@ -161,7 +160,7 @@
                     <ext:FormPanel ID="matricula" runat="server">
 
                         <Items>
-                            <ext:NumberField ID="numeroMatricula" runat="server" FieldLabel="Matrícula*" Width="350" AllowBlank="false" />
+                            <ext:NumberField ID="numeroMatricula" runat="server" FieldLabel="Matrícula" Width="350" AllowBlank="false" />
                             
                             <ext:ComboBox ID="cmbPessoa" 
                                 runat="server" 
@@ -174,7 +173,7 @@
                                 HideTrigger="false"
                                 ItemSelector="div.search-item"        
                                 MinChars="1"
-                                FieldLabel="Pessoa*"
+                                FieldLabel="Pessoa"
                                 TriggerAction="All">
                                 <Store>
                                     <ext:Store ID="Store2" runat="server" AutoLoad="false">

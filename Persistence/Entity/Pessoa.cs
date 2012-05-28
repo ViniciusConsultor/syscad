@@ -11,13 +11,7 @@ namespace Persistence.Entity
 {
     public class Pessoa
     {
-        public Pessoa()
-        {
-            Alunos = new List<Aluno>();
-            Enderecos = new List<Endereco>();
-            Funcionarios = new List<Funcionario>();
-            Responsaveis = new List<Responsavel>();
-        }
+       
 
         public virtual int idPessoa { get; set; }
         public virtual String nome { get; set; }

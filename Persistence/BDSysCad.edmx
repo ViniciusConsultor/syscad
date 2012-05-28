@@ -37,6 +37,10 @@
             <End Role="aluno" EntitySet="aluno" />
             <End Role="cobranca" EntitySet="cobranca" />
           </AssociationSet>
+          <AssociationSet Name="FK_cobranca_curso" Association="BDSysCadModel.Store.FK_cobranca_curso">
+            <End Role="curso" EntitySet="curso" />
+            <End Role="cobranca" EntitySet="cobranca" />
+          </AssociationSet>
           <AssociationSet Name="FK_cobranca_taxa" Association="BDSysCadModel.Store.FK_cobranca_taxa">
             <End Role="taxa" EntitySet="taxa" />
             <End Role="cobranca" EntitySet="cobranca" />
@@ -129,12 +133,13 @@
             <PropertyRef Name="idCobranca" />
           </Key>
           <Property Name="idCobranca" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="idTaxa" Type="int" Nullable="false" />
+          <Property Name="idTaxa" Type="int" />
           <Property Name="idAluno" Type="int" Nullable="false" />
           <Property Name="statusPagamento" Type="int" />
           <Property Name="valorTotal" Type="decimal" Scale="2" />
           <Property Name="juros" Type="decimal" Scale="2" />
           <Property Name="dataVencimento" Type="datetime" />
+          <Property Name="idCurso" Type="int" />
         </EntityType>
         <EntityType Name="curso">
           <Key>
@@ -336,8 +341,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_cobranca_curso">
+          <End Role="curso" Type="BDSysCadModel.Store.curso" Multiplicity="0..1" />
+          <End Role="cobranca" Type="BDSysCadModel.Store.cobranca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="curso">
+              <PropertyRef Name="idCurso" />
+            </Principal>
+            <Dependent Role="cobranca">
+              <PropertyRef Name="idCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_cobranca_taxa">
-          <End Role="taxa" Type="BDSysCadModel.Store.taxa" Multiplicity="1" />
+          <End Role="taxa" Type="BDSysCadModel.Store.taxa" Multiplicity="0..1" />
           <End Role="cobranca" Type="BDSysCadModel.Store.cobranca" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="taxa">
@@ -644,6 +661,10 @@
             <End Role="perfil" EntitySet="PerfilSet" />
             <End Role="Usuario" EntitySet="UsuarioSet" />
           </AssociationSet>
+          <AssociationSet Name="FK_cobranca_curso" Association="BDSysCadModel.FK_cobranca_curso">
+            <End Role="Curso" EntitySet="CursoSet" />
+            <End Role="Cobranca" EntitySet="CobrancaSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Aluno">
           <Key>
@@ -683,6 +704,8 @@
           <NavigationProperty Name="Taxa" Relationship="BDSysCadModel.FK_cobranca_taxa" FromRole="cobranca" ToRole="taxa" />
           <Property Type="DateTime" Name="dataVencimento" />
           <NavigationProperty Name="Pagamentos" Relationship="BDSysCadModel.FK_pagamento_cobranca" FromRole="Cobranca" ToRole="pagamento" />
+          <Property Type="Int32" Name="idCurso" />
+          <NavigationProperty Name="Curso" Relationship="BDSysCadModel.FK_cobranca_curso" FromRole="Cobranca" ToRole="Curso" />
         </EntityType>
         <EntityType Name="Curso">
           <Key>
@@ -695,6 +718,7 @@
           <Property Type="Int32" Name="status" />
           <NavigationProperty Name="Modulos" Relationship="BDSysCadModel.FK_modulo_curso" FromRole="curso" ToRole="modulo" />
           <NavigationProperty Name="Turmas" Relationship="BDSysCadModel.FK_turma_curso" FromRole="curso" ToRole="turma" />
+          <NavigationProperty Name="Cobranca" Relationship="BDSysCadModel.FK_cobranca_curso" FromRole="Curso" ToRole="Cobranca" />
         </EntityType>
         <EntityType Name="Endereco">
           <Key>
@@ -1119,6 +1143,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_cobranca_curso">
+          <End Type="BDSysCadModel.Curso" Role="Curso" Multiplicity="0..1" />
+          <End Type="BDSysCadModel.Cobranca" Role="Cobranca" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="idCurso" />
+            </Principal>
+            <Dependent Role="Cobranca">
+              <PropertyRef Name="idCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1148,6 +1184,7 @@
           <EntitySetMapping Name="CobrancaSet">
             <EntityTypeMapping TypeName="BDSysCadModel.Cobranca">
               <MappingFragment StoreEntitySet="cobranca">
+                <ScalarProperty Name="idCurso" ColumnName="idCurso" />
                 <ScalarProperty Name="dataVencimento" ColumnName="dataVencimento" />
                 <ScalarProperty Name="juros" ColumnName="juros" />
                 <ScalarProperty Name="valorTotal" ColumnName="valorTotal" />
@@ -1365,7 +1402,7 @@
         <EntityTypeShape EntityType="BDSysCadModel.Cobranca" Width="1.875" PointX="6.125" PointY="9" Height="2.5571907552083317" />
         <EntityTypeShape EntityType="BDSysCadModel.Curso" Width="1.5" PointX="3.75" PointY="17.125" Height="2.3648893229166674" />
         <EntityTypeShape EntityType="BDSysCadModel.Endereco" Width="2" PointX="3.375" PointY="4.25" Height="3.5186979166666674" />
-        <EntityTypeShape EntityType="BDSysCadModel.Matricula" Width="2.25" PointX="5.875" PointY="12.25" Height="2.5571907552083317" />
+        <EntityTypeShape EntityType="BDSysCadModel.Matricula" Width="2.25" PointX="6" PointY="12.625" Height="2.5571907552083317" />
         <EntityTypeShape EntityType="BDSysCadModel.MatriculaTurma" Width="1.875" PointX="9.375" PointY="12.75" Height="1.9802864583333317" />
         <EntityTypeShape EntityType="BDSysCadModel.Modulo" Width="2" PointX="6" PointY="17.125" Height="2.3648893229166674" />
         <EntityTypeShape EntityType="BDSysCadModel.Pessoa" Width="2.125" PointX="0.5" PointY="8.25" Height="3.1340950520833388" />
@@ -1375,60 +1412,71 @@
         <EntityTypeShape EntityType="BDSysCadModel.Usuario" Width="1.5" PointX="0.75" PointY="15.375" Height="2.172587890624996" />
         <AssociationConnector Association="BDSysCadModel.FK_aluno_pessoa" >
           <ConnectorPoint PointX="2.625" PointY="10.2881982421875" />
+          <ConnectorPoint PointX="3.0729166666666665" PointY="10.2881982421875" />
+          <ConnectorPoint PointX="3.2395833333333335" PointY="10.2881982421875" />
           <ConnectorPoint PointX="3.375" PointY="10.2881982421875" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_cobranca_aluno" >
-          <ConnectorPoint PointX="5.25" PointY="10.360320201822917" />
-          <ConnectorPoint PointX="5.541666666666667" PointY="10.360320201822917" />
-          <ConnectorPoint PointX="5.708333333333333" PointY="10.360320201822917" />
-          <ConnectorPoint PointX="6.125" PointY="10.360320201822917" />
+          <ConnectorPoint PointX="5.25" PointY="10.25140525924351" />
+          <ConnectorPoint PointX="5.666666666666667" PointY="10.25140525924351" />
+          <ConnectorPoint PointX="5.833333333333333" PointY="10.25140525924351" />
+          <ConnectorPoint PointX="6.125" PointY="10.25140525924351" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_matricula_aluno" >
-          <ConnectorPoint PointX="5.25" PointY="11.876892903645834" />
-          <ConnectorPoint PointX="5.541666666666667" PointY="11.876892903645834" />
-          <ConnectorPoint PointX="5.708333333333333" PointY="11.876892903645834" />
-          <ConnectorPoint PointX="5.96875" PointY="11.876892903645834" />
-          <ConnectorPoint PointX="5.96875" PointY="12.25" />
+          <ConnectorPoint PointX="5.25" PointY="11.941793619791667" />
+          <ConnectorPoint PointX="5.625" PointY="12.316793619791667" />
+          <ConnectorPoint PointX="5.625" PointY="13.903595377604166" />
+          <ConnectorPoint PointX="5.666666666666667" PointY="13.903595377604166" />
+          <ConnectorPoint PointX="5.833333333333333" PointY="13.903595377604166" />
+          <ConnectorPoint PointX="6" PointY="13.903595377604166" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_cobranca_taxa" >
-          <ConnectorPoint PointX="4.5" PointY="2.7230843098958388" />
-          <ConnectorPoint PointX="7.71093625" PointY="2.7230843098958388" />
-          <ConnectorPoint PointX="7.71093625" PointY="9" />
+          <ConnectorPoint PointX="3.15625" PointY="3.2302864583333388" />
+          <ConnectorPoint PointX="3.15625" PointY="12.165345052083334" />
+          <ConnectorPoint PointX="5.390218098958333" PointY="12.165345052083334" />
+          <ConnectorPoint PointX="5.5568847656249991" PointY="12.165345052083334" />
+          <ConnectorPoint PointX="5.604166666666667" PointY="12.165345052083334" />
+          <ConnectorPoint PointX="5.833333333333333" PointY="12.165345052083334" />
+          <ConnectorPoint PointX="6.125" PointY="12.165345052083334" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_modulo_curso" >
-          <ConnectorPoint PointX="5.25" PointY="18.307444661458334" />
-          <ConnectorPoint PointX="6" PointY="18.307444661458334" />
+          <ConnectorPoint PointX="5.25" PointY="17.896779949349732" />
+          <ConnectorPoint PointX="5.666666666666667" PointY="17.896779949349732" />
+          <ConnectorPoint PointX="5.833333333333333" PointY="17.896779949349732" />
+          <ConnectorPoint PointX="6" PointY="17.896779949349732" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_turma_curso" >
-          <ConnectorPoint PointX="5.25" PointY="18.307444661458334" />
-          <ConnectorPoint PointX="5.625" PointY="18.307444661458334" />
-          <ConnectorPoint PointX="5.625" PointY="7.7590950520833388" />
+          <ConnectorPoint PointX="5.25" PointY="18.820737352279036" />
+          <ConnectorPoint PointX="5.75" PointY="18.820737352279036" />
+          <ConnectorPoint PointX="5.75" PointY="7.7590950520833388" />
           <ConnectorPoint PointX="5.947916666666667" PointY="7.7590950520833379" />
           <ConnectorPoint PointX="6.114583333333333" PointY="7.7590950520833388" />
-          <ConnectorPoint PointX="6.75" PointY="7.7590950520833388" />
-          <ConnectorPoint PointX="6.75" PointY="7.3840950520833388" />
+          <ConnectorPoint PointX="6.796877" PointY="7.7590950520833388" />
+          <ConnectorPoint PointX="6.796877" PointY="7.3840950520833388" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_endereco_pessoa" >
-          <ConnectorPoint PointX="2.625" PointY="8.59375" />
-          <ConnectorPoint PointX="4.229166666666667" PointY="8.59375" />
-          <ConnectorPoint PointX="4.395833333333333" PointY="8.59375" />
-          <ConnectorPoint PointX="5.34375" PointY="8.59375" />
+          <ConnectorPoint PointX="2.625" PointY="8.6200428548177079" />
+          <ConnectorPoint PointX="3.0729166666666665" PointY="8.6200428548177079" />
+          <ConnectorPoint PointX="3.2395833333333335" PointY="8.6200428548177079" />
+          <ConnectorPoint PointX="4.229166666666667" PointY="8.6200428548177079" />
+          <ConnectorPoint PointX="4.395833333333333" PointY="8.6200428548177079" />
+          <ConnectorPoint PointX="5.34375" PointY="8.6200428548177079" />
           <ConnectorPoint PointX="5.34375" PointY="7.7686979166666674" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_endereco_tipoEndereco" >
           <ConnectorPoint PointX="2.25" PointY="6.2978417968750016" />
+          <ConnectorPoint PointX="3.0729166666666665" PointY="6.2978417968750007" />
+          <ConnectorPoint PointX="3.2395833333333335" PointY="6.2978417968750016" />
           <ConnectorPoint PointX="3.375" PointY="6.2978417968750016" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_matriculaTurma_matricula" >
-          <ConnectorPoint PointX="8.125" PointY="13.778595377604166" />
-          <ConnectorPoint PointX="8.9479166666666661" PointY="13.778595377604166" />
-          <ConnectorPoint PointX="9.1145833333333339" PointY="13.778595377604166" />
-          <ConnectorPoint PointX="9.375" PointY="13.778595377604166" />
+          <ConnectorPoint PointX="8.25" PointY="13.932444661458334" />
+          <ConnectorPoint PointX="8.9479166666666661" PointY="13.932444661458334" />
+          <ConnectorPoint PointX="9.1145833333333339" PointY="13.932444661458334" />
+          <ConnectorPoint PointX="9.375" PointY="13.932444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_matriculaTurma_turma" >
           <ConnectorPoint PointX="7.5" PointY="4.78125" />
-          <ConnectorPoint PointX="7.6276029166666666" PointY="4.7812499999999991" />
-          <ConnectorPoint PointX="7.7942695833333326" PointY="4.78125" />
           <ConnectorPoint PointX="11.03125" PointY="4.78125" />
           <ConnectorPoint PointX="11.03125" PointY="12.75" />
         </AssociationConnector>
@@ -1436,18 +1484,16 @@
         <EntityTypeShape EntityType="BDSysCadModel.NotaFalta" Width="2" PointX="8.75" PointY="8.375" Height="3.3263964843749996" />
         <AssociationConnector Association="BDSysCadModel.FK_notaFalta_aluno" >
           <ConnectorPoint PointX="4.3125" PointY="9" />
-          <ConnectorPoint PointX="4.3125" PointY="8.484375" />
-          <ConnectorPoint PointX="5.260416666666667" PointY="8.484375" />
-          <ConnectorPoint PointX="5.427083333333333" PointY="8.484375" />
-          <ConnectorPoint PointX="5.541666666666667" PointY="8.484375" />
-          <ConnectorPoint PointX="5.708333333333333" PointY="8.484375" />
-          <ConnectorPoint PointX="5.947916666666667" PointY="8.484375" />
-          <ConnectorPoint PointX="6.114583333333333" PointY="8.484375" />
-          <ConnectorPoint PointX="7.6276029166666666" PointY="8.484375" />
-          <ConnectorPoint PointX="7.7942695833333326" PointY="8.484375" />
-          <ConnectorPoint PointX="7.8033872916666667" PointY="8.484375" />
-          <ConnectorPoint PointX="7.9700539583333327" PointY="8.484375" />
-          <ConnectorPoint PointX="8.75" PointY="8.484375" />
+          <ConnectorPoint PointX="4.3125" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="5.260416666666667" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="5.427083333333333" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="5.666666666666667" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="5.833333333333333" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="5.947916666666667" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="6.114583333333333" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="7.697916666666667" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="7.864583333333333" PointY="8.4639460677083314" />
+          <ConnectorPoint PointX="8.75" PointY="8.4639460677083314" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_funcionario_cargo" >
           <ConnectorPoint PointX="2.25" PointY="13.768992513020834" />
@@ -1478,17 +1524,17 @@
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_notaFalta_turma" >
           <ConnectorPoint PointX="6.03125" PointY="7.3840950520833388" />
-          <ConnectorPoint PointX="6.03125" PointY="8.7421899999999937" />
-          <ConnectorPoint PointX="7.6276029166666666" PointY="8.7421899999999937" />
-          <ConnectorPoint PointX="7.7942695833333326" PointY="8.7421899999999937" />
-          <ConnectorPoint PointX="7.8033872916666667" PointY="8.7421899999999937" />
-          <ConnectorPoint PointX="7.9700539583333327" PointY="8.7421899999999937" />
-          <ConnectorPoint PointX="8.75" PointY="8.7421899999999937" />
+          <ConnectorPoint PointX="6.03125" PointY="8.8077010677083329" />
+          <ConnectorPoint PointX="7.697916666666667" PointY="8.8077010677083329" />
+          <ConnectorPoint PointX="7.864583333333333" PointY="8.8077010677083329" />
+          <ConnectorPoint PointX="8.75" PointY="8.8077010677083329" />
         </AssociationConnector>
         <EntityTypeShape EntityType="BDSysCadModel.Responsavel" Width="1.5" PointX="2.5" PointY="21.375" Height="1.9802864583333388" />
         <AssociationConnector Association="BDSysCadModel.FK_aluno_responsavel" >
-          <ConnectorPoint PointX="2.9999975" PointY="21.375" />
-          <ConnectorPoint PointX="2.9999975" PointY="11.790345052083334" />
+          <ConnectorPoint PointX="2.921875" PointY="21.375" />
+          <ConnectorPoint PointX="2.921875" PointY="11.790345052083334" />
+          <ConnectorPoint PointX="3.0729166666666665" PointY="11.790345052083334" />
+          <ConnectorPoint PointX="3.2395833333333335" PointY="11.790345052083334" />
           <ConnectorPoint PointX="3.375" PointY="11.790345052083334" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_responsavel_pessoa" >
@@ -1499,14 +1545,20 @@
         <EntityTypeShape EntityType="BDSysCadModel.Status" Width="2.125" PointX="5.375" PointY="0.75" Height="1.4033821614583388" />
         <EntityTypeShape EntityType="BDSysCadModel.Pagamento" Width="1.75" PointX="8.75" PointY="5.375" Height="2.172587890624996" />
         <AssociationConnector Association="BDSysCadModel.FK_pagamento_cobranca" >
-          <ConnectorPoint PointX="7.886720625" PointY="9" />
-          <ConnectorPoint PointX="7.886720625" PointY="7.4970914713541674" />
+          <ConnectorPoint PointX="7.78125" PointY="9" />
+          <ConnectorPoint PointX="7.78125" PointY="7.4970914713541674" />
           <ConnectorPoint PointX="8.75" PointY="7.4970914713541674" />
         </AssociationConnector>
         <EntityTypeShape EntityType="BDSysCadModel.Perfil" Width="1.5" PointX="0.75" PointY="18.625" Height="1.5956835937500031" />
         <AssociationConnector Association="BDSysCadModel.FK_usuario_perfil" >
           <ConnectorPoint PointX="1.5" PointY="18.625" />
           <ConnectorPoint PointX="1.5" PointY="17.547587890625" />
+        </AssociationConnector>
+        <AssociationConnector Association="BDSysCadModel.FK_cobranca_curso" >
+          <ConnectorPoint PointX="5.25" PointY="17.188460538461534" />
+          <ConnectorPoint PointX="5.6875" PointY="16.750960538461534" />
+          <ConnectorPoint PointX="5.6875" PointY="11.208375155663422" />
+          <ConnectorPoint PointX="6.125" PointY="11.208375155663422" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
