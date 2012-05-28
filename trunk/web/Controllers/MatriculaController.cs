@@ -13,7 +13,7 @@ namespace web.Controllers
 {
     public class MatriculaController : Controller
     {
-        IRepositorio<Matricula> dbMatricula;
+        Repositorio<Matricula> dbMatricula;
         IRepositorio<Aluno> dbAluno;
         IRepositorio<Pessoa> dbPessoa;
         IRepositorio<Responsavel> dbResponsavel;
@@ -34,14 +34,27 @@ namespace web.Controllers
         [HttpGet]
         public JsonResult FindAll()
         {
+            var listaMatricula = (from m in dbMatricula.Context.Matricula
+                                  select new Models.Matricula
+                                  {
+                                      idMatricula = m.idMatricula,
+                                      idAluno = m.idAluno,
+                                      numeroMatricula = m.numeroMatricula,
+                                      tipo = m.tipo,
+                                      dataRegistro = m.dataRegistro,
+                                      dataCancelamento = m.dataCancelamento,
+                                      Aluno = new Models.Aluno
+                                      {
+                                          idAluno = m.Aluno.idAluno,
+                                          nome = m.Aluno.Pessoa.nome,
+                                          Responsavel = new Models.Responsavel
+                                          {
+                                              idResponsavel = m.Aluno.Responsavel.idResponsavel,
+                                              nome = m.Aluno.Responsavel.Pessoa.nome
+                                          }
+                                      }
+                                  }).ToList();
 
-            IList<Matricula> listaMatricula = dbMatricula.FindAll();
-
-            foreach (Matricula m in listaMatricula){
-                m.Aluno = new Repositorio<Aluno>().FindOne(x => x.idAluno == m.idAluno);
-                m.Aluno.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.idPessoa);
-                m.Aluno.Responsavel.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.Responsavel.idPessoa);
-            }
 
             return Json(new { matriculas = listaMatricula, totalReg = listaMatricula.Count }, JsonRequestBehavior.AllowGet);
         }
