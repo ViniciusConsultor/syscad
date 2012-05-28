@@ -52,11 +52,11 @@
                         <Fields>
                             <ext:RecordField Name="idMatricula" Type="Int" />
                             <ext:RecordField Name="numeroMatricula" Type="Int" />
-                            <ext:RecordField Name="Aluno.Pessoa.nome" Type="String" />
+                            <ext:RecordField Name="Aluno.nome" Type="String" />
                             <ext:RecordField Name="dataRegistro" Type="Date" />
                             <ext:RecordField Name="dataCancelamento" Type="Date" />
                             <ext:RecordField Name="tipo" Type="String" />
-                            <ext:RecordField Name="MatriculaTurmas" Type="String" />
+                            <ext:RecordField Name="Aluno.Responsavel.nome" Type="String" />
                         </Fields>
                     </ext:JsonReader>
                 </Reader>
@@ -74,7 +74,7 @@
 
                     <ext:Column ColumnID="aluno" Header="Aluno" DataIndex="Aluno.Pessoa.nome" width="180px"></ext:Column>
 
-                    <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Aluno.Responsavel.Pessoa.nome" width="180px"></ext:Column>
+                    <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Aluno.Responsavel.nome" width="180px"></ext:Column>
                     
                     <ext:DateColumn DataIndex="dataRegistro" Header="Data de Registro" Format="d/m/Y" />
                      
