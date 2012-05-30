@@ -16,11 +16,13 @@ namespace web.Controllers
         //
         // GET: /Turma/
 
-        IRepositorio<Turma> dbTurma;
+        Repositorio<Turma> dbTurma;
+        Repositorio<MatriculaTurma> dbMatriculaTurma;
 
         public TurmaController()
         {
             dbTurma = new Repositorio<Turma>();
+            dbMatriculaTurma = new Repositorio<MatriculaTurma>();
         }
 
         public ActionResult Index()
@@ -33,12 +35,40 @@ namespace web.Controllers
             return View();
         }
 
-        public string FindAll()
+        public string FindAll(int codigoCurso)
         {
-            List<Turma> listaTurma = dbTurma.FindAll();
+            var listaTurma = (from t in dbTurma.Context.Turma
+                              where t.Curso.idCurso == codigoCurso && t.dataFechamento == null && (t.dataInicio <= DateTime.Now && t.dataFim >= DateTime.Now)
+                              select new Models.Turma
+                              {
+                                  descricao = t.descricao,
+                                  idTurma = t.idTurma,
+                                  dataInicio = t.dataInicio,
+                                  idCurso = t.idCurso,
+                                  vagasOcupadas = t.vagasOcupadas,
+                                  numeroVagas = t.numeroVagas
+                              }).ToList();
+            //List<Turma> listaTurma = dbTurma.FindAll();
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
-            //return Json(new { pessoas = lstPessoa, totalReg = listaPessoa.Count }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult FechamentoTurma(int codigoTurma)
+        {
+            Turma t = dbTurma.FindOne(x => x.idTurma == codigoTurma);
+            t.dataFechamento = DateTime.Now;
+            dbTurma.Atualizar(t);
+            dbTurma.SaveChanges();
+
+            List<MatriculaTurma> listMT = dbMatriculaTurma.FindAll(x => x.idTurma == codigoTurma);
+            foreach (MatriculaTurma mt in listMT)
+            {
+                mt.situacaoAluno = (int)EnumStatus.TurmaFechada;
+                dbMatriculaTurma.Atualizar(mt);
+            }
+
+            dbMatriculaTurma.SaveChanges();
+
+            return Json(new { success = true});
+        }
     }
 }

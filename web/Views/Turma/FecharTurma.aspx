@@ -7,6 +7,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>FecharTurma</title>
+    <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var fomataData = function (value, rec) {
+            var data = new Date(value);
+            rec.dataInicioFormatada = data.format('d/m/Y');
+        }
+
+        var fecharTurma = function (command, rec) {
+            $.post("/Turma/FechamentoTurma", { codigoTurma: rec.data.idTurma }, function () {
+                success:
+                {
+                    Ext.Msg.show({
+                        title: 'Sucesso',
+                        msg: 'Turma fechada com sucesso!',
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.Msg.INFO,
+                        fn: function () {
+                            Ext.getCmp("grdTurmas").reload();
+                        }
+                    });
+                    
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <ext:ResourceManager ID="ResourceManager1" runat="server" />
@@ -29,18 +54,14 @@
                             </Content>
                         </ext:Panel>
                     </North>
-
                     <Center MarginsSummary="0 5 0 5">
-                        <ext:Panel ID="pnlCenter" runat="server" Frame="true" Title="Gerenciar Cursos" Icon="User" Layout="Fit">
+                        <ext:Panel ID="pnlCenter" runat="server" Frame="true" Title="Cursos" Icon="ApplicationAdd" Layout="Fit">
                             <Items>
                                 <ext:GridPanel 
-                                    ID="GridPanel"
+                                    ID="grdCurso"
                                     runat="server"  
-                                    StripeRows="true"
-                                    TrackMouseOver="true"
-                                    Width="1181" 
-                                    Height="704"
-                                    AutoExpandColumn="descricao"
+                                    AutoExpandColumn="nome"
+                                    OnRefreshData="/Curso/FindAll"
                                     >
                                     <Store>
                                         <ext:Store 
@@ -53,89 +74,42 @@
                                                 <ext:JsonReader Root="cursos" TotalProperty="totalReg">
                                                     <Fields>
                                                         <ext:RecordField Name="idCurso" Type="Int" />
-                                                        <ext:RecordField Name="nome" Type="String" />
-                                                        <ext:RecordField Name="descricao" Type="String" />
-                                                        <ext:RecordField Name="valor" Type="Float" />
+                                                        <ext:RecordField Name="nome" Type="String" />    
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>
                                         </ext:Store>
                                     </Store>
-                                    <Listeners>
-                                        <KeyDown Fn="" />
-                                        <AfterEdit Fn="" />
-                                    </Listeners>
                                     <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
-                                            <Columns>
-                                                <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
-
-                                                <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
-                                                    <Editor>
-                                                        <ext:TextField ID="txtNomeEditar" runat="server" />
-                                                    </Editor>
-                                                </ext:Column>
-                                                <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
-                                                    <Editor>
-                                                        <ext:TextField ID="txtDescricaoEditar" runat="server" />
-                                                    </Editor>
-                                                </ext:Column>
-                                                <ext:Column Header="valor" Width="75" DataIndex="valor">
-                                                    <Renderer Format="UsMoney" />
-                                                    <Editor>
-                                                        <ext:TextField ID="txtValorEditar" runat="server" />
-                                                    </Editor>
-                                                </ext:Column>
-                                            </Columns>
-                                        </ColumnModel>
+                                        <Columns>
+                                            <ext:RowNumbererColumn />
+                                            <ext:Column ColumnID="idCurso" Header="IdCurso" DataIndex="idCurso" Hidden="true" />
+                                            <ext:Column ColumnID="nome" Header="Curso" DataIndex="nome"  />
+                                        </Columns>
+                                    </ColumnModel>
                                         <SelectionModel>
-                                            <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true">
-                                                <Listeners>
-                                                    <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{StoreModulo}.reload();}; #{modulo}.getForm().loadRecord(record);" Buffer="250" />
-                                                </Listeners>
-                                            </ext:RowSelectionModel>
-                                        </SelectionModel>
-
-                                    <TopBar>
-                                        <ext:Toolbar ID="Toolbar2" runat="server">
-                                            <Items>
-                                                <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
-                                                    <Listeners> 
-                                                        <Click Handler="winNovo.show()" />
-                                                    </Listeners>
-                                                </ext:Button>
-                                                <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
-                                                    <Listeners> 
-                                                        <Click Handler="excluirRegistro()" />
-                                                    </Listeners>
-                                                </ext:Button>
-                                                <ext:Button ID="Button1" runat="server" Text="Editar" Icon="Information">
-                                                    <Listeners> 
-                                                        <Click Handler="editar()" />
-                                                    </Listeners>
-                                                </ext:Button>
-
-                                            </Items>
-                                        </ext:Toolbar>            
-                                    </TopBar>
+                                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true">
+                                            <Listeners>
+                                                <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{grdTurmas}.reload();}" Buffer="250" />
+                                            </Listeners>
+                                        </ext:RowSelectionModel>
+                                    </SelectionModel>
                                     <BottomBar>
                                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" PageSize="10" />
                                     </BottomBar>
+                                    <LoadMask ShowMask="true" />
                                 </ext:GridPanel>
                             </Items>
                         </ext:Panel>                        
                     </Center>
-
-                    <South>
-                        <ext:Panel ID="Panel1" runat="server" Frame="true" Title="Turma" Icon="User" Layout="Fit">
+                    <South Collapsible="true" Split="true">
+                      <ext:Panel ID="pnlSouth" runat="server" Frame="true" Title="Turmas" Icon="ApplicationDouble" Layout="Fit" Height="250" MaxHeight="250">
                             <Items>
                                 <ext:GridPanel 
-                                    ID="GridPanel1"
+                                    ID="grdTurmas"
                                     runat="server"  
-                                    StripeRows="true"
-                                    TrackMouseOver="true"
-                                    Width="1181" 
-                                    Height="704"
-                                    AutoExpandColumn="idTurma"
+                                    AutoExpandColumn="descricao"
+                                    OnRefreshData="/Turma/FindAll"
                                     >
                                     <Store>
                                         <ext:Store 
@@ -148,76 +122,48 @@
                                                 <ext:JsonReader Root="turmas" TotalProperty="totalReg">
                                                     <Fields>
                                                         <ext:RecordField Name="idTurma" Type="Int" />
+                                                        <ext:RecordField Name="idCurso" Type="Int" />
+                                                        <ext:RecordField Name="descricao" Type="String" />
+                                                        <ext:RecordField Name="dataInicio" Type="Date" >
+                                                            <Convert Fn="fomataData" />
+                                                        </ext:RecordField>
+                                                        <ext:RecordField Name="vagasOcupadas" Type="Int" />
+                                                         <ext:RecordField Name="numeroVagas" Type="Int" />
+                                                        <ext:RecordField Name="dataInicioFormatada" Type="String" />
                                                     </Fields>
                                                 </ext:JsonReader>
-                                            </Reader>
+                                            </Reader>                                            
+                                            <BaseParams>
+                                                <ext:Parameter Name="codigoCurso" Value="Ext.getCmp('#{grdCurso}') && #{grdCurso}.getSelectionModel().hasSelection() ? #{grdCurso}.getSelectionModel().getSelected().data.idCurso : -1" Mode="Raw" /> 
+                                            </BaseParams>
                                         </ext:Store>
                                     </Store>
-                                    <Listeners>
-                                        <KeyDown Fn="" />
-                                        <AfterEdit Fn="" />
-                                    </Listeners>
                                     <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                                             <Columns>
-                                                <ext:Column ColumnID="idTurma" Header="Id" DataIndex="idTurma" Hidden="true" />
+                                                <ext:RowNumbererColumn />
+                                                <ext:Column ColumnID="idTurma" Header="IdTurma" DataIndex="idTurma" Hidden="true" />
+                                                <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" Width="150" />
+                                                <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="150" />
+                                                <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="150" />
+                                                <ext:Column ColumnID="vagasOcupadas" Header="Vagas Ocupadas" DataIndex="vagasOcupadas" Width="150" />
+                                                <ext:CommandColumn Width="110" Align="Center">
+                                                    <Commands>
+                                                        <ext:GridCommand Icon="Delete" CommandName="fecharTurma" Text="Fechar Turma"  />
+                                                    </Commands>
+                                                </ext:CommandColumn>
                                             </Columns>
-                                        </ColumnModel>
-                                        <SelectionModel>
-                                            <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" SingleSelect="true">
-                                                <Listeners>
-                                                    <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{StoreModulo}.reload();}; #{modulo}.getForm().loadRecord(record);" Buffer="250" />
-                                                </Listeners>
-                                            </ext:RowSelectionModel>
-                                        </SelectionModel>
-
-                                    <TopBar>
-                                        <ext:Toolbar ID="Toolbar1" runat="server">
-                                            <Items>
-                                                <ext:Button ID="Button2" runat="server" Text="Novo" Icon="Add">
-                                                    <Listeners> 
-                                                        <Click Handler="winNovo.show()" />
-                                                    </Listeners>
-                                                </ext:Button>
-                                                <ext:Button ID="Button3" runat="server" Text="Excluir" Icon="Delete">
-                                                    <Listeners> 
-                                                        <Click Handler="excluirRegistro()" />
-                                                    </Listeners>
-                                                </ext:Button>
-                                                <ext:Button ID="Button5" runat="server" Text="Editar" Icon="Information">
-                                                    <Listeners> 
-                                                        <Click Handler="editar()" />
-                                                    </Listeners>
-                                                </ext:Button>
-
-                                            </Items>
-                                        </ext:Toolbar>            
-                                    </TopBar>
+                                    </ColumnModel>
+                                    <Listeners>
+                                        <Command Handler="fecharTurma(command, record)" />
+                                    </Listeners>                                    
                                     <BottomBar>
                                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
                                     </BottomBar>
+                                     <LoadMask ShowMask="true" />
                                 </ext:GridPanel>
                             </Items>
-                        </ext:Panel>
+                        </ext:Panel>                                            
                     </South>
-
-                    <East Collapsible="true">
-                        <ext:FormPanel 
-                            ID="FormPanel1" 
-                            runat="server" 
-                            Margins="0 5 5 5"
-                            Frame="true" 
-                            Title="Fechar Turma" 
-                            Width="280"
-                            Icon="MoneyDollar"
-                            DefaultAnchor="100%"
-                            Collapsed="true"
-                            >
-                            <Items>
-                                <ext:DisplayField ID="idCobranca" DataIndex="idCobranca" runat="server" />                                                     
-                            </Items>
-                        </ext:FormPanel>
-                    </East>
-
                 </ext:BorderLayout>
             </Items>
         </ext:Viewport>
