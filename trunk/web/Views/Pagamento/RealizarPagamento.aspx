@@ -24,11 +24,8 @@
         }
     </style>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
-    <script src="../../Scripts/jquery.maskMoney.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#valorPagar").maskMoney();
-        });
+
 
        var formataDinheiro = function(num) {
             num = num.toString().replace(/\R$|\,/g, '');
@@ -41,6 +38,10 @@
             for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
                 num = num.substring(0, num.length - (4 * i + 3)) + '.' + num.substring(num.length - (4 * i + 3));
             return (((sign) ? '' : '-') + 'R$ ' + num + ',' + cents);
+        }
+
+        var formataValor = function (val) {
+           return val.toString().replace(/\,/g,'.');
         }
 
         var pagar = function (serialize) {
@@ -58,12 +59,19 @@
         };
 
         var realizarPagamento = function (serialize) {
-            var valorTotal = parseFloat(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected().data.valorTotal);
-            var valorPagar = parseFloat($("#valorPagar").val());
-            var valorPago = parseFloat($("#_valorPago").val());
-            var valorFaltante = parseFloat($("#_valorFaltante").val());
+            var valorTotal = parseFloat(formataValor(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected().data.valorTotal));
+            var valorPagar = parseFloat(formataValor($("#valorPagar").val()));
+            var valorPago = parseFloat(formataValor($("#_valorPago").val()));
+            var valorFaltante = parseFloat(formataValor($("#_valorFaltante").val()));
 
-            if ((valorPagar + valorPago) > valorTotal) {
+            if(valorPagar <= 0){
+                Ext.Msg.show({
+                    title: 'Erro',
+                    msg: 'O valor não pode ser menor ou igual a Zero!',
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.ERROR
+                });
+            }else if ((valorPagar + valorPago) > valorTotal) {
                 Ext.Msg.show({
                     title: 'Erro',
                     msg: 'O valor pago é maior que o valor total!',
@@ -76,12 +84,13 @@
                     if (btn == "yes") {
                         mostrarCampos(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected());
                         $("#valorPago").text(formataDinheiro(valorPago + valorPagar));
-                        $("#_valorPago").text(valorPago + valorPagar);
+                        $("#_valorPago").val(valorPago + valorPagar);
                         $("#valorFaltante").text(formataDinheiro(valorTotal - (valorPago + valorPagar)));
-                        $("#_valorFaltante").text(valorTotal - (valorPago + valorPagar));
+                        $("#_valorFaltante").val(valorTotal - (valorPago + valorPagar));
                         $("#valorPagar").val('');
                         $("#formaPag").val('');
                         pagar(serialize);
+                        Ext.getCmp("grdCobrancas").reload();
                     }
                 });
             } else if ((valorPagar + valorPago) == valorTotal) {
@@ -92,7 +101,7 @@
                 mudarStatus();
                 Ext.getCmp("FormPanel1").getForm().reset();
                 var record = Ext.getCmp("grdCobrancas").getSelectionModel().getSelected();
-                Ext.getCmp("WindowRecibo").load("/Pagamento/Recibo/?idCobranca="+record.data.idCobranca).show();
+                Ext.getCmp("WindowRecibo").load("/Pagamento/Recibo/?idCobranca=" + record.data.idCobranca).show();
             }
         }
 
@@ -113,6 +122,13 @@
             Ext.getCmp("valorTotal").setValue(formataDinheiro(record.data.valorTotal));
             Ext.getCmp("_valorPago").setValue(record.data.valorPago);
             Ext.getCmp("_valorFaltante").setValue(record.data.valorFaltante);
+            Ext.getCmp("valorPagar").reset();
+            Ext.getCmp("formaPag").reset();
+            if (record.data.idCurso == 0) {
+                Ext.getCmp("nomeCurso").hide();
+            } else {
+                Ext.getCmp("nomeCurso").show();
+            }
             if (record.data.valorPago != "") {
                 mostrarCampos(record);
             } else {
@@ -141,6 +157,7 @@
                 rec.valorCobranca = rec.Taxa.valor;               
             }
         }
+
     </script>
 </head>
 <body>
@@ -244,6 +261,7 @@
                                                 <ext:RecordField Name="Curso.valor" Type="Float" />
                                                 <ext:RecordField Name="valorCobranca" Type="Float" />
                                                 <ext:RecordField Name="nomeCobranca" Type="String" />
+                                                <ext:RecordField Name="Curso.nome" Type="String" />
                                             </Fields>
                                         </ext:JsonReader>
                                     </Reader>
@@ -306,14 +324,15 @@
                             <Items>
                                 <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />                                                     
                                 <ext:DisplayField ID="DisplayField1" runat="server" FieldLabel="Aluno" DataIndex="Aluno.nome" />
-                                <ext:DisplayField ID="DisplayField2" runat="server" FieldLabel="Cobrança" DataIndex="Taxa.nome" />
+                                <ext:DisplayField ID="nomeCurso" runat="server" FieldLabel="Curso" DataIndex="Curso.nome" />
+                                <ext:DisplayField ID="DisplayField2" runat="server" FieldLabel="Cobrança" DataIndex="nomeCobranca" />
                                 <ext:DisplayField ID="dataVencimento" runat="server" FieldLabel="Data Vencimento" />
                                 <ext:DisplayField ID="valorTotal" runat="server" FieldLabel="Valor Total" DataIndex="valorTotal"/>
                                 <ext:DisplayField ID="valorPago" runat="server" FieldLabel="Valor Pago" DataIndex="valorPago" Hidden="true" />
                                 <ext:Hidden ID="_valorPago" runat="server" />
                                 <ext:DisplayField ID="valorFaltante" runat="server" FieldLabel="Valor Faltante" DataIndex="valorFaltante" Hidden="true" Cls="faltante" />
                                 <ext:Hidden ID="_valorFaltante" runat="server" />
-                                <ext:NumberField ID="valorPagar" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" />
+                                <ext:NumberField ID="valorPagar" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" EmptyText="0,00" DecimalPrecision="2" DecimalSeparator="," />
                                 <ext:ComboBox ID="formaPag" runat="server" FieldLabel="Forma Pagto" AllowBlank="false">
                                     <Items>
                                         <ext:ListItem Text="Dinheiro" Value="1" />
@@ -322,7 +341,7 @@
                                 </ext:ComboBox>
                                 <ext:Button ID="btnPagar" Text="Realizar Pagamento" Icon="MoneyAdd" runat="server" >
                                     <Listeners>
-                                        <Click Handler="realizarPagamento(#{FormPanel1}.getForm().getValues());" />
+                                        <Click Handler="#{FormPanel1}.isValid() ? realizarPagamento(#{FormPanel1}.getForm().getValues()) : void(0);" />
                                     </Listeners>
                                 </ext:Button>
                             </Items>

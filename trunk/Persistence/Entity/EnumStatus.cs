@@ -14,6 +14,7 @@ namespace Persistence.Entity
         Inativo = 5,
         Pago = 6,
         NaoPago = 7,
-        Pendente = 8
+        Pendente = 8,
+        TurmaFechada = 9
     }
 }

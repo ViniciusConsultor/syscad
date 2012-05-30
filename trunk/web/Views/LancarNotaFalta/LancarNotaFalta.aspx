@@ -133,7 +133,7 @@
                                                 </ext:JsonReader>
                                             </Reader>
                                             <BaseParams>
-                                                <ext:Parameter Name="codigoTurma" Value="2" Mode="Value" />               
+                                                <ext:Parameter Name="codigoTurma" Value="1" Mode="Value" />               
                                             </BaseParams>
                                         </ext:Store>
                                     </Store>

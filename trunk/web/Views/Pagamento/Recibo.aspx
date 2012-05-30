@@ -51,7 +51,7 @@
                     return "Dinheiro";
                     break;
                 case "2":
-                    return "Cartão de Crédito";
+                    return "Crédito";
                     break;
             }
         }
@@ -204,7 +204,7 @@
         </tr>
         <tr>
             <td class="Left">
-               Data Pagamento:
+               Dt.Pagamento:
             </td>
             <td colspan="2" class="Right">
                 <div id="data"></div>
