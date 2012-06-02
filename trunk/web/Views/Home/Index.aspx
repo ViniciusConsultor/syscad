@@ -11,6 +11,7 @@
 <link href="../../Content/Login.css" rel="stylesheet" type="text/css" />
 <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
 <script src="../../Scripts/funcoes_ready.js" type="text/javascript"></script>
+    <script src="../../Scripts/funcoes.js" type="text/javascript"></script>
 
 </head>
 

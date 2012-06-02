@@ -154,9 +154,14 @@
                                                         <Click Handler="addTab(#{TabPanel1},'idAbaCargo','/Cargo/Cargo','Cargo/Funcionário')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
-                                                <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso/Modulo">
+                                                <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Curso">
                                                     <Listeners>
-                                                        <Click Handler="addTab(#{TabPanel1},'idAbaCurso','/Curso/Curso','Curso/Modulo')" />
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaCurso','/Curso/Curso','Curso')" />
+                                                    </Listeners>
+                                                </ext:TreeNode>
+                                                <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Modulo">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaModulo','/Modulo/Modulo','Modulo')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="User" Expanded="true" Text="Pessoa/Endereco">

@@ -35,6 +35,19 @@ function excluirRegistro() {
 
 function salvar() {
 
+    if (controller == "Pessoa") {
+        if (vercpf($("#txtCpf").val())) {
+
+        } else {
+            Ext.Msg.show({
+                title: 'Validação de CPF',
+                msg: 'O CPF informado não é válido!',
+                buttons: Ext.Msg.OK
+            });
+            return false;
+        }
+    }
+
     winNovo.hide();
 
     GridPanel.el.mask('Salvando', 'x-mask-loading');
