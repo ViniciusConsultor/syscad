@@ -71,7 +71,9 @@ namespace web.Controllers
                     case "status":
                         curso.status = Convert.ToInt32(valor);
                         break;
-
+                    case "valor":
+                        curso.valor = Convert.ToDecimal(valor);
+                        break;
                 }
 
                 dbCurso.Atualizar(curso);

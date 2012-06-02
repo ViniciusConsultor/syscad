@@ -17,6 +17,7 @@
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
 
 </script>
+<script src="../../Scripts/funcoes.js" type="text/javascript"></script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 <script src="../../Scripts/CRUD-Endereco.js" type="text/javascript"></script>
 
@@ -88,7 +89,7 @@
                                                     <ext:TextField ID="txtNomeEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column ColumnID="cpf" Header="CPF" DataIndex="cpf" Width="150" >
+                                            <ext:Column ColumnID="cpf" Header="CPF" DataIndex="cpf" Width="150">
                                                 <Editor>
                                                     <ext:TextField ID="txtCPFEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
@@ -98,7 +99,7 @@
                                                     <ext:TextField ID="txtEmailEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column Header="Telefone" DataIndex="telefone" Width="75" >
+                                            <ext:Column Header="Telefone" DataIndex="telefone" Width="75">
                                                 <Editor>
                                                     <ext:TextField ID="txtTelefoneEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>

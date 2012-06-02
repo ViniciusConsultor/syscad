@@ -23,7 +23,11 @@
 
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" RemoveViewState="true" IDMode="Explicit" />
+<ext:Viewport ID="ViewPort1" runat="server">
+  <Items>
+    <ext:BorderLayout ID="BorderLayout1" runat="server">
     
+    <Center>
     <ext:GridPanel 
         ID="GridPanel"
         runat="server" 
@@ -59,6 +63,7 @@
         </Listeners>
         <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                 <Columns>
+                    <ext:RowNumbererColumn />
                     <ext:Column ColumnID="idModulo" Header="Id" DataIndex="idFuncionario" Hidden="true" />
 
                     <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
@@ -171,6 +176,11 @@
             <ext:PagingToolbar ID="PagingToolbar2" runat="server" PageSize="10" />
         </BottomBar>
     </ext:GridPanel>
+
+    </Center>
+    </ext:BorderLayout>
+   </Items>
+ </ext:Viewport>
 
 
     
