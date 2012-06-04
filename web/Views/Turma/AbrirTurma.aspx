@@ -39,71 +39,8 @@
         <ext:Viewport ID="Viewport1" runat="server">
             <Items>
                 <ext:BorderLayout ID="BorderLayout1" runat="server">
-                    <North MarginsSummary="5 5 5 5">
-                        <ext:Panel 
-                            ID="pnlInformation" 
-                            runat="server" 
-                            Title="Descrição" 
-                            Height="80" 
-                            Padding="5"
-                            Frame="true" 
-                            Icon="Information">
-                            <Content>
-                                <h1>Fechar Turma</h1>
-                                <p>Selecione o Curso para fechar a turma!</p>
-                            </Content>
-                        </ext:Panel>
-                    </North>
                     <Center MarginsSummary="0 5 0 5">
-                        <ext:Panel ID="pnlCenter" runat="server" Frame="true" Title="Curso" Icon="ApplicationAdd" Layout="Fit">
-                            <Items>
-                                <ext:GridPanel 
-                                    ID="grdCurso"
-                                    runat="server"  
-                                    AutoExpandColumn="nome"
-                                    OnRefreshData="/Curso/FindAll"
-                                    >
-                                    <Store>
-                                        <ext:Store 
-                                            ID="Store1" 
-                                            runat="server">
-                                            <Proxy>
-                                                <ext:HttpProxy Json="true" Method="GET" Url="/Curso/FindAll" AutoDataBind="true" />
-                                            </Proxy>
-                                            <Reader>
-                                                <ext:JsonReader Root="cursos" TotalProperty="totalReg">
-                                                    <Fields>
-                                                        <ext:RecordField Name="idCurso" Type="Int" />
-                                                        <ext:RecordField Name="nome" Type="String" />    
-                                                    </Fields>
-                                                </ext:JsonReader>
-                                            </Reader>
-                                        </ext:Store>
-                                    </Store>
-                                    <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
-                                        <Columns>
-                                            <ext:RowNumbererColumn />
-                                            <ext:Column ColumnID="idCurso" Header="IdCurso" DataIndex="idCurso" Hidden="true" />
-                                            <ext:Column ColumnID="nome" Header="Curso" DataIndex="nome"  />
-                                        </Columns>
-                                    </ColumnModel>
-                                        <SelectionModel>
-                                        <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true">
-                                            <Listeners>
-                                                <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{grdTurmas}.reload();}" Buffer="250" />
-                                            </Listeners>
-                                        </ext:RowSelectionModel>
-                                    </SelectionModel>
-                                    <BottomBar>
-                                        <ext:PagingToolbar ID="PagingToolbar2" runat="server" PageSize="10" />
-                                    </BottomBar>
-                                    <LoadMask ShowMask="true" />
-                                </ext:GridPanel>
-                            </Items>
-                        </ext:Panel>                        
-                    </Center>
-                    <South Collapsible="true" Split="true">
-                      <ext:Panel ID="pnlSouth" runat="server" Frame="true" Title="Turmas" Icon="ApplicationDouble" Layout="Fit" Height="250" MaxHeight="250">
+                        <ext:Panel ID="pnlCenter" runat="server" Frame="true" Title="Solicitar Abertura de Turma" Icon="ApplicationAdd" Layout="Fit">
                             <Items>
                                 <ext:GridPanel 
                                     ID="grdTurmas"
@@ -162,8 +99,8 @@
                                      <LoadMask ShowMask="true" />
                                 </ext:GridPanel>
                             </Items>
-                        </ext:Panel>                                            
-                    </South>
+                        </ext:Panel>                        
+                    </Center>
                 </ext:BorderLayout>
             </Items>
         </ext:Viewport>

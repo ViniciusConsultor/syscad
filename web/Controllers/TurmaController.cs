@@ -35,6 +35,11 @@ namespace web.Controllers
             return View();
         }
 
+        public ActionResult AbrirTurma()
+        {
+            return View();
+        }
+
         public string FindAll(int codigoCurso)
         {
             var listaTurma = (from t in dbTurma.Context.Turma

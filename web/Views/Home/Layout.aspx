@@ -178,7 +178,10 @@
                                         </ext:TreeNode>
                                         <ext:TreeNode Icon="Folder" Expanded="true" Text="Coodenação">
                                             <Nodes>
-                                                <ext:TreeNode Icon="ApplicationAdd" Expanded="true" Text="Abertura de Turma">                               
+                                                <ext:TreeNode Icon="ApplicationAdd" Expanded="true" Text="Solicitar Abertura de Turma">
+                                                        <Listeners>
+                                                            <Click Handler="addTab(#{TabPanel1},'idAbrirTurma','/Turma/AbrirTurma','Solicitar Abertura de Turma')" />
+                                                        </Listeners>                        
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="MoneyDollar" Expanded="true" Text="Processar cobrança de mensalidade">                                         
                                                 </ext:TreeNode>
