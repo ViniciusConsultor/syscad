@@ -13,26 +13,10 @@
             var data = new Date(value);
             rec.dataInicioFormatada = data.format('d/m/Y');
         }
-
-        var fecharTurma = function (command, rec) {
-            $.post("/Turma/FechamentoTurma", { codigoTurma: rec.data.idTurma }, function () {
-                success:
-                {
-                    Ext.Msg.show({
-                        title: 'Sucesso',
-                        msg: 'Turma fechada com sucesso!',
-                        buttons: Ext.Msg.OK,
-                        icon: Ext.Msg.INFO,
-                        fn: function () {
-                            Ext.getCmp("grdTurmas").reload();
-                        }
-                    });
-                    
-                }
-            });
-        }
     </script>
 </head>
+<script src="../../Scripts/CRUD.js" type="text/javascript"></script>
+
 <body>
 <ext:ResourceManager ID="ResourceManager1" runat="server" />
             
@@ -90,9 +74,30 @@
                                                 </ext:CommandColumn>
                                             </Columns>
                                     </ColumnModel>
-                                    <Listeners>
-                                        <Command Handler="fecharTurma(command, record)" />
-                                    </Listeners>                                    
+                                    
+                                    <TopBar>
+                                        <ext:Toolbar ID="Toolbar2" runat="server">
+                                            <Items>
+                                                <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
+                                                    <Listeners> 
+                                                        <Click Handler="winNovo.show()" />
+                                                    </Listeners>
+                                                </ext:Button>
+                                                <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
+                                                    <Listeners> 
+                                                        <Click Handler="excluirRegistro()" />
+                                                    </Listeners>
+                                                </ext:Button>
+                                                <ext:Button ID="Button1" runat="server" Text="Editar" Icon="Information">
+                                                    <Listeners> 
+                                                        <Click Handler="editar()" />
+                                                    </Listeners>
+                                                </ext:Button>
+
+                                            </Items>
+                                        </ext:Toolbar>            
+                                    </TopBar>
+
                                     <BottomBar>
                                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
                                     </BottomBar>
@@ -104,5 +109,91 @@
                 </ext:BorderLayout>
             </Items>
         </ext:Viewport>
+
+        <form id="Novo" runat="server" >
+    
+        <ext:Window 
+                ID="winNovo" 
+                runat="server" 
+                Icon="ApplicationAdd" 
+                Title="Solicitar Nova Turma" 
+                Hidden="true"
+                X="250"
+                Y="100"
+                Layout="FormLayout"
+                AutoHeight="true"
+                Frame="true"
+                Width="500"
+                Modal="true"
+                >
+                <Items>
+                    <ext:FormPanel ID="formulario" runat="server">
+
+                        <Items>
+                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" AnchorHorizontal="100%" InputType="Text" Width="175" AllowBlank="false" />
+                            <ext:DateField ID="dtInicio" runat="server" FieldLabel="Data Início" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
+                            <ext:TextField ID="txtNumeroVagas" runat="server" FieldLabel="Numero Vagas" AnchorHorizontal="100%" InputType="Text" Width="175" AllowBlank="false" />
+                            <ext:ComboBox ID="cmbCurso" 
+                                runat="server" 
+                                DisplayField="nome" 
+                                ValueField="idCurso" 
+                                TypeAhead="false" 
+                                LoadingText="Procurando..." 
+                                Width="350" 
+                                PageSize="10"
+                                HideTrigger="false"
+                                ItemSelector="div.search-item"        
+                                MinChars="1"
+                                FieldLabel=" Curso"
+                                TriggerAction="All"
+                                AnchorHorizontal="100%"
+                                AllowBlank="false">
+                                <Store>
+                                    <ext:Store ID="Store4" runat="server" AutoLoad="false">
+                                        <Proxy>
+                                            <ext:HttpProxy Method="POST" Url="/Curso/Search" />
+                                        </Proxy>
+                                        <Reader>
+                                            <ext:JsonReader Root="cursos" TotalProperty="totalReg">
+                                                <Fields>
+                                                    <ext:RecordField Name="idCurso" Type="Int" />
+                                                    <ext:RecordField Name="nome" Type="String" />
+                                                </Fields>
+                                            </ext:JsonReader>
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                                <Template ID="Template3" runat="server">
+                                   <Html>
+					                   <tpl for=".">
+						                  <div class="search-item">
+							                 <h3>{nome}</h3>
+                                             Seleção de Curso
+						                  </div>
+					                   </tpl>
+				                   </Html>
+                                </Template>
+                            </ext:ComboBox>
+                        </Items>
+
+                        <BottomBar>
+                            <ext:Toolbar ID="Toolbar3" runat="server">
+                                <Items>
+                                    <ext:ToolbarFill />
+                                        <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
+                                            <Listeners>
+                                                <Click Handler="salvar()" />
+                                            </Listeners>
+                                        </ext:Button>
+                                </Items>
+                            </ext:Toolbar>  
+                        </BottomBar>
+
+                    </ext:FormPanel>
+                </Items>
+
+        </ext:Window>
+
+        </form>
 </body>
 </html>
