@@ -18,7 +18,6 @@ namespace Persistence.Entity
 
         public virtual int idPerfil { get; set; }
         public virtual String nome { get; set; }
-        public virtual ICollection<Usuario> Usuarios { get; private set; }
-        
+        public virtual ICollection<Usuario> Usuarios { get; private set; }        
     }
 }

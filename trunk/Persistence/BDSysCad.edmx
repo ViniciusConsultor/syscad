@@ -14,6 +14,7 @@
           <EntitySet Name="funcionario" EntityType="BDSysCadModel.Store.funcionario" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="matricula" EntityType="BDSysCadModel.Store.matricula" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="matriculaTurma" EntityType="BDSysCadModel.Store.matriculaTurma" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="menu" EntityType="BDSysCadModel.Store.menu" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="modulo" EntityType="BDSysCadModel.Store.modulo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="notaFalta" EntityType="BDSysCadModel.Store.notaFalta" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="pagamento" EntityType="BDSysCadModel.Store.pagamento" store:Type="Tables" Schema="dbo" />
@@ -197,6 +198,18 @@
           <Property Name="idMatriculaTurma" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="situacaoAluno" Type="int" />
           <Property Name="notaFinal" Type="decimal" Precision="3" Scale="1" />
+        </EntityType>
+        <EntityType Name="menu">
+          <Key>
+            <PropertyRef Name="idMenu" />
+          </Key>
+          <Property Name="idMenu" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="titulo" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="url" Type="nvarchar" MaxLength="200" />
+          <Property Name="grupo" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="icon" Type="nvarchar" MaxLength="50" />
+          <Property Name="nomeTab" Type="nvarchar" MaxLength="100" />
+          <Property Name="perfis" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="modulo">
           <Key>
@@ -665,6 +678,7 @@
             <End Role="Curso" EntitySet="CursoSet" />
             <End Role="Cobranca" EntitySet="CobrancaSet" />
           </AssociationSet>
+          <EntitySet Name="MenuSet" EntityType="BDSysCadModel.Menu" />
         </EntityContainer>
         <EntityType Name="Aluno">
           <Key>
@@ -1155,6 +1169,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Menu">
+          <Key>
+            <PropertyRef Name="idMenu" />
+          </Key>
+          <Property Type="Int32" Name="idMenu" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="titulo" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="url" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="grupo" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="icon" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="nomeTab" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="perfis" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1375,6 +1401,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="MenuSet">
+            <EntityTypeMapping TypeName="BDSysCadModel.Menu">
+              <MappingFragment StoreEntitySet="menu">
+                <ScalarProperty Name="perfis" ColumnName="perfis" />
+                <ScalarProperty Name="nomeTab" ColumnName="nomeTab" />
+                <ScalarProperty Name="icon" ColumnName="icon" />
+                <ScalarProperty Name="grupo" ColumnName="grupo" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="idMenu" ColumnName="idMenu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1552,7 +1591,7 @@
         <EntityTypeShape EntityType="BDSysCadModel.Perfil" Width="1.5" PointX="0.75" PointY="18.625" Height="1.5956835937500031" />
         <AssociationConnector Association="BDSysCadModel.FK_usuario_perfil" >
           <ConnectorPoint PointX="1.5" PointY="18.625" />
-          <ConnectorPoint PointX="1.5" PointY="17.547587890625" />
+          <ConnectorPoint PointX="1.5" PointY="17.547587890624996" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_cobranca_curso" >
           <ConnectorPoint PointX="5.25" PointY="17.188460538461534" />
@@ -1560,6 +1599,7 @@
           <ConnectorPoint PointX="5.6875" PointY="11.208375155663422" />
           <ConnectorPoint PointX="6.125" PointY="11.208375155663422" />
         </AssociationConnector>
+        <EntityTypeShape EntityType="BDSysCadModel.Menu" Width="1.5" PointX="8.375" PointY="0.75" Height="2.3648893229166674" />
       </Diagram>
     </Diagrams>
   </Designer>
