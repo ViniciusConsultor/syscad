@@ -72,6 +72,7 @@
     <Compile Include="Entity\Aluno.cs" />
     <Compile Include="Entity\Cargo.cs" />
     <Compile Include="Entity\EnumStatus.cs" />
+    <Compile Include="Entity\Menu.cs" />
     <Compile Include="Entity\Pagamento.cs" />
     <Compile Include="Entity\Responsavel.cs" />
     <Compile Include="Entity\Status.cs" />

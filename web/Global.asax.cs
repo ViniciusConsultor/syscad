@@ -16,6 +16,7 @@ namespace web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("{resource}.ashx/{*pathInfo}");
+            routes.IgnoreRoute("{exclude}/{extnet}/ext.axd");
 
             routes.MapRoute(
                 "Default", // Route name

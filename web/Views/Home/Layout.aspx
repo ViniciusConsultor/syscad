@@ -84,8 +84,6 @@
 
 <body>
 
-
-
     <ext:ResourceManager ID="ResourceManager1" runat="server" />
 
     <ext:Viewport ID="ViewPort1" runat="server">
@@ -159,7 +157,7 @@
                                                         <Click Handler="addTab(#{TabPanel1},'idAbaCurso','/Curso/Curso','Curso')" />
                                                     </Listeners>
                                                 </ext:TreeNode>
-                                                <ext:TreeNode Icon="ApplicationFormAdd" Expanded="true" Text="Modulo">
+                                                <ext:TreeNode Icon="ApplicationCascade" Expanded="true" Text="Modulo">
                                                     <Listeners>
                                                         <Click Handler="addTab(#{TabPanel1},'idAbaModulo','/Modulo/Modulo','Modulo')" />
                                                     </Listeners>
@@ -241,9 +239,7 @@
                                     </Nodes>
                                 </ext:TreeNode>
                             </Root>
-                            </ext:TreePanel>
-                                   
-
+                            </ext:TreePanel>                                   
                 </West>
                 <Center>
                     <ext:TabPanel ID="TabPanel1" runat="server" ActiveTabIndex="0">

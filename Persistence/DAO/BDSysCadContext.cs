@@ -28,6 +28,7 @@ namespace Persistence.DAO
         private ObjectSet<Turma> _turma;
         private ObjectSet<Usuario> _usuario;
         private ObjectSet<Status> _status;
+        private ObjectSet<Menu> _menu;
 
         public BDSysCadContext()
             : base("name=BDSysCadEntities", "BDSysCadEntities")
@@ -51,6 +52,7 @@ namespace Persistence.DAO
             _turma = base.CreateObjectSet<Turma>();
             _usuario = base.CreateObjectSet<Usuario>();
             _status = base.CreateObjectSet<Status>();
+            _menu = base.CreateObjectSet<Menu>();
         }
 
         public ObjectSet<Aluno> Aluno
@@ -255,6 +257,18 @@ namespace Persistence.DAO
             set
             {
                 _status = value;
+            }
+        }
+
+        public ObjectSet<Menu> Menu
+        {
+            get
+            {
+                return _menu;
+            }
+            set
+            {
+                _menu = value;
             }
         }
     }
