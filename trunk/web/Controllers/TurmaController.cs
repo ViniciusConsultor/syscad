@@ -40,6 +40,10 @@ namespace web.Controllers
             return View();
         }
 
+        public ActionResult VincularAluno()
+        {
+            return View();
+        }
         public string FindAll(int codigoCurso)
         {
             var listaTurma = (from t in dbTurma.Context.Turma
@@ -54,6 +58,12 @@ namespace web.Controllers
                                   numeroVagas = t.numeroVagas
                               }).ToList();
             //List<Turma> listaTurma = dbTurma.FindAll();
+            return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
+        }
+
+        public string FindTurmas()
+        {
+            List<Turma> listaTurma = dbTurma.FindAll();
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 

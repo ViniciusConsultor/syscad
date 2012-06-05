@@ -232,6 +232,9 @@
                                                 <ext:TreeNode Icon="BookOpenMark" Expanded="true" Text="Realizar Pré-Matrícula">
                                                 </ext:TreeNode>
                                                 <ext:TreeNode Icon="Vcard" Expanded="true" Text="Vincular Aluno/Turma">
+                                                    <Listeners>
+                                                        <Click Handler="addTab(#{TabPanel1},'idAbaAlunoTurma','/Turma/VincularAluno','Vincular Aluno a Turma')" />
+                                                    </Listeners>
                                                 </ext:TreeNode>
                                             </Nodes>
                                         </ext:TreeNode>
