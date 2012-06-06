@@ -41,8 +41,9 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public string CarregaMenu(int idPerfil)
+        public string CarregaMenu()
         {
+            int idPerfil = (int)Session["id_perfil"];
             var listMenu = dbMenu.FindAll();
             var listGrupoMenu = listMenu.Where(x => x.perfis.Contains(idPerfil.ToString())).GroupBy(x => x.grupo);
 
@@ -55,6 +56,7 @@ namespace web.Controllers
                 nodex.NodeID = i.ToString();
                 nodex.Text = m.Key;
                 nodex.Icon = Icon.Folder;
+                nodex.Expanded = true;
                 var subMenus = listMenu.Where(x => x.grupo == m.Key);
                 foreach(Entity.Menu me in subMenus)
                 {
@@ -74,6 +76,11 @@ namespace web.Controllers
             }
 
             return nodes.ToJson();
+        }
+
+        public object GetSession(string session)
+        {
+            return Session[session];
         }
 
 
