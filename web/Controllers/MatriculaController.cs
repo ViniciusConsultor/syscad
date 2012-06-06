@@ -180,5 +180,21 @@ namespace web.Controllers
 
         }
 
+        public string FindPreMatriculas()
+        {
+            List<Matricula> listaMatricula = dbMatricula.FindAll(x => x.tipo == "PreMatricula");
+
+            foreach (Matricula m in listaMatricula)
+            {
+                m.Aluno = new Repositorio<Aluno>().FindOne(x => x.idAluno == m.idAluno);
+                m.Aluno.Responsavel = new Repositorio<Responsavel>().FindOne(x => x.idResponsavel == m.Aluno.idResponsavel);
+                m.Aluno.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.idPessoa);
+                m.Aluno.Responsavel.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.Responsavel.idPessoa);
+            }
+
+            return "{matriculas:" + JSON.Serialize(listaMatricula) + ", totalReg:" + listaMatricula.Count() + "}";
+
+        }
+
     }
 }
