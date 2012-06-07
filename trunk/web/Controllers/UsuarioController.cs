@@ -65,16 +65,6 @@ namespace web.Controllers
 
         } // BuscarSenha
 
-        [HttpGet]
-        public JsonResult DesconectarUsuario()
-        {
-            Session["login_usuario"] = null;
-            Session["id_usuario"] = null;
-            Session["nome_perfil"] = null;
-            Session["id_perfil"] = null;
-
-            return Json("Desconectado com sucesso!");
-        }
 
     } // class
 
