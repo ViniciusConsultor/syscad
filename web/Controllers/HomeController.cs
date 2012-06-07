@@ -78,11 +78,16 @@ namespace web.Controllers
             return nodes.ToJson();
         }
 
-        public object GetSession(string session)
-        {
-            return Session[session];
-        }
 
+        public ActionResult Logout()
+        {
+            Session["login_usuario"] = null;
+            Session["id_usuario"] = null;
+            Session["nome_perfil"] = null;
+            Session["id_perfil"] = null;
+
+            return View("Index");
+        }
 
     }
 }
