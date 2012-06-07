@@ -109,13 +109,12 @@
                                 <div id="left_inside_bar_login">
                                     <ul>
                                         <li><img src="../../Content/imagens/logo_syscad_peq.png" alt="SysCad" /></li>
-                                        <li>SysCad</li>
-                                        <li><img src="../../Content/imagens/msg_user.png" alt="Mensagem" /></li>
+                                        <li><span>SysCad</span></li>
                                     </ul>
                                 </div>
                                 <div id="right_inside_bar_login">
                                     <ul>
-                                        <li id="user_perfil_bar">Olá, <%= Session["login_usuario"]%> <img src="../../Content/imagens/user_perfil.jpg" alt="Usuario" /></li>
+                                        <li>Olá, <%= Session["login_usuario"]%> - <a href="/Home/Logout" title="Sair do SysCad">Sair</a></li>
                                     </ul>
                                 </div>
                             </div>                            

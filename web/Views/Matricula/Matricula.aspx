@@ -16,17 +16,6 @@
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
-<script type="text/javascript">
-    /*var alunoRenderer = function (value) {
-        var r = cmbAluno.getById(value);
-
-        if (Ext.isEmpty(r)) {
-            return "";
-        }
-
-        return r.data.nome;
-    };*/
-</script>
 
 <body>
 <ext:ResourceManager ID="ResourceManager1" runat="server" RemoveViewState="true" IDMode="Explicit" />
@@ -72,19 +61,15 @@
 
                     <ext:Column ColumnID="matricula" Header="Matrícula" DataIndex="numeroMatricula"></ext:Column>
 
-                    <ext:Column ColumnID="aluno" Header="Aluno" DataIndex="Aluno.Pessoa.nome" width="180px"></ext:Column>
+                    <ext:Column ColumnID="aluno" Header="Aluno" DataIndex="Aluno.nome" width="180px"></ext:Column>
 
                     <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Aluno.Responsavel.nome" width="180px"></ext:Column>
                     
-                    <ext:DateColumn DataIndex="dataRegistro" Header="Data de Registro" Format="d/m/Y" />
-                     
-                    <ext:DateColumn DataIndex="dataCancelamento" Header="Data de Cancelamento" Format="d/m/Y" />
+                    <ext:DateColumn DataIndex="dataRegistro" Header="Data de Registro" Width="100px" Format="dd/MM/yyyy"></ext:DateColumn>
 
-                    <ext:Column ColumnID="tipo" Header="Tipo" DataIndex="tipo">
-                        <Editor>
-                            <ext:TextField ID="TextField4" runat="server" MaxLength="15" />
-                        </Editor>
-                    </ext:Column>
+                    <ext:DateColumn DataIndex="dataCancelamento" Header="Data de Cancelamento" Width="120px" Format="dd/MM/yyyy"></ext:DateColumn>
+
+                    <ext:Column ColumnID="tipo" Header="Tipo" DataIndex="tipo"></ext:Column>
 
                 </Columns>
             </ColumnModel>

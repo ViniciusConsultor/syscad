@@ -32,7 +32,7 @@ namespace web.Controllers
         }
 
         [HttpGet]
-        public JsonResult FindAll()
+        public string FindAll()
         {
             var listaMatricula = (from m in dbMatricula.Context.Matricula
                                   select new Models.Matricula
@@ -49,14 +49,16 @@ namespace web.Controllers
                                           nome = m.Aluno.Pessoa.nome,
                                           Responsavel = new Models.Responsavel
                                           {
-                                              idResponsavel = m.Aluno.Responsavel.idResponsavel,
+                                              idResponsavel = m.Aluno.Responsavel != null ? m.Aluno.Responsavel.idResponsavel : 0,
                                               nome = m.Aluno.Responsavel.Pessoa.nome
                                           }
                                       }
                                   }).ToList();
 
 
-            return Json(new { matriculas = listaMatricula, totalReg = listaMatricula.Count }, JsonRequestBehavior.AllowGet);
+            string jsonResult = JSON.Serialize(listaMatricula);
+            return "{matriculas:" + jsonResult + ", totalReg:" + listaMatricula.Count() + " }";
+            //return Json(new { matriculas = listaMatricula, totalReg = listaMatricula.Count }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -122,61 +124,6 @@ namespace web.Controllers
                 return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
 
             }                
-
-        }
-
-        [HttpPost]
-        public JsonResult Editar(int id, string campo, string valor)
-        {
-
-            Matricula matricula = dbMatricula.FindOne(mat => mat.idMatricula == id);
-            Aluno aluno = dbAluno.FindOne(alu => alu.idAluno == matricula.idAluno);
-            //Aluno exAluno = dbMatricula.FindOne(exAlu => exAlu.idAluno == valor);
-
-            try
-            {
-
-                switch (campo)
-                {
-                    case "numeroMatricula":
-
-                        matricula.numeroMatricula = Convert.ToInt32(valor);
-                        break;
-
-                    case "Aluno.Pessoa.nome":
-                        aluno.idPessoa = Convert.ToInt32(valor);
-                        matricula.Aluno = aluno;
-                        break;
-
-                    case "dataRegistro":
-
-                        matricula.dataRegistro = Convert.ToDateTime(valor);
-                        break;
-
-                    case "dataCancelamento":
-
-                        matricula.dataCancelamento = Convert.ToDateTime(valor);
-                        break;
-
-                    case "tipo":
-
-                        matricula.tipo = valor;
-                        break;
-
-                }
-
-                dbMatricula.Atualizar(matricula);
-                dbMatricula.SaveChanges();
-
-                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-
-            }
-            catch (Exception e)
-            {
-
-                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
-
-            }
 
         }
 
