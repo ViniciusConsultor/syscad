@@ -270,5 +270,10 @@ namespace web.Controllers
 
             return View(lstPagamento);
         }
+
+        public ActionResult ProcessarCobranca()
+        {
+            return View();
+        }
     }
 }
