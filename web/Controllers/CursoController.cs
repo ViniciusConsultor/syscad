@@ -20,7 +20,7 @@ namespace web.Controllers
         public JsonResult FindAll()
         {
 
-            IList<Curso> listaCurso = dbCurso.FindAll();
+            IList<Curso> listaCurso = dbCurso.FindAll(x => x.status == 4); //Somente os cursos Ativos
             return Json(new { cursos = listaCurso, totalReg = listaCurso.Count }, JsonRequestBehavior.AllowGet);
 
         }
@@ -32,7 +32,7 @@ namespace web.Controllers
             curso.nome = txtNome;
             curso.descricao = txtDescricao;
             curso.valor = Convert.ToDecimal(txtValor);
-            curso.status = 1;
+            curso.status = 4; //Status Ativo
 
             try
             {
@@ -99,7 +99,8 @@ namespace web.Controllers
 
             try
             {
-                dbCurso.Remover(curso);
+                curso.status = 5; //Status Inativo
+                dbCurso.Atualizar(curso);
                 dbCurso.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
