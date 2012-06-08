@@ -9,76 +9,13 @@
     <title>Professor</title>
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-        var startEditing = function (e) {
-            if (e.getKey() === e.ENTER) {
-                var grid = grdNotaFalta,
-                    record = grid.getSelectionModel().getSelected(),
-                    index = grid.store.indexOf(record);
 
-                grid.startEditing(index, 1);
-            }
-        };
+        var processarCobranca = function () {
+            $.post("/Pagamento/GerarCobrancas", {}, function (result) {
 
-        var traduzSituacaoAluno = function (value) {
-            var retorno;
-            switch (value) {
-                case 1:
-                    retorno = "Aprovado";
-                    break;
-                case 2:
-                    retorno = "Reprovado";
-                    break;
-                case 3:
-                    retorno = "Recuperação";
-                    break;
-                default:
-                    retorno = "Não Avaliado";
-            }
-
-            return retorno;
+            });
         }
 
-        var afterEdit = function (e) {
-            /*
-            Properties of 'e' include:
-            e.grid - This grid
-            e.record - The record being edited
-            e.field - The field name being edited
-            e.value - The value being set
-            e.originalValue - The original value for the field, before the edit.
-            e.row - The grid row index
-            e.column - The grid column index
-            */
-            var IdAluno = e.record.data.IdAluno;
-            var IdTurma = e.record.data.IdTurma;
-            var IdModulo = e.record.data.IdModulo;
-            var field = e.field;
-            var newValue = e.value;
-
-            grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
-
-            var r = $.post('/LancarNotaFalta/EnviarNotaFalta', { idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function (result) {
-                complete:
-                {
-                    grdNotaFalta.el.unmask();
-                    var mensagem = "<b>Nota Cadastrada com sucesso!</b>";
-                    Ext.Msg.notify("Mensagem", mensagem);
-                    e.record.data.situacaoAluno = result.notaFalta.situacaoAluno;
-                    e.record.data.notaFinal = result.notaFalta.notaFinal;
-                    grdNotaFalta.store.commitChanges();
-                }
-            });
-
-            if (e.column === 4 && e.record.data.Faltas == "") {
-                return 0;
-            }
-        };
-
-        var beforeEdit = function (e) {
-            if (e.column === 5 && (e.record.data.Nota1 >= 7 || e.record.data.Nota1 < 2)) {
-                return false;
-            }
-        };
     </script>
 </head>
 <body>
@@ -97,7 +34,12 @@
                             Frame="true" 
                             Icon="Information">
                             <Items>
-                                <ext:Label Text="Selecione o mês para gerar as cobranças de mensalidade" runat="server" />
+                                <ext:Label Text="Selecione o mês para gerar as cobranças de mensalidade" runat="server" BoxMaxHeight="50" />
+                                <ext:Button ID="btnProcessar" Text="Processar cobrança" runat="server" >
+                                    <Listeners>
+                                        <Click Fn="" />
+                                    </Listeners>
+                                </ext:Button>
                             </Items>
                         </ext:Panel>
                     </North>
