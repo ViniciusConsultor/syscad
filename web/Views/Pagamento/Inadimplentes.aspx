@@ -84,7 +84,7 @@
                 nome: nd.getAttributeNS("", "nomePessoa"),
                 cpf: nd.getAttributeNS("", "CPFPessoa"),
                 email: nd.getAttributeNS("", "emailPessoa"),
-                contact: nd.dom.innerHTML
+                contato: nd.dom.innerHTML
             };
 
             DataViewContextMenu.showAt(e.getXY());
@@ -111,7 +111,7 @@
             <ext:MenuTextItem ID="CustomerLabel" runat="server" CtCls="customer-label"  />
             <ext:MenuItem runat="server" Text="Enviar Email" Icon="Mail">   
                 <Listeners>
-                    <Click Handler="alert(Ext.encode(this.parentMenu.node.emailPessoa)); if (Ext.isEmpty(this.parentMenu.node.emailPessoa, false)) { Ext.Msg.alert('Error', 'Customer has no email');} else { parent.location = 'mailto:'+this.parentMenu.node.emailPessoa }" />
+                    <Click Handler="if (Ext.isEmpty(this.parentMenu.node.email, false)) { Ext.Msg.alert('Error', 'Customer has no email');} else { parent.location = 'mailto:'+this.parentMenu.node.email }" />
                 </Listeners>                
             </ext:MenuItem>
             <ext:MenuItem runat="server" Text="Mostrar Detalhes" Icon="ApplicationFormEdit">
@@ -121,7 +121,7 @@
             </ext:MenuItem>
         </Items>
        <Listeners>
-            <BeforeShow Handler="#{CustomerLabel}.setText(this.node.contact);" />
+            <BeforeShow Handler="#{CustomerLabel}.setText(this.node.contato);" />
         </Listeners>
     </ext:Menu> 
     
@@ -177,13 +177,11 @@
 						</tr>
 					
 						<tpl for=".">
-								<tpl>
-									<tr class="customer-record l-{parent.Letter}">
-                                        <td emailPessoa="{emailPessoa}" nomePessoa="{nomePessoa}" CPFPessoa="{CPFPessoa}">{nomePessoa}</td>
-                                        <td>{CPFPessoa}</td>
-                                        <td>{emailPessoa}</td>
+									<tr class="customer-record">
+                                        <td class="cust-name" emailPessoa="{emailPessoa}" nomePessoa="{nomePessoa}" CPFPessoa="{CPFPessoa}">&nbsp;{nomePessoa}</td>
+                                        <td>&nbsp;{CPFPessoa}</td>
+                                        <td>&nbsp;{emailPessoa}</td>
 									</tr>
-								</tpl>
 						</tpl>                    
 					</table>
 				</div>
