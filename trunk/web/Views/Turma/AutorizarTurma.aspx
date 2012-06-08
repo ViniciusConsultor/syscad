@@ -19,6 +19,28 @@
             rec.dataFimFormatada = data.format('d/m/Y');
         }
 
+        var autorizarTurma = function (value) {
+
+            $.post('/Turma/Autorizar', { idTurma: value }, function (valor) {
+                if (valor == "Sim") {
+                    Ext.Msg.show({
+                        title: 'Sucesso',
+                        msg: 'Autorização Completa! Turma Aberta.',
+                        buttons: Ext.Msg.OK
+                    });
+
+                    GridPanel.reload();
+                } else {
+                    Ext.Msg.show({
+                        title: 'Erro',
+                        msg: 'Erro ao Autorizar!',
+                        buttons: Ext.Msg.OK
+                    });
+                }
+            });
+
+        }
+
     </script>
 </head>
 <script type="text/javascript">
@@ -34,7 +56,7 @@
             <Items>
                 <ext:BorderLayout ID="BorderLayout1" runat="server">
                     <Center MarginsSummary="0 5 0 5">
-                        <ext:Panel ID="pnlCenter" runat="server" Frame="true" Title="Solicitar Abertura de Turma" Icon="ApplicationAdd" Layout="Fit">
+                        <ext:Panel ID="pnlCenter" runat="server" Frame="true" Title="Autorizar Abertura de Turma" Icon="ApplicationAdd" Layout="Fit">
                             <Items>
                                 <ext:GridPanel 
                                     ID="GridPanel"
@@ -61,7 +83,6 @@
                                                         <ext:RecordField Name="dataFim" Type="Date" >
                                                             <Convert Fn="fomataDataFim" />
                                                         </ext:RecordField>
-                                                         <ext:RecordField Name="numeroVagas" Type="Int" />
                                                         <ext:RecordField Name="dataInicioFormatada" Type="String" />
                                                         <ext:RecordField Name="dataFimFormatada" Type="String" />
                                                     </Fields>
@@ -79,7 +100,11 @@
                                                 <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" Width="150" />
                                                 <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="150" />
                                                 <ext:Column ColumnID="dataFimFormatada" Header="Data Fim" DataIndex="dataFimFormatada" Width="150" />
-                                                <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="150" />
+                                                <ext:CommandColumn Width="110" Align="Center" Header="Autorizar">
+                                                    <Commands>
+                                                        <ext:GridCommand Icon="Accept" CommandName="autorizar" Text="Autorizar Turma"  />
+                                                    </Commands>
+                                                </ext:CommandColumn>
                                             </Columns>
                                     </ColumnModel>
 
@@ -87,23 +112,10 @@
                                         <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true">
                                         </ext:RowSelectionModel>
                                     </SelectionModel>
-                                    
-                                    <TopBar>
-                                        <ext:Toolbar ID="Toolbar2" runat="server">
-                                            <Items>
-                                                <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
-                                                    <Listeners> 
-                                                        <Click Handler="winNovo.show()" />
-                                                    </Listeners>
-                                                </ext:Button>
-                                                <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
-                                                    <Listeners> 
-                                                        <Click Handler="excluirRegistro()" />
-                                                    </Listeners>
-                                                </ext:Button>
-                                            </Items>
-                                        </ext:Toolbar>            
-                                    </TopBar>
+
+                                    <Listeners>
+                                        <Command Handler="autorizarTurma(record.data.idTurma)" />
+                                    </Listeners>
 
                                     <BottomBar>
                                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
