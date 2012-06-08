@@ -11,6 +11,10 @@ namespace Persistence.Entity
 {
     public class Funcionario
     {
+        public Funcionario()
+        {
+            Turmas = new List<Turma>();
+        }
         public virtual int idFuncionario { get; set; }
         public virtual int idUsuario { get; set; }
         public virtual int idCargo { get; set; }
@@ -19,6 +23,7 @@ namespace Persistence.Entity
         public virtual Cargo Cargo { get; set; }
         public virtual Pessoa Pessoa { get; set; }
         public virtual Usuario Usuario { get; set; }
+        public virtual ICollection<Turma> Turmas { get; set; }
         
     }
 }
