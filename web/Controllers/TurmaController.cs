@@ -136,6 +136,12 @@ namespace web.Controllers
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 
+        public string FindTurmasDisponibilidade(int idCurso)
+        {
+            List<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) != 0 && x.status == (int)EnumStatus.TurmaAberta && x.idCurso == idCurso);
+            return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
+        }
+
         public JsonResult FechamentoTurma(int codigoTurma)
         {
             Turma t = dbTurma.FindOne(x => x.idTurma == codigoTurma);

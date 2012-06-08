@@ -192,6 +192,7 @@
     <Content Include="Views\Matricula\Matricula.aspx" />
     <Content Include="Views\Modulo\Modulo.aspx" />
     <Content Include="Views\Pagamento\Boleto.aspx" />
+    <Content Include="Views\Pagamento\Inadimplentes.aspx" />
     <Content Include="Views\Pagamento\ProcessarCobranca.aspx" />
     <Content Include="Views\Pagamento\Recibo.aspx" />
     <Content Include="Views\Pessoa\Pessoa.aspx" />

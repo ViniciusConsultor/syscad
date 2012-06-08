@@ -36,14 +36,58 @@
                     ID="pnlInformation" 
                     runat="server" 
                     Title="Descrição" 
-                    Height="80" 
+                    Height="90" 
                     Padding="5"
                     Frame="true" 
                     Icon="Information">
                     <Content>
-                        <h1>Consultar Disponibilidade de Turmas</h1>
-                        <p>Filtos:</p>
+                        <h1>Selecione o Curso para exibir todas as turmas abertas com vagas disponíveis!</h1>
                     </Content>
+                    <Items>
+                        <ext:ComboBox ID="cmbCurso" 
+                                runat="server" 
+                                DisplayField="nome" 
+                                ValueField="idCurso" 
+                                TypeAhead="false"
+                                LabelWidth="40" 
+                                LoadingText="Procurando..." 
+                                Width="438" 
+                                PageSize="10"
+                                HideTrigger="false"
+                                ItemSelector="div.search-item"        
+                                MinChars="1"
+                                FieldLabel="Curso"
+                                TriggerAction="All">
+                                <Store>
+                                    <ext:Store ID="Store4" runat="server" AutoLoad="false">
+                                        <Proxy>
+                                            <ext:HttpProxy Method="POST" Url="/Curso/Search" />
+                                        </Proxy>
+                                        <Reader>
+                                            <ext:JsonReader Root="cursos" TotalProperty="totalReg">
+                                                <Fields>
+                                                    <ext:RecordField Name="idCurso" Type="Int" />
+                                                    <ext:RecordField Name="nome" Type="String" />
+                                                </Fields>
+                                            </ext:JsonReader>
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                                <Template ID="Template3" runat="server">
+                                    <Html>
+					                    <tpl for=".">
+						                    <div class="search-item">
+							                    <h3><span>{idCurso}</span>{nome}</h3>
+						                    </div>
+					                    </tpl>
+				                    </Html>
+                                </Template>
+                                <Listeners>
+                                    <Select Handler="#{Store2}.reload()" />
+                                </Listeners>
+                            </ext:ComboBox>
+                    </Items>
+                    
                 </ext:Panel>
             </North>
             <Center MarginsSummary="0 5 0 5">
@@ -60,7 +104,7 @@
                                     ID="Store2" 
                                     runat="server">
                                     <Proxy>
-                                        <ext:HttpProxy Json="true" Method="GET" Url="/Turma/FindTurmas" AutoDataBind="true" />
+                                        <ext:HttpProxy Json="true" Method="GET" Url="/Turma/FindTurmasDisponibilidade" AutoDataBind="true" />
                                     </Proxy>
                                     <Reader>
                                         <ext:JsonReader Root="turmas" TotalProperty="totalReg">
@@ -78,7 +122,7 @@
                                         </ext:JsonReader>
                                     </Reader>                                            
                                     <BaseParams>
-                                         
+                                        <ext:Parameter Name="idCurso" Value="#{cmbCurso}.getValue() == ''? -1 : #{cmbCurso}.getValue()" Mode="Raw" /> 
                                     </BaseParams>
                                 </ext:Store>
                             </Store>

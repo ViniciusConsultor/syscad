@@ -304,5 +304,21 @@ namespace web.Controllers
 //            SqlDataReader dr = comm.ExecuteReader();
             return Json(new { });
         }
+
+        public ActionResult Inadimplentes()
+        {
+            return View();
+        }
+
+        public string FindInadimplentes()
+        {
+            List<Aluno> listaAlunos = dbAluno.FindAll(x => x.statusFinanceiro == (int)EnumStatus.Inadimplente);
+            foreach (Aluno a in listaAlunos){
+
+                a.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == a.idPessoa);
+
+            }
+            return "{alunos:" + JSON.Serialize(listaAlunos) + ", totalReg:" + listaAlunos.Count() + "}";
+        }
     }
 }
