@@ -18,11 +18,13 @@ namespace Persistence.Entity
         public virtual int? status { get; set; }
         public virtual int numeroVagas { get; set; }
         public virtual int vagasOcupadas { get; set; }
+        public virtual int idFuncionario { get; set; }
         public virtual DateTime dataInicio { get; set; }
         public virtual DateTime dataFim { get; set; }
         public virtual DateTime? dataFechamento { get; set; }
         public virtual Curso Curso { get; set; }
-        public virtual ICollection<MatriculaTurma> MatriculaTurmas { get; private set; }
-        public virtual ICollection<NotaFalta> NotaFaltas { get; private set; }
+        public virtual Funcionario Funcionario { get; set; }
+        public virtual ICollection<MatriculaTurma> MatriculaTurmas { get; set; }
+        public virtual ICollection<NotaFalta> NotaFaltas { get; set; }
     }
 }

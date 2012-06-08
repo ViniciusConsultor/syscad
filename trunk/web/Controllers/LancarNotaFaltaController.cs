@@ -42,8 +42,10 @@ namespace web.Controllers
         }
 
         [HttpGet]
-        public JsonResult FindTurmaByProfessor(int codigoTurma)
+        public JsonResult FindTurmaByProfessor()
         {
+            var idProfessor = (int)Session["id_usuario"];
+            int codigoTurma = (from t in dbTurma.Context.Turma where t.Funcionario.Usuario.idUsuario == idProfessor select t.idTurma).FirstOrDefault();
             List<Models.ModuloViewData> listModulos = (from m in dbModulo.Context.Modulo
                                                where m.Curso.Turmas.Where(t => t.idTurma == codigoTurma).Count() > 0
                                                select new Models.ModuloViewData
@@ -73,7 +75,7 @@ namespace web.Controllers
                             join modulo mo on mo.idCurso = c.idCurso
                             left join notaFalta nt on nt.idAluno = a.idAluno 
                             and nt.idModulo = mo.idModulo and nt.idTurma = t.idTurma
-                            where t.idTurma = @idTurma and mo.idModulo = @idModulo";
+                            where t.idTurma = @idTurma and mo.idModulo = @idModulo and m.tipo = 'matricula'";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
             comm.Parameters.Add(new SqlParameter("@idTurma", codigoTurma));

@@ -106,6 +106,10 @@
             <End Role="curso" EntitySet="curso" />
             <End Role="turma" EntitySet="turma" />
           </AssociationSet>
+          <AssociationSet Name="FK_turma_funcionario" Association="BDSysCadModel.Store.FK_turma_funcionario">
+            <End Role="funcionario" EntitySet="funcionario" />
+            <End Role="turma" EntitySet="turma" />
+          </AssociationSet>
           <AssociationSet Name="FK_usuario_perfil" Association="BDSysCadModel.Store.FK_usuario_perfil">
             <End Role="perfil" EntitySet="perfil" />
             <End Role="usuario" EntitySet="usuario" />
@@ -309,6 +313,7 @@
           <Property Name="dataFim" Type="datetime" Nullable="false" />
           <Property Name="dataFechamento" Type="datetime" />
           <Property Name="status" Type="int" />
+          <Property Name="idFuncionario" Type="int" />
         </EntityType>
         <EntityType Name="usuario">
           <Key>
@@ -559,6 +564,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_turma_funcionario">
+          <End Role="funcionario" Type="BDSysCadModel.Store.funcionario" Multiplicity="0..1" />
+          <End Role="turma" Type="BDSysCadModel.Store.turma" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="funcionario">
+              <PropertyRef Name="idFuncionario" />
+            </Principal>
+            <Dependent Role="turma">
+              <PropertyRef Name="idFuncionario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_usuario_perfil">
           <End Role="perfil" Type="BDSysCadModel.Store.perfil" Multiplicity="1" />
           <End Role="usuario" Type="BDSysCadModel.Store.usuario" Multiplicity="*" />
@@ -679,6 +696,10 @@
           <AssociationSet Name="FK_notaFalta_turma" Association="BDSysCadModel.FK_notaFalta_turma">
             <End Role="turma" EntitySet="TurmaSet" />
             <End Role="NotaFalta" EntitySet="NotaFaltaSet" />
+          </AssociationSet>
+          <AssociationSet Name="FK_turma_funcionario" Association="BDSysCadModel.FK_turma_funcionario">
+            <End Role="Funcionario" EntitySet="FuncionarioSet" />
+            <End Role="Turma" EntitySet="TurmaSet" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Aluno">
@@ -944,6 +965,7 @@
           <NavigationProperty Name="Cargo" Relationship="BDSysCadModel.FK_funcionario_cargo" FromRole="Funcionario" ToRole="Cargo" />
           <NavigationProperty Name="Pessoa" Relationship="BDSysCadModel.FK_funcionario_pessoa" FromRole="Funcionario" ToRole="Pessoa" />
           <NavigationProperty Name="Usuario" Relationship="BDSysCadModel.FK_funcionario_usuario" FromRole="Funcionario" ToRole="Usuario" />
+          <NavigationProperty Name="Turmas" Relationship="BDSysCadModel.FK_turma_funcionario" FromRole="Funcionario" ToRole="Turma" />
         </EntityType>
         <EntityType Name="NotaFalta">
           <Key>
@@ -1146,6 +1168,8 @@
           <NavigationProperty Name="Curso" Relationship="BDSysCadModel.FK_turma_curso" FromRole="turma" ToRole="Curso" />
           <NavigationProperty Name="MatriculaTurmas" Relationship="BDSysCadModel.FK_matriculaTurma_turma" FromRole="turma" ToRole="MatriculaTurma" />
           <NavigationProperty Name="NotaFaltas" Relationship="BDSysCadModel.FK_notaFalta_turma" FromRole="turma" ToRole="NotaFalta" />
+          <Property Type="Int32" Name="idFuncionario" />
+          <NavigationProperty Name="Funcionario" Relationship="BDSysCadModel.FK_turma_funcionario" FromRole="Turma" ToRole="Funcionario" />
         </EntityType>
         <Association Name="FK_turma_curso">
           <End Type="BDSysCadModel.Curso" Role="Curso" Multiplicity="1" />
@@ -1180,6 +1204,18 @@
             </Principal>
             <Dependent Role="NotaFalta">
               <PropertyRef Name="idTurma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_turma_funcionario">
+          <End Type="BDSysCadModel.Funcionario" Role="Funcionario" Multiplicity="0..1" />
+          <End Type="BDSysCadModel.Turma" Role="Turma" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Funcionario">
+              <PropertyRef Name="idFuncionario" />
+            </Principal>
+            <Dependent Role="Turma">
+              <PropertyRef Name="idFuncionario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1405,6 +1441,7 @@
           <EntitySetMapping Name="TurmaSet">
             <EntityTypeMapping TypeName="BDSysCadModel.Turma">
               <MappingFragment StoreEntitySet="turma">
+                <ScalarProperty Name="idFuncionario" ColumnName="idFuncionario" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="dataFechamento" ColumnName="dataFechamento" />
                 <ScalarProperty Name="dataFim" ColumnName="dataFim" />
@@ -1478,6 +1515,8 @@
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_modulo_curso" >
           <ConnectorPoint PointX="5.25" PointY="18.307444661458334" />
+          <ConnectorPoint PointX="5.666666666666667" PointY="18.307444661458334" />
+          <ConnectorPoint PointX="5.833333333333333" PointY="18.307444661458334" />
           <ConnectorPoint PointX="6" PointY="18.307444661458334" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_endereco_pessoa" >
@@ -1518,23 +1557,23 @@
           <ConnectorPoint PointX="2.25" PointY="13.768992513020834" />
           <ConnectorPoint PointX="2.3854166666666665" PointY="13.768992513020834" />
           <ConnectorPoint PointX="2.5520833333333335" PointY="13.768992513020834" />
-          <ConnectorPoint PointX="2.9166641666666666" PointY="13.768992513020834" />
-          <ConnectorPoint PointX="3.0833308333333336" PointY="13.768992513020834" />
+          <ConnectorPoint PointX="2.8385416666666665" PointY="13.768992513020834" />
+          <ConnectorPoint PointX="3.0052083333333335" PointY="13.768992513020834" />
           <ConnectorPoint PointX="3.375" PointY="13.768992513020834" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_funcionario_pessoa" >
           <ConnectorPoint PointX="2.46875" PointY="11.576396484375" />
-          <ConnectorPoint PointX="2.46875" PointY="14.953837890625003" />
-          <ConnectorPoint PointX="2.9166641666666666" PointY="14.953837890625003" />
-          <ConnectorPoint PointX="3.0833308333333336" PointY="14.953837890625003" />
-          <ConnectorPoint PointX="3.375" PointY="14.953837890625003" />
+          <ConnectorPoint PointX="2.46875" PointY="15.049988606770834" />
+          <ConnectorPoint PointX="2.8385416666666665" PointY="15.049988606770834" />
+          <ConnectorPoint PointX="3.0052083333333335" PointY="15.049988606770834" />
+          <ConnectorPoint PointX="3.375" PointY="15.049988606770834" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_funcionario_usuario" >
           <ConnectorPoint PointX="2.25" PointY="16.21875" />
-          <ConnectorPoint PointX="2.9166641666666666" PointY="16.21875" />
-          <ConnectorPoint PointX="3.0833308333333336" PointY="16.21875" />
+          <ConnectorPoint PointX="2.8385416666666665" PointY="16.21875" />
+          <ConnectorPoint PointX="3.0052083333333335" PointY="16.21875" />
           <ConnectorPoint PointX="3.53125" PointY="16.21875" />
-          <ConnectorPoint PointX="3.53125" PointY="15.182190755208339" />
+          <ConnectorPoint PointX="3.53125" PointY="15.3744921875" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_notaFalta_modulo" >
           <ConnectorPoint PointX="8" PointY="18.307444661458334" />
@@ -1578,18 +1617,25 @@
         <EntityTypeShape EntityType="BDSysCadModel.Turma" Width="1.5" PointX="6.125" PointY="20.75" Height="3.3263964843750031" />
         <AssociationConnector Association="BDSysCadModel.FK_turma_curso" >
           <ConnectorPoint PointX="4.65625" PointY="19.682190755208335" />
-          <ConnectorPoint PointX="4.65625" PointY="23.747091471354171" />
-          <ConnectorPoint PointX="6.125" PointY="23.747091471354171" />
+          <ConnectorPoint PointX="4.65625" PointY="23.939392903645839" />
+          <ConnectorPoint PointX="6.125" PointY="23.939392903645839" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_matriculaTurma_turma" >
-          <ConnectorPoint PointX="7.625" PointY="22.4131982421875" />
-          <ConnectorPoint PointX="10.3125" PointY="22.4131982421875" />
+          <ConnectorPoint PointX="7.625" PointY="23.005672985026049" />
+          <ConnectorPoint PointX="10.3125" PointY="23.005672985026049" />
           <ConnectorPoint PointX="10.3125" PointY="15.114889322916667" />
         </AssociationConnector>
         <AssociationConnector Association="BDSysCadModel.FK_notaFalta_turma" >
-          <ConnectorPoint PointX="7.625" PointY="21.550346621093759" />
-          <ConnectorPoint PointX="8.8593725" PointY="21.550346621093759" />
+          <ConnectorPoint PointX="7.625" PointY="21.846583992513033" />
+          <ConnectorPoint PointX="8.8593725" PointY="21.846583992513033" />
           <ConnectorPoint PointX="8.8593725" PointY="11.701396484375" />
+        </AssociationConnector>
+        <AssociationConnector Association="BDSysCadModel.FK_turma_funcionario" >
+          <ConnectorPoint PointX="4.875" PointY="14.639043282552084" />
+          <ConnectorPoint PointX="5.75" PointY="14.639043282552084" />
+          <ConnectorPoint PointX="5.75" PointY="20.375" />
+          <ConnectorPoint PointX="6.875" PointY="20.375" />
+          <ConnectorPoint PointX="6.875" PointY="20.75" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

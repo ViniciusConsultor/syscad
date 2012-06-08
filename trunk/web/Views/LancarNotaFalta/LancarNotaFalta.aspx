@@ -132,9 +132,6 @@
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>
-                                            <BaseParams>
-                                                <ext:Parameter Name="codigoTurma" Value="1" Mode="Value" />               
-                                            </BaseParams>
                                         </ext:Store>
                                     </Store>
                                     <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
