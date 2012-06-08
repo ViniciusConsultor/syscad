@@ -199,6 +199,7 @@
     <Content Include="Views\Pagamento\RealizarPagamento.aspx" />
     <Content Include="Views\Taxa\Taxa.aspx" />
     <Content Include="Views\Turma\AbrirTurma.aspx" />
+    <Content Include="Views\Turma\AutorizarTurma.aspx" />
     <Content Include="Views\Turma\FecharTurma.aspx" />
     <Content Include="Views\Turma\VincularAluno.aspx" />
     <Content Include="Web.config">

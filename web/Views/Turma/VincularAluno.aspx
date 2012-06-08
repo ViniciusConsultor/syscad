@@ -15,6 +15,31 @@
             var data = new Date(value);
             rec.dataInicioFormatada = data.format('d/m/Y');
         }
+
+        var vincularAluno = function (value) {
+
+            grdTurmas.reload();
+            $.post('/Turma/VincularAluno', { idMatriculaTurma: value }, function (valor) {
+                if (valor == "Sim") {
+                    Ext.Msg.show({
+                        title: 'Sucesso',
+                        msg: 'Aluno vinculado com sucesso a turma!',
+                        buttons: Ext.Msg.OK
+                    });
+
+                    grdTurmas.reload();
+                    pnlSouth.reload();
+
+                } else {
+                    Ext.Msg.show({
+                        title: 'Erro',
+                        msg: 'Erro ao vincular aluno a turma!',
+                        buttons: Ext.Msg.OK
+                    });
+                }
+            });
+
+        }
     </script>
 </head>
 <script type="text/javascript">
@@ -83,7 +108,11 @@
                                 </ext:Store>
                             </Store>
                             <SelectionModel>
-                                <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" SingleSelect="true" />
+                                <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" SingleSelect="true">
+                                    <Listeners>
+                                        <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{storePreMatriculas}.reload();};" Buffer="250" />
+                                    </Listeners>
+                                </ext:RowSelectionModel>
                             </SelectionModel>
                             <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                                     <Columns>
@@ -91,7 +120,7 @@
                                         <ext:Column ColumnID="idTurma" Header="IdTurma" DataIndex="idTurma" Hidden="true" />
                                         <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" Width="150" />
                                         <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="150" />
-                                        <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="150" />                                        <ext:Column ColumnID="vagasOcupadas" Header="Vagas Ocupadas" DataIndex="vagasOcupadas" Width="150" />
+                                        <ext:Column ColumnID="numeroVagas" Header="Quantidade de Vagas" DataIndex="numeroVagas" Width="150" />                                        <ext:Column ColumnID="vagasOcupadas" Header="Vagas Ocupadas" DataIndex="vagasOcupadas" Width="150" />
                                     </Columns>
                             </ColumnModel>                                   
                             <BottomBar>
@@ -104,15 +133,14 @@
             </Center>
             <South Collapsible="true" Split="true" MarginsSummary="0 5 5 5">
                 <ext:GridPanel 
-                    ID="GridPanel"
+                    ID="pnlSouth"
                     runat="server" 
                     Title="Gerenciar Matrícula" 
                     Height="200"
-                    Layout="Fit"
                     >
                     <Store>
                         <ext:Store 
-                            ID="Store1" 
+                            ID="storePreMatriculas" 
                             runat="server">
                             <Proxy>
                                 <ext:HttpProxy Json="true" Method="GET" Url="/Matricula/FindPreMatriculas" AutoDataBind="true" />
@@ -120,38 +148,34 @@
                             <Reader>
                                 <ext:JsonReader Root="matriculas" TotalProperty="totalReg">
                                     <Fields>
-                                        <ext:RecordField Name="idMatricula" Type="Int" />
-                                        <ext:RecordField Name="numeroMatricula" Type="Int" />
-                                        <ext:RecordField Name="Aluno.Pessoa.nome" Type="String" />
-                                        <ext:RecordField Name="dataRegistro" Type="Date" />
-                                        <ext:RecordField Name="dataCancelamento" Type="Date" />
-                                        <ext:RecordField Name="tipo" Type="String" />
-                                        <ext:RecordField Name="Aluno.Responsavel.Pessoa.nome" Type="String" />
+                                        <ext:RecordField Name="idMatriculaTurma" Type="Int" />
+                                        <ext:RecordField Name="Matricula.numeroMatricula" Type="String" />
+                                        <ext:RecordField Name="Matricula.Aluno.Pessoa.nome" Type="String" />
                                     </Fields>
                                 </ext:JsonReader>
                             </Reader>
+                            <BaseParams>
+                                <ext:Parameter Name="idTurma" Value="Ext.getCmp('#{grdTurmas}') && #{grdTurmas}.getSelectionModel().hasSelection() ? #{grdTurmas}.getSelectionModel().getSelected().data.idTurma : -1" Mode="Raw" />               
+                            </BaseParams>
                         </ext:Store>
                     </Store>
 
                     <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
+                
                 <Columns>
-                    <ext:Column ColumnID="idMatricula" Header="Id" DataIndex="idMatricula" Hidden="true" />
-
-                    <ext:Column ColumnID="matricula" Header="Matrícula" DataIndex="numeroMatricula"></ext:Column>
-
-                    <ext:Column ColumnID="aluno" Header="Aluno" DataIndex="Aluno.Pessoa.nome" width="180px"></ext:Column>
-
-                    <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Aluno.Responsavel.Pessoa.nome" width="180px"></ext:Column>
+                    <ext:RowNumbererColumn ColumnID="number" />
                     
-                    <ext:DateColumn DataIndex="dataRegistro" Header="Data de Registro" Format="d/m/Y" />
-                     
-                    <ext:DateColumn DataIndex="dataCancelamento" Header="Data de Cancelamento" Format="d/m/Y" />
+                    <ext:Column ColumnID="idMatriculaTurma" Header="Id" DataIndex="idMatriculaTurma" Hidden="true" />
 
-                    <ext:Column ColumnID="tipo" Header="Tipo" DataIndex="tipo">
-                        <Editor>
-                            <ext:TextField ID="TextField4" runat="server" MaxLength="15" />
-                        </Editor>
-                    </ext:Column>
+                    <ext:Column ColumnID="Matricula.numeroMatricula" Header="Matrícula" DataIndex="Matricula.numeroMatricula"></ext:Column>
+
+                    <ext:Column ColumnID="Matricula.Aluno.Pessoa.nome" Header="Aluno" DataIndex="Matricula.Aluno.Pessoa.nome" width="180px"></ext:Column>
+
+                    <ext:CommandColumn Width="110" Align="Center" Header="Vincular">
+                        <Commands>
+                            <ext:GridCommand Icon="Accept" CommandName="vincular" Text="Vincular Aluno"  />
+                        </Commands>
+                    </ext:CommandColumn>
 
                 </Columns>
             </ColumnModel>
@@ -159,6 +183,10 @@
                     <SelectionModel>
                         <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true" />
                     </SelectionModel>
+
+                    <Listeners>
+                        <Command Handler="vincularAluno(record.data.idMatriculaTurma)" />
+                    </Listeners>
 
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" PageSize="10" />

@@ -17,6 +17,7 @@ namespace web.Controllers
         IRepositorio<Aluno> dbAluno;
         IRepositorio<Pessoa> dbPessoa;
         IRepositorio<Responsavel> dbResponsavel;
+        IRepositorio<MatriculaTurma> dbMatriculaTurma;
 
         public MatriculaController()
         {
@@ -24,6 +25,7 @@ namespace web.Controllers
             dbAluno = new Repositorio<Aluno>();
             dbPessoa = new Repositorio<Pessoa>();
             dbResponsavel = new Repositorio<Responsavel>();
+            dbMatriculaTurma = new Repositorio<MatriculaTurma>();
         }
         
         public ActionResult Matricula()
@@ -127,19 +129,19 @@ namespace web.Controllers
 
         }
 
-        public string FindPreMatriculas()
+        [HttpGet]
+        public string FindPreMatriculas(int idTurma)
         {
-            List<Matricula> listaMatricula = dbMatricula.FindAll(x => x.tipo == "PreMatricula");
+            List<MatriculaTurma> listaMatriculaTurma = dbMatriculaTurma.FindAll(x => x.idTurma == idTurma && x.Matricula.tipo == "prematricula" && (x.Turma.numeroVagas - x.Turma.vagasOcupadas) != 0);
 
-            foreach (Matricula m in listaMatricula)
+            foreach (MatriculaTurma m in listaMatriculaTurma)
             {
-                m.Aluno = new Repositorio<Aluno>().FindOne(x => x.idAluno == m.idAluno);
-                m.Aluno.Responsavel = new Repositorio<Responsavel>().FindOne(x => x.idResponsavel == m.Aluno.idResponsavel);
-                m.Aluno.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.idPessoa);
-                m.Aluno.Responsavel.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.Responsavel.idPessoa);
+                m.Matricula = new Repositorio<Matricula>().FindOne(x => x.idMatricula == m.idMatricula);
+                m.Matricula.Aluno = new Repositorio<Aluno>().FindOne(x => x.idAluno == m.Matricula.idAluno);
+                m.Matricula.Aluno.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Matricula.Aluno.idPessoa);
             }
 
-            return "{matriculas:" + JSON.Serialize(listaMatricula) + ", totalReg:" + listaMatricula.Count() + "}";
+            return "{matriculas:" + JSON.Serialize(listaMatriculaTurma) + ", totalReg:" + listaMatriculaTurma.Count() + "}";
 
         }
 

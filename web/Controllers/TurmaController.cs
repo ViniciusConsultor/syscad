@@ -18,11 +18,13 @@ namespace web.Controllers
 
         Repositorio<Turma> dbTurma;
         Repositorio<MatriculaTurma> dbMatriculaTurma;
+        Repositorio<Matricula> dbMatricula;
 
         public TurmaController()
         {
             dbTurma = new Repositorio<Turma>();
             dbMatriculaTurma = new Repositorio<MatriculaTurma>();
+            dbMatricula = new Repositorio<Matricula>();
         }
 
         public ActionResult Index()
@@ -44,10 +46,16 @@ namespace web.Controllers
         {
             return View();
         }
+
+        public ActionResult AutorizarTurma()
+        {
+            return View();
+        }
+
         public string FindAll(int codigoCurso)
         {
             var listaTurma = (from t in dbTurma.Context.Turma
-                              where t.Curso.idCurso == codigoCurso && t.dataFechamento == null && (t.dataInicio <= DateTime.Now && t.dataFim >= DateTime.Now)
+                              where t.Curso.idCurso == codigoCurso && t.status == (int)EnumStatus.TurmaAberta && t.dataFechamento == null && (t.dataInicio <= DateTime.Now && t.dataFim >= DateTime.Now)
                               select new Models.Turma
                               {
                                   descricao = t.descricao,
@@ -61,9 +69,65 @@ namespace web.Controllers
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 
+        public string FindAllTurmas()
+        {
+            List<Turma> listaTurma = dbTurma.FindAll(x => x.status == (int)EnumStatus.TurmaSolicitada);
+            return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
+        }
+
+        public string Autorizar(int idTurma)
+        {
+            Turma turma = dbTurma.FindOne(x => x.idTurma == idTurma);
+
+            turma.status = (int)EnumStatus.TurmaAberta;
+
+            try
+            {
+
+                dbTurma.Atualizar(turma);
+                dbTurma.SaveChanges();
+
+                return "Sim";
+            }
+            catch
+            {
+                return "Não";
+            }
+            
+        }
+
+        public JsonResult Save(int cmbCurso_Value, string dtInicio, string dtFim, string txtDescricao, int txtNumeroVagas)
+        {
+
+            Turma turma = new Turma();
+            turma.idCurso = cmbCurso_Value;
+            turma.dataInicio = Convert.ToDateTime(dtInicio);
+            turma.dataFim = Convert.ToDateTime(dtFim);
+            turma.descricao = txtDescricao;
+            turma.numeroVagas = txtNumeroVagas;
+            turma.status = (int)EnumStatus.TurmaSolicitada;
+
+            try
+            {
+
+                dbTurma.Adicionar(turma);
+                dbTurma.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
         public string FindTurmas()
         {
-            List<Turma> listaTurma = dbTurma.FindAll();
+            List<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) != 0 && x.status == (int)EnumStatus.TurmaAberta);
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 
@@ -84,6 +148,35 @@ namespace web.Controllers
             dbMatriculaTurma.SaveChanges();
 
             return Json(new { success = true});
+        }
+
+        [HttpPost]
+        public string VincularAluno(int idMatriculaTurma)
+        {
+            MatriculaTurma matriculaTurma = dbMatriculaTurma.FindOne(x => x.idMatriculaTurma == idMatriculaTurma);
+            Matricula matricula = dbMatricula.FindOne(x => x.idMatricula == matriculaTurma.idMatricula);
+            Turma turma = dbTurma.FindOne(x => x.idTurma == matriculaTurma.idTurma);
+
+            matricula.tipo = "matricula";
+            turma.vagasOcupadas ++;
+            //turma.numeroVagas --;
+
+            try
+            {
+
+                dbMatricula.Atualizar(matricula);
+                dbMatricula.SaveChanges();
+
+                dbTurma.Atualizar(turma);
+                dbTurma.SaveChanges();
+
+                return "Sim";
+            }
+            catch
+            {
+                return "Não";
+            }
+
         }
     }
 }
