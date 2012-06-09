@@ -279,9 +279,9 @@ namespace web.Controllers
             return View();
         }
 
-        public JsonResult GerarCobranca()
+        public JsonResult CarregaAlunos()
         {
-//            conn.Open();
+            conn.Open();
 //            string sql = @"INSERT INTO cobranca
 //                            SELECT null as idTaxa, a.idAluno, 7 as statusPagamento, c.valor, 0 as juros, '20120610' as dataVencimento, c.idCurso from aluno a
 //                            JOIN matricula m
@@ -297,12 +297,42 @@ namespace web.Controllers
 //                            and a.idAluno = co.idAluno
 //                            and MONTH(co.dataVencimento) = MONTH('20120601') 
 //                            and YEAR(co.dataVencimento) = YEAR('20120601'))";
-//            SqlCommand comm = conn.CreateCommand();
-//            comm.CommandText = sql;
-//            comm.Parameters.Add(new SqlParameter("@idTurma", codigoTurma));
-//            comm.Parameters.Add(new SqlParameter("@idModulo", codigoModulo));
-//            SqlDataReader dr = comm.ExecuteReader();
-            return Json(new { });
+            string sql = @"SELECT p.Nome, c.valor
+                            from aluno a
+                            JOIN matricula m
+                            ON a.idAluno = m.idAluno
+                            JOIN matriculaTurma mt
+                            ON m.idMatricula = mt.idMatricula
+                            JOIN turma t
+                            ON mt.idTurma = t.idTurma
+                            JOIN curso c
+                            on t.idCurso = c.idCurso and c.status = 4
+                            JOIN pessoa p
+                            on a.idPessoa = p.idPessoa
+                            WHERE NOT EXISTS(SELECT 1 FROM cobranca co
+                            WHERE c.idCurso = co.idCurso 
+                            and a.idAluno = co.idAluno
+                            and MONTH(co.dataVencimento) = MONTH('20120601') 
+                            and YEAR(co.dataVencimento) = YEAR('20120601'))";
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            //comm.Parameters.Add(new SqlParameter("@idTurma", codigoTurma));
+            //comm.Parameters.Add(new SqlParameter("@idModulo", codigoModulo));
+            SqlDataReader dr = comm.ExecuteReader();
+            IList<object> list = new List<object>();
+
+            while (dr.Read())
+            {
+                var r = new
+                {
+                    aluno = dr.GetString(0),
+                    valor = dr.GetDecimal(1)
+                };
+                list.Add(r);
+            }
+
+            conn.Close();
+            return Json(list);
         }
 
         public ActionResult Inadimplentes()

@@ -9,11 +9,16 @@
     <title>Realizar matrícula</title>
     <link href="../../Content/Grid.css" rel="stylesheet" type="text/css" />
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+
 </head>
 
 <script type="text/javascript">
     //Variaveis GENERICAS
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
+
+    var trataCurso = function (value, rec) {
+        rec.cursoNome = rec.Curso.nome;
+    }
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 
@@ -57,7 +62,7 @@
         </Listeners>
         <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                 <Columns>
-                    <ext:Column ColumnID="idMatricula" Header="Id" DataIndex="idMatricula" Hidden="true" />
+                    <ext:Column ColumnID="idmatricula" Hidden="true" DataIndex="idMatricula"></ext:Column>
 
                     <ext:Column ColumnID="matricula" Header="Matrícula" DataIndex="numeroMatricula"></ext:Column>
 
@@ -123,8 +128,6 @@
         </BottomBar>
     </ext:GridPanel>
 
-
-    
     <form id="Novo" runat="server" >
     
         <ext:Window 
@@ -145,8 +148,7 @@
                     <ext:FormPanel ID="matricula" runat="server">
 
                         <Items>
-                            <ext:NumberField ID="numeroMatricula" runat="server" FieldLabel="Matrícula" Width="350" AllowBlank="false" />
-                            
+                                                        
                             <ext:ComboBox ID="cmbPessoa" 
                                 runat="server" 
                                 DisplayField="nome" 
@@ -245,7 +247,53 @@
 
                             <ext:DateField ID="txtDataCancelamento" runat="server" FieldLabel="Data de Cancelamento" Width="350" EnableKeyEvents="true" /> 
 
-                            <ext:TextField ID="txtTipo" runat="server" FieldLabel="Tipo" Width="350" AllowBlank="false" />
+                            <ext:ComboBox ID="cmbTurma" 
+                                runat="server" 
+                                DisplayField="turma" 
+                                ValueField="idTurma" 
+                                TypeAhead="false" 
+                                LoadingText="Procurando..." 
+                                Width="350" 
+                                PageSize="10"
+                                HideTrigger="false"
+                                ItemSelector="div.search-item"        
+                                MinChars="1"
+                                FieldLabel="Turma"
+                                TriggerAction="All">
+                                <Store>
+                                    <ext:Store ID="Store4" runat="server" AutoLoad="false">
+                                        <Proxy>
+                                            <ext:HttpProxy Method="POST" Url="/Turma/Search" />
+                                        </Proxy>
+                                        <Reader>
+                                            <ext:JsonReader Root="turmas" TotalProperty="totalReg">
+                                                <Fields>
+                                                    <ext:RecordField Name="idTurma" Type="Int" />
+                                                    <ext:RecordField Name="descricao" Type="String" />
+                                                    <ext:RecordField Name="Curso.nome" Type="String">
+                                                        <Convert Fn="trataCurso" />
+                                                    </ext:RecordField>
+                                                    <ext:RecordField Name="numeroVagas" Type="String" />
+                                                    <ext:RecordField Name="vagasOcupadas" Type="String" />
+                                                    <ext:RecordField Name="dataInicio" Type="Date" />
+                                                    <ext:RecordField Name="dataFim" Type="Date" />
+                                                    <ext:RecordField Name="cursoNome" Type="String" />
+                                                </Fields>
+                                            </ext:JsonReader>
+                                        </Reader>
+                                    </ext:Store>
+                                </Store>
+                                <Template ID="Template3" runat="server">
+                                   <Html>
+					                   <tpl for=".">
+						                  <div class="search-item">
+							                 <h3><span>{cursoNome}</span>{descricao}</h3>
+							                 Vagas: {vagasOcupadas}/{numeroVagas} - Data início: {dataInicio} - Data fim: {dataFim}                                             
+						                  </div>
+					                   </tpl>
+				                   </Html>
+                                </Template>
+                            </ext:ComboBox>
 
                         </Items>
 

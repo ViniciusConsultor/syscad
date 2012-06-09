@@ -11,9 +11,11 @@
     <script type="text/javascript">
 
         var processarCobranca = function () {
-            $.post("/Pagamento/GerarCobrancas", {}, function (result) {
+            //$.post("/Pagamento/GerarCobrancas", {}, function (result) {
 
-            });
+            // });
+            var grid = grdCobranca;
+            grid.insertRecord(0, { aluno: "leonardo", valor: "200", situacao: "1" }, true);
         }
 
     </script>
@@ -29,15 +31,15 @@
                             ID="pnlInformation" 
                             runat="server" 
                             Title="Processar cobrança de mensalidades" 
-                            Height="80" 
+                            Height="100" 
                             Padding="5"
                             Frame="true" 
                             Icon="Information">
                             <Items>
-                                <ext:Label Text="Selecione o mês para gerar as cobranças de mensalidade" runat="server" BoxMaxHeight="50" />
+                                <ext:Label html="<h1>Selecione o mês para gerar as cobranças de mensalidade!</h1><br/>" runat="server" BoxMaxHeight="50" />
                                 <ext:Button ID="btnProcessar" Text="Processar cobrança" runat="server" >
                                     <Listeners>
-                                        <Click Fn="" />
+                                        <Click Fn="processarCobranca" />
                                     </Listeners>
                                 </ext:Button>
                             </Items>
@@ -48,19 +50,29 @@
                             <Items>
                                 <ext:GridPanel 
                                     ID="grdCobranca"
-                                    runat="server" 
-                                    
+                                    runat="server"                                     
                                     Height="300"
+                                    AutoExpandColumn="aluno"
                                     >
-                                    <Store>
-                                        <ext:EventStore ID="store" runat="server" />
+                                     <Store>
+                                        <ext:Store ID="Store1" runat="server">
+                                            <Reader>
+                                                <ext:ArrayReader>
+                                                    <Fields>
+                                                        <ext:RecordField Name="aluno" />
+                                                        <ext:RecordField Name="valor" />
+                                                        <ext:RecordField Name="situacao" />
+                                                    </Fields>
+                                                </ext:ArrayReader>
+                                            </Reader>
+                                        </ext:Store>
                                     </Store>
                                     <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                                         <Columns>
                                             <ext:RowNumbererColumn ColumnID="number" />
-                                            <ext:Column ColumnID="aluno" Header="Aluno" Width="200" />
-                                            <ext:Column ColumnID="valor" Header="Valor"  Width="100" />
-                                            <ext:Column ColumnID="situacao" Header="Situação" Width="50" />
+                                            <ext:Column Header="Aluno" DataIndex="aluno"  Width="200" />
+                                            <ext:Column Header="Valor" DataIndex="valor" Width="200" />
+                                            <ext:Column Header="Situação" DataIndex="situacao" Width="100" />
                                         </Columns>
                                     </ColumnModel>
                                 </ext:GridPanel>
