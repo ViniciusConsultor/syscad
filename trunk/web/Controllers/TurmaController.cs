@@ -34,7 +34,7 @@ namespace web.Controllers
         public JsonResult Search(string limit, string query, string start)
         {
 
-            IList<Turma> listaTurma = dbTurma2.FindAll(x => x.status == (int)EnumStatus.TurmaAberta).Where(x => x.descricao.ToLower().Contains(query.ToLower())).ToList();
+            IList<Turma> listaTurma = dbTurma.FindAll(x => x.status == (int)EnumStatus.TurmaAberta).Where(x => x.descricao.ToLower().Contains(query.ToLower())).ToList();
 
             foreach (Turma t in listaTurma)
             {
