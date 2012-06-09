@@ -20,7 +20,7 @@ namespace web.Models
         public int idAluno { get; set; }
         public int numeroMatricula { get; set; }
         public DateTime dataRegistro { get; set; }
-        public DateTime? dataCancelamento { get; set; }
+        public DateTime dataCancelamento { get; set; }
         public String tipo { get; set; }
         public Aluno Aluno { get; set; }
         public ICollection<MatriculaTurma> MatriculaTurmas { get; set; }
