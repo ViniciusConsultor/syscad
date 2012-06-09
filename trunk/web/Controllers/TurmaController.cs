@@ -19,12 +19,16 @@ namespace web.Controllers
         Repositorio<Turma> dbTurma;
         Repositorio<MatriculaTurma> dbMatriculaTurma;
         Repositorio<Matricula> dbMatricula;
+        Repositorio<Taxa> dbTaxa;
+        Repositorio<Cobranca> dbCobranca;
 
         public TurmaController()
         {
             dbTurma = new Repositorio<Turma>();
             dbMatriculaTurma = new Repositorio<MatriculaTurma>();
             dbMatricula = new Repositorio<Matricula>();
+            dbTaxa = new Repositorio<Taxa>();
+            dbCobranca = new Repositorio<Cobranca>();
         }
 
         public ActionResult Index()
@@ -168,12 +172,23 @@ namespace web.Controllers
             Matricula matricula = dbMatricula.FindOne(x => x.idMatricula == matriculaTurma.idMatricula);
             Turma turma = dbTurma.FindOne(x => x.idTurma == matriculaTurma.idTurma);
 
+            Taxa taxa = dbTaxa.FindOne(x => x.idTaxa == 1);
+
+            Cobranca cobranca = new Cobranca();
+            cobranca.idTaxa = 1;
+            cobranca.idAluno = matricula.idAluno;
+            cobranca.statusPagamento = (int)EnumStatus.NaoPago;
+            cobranca.valorTotal = taxa.valor;
+            cobranca.juros = 0;
+            cobranca.dataVencimento = DateTime.Now.AddDays(5);
+
             matricula.tipo = "matricula";
             turma.vagasOcupadas ++;
-            //turma.numeroVagas --;
 
             try
             {
+                dbCobranca.Adicionar(cobranca);
+                dbCobranca.SaveChanges();
 
                 dbMatricula.Atualizar(matricula);
                 dbMatricula.SaveChanges();
