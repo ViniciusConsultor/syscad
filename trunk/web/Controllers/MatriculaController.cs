@@ -87,7 +87,7 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save(int numeroMatricula, int cmbPessoa_Value, int cmbResponsavel_Value, string txtGrauParentesco, string txtDataRegistro, string txtDataCancelamento, string txtTipo)
+        public JsonResult Save(int cmbPessoa_Value, int cmbResponsavel_Value, string txtGrauParentesco, string txtDataRegistro, string txtDataCancelamento)
         {           
 
             Matricula matricula = new Matricula();
@@ -107,14 +107,20 @@ namespace web.Controllers
             aluno.statusFinanceiro = 0;
             aluno.statusPedagogico = 0;
             
-            matricula.numeroMatricula = numeroMatricula;
+            matricula.numeroMatricula = 0;
             matricula.Aluno = aluno;
             matricula.dataRegistro = Convert.ToDateTime(txtDataRegistro);
-            matricula.tipo = txtTipo;
+            matricula.tipo = "matricula";
 
             try
             {
                 dbMatricula.Adicionar(matricula);
+                dbMatricula.SaveChanges();
+
+                Matricula numMatricula = dbMatricula.FindOne(idM => idM.idMatricula == matricula.idMatricula);
+                numMatricula.numeroMatricula = numMatricula.idMatricula;
+                
+                dbMatricula.Atualizar(numMatricula);
                 dbMatricula.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);

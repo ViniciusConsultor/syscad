@@ -40,10 +40,8 @@
                     Padding="5"
                     Frame="true" 
                     Icon="Information">
-                    <Content>
-                        <h1>Selecione o Curso para exibir todas as turmas abertas com vagas disponíveis!</h1>
-                    </Content>
                     <Items>
+                        <ext:Label Html="<h1>Selecione o Curso para exibir todas as turmas abertas com vagas disponíveis!</h1><br/>" runat="server" />
                         <ext:ComboBox ID="cmbCurso" 
                                 runat="server" 
                                 DisplayField="nome" 

@@ -31,6 +31,19 @@ namespace web.Controllers
             dbCobranca = new Repositorio<Cobranca>();
         }
 
+        public JsonResult Search(string limit, string query, string start)
+        {
+
+            IList<Turma> listaTurma = dbTurma2.FindAll(x => x.status == (int)EnumStatus.TurmaAberta).Where(x => x.descricao.ToLower().Contains(query.ToLower())).ToList();
+
+            foreach (Turma t in listaTurma)
+            {
+                t.Curso = new Repositorio<Curso>().FindOne(x => x.idCurso == t.idCurso);
+            }
+            return Json(new { turmas = listaTurma, totalReg = listaTurma.Count }, JsonRequestBehavior.AllowGet);
+
+        }
+
         public ActionResult Index()
         {
             return View();

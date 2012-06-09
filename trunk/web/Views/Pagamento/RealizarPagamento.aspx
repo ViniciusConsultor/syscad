@@ -178,6 +178,7 @@
                             Frame="true" 
                             Icon="User">
                             <Items>
+                               <ext:Label Html="<h1>Informe a matricula ou o nome do aluno para realizar o pagamento!</h1><br />" runat="server" />
                                <ext:ComboBox ID="txtAluno" 
                                         runat="server" 
                                         DisplayField="nome" 
