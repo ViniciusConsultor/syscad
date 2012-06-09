@@ -18,7 +18,7 @@
 
     var trataCurso = function (value, rec) {
         rec.cursoNome = rec.Curso.nome;
-    }
+    };
 
     var trataCancelamento = function (value, rec) {
         //alert("Data Registro:\n" + rec.dataRegistro + "\nData Cancelamento:\n" + value);
@@ -32,7 +32,7 @@
             rec.dtCancelamento = data.format('d/m/Y');
 
         }
-    }
+    };
 
     var idadePessoa = function (value) {
 
@@ -46,7 +46,65 @@
             }
         });
 
-    }
+    };
+
+    function salvarPreMatricula() {
+
+        if (controller == "Pessoa") {
+            if (vercpf($("#txtCpf").val())) {
+
+            } else {
+                Ext.Msg.show({
+                    title: 'Validação de CPF',
+                    msg: 'O CPF informado não é válido!',
+                    buttons: Ext.Msg.OK
+                });
+                return false;
+            }
+        }
+
+        winNovo.hide();
+
+        GridPanel.el.mask('Salvando', 'x-mask-loading');
+
+        $.post('/Matricula/SavePreMatricula', $("#Novo").serialize(), function (valor) {
+            Ext.Msg.show({
+                title: 'Sucesso',
+                msg: controller + ' salvo(a) com sucesso',
+                buttons: Ext.Msg.OK
+            });
+            GridPanel.reload();
+            GridPanel.el.unmask();
+        });
+
+    };
+
+    function excluirPreMatricula() {
+
+        var confirm = Ext.Msg.confirm('Confirmação', 'Tem certeza que deseja excluir ' + controller + '?', function (btn) {
+
+            if (btn == 'yes') {
+                if (GridPanel.getSelectionModel().hasSelection()) {
+
+                    GridPanel.el.mask('Excluindo ' + controller, 'x-mask-loading');
+
+                    var record = GridPanel.getSelectionModel().getSelected();
+
+                    var genericParamsRecord = "record.data."; //Não mecher
+                    var makeParams = genericParamsRecord + campoIdRegistro; //Não mecher
+
+                    $.post('/Matricula/ExcluirPreMatricula', { id: eval(makeParams) }, function () {
+                        GridPanel.reload();
+                        GridPanel.el.unmask();
+                    });
+
+                }
+
+            }
+
+        });
+
+    };
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 
@@ -72,7 +130,7 @@
                             ID="Store1" 
                             runat="server">
                             <Proxy>
-                                <ext:HttpProxy Json="true" Method="GET" Url="/Matricula/FindAll" AutoDataBind="true" />
+                                <ext:HttpProxy Json="true" Method="GET" Url="/Matricula/FindAllPreMatricula" AutoDataBind="true" />
                             </Proxy>
                             <Reader>
                                 <ext:JsonReader Root="matriculas" TotalProperty="totalReg">
@@ -120,7 +178,7 @@
                                 </ext:Button>
                                 <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
                                     <Listeners> 
-                                        <Click Handler="excluirRegistro()" />
+                                        <Click Handler="excluirPreMatricula()" />
                                     </Listeners>
                                 </ext:Button>
                             </Items>
@@ -313,7 +371,7 @@
                                     <ext:ToolbarFill />
                                         <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
                                             <Listeners>
-                                                <Click Handler="salvar()" />
+                                                <Click Handler="salvarPreMatricula()" />
                                             </Listeners>
                                         </ext:Button>
                                 </Items>
