@@ -183,6 +183,7 @@
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Scripts\jquery.maskMoney.js" />
     <Content Include="Views\Cargo\Cargo.aspx" />
+    <Content Include="Views\Curso\CursoMaisCursados.aspx" />
     <Content Include="Views\Curso\Curso_Modulo.aspx" />
     <Content Include="Views\Curso\Curso.aspx" />
     <Content Include="Views\Endereco\Endereco.aspx" />
