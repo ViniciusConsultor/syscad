@@ -18,9 +18,9 @@ namespace Persistence.Entity
         public virtual int statusPedagogico { get; set; } 
         public virtual int statusFinanceiro { get; set; }
         public virtual Pessoa Pessoa { get; set; }
-        public virtual ICollection<Cobranca> Cobrancas { get; private set; }
-        public virtual ICollection<Matricula> Matriculas { get; private set; }
-        public virtual ICollection<NotaFalta> NotaFaltas { get; private set; }
+        public virtual ICollection<Cobranca> Cobrancas { get; set; }
+        public virtual ICollection<Matricula> Matriculas { get; set; }
+        public virtual ICollection<NotaFalta> NotaFaltas { get; set; }
         public virtual Responsavel Responsavel { get; set; }
 
         
