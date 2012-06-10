@@ -8,7 +8,7 @@
     
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-    <title>Relatório de Inadimplentes</title>
+    <title>Relatório de Ex-Alunos</title>
     
     <style type="text/css">
         body  {
@@ -91,11 +91,15 @@
         };
 
         var trataPessoaNome = function (value, rec) {
-            rec.nomePessoa = rec.Aluno.Pessoa.nome;
+            rec.nomePessoa = rec.Pessoa.nome;
         }
 
-        var trataPessoaCPF = function (value, rec) {
-            rec.CPFPessoa = rec.Pessoa.cpf;
+        var trataPessoaTelefone = function (value, rec) {
+            rec.telefonePessoa = rec.Pessoa.telefone;
+        }
+
+        var trataPessoaTelefoneCelular = function (value, rec) {
+            rec.telefoneCelularPessoa = rec.Pessoa.celular;
         }
 
         var trataPessoaEmail = function (value, rec) {
@@ -114,11 +118,6 @@
                     <Click Handler="if (Ext.isEmpty(this.parentMenu.node.email, false)) { Ext.Msg.alert('Error', 'Customer has no email');} else { parent.location = 'mailto:'+this.parentMenu.node.email }" />
                 </Listeners>                
             </ext:MenuItem>
-            <ext:MenuItem ID="MenuItem2" runat="server" Text="Mostrar Detalhes" Icon="ApplicationFormEdit">
-                <Listeners>
-                    <Click Handler="Ext.Msg.alert('Detalhes', Ext.encode(this.parentMenu.node));" />
-                </Listeners>
-            </ext:MenuItem>
         </Items>
        <Listeners>
             <BeforeShow Handler="#{CustomerLabel}.setText(this.node.contato);" />
@@ -130,13 +129,25 @@
             <ext:HttpProxy Method="POST" Url="/Relatorio/FindExAlunos" />
         </Proxy>
         <Reader>
-            <ext:JsonReader Root="matriculas" TotalProperty="totalReg" IDProperty="idMatricula">
+            <ext:JsonReader Root="alunos" TotalProperty="totalReg" IDProperty="idAluno">
                 <Fields>
-                    <ext:RecordField Name="idMatricula" Type="Int" />
-                    <ext:RecordField Name="Aluno.Pessoa.nome" Type="String">
+                    <ext:RecordField Name="idAluno" Type="Int" />
+                    <ext:RecordField Name="Pessoa.nome" Type="String">
                         <Convert Fn="trataPessoaNome" />
                     </ext:RecordField>
+                    <ext:RecordField Name="Pessoa.email" Type="String">
+                        <Convert Fn="trataPessoaEmail" />
+                    </ext:RecordField>
+                    <ext:RecordField Name="Pessoa.telefone" Type="String">
+                        <Convert Fn="trataPessoaTelefone" />
+                    </ext:RecordField>
+                    <ext:RecordField Name="Pessoa.celular" Type="String">
+                        <Convert Fn="trataPessoaTelefoneCelular" />
+                    </ext:RecordField>
                     <ext:RecordField Name="nomePessoa" Type="String" />
+                    <ext:RecordField Name="emailPessoa" Type="String" />
+                    <ext:RecordField Name="telefonePessoa" Type="String" />
+                    <ext:RecordField Name="telefoneCelularPessoa" Type="String" />
                 </Fields>
             </ext:JsonReader>
         </Reader>
@@ -164,11 +175,17 @@
 					<table>
 						<tr>
 							<th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Celular</th>
 						</tr>
 					
 						<tpl for=".">
 									<tr class="customer-record">
-                                        <td class="cust-name" nomePessoa="{nomePessoa}">&nbsp;{nomePessoa}</td>
+                                        <td class="cust-name" nomePessoa="{nomePessoa}" emailPessoa="{emailPessoa}" telefonePessoa="{telefonePessoa}" telefoneCelularPessoa="{telefoneCelularPessoa}">&nbsp;{nomePessoa}</td>
+                                        <td>&nbsp;{emailPessoa}</td>
+                                        <td>&nbsp;{telefonePessoa}</td>
+                                        <td>&nbsp;{telefoneCelularPessoa}</td>
 									</tr>
 						</tpl>                    
 					</table>

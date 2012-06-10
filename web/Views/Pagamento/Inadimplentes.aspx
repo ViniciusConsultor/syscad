@@ -114,11 +114,6 @@
                     <Click Handler="if (Ext.isEmpty(this.parentMenu.node.email, false)) { Ext.Msg.alert('Error', 'Customer has no email');} else { parent.location = 'mailto:'+this.parentMenu.node.email }" />
                 </Listeners>                
             </ext:MenuItem>
-            <ext:MenuItem runat="server" Text="Mostrar Detalhes" Icon="ApplicationFormEdit">
-                <Listeners>
-                    <Click Handler="Ext.Msg.alert('Detalhes', Ext.encode(this.parentMenu.node));" />
-                </Listeners>
-            </ext:MenuItem>
         </Items>
        <Listeners>
             <BeforeShow Handler="#{CustomerLabel}.setText(this.node.contato);" />
