@@ -19,6 +19,14 @@
             rec.dataFimFormatada = data.format('d/m/Y');
         }
 
+        var nomePessoaF = function (value, rec) {
+            rec.nomePessoa = rec.Pessoa.nome
+        }
+
+        var nomeCargoF = function (value, rec) {
+            rec.nomeCargo = rec.Cargo.nome
+        }
+
     </script>
 </head>
 <script type="text/javascript">
@@ -182,6 +190,58 @@
 				                   </Html>
                                 </Template>
                             </ext:ComboBox>
+
+                            <ext:ComboBox ID="cmbProfessor" 
+                                runat="server" 
+                                DisplayField="nomePessoa" 
+                                ValueField="idFuncionario" 
+                                TypeAhead="false" 
+                                LoadingText="Procurando..." 
+                                Width="350" 
+                                PageSize="10"
+                                HideTrigger="false"
+                                ItemSelector="div.search-item"        
+                                MinChars="1"
+                                FieldLabel="Professor"
+                                TriggerAction="All"
+                                AnchorHorizontal="100%">
+                                <Store>
+                                    <ext:Store ID="Store7" runat="server" AutoLoad="false">
+                                        <Proxy>
+                                            <ext:HttpProxy Method="GET" Url="/Funcionario/FindFuncionarios" />
+                                        </Proxy>
+                                        <Reader>
+                                            <ext:JsonReader Root="funcionarios" TotalProperty="total">
+                                                <Fields>
+                                                    <ext:RecordField Name="idFuncionario" Type="Int" />
+                                                    <ext:RecordField Name="Pessoa.nome" Type="String">
+                                                        <Convert Fn="nomePessoaF" />
+                                                    </ext:RecordField>
+                                                    <ext:RecordField Name="Cargo.nome" Type="String">
+                                                        <Convert Fn="nomeCargoF" />
+                                                    </ext:RecordField>
+                                                    <ext:RecordField Name="nomeCargo" Type="String" />
+                                                    <ext:RecordField Name="nomePessoa" Type="String" />
+                                                </Fields>
+                                            </ext:JsonReader>
+                                        </Reader>
+                                        <BaseParams>
+                                            <ext:Parameter Name="idCargo" Value="2" Mode="Raw" />
+                                        </BaseParams>
+                                    </ext:Store>
+                                </Store>
+                                <Template ID="Template6" runat="server">
+                                   <Html>
+					                   <tpl for=".">
+						                  <div class="search-item">
+							                 <h3><span></span>{nomePessoa}</h3>
+                                             {nomeCargo}
+						                  </div>
+					                   </tpl>
+				                   </Html>
+                                </Template>
+                            </ext:ComboBox>
+
                         </Items>
 
                         <BottomBar>
