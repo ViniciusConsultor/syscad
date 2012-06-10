@@ -126,6 +126,19 @@ var afterEdit = function (e) {
     e.row - The grid row index
     e.column - The grid column index
     */
+    if (e.field == "cpf") {
+        if (vercpf(e.value)) {
+
+        } else {
+            Ext.Msg.show({
+                title: 'CPF Inválido!',
+                msg: 'Campo não editado, o CPF digitado não é válido!',
+                buttons: Ext.Msg.OK
+            });
+            return false;
+        }
+    }
+
     var param1 = "e.record.data." + campoIdRegistro;
     salvarAlteracoes(eval(param1), e.field, e.value);
 
