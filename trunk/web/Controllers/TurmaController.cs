@@ -118,7 +118,7 @@ namespace web.Controllers
             
         }
 
-        public JsonResult Save(int cmbCurso_Value, string dtInicio, string dtFim, string txtDescricao, int txtNumeroVagas)
+        public JsonResult Save(int cmbCurso_Value, string dtInicio, string dtFim, string txtDescricao, int txtNumeroVagas, int cmbProfessor_Value)
         {
 
             Turma turma = new Turma();
@@ -128,6 +128,7 @@ namespace web.Controllers
             turma.descricao = txtDescricao;
             turma.numeroVagas = txtNumeroVagas;
             turma.status = (int)EnumStatus.TurmaSolicitada;
+            turma.idFuncionario = cmbProfessor_Value;
 
             try
             {

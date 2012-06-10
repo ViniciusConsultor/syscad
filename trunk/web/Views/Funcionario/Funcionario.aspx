@@ -370,6 +370,7 @@
 				                   </Html>
                                 </Template>
                             </ext:ComboBox>
+
                         </Items>
 
                         <BottomBar>
