@@ -223,7 +223,7 @@ namespace web.Controllers
         }
 
         public ActionResult Recibo(int idCobranca)
-        {            
+        {
             conn.Open();
             string sql = @"select formaPag, p.valor as valorPago, t.nome as descTaxa, valorTotal, juros, t.valor as valorTaxa, pe.nome, 
                             m.numeroMatricula, cu.nome, cu.valor as valorCurso 
@@ -279,25 +279,51 @@ namespace web.Controllers
             return View();
         }
 
-        public JsonResult CarregaAlunos()
+        public JsonResult GeraCobranca(int idAluno, int mes)
         {
             conn.Open();
-//            string sql = @"INSERT INTO cobranca
-//                            SELECT null as idTaxa, a.idAluno, 7 as statusPagamento, c.valor, 0 as juros, '20120610' as dataVencimento, c.idCurso from aluno a
-//                            JOIN matricula m
-//                            ON a.idAluno = m.idAluno
-//                            JOIN matriculaTurma mt
-//                            ON m.idMatricula = mt.idMatricula
-//                            JOIN turma t
-//                            ON mt.idTurma = t.idTurma
-//                            JOIN curso c
-//                            on t.idCurso = c.idCurso and c.status = 4
-//                            WHERE NOT EXISTS(SELECT 1 FROM cobranca co
-//                            WHERE c.idCurso = co.idCurso 
-//                            and a.idAluno = co.idAluno
-//                            and MONTH(co.dataVencimento) = MONTH('20120601') 
-//                            and YEAR(co.dataVencimento) = YEAR('20120601'))";
-            string sql = @"SELECT p.Nome, c.valor
+            try
+            {
+                var dataVencimento = new DateTime(DateTime.Now.Year, mes, 10); //Vencimento para todo dia 10
+                string sql = @"INSERT INTO cobranca
+                            SELECT null as idTaxa, a.idAluno, 7 as statusPagamento, c.valor, 0 as juros, @dataVencimento as dataVencimento, c.idCurso 
+                            from aluno a
+                            JOIN matricula m
+                            ON a.idAluno = m.idAluno
+                            JOIN matriculaTurma mt
+                            ON m.idMatricula = mt.idMatricula
+                            JOIN turma t
+                            ON mt.idTurma = t.idTurma
+                            JOIN curso c
+                            on t.idCurso = c.idCurso and c.status = 4
+                            WHERE a.idAluno = @idAluno AND NOT EXISTS(SELECT 1 FROM cobranca co
+                            WHERE c.idCurso = co.idCurso 
+                            and a.idAluno = co.idAluno
+                            and MONTH(co.dataVencimento) = MONTH(@dataVencimento) 
+                            and YEAR(co.dataVencimento) = YEAR(@dataVencimento))";
+                SqlCommand comm = conn.CreateCommand();
+                comm.CommandText = sql;
+                comm.Parameters.Add(new SqlParameter("@dataVencimento", dataVencimento));
+                comm.Parameters.Add(new SqlParameter("@idAluno", idAluno));
+                comm.ExecuteNonQuery();
+
+                return Json(new { success = true });
+
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false });
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public string CarregaAlunos(int mes)
+        {
+            conn.Open();
+            string sql = @"SELECT a.idAluno, p.Nome, c.nome, c.valor
                             from aluno a
                             JOIN matricula m
                             ON a.idAluno = m.idAluno
@@ -312,12 +338,11 @@ namespace web.Controllers
                             WHERE NOT EXISTS(SELECT 1 FROM cobranca co
                             WHERE c.idCurso = co.idCurso 
                             and a.idAluno = co.idAluno
-                            and MONTH(co.dataVencimento) = MONTH('20120601') 
-                            and YEAR(co.dataVencimento) = YEAR('20120601'))";
+                            and MONTH(co.dataVencimento) = @Mes 
+                            and YEAR(co.dataVencimento) = YEAR(GetDate()))";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
-            //comm.Parameters.Add(new SqlParameter("@idTurma", codigoTurma));
-            //comm.Parameters.Add(new SqlParameter("@idModulo", codigoModulo));
+            comm.Parameters.Add(new SqlParameter("@Mes", mes));
             SqlDataReader dr = comm.ExecuteReader();
             IList<object> list = new List<object>();
 
@@ -325,14 +350,17 @@ namespace web.Controllers
             {
                 var r = new
                 {
-                    aluno = dr.GetString(0),
-                    valor = dr.GetDecimal(1)
+                    idAluno = dr.GetInt32(0),
+                    aluno = dr.GetString(1),
+                    curso = dr.GetString(2),
+                    valor = dr.GetDecimal(3),
+                    situacao = "teste"
                 };
                 list.Add(r);
             }
 
             conn.Close();
-            return Json(list);
+            return "{ cobrancas:" + JSON.Serialize(list) +"}";
         }
 
         public ActionResult Inadimplentes()
