@@ -19,7 +19,7 @@ namespace Persistence.Entity
         public virtual DateTime? dataCancelamento { get; set; }
         public virtual String tipo { get; set; }
         public virtual Aluno Aluno { get; set; }
-        public virtual ICollection<MatriculaTurma> MatriculaTurmas { get; private set; }
+        public virtual ICollection<MatriculaTurma> MatriculaTurmas { get; set; }
         
     }
 }
