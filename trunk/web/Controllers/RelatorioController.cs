@@ -38,18 +38,29 @@ namespace web.Controllers
             return View();
         }
 
+        [HttpPost]
         public string FindExAlunos()
         {
-            List<Matricula> listaMatricula = dbMatricula.FindAll();
+            List<MatriculaTurma> listaMatriculaTurma = dbMatriculaTurma.FindAll();
+            List<Aluno> listaAlunosInativos = dbAluno.FindAll();
 
-            foreach (Matricula m in listaMatricula)
+            foreach (MatriculaTurma m in listaMatriculaTurma)
             {
-                m.Aluno = dbAluno.FindOne(x => x.idAluno == m.idAluno);
-                m.Aluno.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == m.Aluno.idPessoa);
-                m.MatriculaTurmas = dbMatriculaTurma.FindAll(x => x.idMatricula == m.idMatricula);
+                m.Matricula = dbMatricula.FindOne(x => x.idMatricula == m.idMatricula);
+                m.Matricula.Aluno = dbAluno.FindOne(x => x.idAluno == m.Matricula.idAluno);
+                if (m.Matricula.Aluno != null)
+                {
+                    listaAlunosInativos.Remove(m.Matricula.Aluno);
+                }
             }
 
-            return "{matriculas:" + JSON.Serialize(listaMatricula) + ", totalReg:" + listaMatricula.Count() + "}";
+            foreach (Aluno a in listaAlunosInativos)
+            {
+                a.Pessoa = dbPessoa.FindOne(x => x.idPessoa == a.idPessoa);
+            }
+
+
+            return "{alunos:" + JSON.Serialize(listaAlunosInativos) + ", totalReg:" + listaAlunosInativos.Count() + "}";
         }
 
     }
