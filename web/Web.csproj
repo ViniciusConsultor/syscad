@@ -91,6 +91,7 @@
     <Compile Include="Controllers\PessoaController.cs" />
     <Compile Include="Controllers\LancarNotaFaltaController.cs" />
     <Compile Include="Controllers\PagamentoController.cs" />
+    <Compile Include="Controllers\RelatorioController.cs" />
     <Compile Include="Controllers\TaxaController.cs" />
     <Compile Include="Controllers\TipoEnderecoController.cs" />
     <Compile Include="Controllers\TurmaController.cs" />
@@ -200,6 +201,9 @@
     <Content Include="Views\Pessoa\Pessoa.aspx" />
     <Content Include="Views\LancarNotaFalta\LancarNotaFalta.aspx" />
     <Content Include="Views\Pagamento\RealizarPagamento.aspx" />
+    <Content Include="Views\Relatorio\CursosMaisCursado.aspx" />
+    <Content Include="Views\Relatorio\EspecializacaoProfessor.aspx" />
+    <Content Include="Views\Relatorio\ExAlunos.aspx" />
     <Content Include="Views\Taxa\Taxa.aspx" />
     <Content Include="Views\Turma\AbrirTurma.aspx" />
     <Content Include="Views\Turma\AutorizarTurma.aspx" />
