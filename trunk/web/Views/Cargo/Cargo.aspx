@@ -19,7 +19,20 @@
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 <script src="../../Scripts/CRUD-Funcionario.js" type="text/javascript"></script>
-
+<script type="text/javascript">
+    var formataDinheiro = function (num) {
+        num = num.toString().replace(/\R$|\,/g, '');
+        if (isNaN(num)) num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10) cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+            num = num.substring(0, num.length - (4 * i + 3)) + '.' + num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + 'R$ ' + num + ',' + cents);
+    }
+</script>
 <body>
 
 <ext:ResourceManager ID="ResourceManager1" runat="server" RemoveViewState="true" IDMode="Explicit" />
@@ -78,6 +91,7 @@
                                 </Listeners>
                                 <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                                         <Columns>
+                                            <ext:RowNumbererColumn />
                                             <ext:Column ColumnID="idCargo" Header="Id" DataIndex="idCurso" Hidden="true" />
 
                                             <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
@@ -171,6 +185,7 @@
                                 </Listeners>
                                 <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                                         <Columns>
+                                            <ext:RowNumbererColumn />
                                             <ext:Column ColumnID="idFuncionario" Header="Id" DataIndex="idFuncionario" Hidden="true" />
 
                                             <ext:Column ColumnID="usuario" Header="Usuario" DataIndex="Usuario.login" AutoDataBind="true" >
@@ -271,7 +286,7 @@
                                             </ext:Column>
 
                                             <ext:Column ColumnID="salario" Header="Salario" Width="75" DataIndex="salario">
-                                                <Renderer Format="UsMoney" />
+                                                <Renderer Fn="formataDinheiro" />
                                                 <Editor>
                                                     <ext:TextField ID="txtSalarioEditar" runat="server" />
                                                 </Editor>

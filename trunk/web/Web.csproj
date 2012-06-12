@@ -125,11 +125,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Grid.css" />
+    <Content Include="Content\imagens\accept.png" />
     <Content Include="Content\imagens\bar_login.jpg" />
     <Content Include="Content\imagens\bar_login_2.jpg" />
     <Content Include="Content\imagens\bar_login_separador.jpg" />
     <Content Include="Content\imagens\bg_login.jpg" />
     <Content Include="Content\imagens\bg_login_2.jpg" />
+    <Content Include="Content\imagens\blue-loading.gif" />
+    <Content Include="Content\imagens\error_icon.gif" />
     <Content Include="Content\imagens\logo-itau.jpg" />
     <Content Include="Content\imagens\logo_syscad.png" />
     <Content Include="Content\imagens\logo_syscad_2.png" />
@@ -184,7 +187,6 @@
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Scripts\jquery.maskMoney.js" />
     <Content Include="Views\Cargo\Cargo.aspx" />
-    <Content Include="Views\Curso\CursoMaisCursados.aspx" />
     <Content Include="Views\Curso\Curso_Modulo.aspx" />
     <Content Include="Views\Curso\Curso.aspx" />
     <Content Include="Views\Endereco\Endereco.aspx" />
@@ -195,13 +197,13 @@
     <Content Include="Views\Matricula\Matricula.aspx" />
     <Content Include="Views\Modulo\Modulo.aspx" />
     <Content Include="Views\Pagamento\Boleto.aspx" />
-    <Content Include="Views\Pagamento\Inadimplentes.aspx" />
+    <Content Include="Views\Relatorio\Inadimplentes.aspx" />
     <Content Include="Views\Pagamento\ProcessarCobranca.aspx" />
     <Content Include="Views\Pagamento\Recibo.aspx" />
     <Content Include="Views\Pessoa\Pessoa.aspx" />
     <Content Include="Views\LancarNotaFalta\LancarNotaFalta.aspx" />
     <Content Include="Views\Pagamento\RealizarPagamento.aspx" />
-    <Content Include="Views\Relatorio\CursosMaisCursado.aspx" />
+    <Content Include="Views\Relatorio\CursosMaisCursados.aspx" />
     <Content Include="Views\Relatorio\EspecializacaoProfessor.aspx" />
     <Content Include="Views\Relatorio\ExAlunos.aspx" />
     <Content Include="Views\Taxa\Taxa.aspx" />

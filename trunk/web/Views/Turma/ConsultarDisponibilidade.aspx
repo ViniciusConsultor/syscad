@@ -36,7 +36,7 @@
                     ID="pnlInformation" 
                     runat="server" 
                     Title="Descrição" 
-                    Height="90" 
+                    Height="100" 
                     Padding="5"
                     Frame="true" 
                     Icon="Information">
@@ -49,7 +49,7 @@
                                 TypeAhead="false"
                                 LabelWidth="40" 
                                 LoadingText="Procurando..." 
-                                Width="438" 
+                                Width="400" 
                                 PageSize="10"
                                 HideTrigger="false"
                                 ItemSelector="div.search-item"        

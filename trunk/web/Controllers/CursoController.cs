@@ -129,6 +129,5 @@ namespace web.Controllers
             return Json(new { cursos = listaCurso, totalReg = listaCurso.Count }, JsonRequestBehavior.AllowGet);
 
         }
-
     }
 }
