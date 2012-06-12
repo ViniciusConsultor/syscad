@@ -30,7 +30,6 @@
             num = num.substring(0, num.length - (4 * i + 3)) + '.' + num.substring(num.length - (4 * i + 3));
         return (((sign) ? '' : '-') + 'R$ ' + num + ',' + cents);
     }
-
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 
@@ -77,22 +76,23 @@
                                 </Listeners>
                                 <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                                         <Columns>
+                                            <ext:RowNumbererColumn />
                                             <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
 
                                             <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtNomeEditar" runat="server" />
+                                                    <ext:TextField ID="txtNomeEditar" runat="server" MaxLength="50" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
                                                 <Editor>
-                                                    <ext:TextField ID="txtDescricaoEditar" runat="server" />
+                                                    <ext:TextField ID="txtDescricaoEditar" runat="server" MaxLength="100" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column Header="valor" Width="75" DataIndex="valor">
                                                 <Renderer Fn="formataDinheiro" />
                                                 <Editor>
-                                                    <ext:TextField ID="txtValorEditar" runat="server" />
+                                                    <ext:TextField ID="txtValorEditar" runat="server" MaxLength="35" />
                                                 </Editor>
                                             </ext:Column>
                                         </Columns>
@@ -149,7 +149,7 @@
                 AutoHeight="true"
                 Frame="true"
                 Width="300"
-                Modal="true"
+                Modal="true"                
                 >
                 <Items>
                     <ext:FormPanel ID="formulario" runat="server">
@@ -175,6 +175,7 @@
 
                     </ext:FormPanel>
                 </Items>
+
 
         </ext:Window>
 

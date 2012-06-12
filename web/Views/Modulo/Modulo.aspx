@@ -152,23 +152,6 @@
 
                     <ext:ToolbarFill ID="ToolbarFill2" runat="server" />
 
-                    <ext:Button ID="Button7" runat="server" Text="To XML" Icon="PageCode">
-                        <Listeners> 
-                            <Click Handler="submitValue(#{GridPanelEdicao}, #{FormatType}, 'xml');" />
-                        </Listeners>
-                    </ext:Button>
-                        
-                    <ext:Button ID="Button8" runat="server" Text="To Excel" Icon="PageExcel">
-                        <Listeners>
-                            <Click Handler="exportData('xls');" />
-                        </Listeners>
-                    </ext:Button>
-                        
-                    <ext:Button ID="Button9" runat="server" Text="To CSV" Icon="PageAttach">
-                        <Listeners>
-                            <Click Handler="exportData('csv');" />
-                        </Listeners>
-                    </ext:Button>
                 </Items>
             </ext:Toolbar>            
         </TopBar>

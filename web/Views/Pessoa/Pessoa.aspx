@@ -21,6 +21,7 @@
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 <script src="../../Scripts/CRUD-Endereco.js" type="text/javascript"></script>
 
+
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" RemoveViewState="true" IDMode="Explicit" />
     
@@ -82,6 +83,7 @@
                                 </Listeners>
                                 <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                                         <Columns>
+                                            <ext:RowNumbererColumn />
                                             <ext:Column ColumnID="idPessoa" Header="idPessoa" DataIndex="idPessoa" Hidden="true" />
 
                                             <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" Width="150" >
@@ -91,7 +93,7 @@
                                             </ext:Column>
                                             <ext:Column ColumnID="cpf" Header="CPF" DataIndex="cpf" Width="150">
                                                 <Editor>
-                                                    <ext:TextField ID="txtCPFEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
+                                                    <ext:TextField ID="txtCPFEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" MaxLength="11" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column Header="Email" DataIndex="email" Width="200" >
@@ -99,14 +101,22 @@
                                                     <ext:TextField ID="txtEmailEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column Header="Telefone" DataIndex="telefone" Width="75">
+                                            <ext:Column Header="Telefone" DataIndex="telefone" Width="100">
                                                 <Editor>
-                                                    <ext:TextField ID="txtTelefoneEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
+                                                    <ext:TextField ID="txtTelefoneEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" EnableKeyEvents="true" Mask="(##) ####-####" >
+                                                        <Listeners>
+                                                            <KeyPress Fn="mascara" />
+                                                        </Listeners>
+                                                    </ext:TextField>
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column Header="Celular" DataIndex="celular" Width="75" >
+                                            <ext:Column Header="Celular" DataIndex="celular" Width="100" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtCelularEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
+                                                    <ext:TextField ID="txtCelularEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" EnableKeyEvents="true" Mask="(##) ####-####" >
+                                                        <Listeners>
+                                                            <KeyPress Fn="mascara" />
+                                                        </Listeners>
+                                                    </ext:TextField>
                                                 </Editor>
                                             </ext:Column>
 
@@ -216,9 +226,8 @@
                                     </Listeners>                                    
                                     <ColumnModel ID="ColumnModel2" runat="server" RegisterAllResources="false">
                                         <Columns>
-
+                                            <ext:RowNumbererColumn />
                                             <ext:Column ColumnID="idEndereco" Header="IdEndereco" DataIndex="idEndereco" Width="50" Hidden="true"/>
-
                                             <ext:Column ColumnID="idTipoEndereco" Header="Tipo Endereço" DataIndex="TipoEndereco.nome" Width="125">
                                                 <Editor>
                                                     <ext:ComboBox ID="cmbTipoEnderecoEditar" 
@@ -278,7 +287,11 @@
                                             </ext:Column>
                                             <ext:Column ColumnID="CEP" Header="CEP" DataIndex="CEP" Width="100">
                                                 <Editor>
-                                                    <ext:TextField ID="txtCepEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                    <ext:TextField ID="txtCepEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" EnableKeyEvents="true" Mask="#####-###">
+                                                        <Listeners>
+                                                            <KeyPress Fn="mascara" />
+                                                        </Listeners>
+                                                    </ext:TextField>
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="bairro" Header="Bairro" DataIndex="bairro" Width="100">
@@ -296,13 +309,11 @@
                                                     <ext:TextField ID="txtUFEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
                                                 </Editor>
                                             </ext:Column>
-
                                         </Columns>
                                     </ColumnModel>
                                     <SelectionModel>
                                         <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" SingleSelect="true" />
                                     </SelectionModel>
-
                                     <TopBar>
                                         <ext:Toolbar ID="Toolbar3" runat="server">
                                             <Items>
@@ -324,7 +335,6 @@
                                             </Items>
                                         </ext:Toolbar>
                                     </TopBar>
-
                                     <LoadMask ShowMask="true" />
                                     <BottomBar>
                                         <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
@@ -355,13 +365,20 @@
                 >
                 <Items>
                     <ext:FormPanel ID="formulario" runat="server">
-
                         <Items>
                             <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtCpf" runat="server" FieldLabel="CPF" InputType="Text" Width="175" AllowBlank="false" />                            
+                            <ext:TextField ID="txtCpf" runat="server" FieldLabel="CPF" InputType="Text" Width="175" AllowBlank="false" MaxLength="11"></ext:TextField>                            
                             <ext:TextField ID="txtEmail" runat="server" FieldLabel="Email" Width="175" AllowBlank="false" />
-                            <ext:TextField ID="txtTelefone" runat="server" FieldLabel="Telefone" Width="175" AllowBlank="false" />
-                            <ext:TextField ID="txtCelular" runat="server" FieldLabel="Celular" Width="175" AllowBlank="false" />
+                            <ext:TextField ID="txtTelefone" runat="server" FieldLabel="Telefone" Width="175" AllowBlank="false" Mask="(##) ####-####" EnableKeyEvents="true">
+                                <Listeners>
+                                    <KeyPress Fn="mascara" />
+                                </Listeners>
+                            </ext:TextField>
+                            <ext:TextField ID="txtCelular" runat="server" FieldLabel="Celular" Width="175" AllowBlank="false" Mask="(##) ####-####" EnableKeyEvents="true">
+                                <Listeners>
+                                    <KeyPress Fn="mascara" />
+                                </Listeners>
+                            </ext:TextField>
                             <ext:DateField ID="dtNascimento" runat="server" FieldLabel="Data de Nascimento" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
                             <ext:ComboBox ID="txtSexo" runat="server" FieldLabel="Sexo" AllowBlank="false" Width="175">
                                 <Items>
@@ -504,7 +521,11 @@
                             <ext:TextField ID="txtLogradouro" runat="server" FieldLabel="Logradouro" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
                             <ext:NumberField ID="txtNumero" runat="server" FieldLabel="Numero" Width="350" AllowBlank="false" AutoFocus="true" />
                             <ext:TextField ID="txtComplemento" runat="server" FieldLabel="Complemento" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtCep" runat="server" FieldLabel="CEP" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtCep" runat="server" FieldLabel="CEP" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" EnableKeyEvents="true" Mask="#####-###" >
+                                <Listeners>
+                                    <KeyPress  fn="mascara" />
+                                </Listeners>
+                            </ext:TextField>
                             <ext:TextField ID="txtBairro" runat="server" FieldLabel="Bairro" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
                             <ext:TextField ID="txtCidade" runat="server" FieldLabel="Cidade" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
                             <ext:TextField ID="txtUf" runat="server" FieldLabel="UF" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />

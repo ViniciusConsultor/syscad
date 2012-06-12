@@ -15,8 +15,8 @@ namespace web.Controllers
 {
     public class RelatorioController : Controller
     {
-        //
-        // GET: /Relatorio/
+        const string CONNECTIONSTR = @"Data Source=.\SQLEXPRESS;Initial Catalog=SysCad;Integrated Security=True;MultipleActiveResultSets=True";
+        SqlConnection conn;
 
         private Repositorio<Turma> dbTurma;
         private Repositorio<Aluno> dbAluno;
@@ -31,6 +31,7 @@ namespace web.Controllers
             dbPessoa = new Repositorio<Pessoa>();
             dbTurma = new Repositorio<Turma>();
             dbMatriculaTurma = new Repositorio<MatriculaTurma>();
+            conn = new SqlConnection(CONNECTIONSTR);
         }
 
         public ActionResult ExAlunos()
@@ -63,5 +64,55 @@ namespace web.Controllers
             return "{alunos:" + JSON.Serialize(listaAlunosInativos) + ", totalReg:" + listaAlunosInativos.Count() + "}";
         }
 
+        public ActionResult CursosMaisCursados()
+        {
+            return View();
+        }
+
+        public JsonResult FindCursoMaisCursado()
+        {
+            conn.Open();
+            string sql = @"SELECT c.nome, COUNT(mt.idMatricula) as QtdAlunos 
+                            FROM matriculaTurma mt
+                            JOIN turma t
+                            ON mt.idTurma = t.idTurma
+                            JOIN curso c
+                            ON t.idCurso = c.idCurso
+                            GROUP BY c.nome";
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            SqlDataReader dr = comm.ExecuteReader();
+            List<object> lista = new List<object>();
+            while (dr.Read())
+            {
+                var c = new
+                {
+                    Curso = dr.GetString(0),
+                    QtdAluno = dr.GetInt32(1)
+                };
+
+                lista.Add(c);
+            }
+
+            return Json(new { cursos = lista, totalReg = lista.Count });
+        }
+
+        public ActionResult Inadimplentes()
+        {
+            return View();
+        }
+
+        public string FindInadimplentes()
+        {
+            List<Aluno> listaAlunos = dbAluno.FindAll(x => x.statusFinanceiro == (int)EnumStatus.Inadimplente);
+            foreach (Aluno a in listaAlunos)
+            {
+
+                a.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == a.idPessoa);
+
+            }
+            return "{alunos:" + JSON.Serialize(listaAlunos) + ", totalReg:" + listaAlunos.Count() + "}";
+        }
     }
+
 }
