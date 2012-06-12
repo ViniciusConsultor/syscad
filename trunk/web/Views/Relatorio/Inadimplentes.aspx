@@ -122,7 +122,7 @@
     
     <ext:Store ID="dsReport" runat="server">
         <Proxy>
-            <ext:HttpProxy Method="POST" Url="/Pagamento/FindInadimplentes" />
+            <ext:HttpProxy Method="POST" Url="/Relatorio/FindInadimplentes" />
         </Proxy>
         <Reader>
             <ext:JsonReader Root="alunos" TotalProperty="totalReg" IDProperty="idAluno">
