@@ -71,6 +71,8 @@
     <Compile Include="Entity\Cobranca.cs" />
     <Compile Include="Entity\Aluno.cs" />
     <Compile Include="Entity\Cargo.cs" />
+    <Compile Include="Entity\FuncionarioEspecializacao.cs" />
+    <Compile Include="Entity\Especializacao.cs" />
     <Compile Include="Entity\EnumStatus.cs" />
     <Compile Include="Entity\Menu.cs" />
     <Compile Include="Entity\Pagamento.cs" />

@@ -23,6 +23,7 @@ namespace web.Controllers
         private Repositorio<Matricula> dbMatricula;
         private Repositorio<Pessoa> dbPessoa;
         private Repositorio<MatriculaTurma> dbMatriculaTurma;
+        private Repositorio<FuncionarioEspecializacao> dbFuncionarioEspecializacao;
 
         public RelatorioController()
         {
@@ -31,10 +32,16 @@ namespace web.Controllers
             dbPessoa = new Repositorio<Pessoa>();
             dbTurma = new Repositorio<Turma>();
             dbMatriculaTurma = new Repositorio<MatriculaTurma>();
+            dbFuncionarioEspecializacao = new Repositorio<FuncionarioEspecializacao>();
             conn = new SqlConnection(CONNECTIONSTR);
         }
 
         public ActionResult ExAlunos()
+        {
+            return View();
+        }
+
+        public ActionResult Especializacao()
         {
             return View();
         }
@@ -62,6 +69,20 @@ namespace web.Controllers
 
 
             return "{alunos:" + JSON.Serialize(listaAlunosInativos) + ", totalReg:" + listaAlunosInativos.Count() + "}";
+        }
+
+        [HttpPost]
+        public string FindEspecializacao()
+        {
+            List<FuncionarioEspecializacao> listaFuncionarioEspecializacoes = dbFuncionarioEspecializacao.FindAll();
+            foreach (FuncionarioEspecializacao fe in listaFuncionarioEspecializacoes)
+            {
+                fe.Especializacao = new Repositorio<Especializacao>().FindOne(x => x.idEspecializacao == fe.idEspecializacao);
+                fe.Funcionario = new Repositorio<Funcionario>().FindOne(x => x.idFuncionario == fe.idFuncionario);
+                fe.Funcionario.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == fe.Funcionario.idPessoa);
+            }
+
+            return "{funcionarioEspecializacoes:" + JSON.Serialize(listaFuncionarioEspecializacoes) + ", totalReg:" + listaFuncionarioEspecializacoes.Count() + "}";
         }
 
         public ActionResult CursosMaisCursados()
