@@ -138,6 +138,7 @@
                                         <Columns>
                                             <ext:RowNumbererColumn ColumnID="number" />
                                             <ext:Column ColumnID="idModulo" Header="Id" DataIndex="IdModulo" Width="50" Hidden="true"/>
+                                            <ext:Column ColumnID="IdTurma" Header="IdTurma" DataIndex="IdTurma" Width="50" Hidden="true"/>
                                             <ext:Column ColumnID="nome" Header="Modulo" DataIndex="nomeModulo" />
                                             <ext:Column ColumnID="nomeTurma" Header="Turma" DataIndex="nomeTurma" Width="200" />
                                             <ext:Column ColumnID="nomeCurso" Header="Curso" DataIndex="nomeCurso" Width="200"/>
