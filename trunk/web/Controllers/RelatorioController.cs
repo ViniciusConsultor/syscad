@@ -24,6 +24,7 @@ namespace web.Controllers
         private Repositorio<Pessoa> dbPessoa;
         private Repositorio<MatriculaTurma> dbMatriculaTurma;
         private Repositorio<FuncionarioEspecializacao> dbFuncionarioEspecializacao;
+        private Repositorio<Cobranca> dbCobranca;
 
         public RelatorioController()
         {
@@ -33,6 +34,7 @@ namespace web.Controllers
             dbTurma = new Repositorio<Turma>();
             dbMatriculaTurma = new Repositorio<MatriculaTurma>();
             dbFuncionarioEspecializacao = new Repositorio<FuncionarioEspecializacao>();
+            dbCobranca = new Repositorio<Cobranca>();
             conn = new SqlConnection(CONNECTIONSTR);
         }
 
@@ -125,13 +127,49 @@ namespace web.Controllers
 
         public string FindInadimplentes()
         {
-            List<Aluno> listaAlunos = dbAluno.FindAll(x => x.statusFinanceiro == (int)EnumStatus.Inadimplente);
-            foreach (Aluno a in listaAlunos)
+            //List<Aluno> listaAlunos = dbAluno.FindAll(x => x.statusFinanceiro == (int)EnumStatus.Inadimplente);
+            //foreach (Aluno a in listaAlunos)
+            //{
+            //    a.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == a.idPessoa);
+            //}
+            
+            List<Cobranca> listaCobrancas = dbCobranca.FindAll();
+            List<Cobranca> listaCobrancasIna = dbCobranca.FindAll();
+            
+            //List<Aluno> listaAlunos = dbAluno.FindAll();
+            var data = DateTime.Now;
+
+            //foreach (Cobranca c in listaCobrancas)
+            //{
+            //    c.Aluno = dbAluno.FindOne(x => x.idAluno == c.idAluno);
+            //    c.Aluno.Pessoa = dbPessoa.FindOne(x => x.idPessoa == c.Aluno.idPessoa);
+            //    if (c.dataVencimento > data || c.statusPagamento == (int)EnumStatus.Pago)
+            //    {
+            //        listaAlunos.Remove(c.Aluno);
+            //    }
+            //    else
+            //    {
+            //        listaAlunos.Add(c.Aluno);
+            //    }
+            //}
+
+            //[{}] => estrutura do JSON
+
+            foreach (Cobranca c in listaCobrancas)
             {
-
-                a.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == a.idPessoa);
-
+                if (c.dataVencimento > data || c.statusPagamento == (int)EnumStatus.Pago)
+                {
+                    listaCobrancasIna.Remove(c);
+                }
             }
+
+            string jsonlista = "";
+
+            foreach (Cobranca c in listaCobrancasIna)
+            {
+                
+            }
+
             return "{alunos:" + JSON.Serialize(listaAlunos) + ", totalReg:" + listaAlunos.Count() + "}";
         }
     }

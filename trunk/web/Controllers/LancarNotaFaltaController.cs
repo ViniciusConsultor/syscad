@@ -51,10 +51,10 @@ namespace web.Controllers
                                                select new Models.ModuloViewData
                                                {
                                                    IdModulo = m.idModulo,
-                                                   IdTurma = m.Curso.Turmas.FirstOrDefault().idTurma,
+                                                   IdTurma = m.Curso.Turmas.Where(x => x.Funcionario.Usuario.idUsuario == idProfessor).FirstOrDefault().idTurma,
                                                    nomeCurso = m.Curso.nome,
                                                    nomeModulo = m.nome,
-                                                   nomeTurma = m.Curso.Turmas.FirstOrDefault().descricao
+                                                   nomeTurma = m.Curso.Turmas.Where(x => x.Funcionario.Usuario.idUsuario == idProfessor).FirstOrDefault().descricao
                                                }).ToList();
 
             return Json(new { modulos = listModulos },JsonRequestBehavior.AllowGet);

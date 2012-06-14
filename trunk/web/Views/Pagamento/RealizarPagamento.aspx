@@ -338,6 +338,7 @@
                                     <Items>
                                         <ext:ListItem Text="Dinheiro" Value="1" />
                                         <ext:ListItem Text="Cartão de Crédito" Value="2" />
+                                        <ext:ListItem Text="Boleto Bancário" Value="3" />
                                     </Items>
                                 </ext:ComboBox>
                                 <ext:Button ID="btnPagar" Text="Realizar Pagamento" Icon="MoneyAdd" runat="server" >

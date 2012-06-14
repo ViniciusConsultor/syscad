@@ -53,6 +53,9 @@
                 case "2":
                     return "Crédito";
                     break;
+                case "3":
+                    return "Boleto";
+                    break;
             }
         }
 
