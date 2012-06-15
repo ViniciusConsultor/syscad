@@ -75,7 +75,13 @@
         };
 
         var beforeEdit = function (e) {
+            //Nota Recuperação
             if (e.column === 5 && (e.record.data.Nota1 >= 7 || e.record.data.Nota1 < 2)) {
+                return false;
+            }
+
+            //Nota 1
+            if (e.column === 4 && (e.record.data.Nota1 < 7 || e.record.data.Nota1 >= 2) && (e.record.data.Nota2 != "" || e.record.data.Nota2 == 0)) {
                 return false;
             }
         };
