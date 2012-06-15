@@ -68,6 +68,20 @@
     </style>
     
     <script type="text/javascript">
+
+        var formataDinheiro = function (num) {
+            num = num.toString().replace(/\R$|\,/g, '');
+            if (isNaN(num)) num = "0";
+            sign = (num == (num = Math.abs(num)));
+            num = Math.floor(num * 100 + 0.50000000001);
+            cents = num % 100;
+            num = Math.floor(num / 100).toString();
+            if (cents < 10) cents = "0" + cents;
+            for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+                num = num.substring(0, num.length - (4 * i + 3)) + '.' + num.substring(num.length - (4 * i + 3));
+            return (((sign) ? '' : '-') + 'R$ ' + num + ',' + cents);
+        }
+
         var viewClick = function (dv, e) {
             var group = e.getTarget("h2.letter-selector");
 
@@ -94,12 +108,13 @@
             rec.nomePessoa = rec.Pessoa.nome;
         }
 
-        var trataPessoaCPF = function (value, rec) {
-            rec.CPFPessoa = rec.Pessoa.cpf;
+        var trataData = function (value, rec) {
+            var data = new Date(rec.dataVencimento);
+            rec.dataVencimentoFormatado = data.format("d/m/Y");
         }
 
-        var trataPessoaEmail = function (value, rec) {
-            rec.emailPessoa = rec.Pessoa.email;
+        var trataValor = function (value, rec) {
+            rec.valorTotalFormatado = formataDinheiro(rec.valorTotal);
         }
     </script>
 </head>
@@ -128,18 +143,18 @@
             <ext:JsonReader Root="alunos" TotalProperty="totalReg" IDProperty="idAluno">
                 <Fields>
                     <ext:RecordField Name="idAluno" Type="Int" />
-                    <ext:RecordField Name="Pessoa.nome" Type="String">
-                        <Convert Fn="trataPessoaNome" />
+                    <ext:RecordField Name="nome" Type="String" />
+                    <ext:RecordField Name="telefone" Type="String" />
+                    <ext:RecordField Name="celular" Type="String" />
+                    <ext:RecordField Name="email" Type="String" />
+                    <ext:RecordField Name="dataVencimento" Type="String" >
+                        <Convert Fn="trataData" />
                     </ext:RecordField>
-                    <ext:RecordField Name="Pessoa.cpf" Type="String">
-                        <Convert Fn="trataPessoaCPF" />
+                    <ext:RecordField Name="valorTotal" Type="Float" >
+                        <Convert Fn="trataValor" />
                     </ext:RecordField>
-                    <ext:RecordField Name="Pessoa.email" Type="String">
-                        <Convert Fn="trataPessoaEmail" />
-                    </ext:RecordField>
-                    <ext:RecordField Name="nomePessoa" Type="String" />
-                    <ext:RecordField Name="CPFPessoa" Type="String" />
-                    <ext:RecordField Name="emailPessoa" Type="String" />
+                    <ext:RecordField Name="valorTotalFormatado" Type="String" />
+                    <ext:RecordField Name="dataVencimentoFormatado" Type="String" />
                 </Fields>
             </ext:JsonReader>
         </Reader>
@@ -167,15 +182,21 @@
 					<table>
 						<tr>
 							<th>Nome</th>
-							<th>CPF</th>
-							<th>E-mail</th>
+							<th>Telefone</th>
+							<th>Celular</th>
+                            <th>E-mail</th>
+                            <th>Data Vencimento</th>
+                            <th>Saldo Devedor</th>
 						</tr>
 					
 						<tpl for=".">
 									<tr class="customer-record">
-                                        <td class="cust-name" emailPessoa="{emailPessoa}" nomePessoa="{nomePessoa}" CPFPessoa="{CPFPessoa}">&nbsp;{nomePessoa}</td>
-                                        <td>&nbsp;{CPFPessoa}</td>
-                                        <td>&nbsp;{emailPessoa}</td>
+                                        <td class="cust-name">&nbsp;{nome}</td>
+                                        <td>&nbsp;{telefone}</td>
+                                        <td>&nbsp;{celular}</td>
+                                        <td>&nbsp;{email}</td>
+                                        <td>&nbsp;{dataVencimentoFormatado}</td>
+                                        <td>&nbsp;{valorTotalFormatado}</td>
 									</tr>
 						</tpl>                    
 					</table>

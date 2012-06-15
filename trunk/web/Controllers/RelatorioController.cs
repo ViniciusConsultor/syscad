@@ -101,7 +101,7 @@ namespace web.Controllers
                             ON mt.idTurma = t.idTurma
                             JOIN curso c
                             ON t.idCurso = c.idCurso
-                            GROUP BY c.nome";
+                            GROUP BY COUNT(mt.idMatricula) desc";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
             SqlDataReader dr = comm.ExecuteReader();
@@ -125,6 +125,40 @@ namespace web.Controllers
             return View();
         }
 
+        public string FindInadimplentes()
+        {
+             conn.Open();
+             string sql = @"select a.idAluno, p.nome, p.telefone, p.celular, p.email, MIN(c.dataVencimento) as dataVencimento, SUM(valorTotal) as valorTotal
+                            from aluno a
+                            join cobranca c
+                            on a.idAluno = c.idAluno
+                            join pessoa p
+                            on p.idPessoa = a.idPessoa
+                            where c.dataVencimento < GETDATE() and c.statusPagamento = 7
+                            group by p.nome, p.telefone, p.celular, p.email, a.idAluno
+                            order by dataVencimento";
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            SqlDataReader dr = comm.ExecuteReader();
+            List<object> listaAlunos = new List<object>();
+            while (dr.Read())
+            {
+                var a = new
+                {
+                    idAluno = dr.GetInt32(0),
+                    nome = dr.GetString(1),
+                    telefone = dr.GetString(2),
+                    celular = dr.GetString(3),
+                    email = dr.GetString(4),
+                    dataVencimento = dr.GetDateTime(5),
+                    valorTotal = dr.GetDecimal(6)
+                };
+
+                listaAlunos.Add(a);
+            }
+           
+            return "{alunos:" + JSON.Serialize(listaAlunos) + ", totalReg:" + listaAlunos.Count() + "}";
+        }
     }
 
 }
