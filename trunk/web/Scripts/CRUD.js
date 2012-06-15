@@ -48,6 +48,10 @@ function salvar() {
         }
     }
 
+    if(!formulario.isValid()){
+        return false;
+    }
+
     winNovo.hide();
 
     GridPanel.el.mask('Salvando', 'x-mask-loading');
@@ -151,8 +155,9 @@ var afterEdit = function (e) {
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
-function novo() {
+function novo(form) {
 
+    form.getForm().reset();
     winNovo.show();
 
 }
