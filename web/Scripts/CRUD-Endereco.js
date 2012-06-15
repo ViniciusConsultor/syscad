@@ -1,5 +1,9 @@
 ﻿function salvarEndereco(fooorm) {
 
+    if (!formulario.isValid()) {
+        return false;
+    }
+
     winNovoEndereco.hide();
 
     GridPanelEndereco.el.mask('Salvando', 'x-mask-loading');
@@ -38,10 +42,11 @@ function excluirEndereco() {
 
 };
 
-function novoEndereco() {
+function novoEndereco(form) {
 
     if (GridPanel.getSelectionModel().hasSelection()) {
 
+        form.getForm().reset();
         winNovoEndereco.show();
 
     } else {

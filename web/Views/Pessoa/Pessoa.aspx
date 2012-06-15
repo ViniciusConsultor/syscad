@@ -86,17 +86,17 @@
                                             <ext:RowNumbererColumn />
                                             <ext:Column ColumnID="idPessoa" Header="idPessoa" DataIndex="idPessoa" Hidden="true" />
 
-                                            <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" Width="150" >
+                                            <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                                                 <Editor>
                                                     <ext:TextField ID="txtNomeEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column ColumnID="cpf" Header="CPF" DataIndex="cpf" Width="150">
+                                            <ext:Column ColumnID="cpf" Header="CPF" DataIndex="cpf" Width="130">
                                                 <Editor>
                                                     <ext:TextField ID="txtCPFEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" MaxLength="11" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column Header="Email" DataIndex="email" Width="200" >
+                                            <ext:Column Header="Email" DataIndex="email" Width="130" >
                                                 <Editor>
                                                     <ext:TextField ID="txtEmailEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
                                                 </Editor>
@@ -120,7 +120,7 @@
                                                 </Editor>
                                             </ext:Column>
 
-                                            <ext:DateColumn DataIndex="dataNascimento" Header="Data de Nascimento" Width="200" Format="dd/MM/yyyy">
+                                            <ext:DateColumn DataIndex="dataNascimento" Header="Data de Nascimento" Width="130" Format="dd/MM/yyyy">
                                                 <Editor>
                                                     <ext:DateField ID="dtNascimentoEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" /> 
                                                 </Editor>
@@ -153,7 +153,7 @@
                                         <Items>
                                             <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                                                 <Listeners> 
-                                                    <Click Handler="winNovo.show()" />
+                                                    <Click Handler="novo(formulario)" />
                                                 </Listeners>
                                             </ext:Button>
                                             <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
@@ -319,7 +319,7 @@
                                             <Items>
                                                 <ext:Button ID="Button2" runat="server" Text="Novo" Icon="Add">
                                                     <Listeners> 
-                                                        <Click Handler="novoEndereco()" />
+                                                        <Click Handler="novoEndereco(endereco)" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button ID="Button3" runat="server" Text="Excluir" Icon="Delete">
@@ -528,7 +528,7 @@
                             </ext:TextField>
                             <ext:TextField ID="txtBairro" runat="server" FieldLabel="Bairro" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
                             <ext:TextField ID="txtCidade" runat="server" FieldLabel="Cidade" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtUf" runat="server" FieldLabel="UF" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtUf" runat="server" FieldLabel="UF" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" MaxLength="2" />
 
                         </Items>
 

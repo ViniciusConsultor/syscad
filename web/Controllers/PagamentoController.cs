@@ -22,6 +22,7 @@ namespace web.Controllers
         private Repositorio<Pessoa> dbPessoa;
         private Repositorio<Cobranca> dbCobranca;
         private IRepositorio<Pagamento> dbPagamento;
+
         public PagamentoController()
         {
             dbAluno = new Repositorio<Aluno>();
@@ -31,6 +32,7 @@ namespace web.Controllers
             dbPagamento = new Repositorio<Pagamento>();
             conn = new SqlConnection(CONNECTIONSTR);
         }
+
         public ActionResult RealizarPagamento()
         {
             return View();
@@ -140,10 +142,10 @@ namespace web.Controllers
         {
 
             conn.Open();
-            string sql = @"select nome, cpf, bairro, cep, cidade, uf, logradouro, numero, complemento, valorTotal, datavencimento, idCobranca from dbo.aluno a
+            string sql = @"select nome, cpf, bairro, cep, cidade, uf, logradouro, numero, complemento, valorTotal, datavencimento, idCobranca, e.idEndereco from dbo.aluno a
                         join dbo.pessoa p on a.idPessoa = p.idPessoa
                         join dbo.cobranca c on a.idAluno = c.idAluno
-                        join dbo.endereco e on a.idPessoa = e.idPessoa and e.idTipoEndereco = 1
+                        left join dbo.endereco e on a.idPessoa = e.idPessoa and e.idTipoEndereco = 1
                         where idCobranca = @idCobranca";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
@@ -158,16 +160,19 @@ namespace web.Controllers
                 Models.Aluno aluno = new Models.Aluno();
                 aluno.nome = dr.GetString(0);
                 aluno.cpf = dr.GetString(1);
-                aluno.Enderecos.Add(new Models.Endereco
-                {
-                    bairro = dr.GetString(2),
-                    CEP = dr.GetString(3),
-                    cidade = dr.GetString(4),
-                    uf = dr.GetString(5),
-                    logradouro = dr.GetString(6),
-                    numero = dr.GetInt32(7),
-                    complemento = dr.GetString(8)
-                });
+                
+                if (!dr.IsDBNull(12)){ 
+                    aluno.Enderecos.Add(new Models.Endereco
+                    {
+                        bairro = dr.GetString(2),
+                        CEP = dr.GetString(3),
+                        cidade = dr.GetString(4),
+                        uf = dr.GetString(5),
+                        logradouro = dr.GetString(6),
+                        numero = dr.GetInt32(7),
+                        complemento = dr.GetString(8)
+                    });
+                }
                 cobranca.Aluno = aluno;    
             }
 
@@ -186,11 +191,14 @@ namespace web.Controllers
             b.NumeroDocumento = nossoNumero;
 
             b.Sacado = new Sacado(cobranca.Aluno.cpf, cobranca.Aluno.nome);
-            b.Sacado.Endereco.End = String.Format("{0}, {1} {2}", cobranca.Aluno.Enderecos.FirstOrDefault().logradouro, cobranca.Aluno.Enderecos.FirstOrDefault().numero, cobranca.Aluno.Enderecos.FirstOrDefault().complemento);
-            b.Sacado.Endereco.Bairro = cobranca.Aluno.Enderecos.FirstOrDefault().bairro;
-            b.Sacado.Endereco.Cidade = cobranca.Aluno.Enderecos.FirstOrDefault().cidade;
-            b.Sacado.Endereco.CEP = cobranca.Aluno.Enderecos.FirstOrDefault().CEP;
-            b.Sacado.Endereco.UF = cobranca.Aluno.Enderecos.FirstOrDefault().uf;
+            if (cobranca.Aluno.Enderecos.Count > 0)
+            {
+                b.Sacado.Endereco.End = String.Format("{0}, {1} {2}", cobranca.Aluno.Enderecos.FirstOrDefault().logradouro, cobranca.Aluno.Enderecos.FirstOrDefault().numero, cobranca.Aluno.Enderecos.FirstOrDefault().complemento);
+                b.Sacado.Endereco.Bairro = cobranca.Aluno.Enderecos.FirstOrDefault().bairro;
+                b.Sacado.Endereco.Cidade = cobranca.Aluno.Enderecos.FirstOrDefault().cidade;
+                b.Sacado.Endereco.CEP = cobranca.Aluno.Enderecos.FirstOrDefault().CEP;
+                b.Sacado.Endereco.UF = cobranca.Aluno.Enderecos.FirstOrDefault().uf;
+            }
 
             // Exemplo de como adicionar mais informações ao sacado
             //b.Sacado.InformacoesSacado.Add(new InfoSacado("TÍTULO: " + "2541245"));
