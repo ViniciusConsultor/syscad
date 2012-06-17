@@ -42,7 +42,8 @@ function salvar() {
             Ext.Msg.show({
                 title: 'Validação de CPF',
                 msg: 'O CPF informado não é válido!',
-                buttons: Ext.Msg.OK
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.INFO
             });
             return false;
         }
@@ -56,12 +57,23 @@ function salvar() {
 
     GridPanel.el.mask('Salvando', 'x-mask-loading');
 
-    $.post(metodoSalvar, $("#Novo").serialize(), function (valor) {
-        Ext.Msg.show({
-            title: 'Sucesso',
-            msg: controller + ' salvo(a) com sucesso',
-            buttons: Ext.Msg.OK
-        });
+    $.post(metodoSalvar, $("#Novo").serialize(), function (result) {
+
+        if (result.success) {
+            Ext.Msg.show({
+                title: 'Sucesso',
+                msg: controller + ' salvo(a) com sucesso',
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.INFO
+            });
+        } else {
+            Ext.Msg.show({
+                title: 'Erro',
+                msg: 'Erro ao cadastrar ' + controller,
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.ERROR
+            });
+        }
         GridPanel.reload();
         GridPanel.el.unmask();
     });

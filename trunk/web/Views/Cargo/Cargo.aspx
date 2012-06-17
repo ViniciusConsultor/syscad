@@ -94,14 +94,14 @@
                                             <ext:RowNumbererColumn />
                                             <ext:Column ColumnID="idCargo" Header="Id" DataIndex="idCurso" Hidden="true" />
 
-                                            <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
+                                            <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" Width="300" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtNomeEditar" runat="server" />
+                                                    <ext:TextField ID="txtNomeEditar" runat="server" MaxLength="100" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
                                                 <Editor>
-                                                    <ext:TextField ID="txtDescricaoEditar" runat="server" />
+                                                    <ext:TextField ID="txtDescricaoEditar" runat="server" MaxLength="100" />
                                                 </Editor>
                                             </ext:Column>
                                         </Columns>
@@ -154,7 +154,7 @@
                             <ext:GridPanel 
                                 ID="GridPanelFuncionario"
                                 runat="server" 
-                                AutoExpandColumn="salario"
+                                AutoExpandColumn="usuario"
                                 OnRefreshData="/Funcionario/FindAll">
                                 <Store>
                                     <ext:Store 
@@ -190,11 +190,11 @@
 
                                             <ext:Column ColumnID="usuario" Header="Usuario" DataIndex="Usuario.login" AutoDataBind="true" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtUsuarioEditar" runat="server" MaxLength="15" />
+                                                    <ext:TextField ID="txtUsuarioEditar" runat="server" MaxLength="15" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
 
-                                            <ext:Column ColumnID="cargo" Header="Cargo" DataIndex="Cargo.nome">
+                                            <ext:Column ColumnID="cargo" Header="Cargo" DataIndex="Cargo.nome" Width="150">
                                                 <Editor>
                                                     <ext:ComboBox ID="cmdCargoEditar" 
                                                         runat="server" 
@@ -207,6 +207,7 @@
                                                         ItemSelector="div.search-item"        
                                                         MinChars="1"
                                                         TriggerAction="All"
+                                                        AllowBlank="false"
                                                         >
                                                         <Store>
                                                             <ext:Store ID="Store5" runat="server" AutoLoad="false">
@@ -238,7 +239,7 @@
                                             </ext:Column>
 
                     
-                                            <ext:Column ColumnID="pessoa" Header="Pessoa" DataIndex="Pessoa.nome">
+                                            <ext:Column ColumnID="pessoa" Header="Pessoa" DataIndex="Pessoa.nome" Width="150">
                                                 <Editor>
                                                     <ext:ComboBox ID="cmdPessoaEditar" 
                                                         runat="server" 
@@ -250,7 +251,9 @@
                                                         HideTrigger="false"
                                                         ItemSelector="div.search-item"        
                                                         MinChars="1"
-                                                        TriggerAction="All">
+                                                        TriggerAction="All"
+                                                        AllowBlank="false"
+                                                        >
                                                         <Store>
                                                             <ext:Store ID="Store6" runat="server" AutoLoad="false">
                                                                 <Proxy>
@@ -285,10 +288,10 @@
                                                 </Editor>
                                             </ext:Column>
 
-                                            <ext:Column ColumnID="salario" Header="Salario" Width="75" DataIndex="salario">
+                                            <ext:Column ColumnID="salario" Header="Salario" Width="100" DataIndex="salario">
                                                 <Renderer Fn="formataDinheiro" />
                                                 <Editor>
-                                                    <ext:TextField ID="txtSalarioEditar" runat="server" />
+                                                    <ext:TextField ID="txtSalarioEditar" runat="server" AllowBlank="false" MaxLength="10" />
                                                 </Editor>
                                             </ext:Column>
 
@@ -350,8 +353,8 @@
                     <ext:FormPanel ID="FormPanel1" runat="server">
 
                         <Items>
-                            <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" InputType="Text" Width="175" AllowBlank="false" />                            
+                            <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" MaxLength="100"/>
+                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" InputType="Text" Width="175" AllowBlank="false" MaxLength="100" />                            
                         </Items>
 
                         <BottomBar>
@@ -406,7 +409,8 @@
                                 ItemSelector="div.search-item"        
                                 MinChars="1"
                                 FieldLabel="Pessoa"
-                                TriggerAction="All">
+                                TriggerAction="All"
+                                AllowBlank="false">
                                 <Store>
                                     <ext:Store ID="Store3" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -453,7 +457,8 @@
                                 MinChars="1"
                                 FieldLabel="Cargo"
                                 TriggerAction="All"
-                                Hidden="true">
+                                Hidden="true"
+                                AllowBlank="false">
                                 <Store>
                                     <ext:Store ID="Store4" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -484,9 +489,9 @@
 
                             <ext:NumberField ID="txtSalario" runat="server" FieldLabel="Salario" Width="350" AllowBlank="false" />
 
-                            <ext:TextField ID="txtLogin" runat="server" FieldLabel="Login" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" MaxLength="15" />
+                            <ext:TextField ID="txtLogin" runat="server" FieldLabel="Login" InputType="Text" Width="350" AllowBlank="false" MaxLength="15" />
 
-                            <ext:TextField ID="txtSenha" runat="server" FieldLabel="Senha" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" MaxLength="100" />
+                            <ext:TextField ID="txtSenha" runat="server" FieldLabel="Senha" InputType="Password" Width="350" AllowBlank="false" MaxLength="100" />
 
                             <ext:ComboBox ID="cmbPerfil" 
                                 runat="server" 

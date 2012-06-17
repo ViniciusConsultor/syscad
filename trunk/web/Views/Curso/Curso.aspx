@@ -11,6 +11,7 @@
     <title>Modulos</title>
     <link href="../../Content/Grid.css" rel="stylesheet" type="text/css" />
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
+
 </head>
 
 <script type="text/javascript">
@@ -49,7 +50,7 @@
                                 TrackMouseOver="true"
                                 Width="1181" 
                                 Height="704"
-                                AutoExpandColumn="descricao"
+                                AutoExpandColumn="nome"
                                 >
                                 <Store>
                                     <ext:Store 
@@ -81,18 +82,18 @@
 
                                             <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtNomeEditar" runat="server" MaxLength="50" />
+                                                    <ext:TextField ID="txtNomeEditar" runat="server" MaxLength="50" AllowBlank="false"/>
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao">
+                                            <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao" Width="400">
                                                 <Editor>
-                                                    <ext:TextField ID="txtDescricaoEditar" runat="server" MaxLength="100" />
+                                                    <ext:TextField ID="txtDescricaoEditar" runat="server" MaxLength="100" AllowBlank="true" />
                                                 </Editor>
                                             </ext:Column>
-                                            <ext:Column Header="valor" Width="75" DataIndex="valor">
+                                            <ext:Column Header="Valor" Width="100" DataIndex="valor">
                                                 <Renderer Fn="formataDinheiro" />
                                                 <Editor>
-                                                    <ext:TextField ID="txtValorEditar" runat="server" MaxLength="35" />
+                                                    <ext:NumberField ID="txtValorEditar" runat="server" MaxLength="35" AllowBlank="false" />
                                                 </Editor>
                                             </ext:Column>
                                         </Columns>
@@ -155,8 +156,8 @@
                     <ext:FormPanel ID="formulario" runat="server">
 
                         <Items>
-                            <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" InputType="Text" Width="175" AllowBlank="false" />                            
+                            <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" />
+                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" InputType="Text" Width="175" AllowBlank="true" />                            
                             <ext:NumberField ID="txtValor" runat="server" FieldLabel="Valor" Width="175" AllowBlank="false" />
                         </Items>
 
@@ -164,19 +165,16 @@
                             <ext:Toolbar ID="Toolbar3" runat="server">
                                 <Items>
                                     <ext:ToolbarFill />
-                                        <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
-                                            <Listeners>
-                                                <Click Handler="salvar()" />
-                                            </Listeners>
-                                        </ext:Button>
+                                    <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
+                                        <Listeners>
+                                            <Click Handler="salvar()" />
+                                        </Listeners>
+                                    </ext:Button>
                                 </Items>
                             </ext:Toolbar>  
                         </BottomBar>
-
                     </ext:FormPanel>
                 </Items>
-
-
         </ext:Window>
 
     </form>

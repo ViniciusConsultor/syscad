@@ -119,13 +119,14 @@ namespace web.Controllers
                 dbPagamento.SaveChanges();
 
                 mensagem = "Pagamento realizado com sucesso!";
+                return Json(new { success = true, message = mensagem });
             }
             catch(Exception e)
             {
-                mensagem = "Erro: " + e.Message; 
+                mensagem = "Erro: " + e.Message;
+                return Json(new { success = false, message = mensagem });
             }
 
-            return Json(new { success= true, message = mensagem });
         }
 
         public JsonResult MudarStatus(int idCobranca, int status)

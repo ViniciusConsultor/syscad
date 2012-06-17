@@ -72,6 +72,8 @@
                                                          <ext:RecordField Name="numeroVagas" Type="Int" />
                                                         <ext:RecordField Name="dataInicioFormatada" Type="String" />
                                                         <ext:RecordField Name="dataFimFormatada" Type="String" />
+                                                        <ext:RecordField Name="Curso.nome" Type="String" />
+                                                        <ext:RecordField Name="Professor.nome" Type="String" />
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>                                            
@@ -84,10 +86,12 @@
                                             <Columns>
                                                 <ext:RowNumbererColumn />
                                                 <ext:Column ColumnID="idTurma" Header="IdTurma" DataIndex="idTurma" Hidden="true" />
-                                                <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" Width="150" />
-                                                <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="150" />
-                                                <ext:Column ColumnID="dataFimFormatada" Header="Data Fim" DataIndex="dataFimFormatada" Width="150" />
-                                                <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="150" />
+                                                <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" />
+                                                <ext:Column ColumnID="curso" Header="Curso" DataIndex="Curso.nome" Width="200" />
+                                                <ext:Column ColumnID="professor" Header="Professor" DataIndex="Professor.nome" Width="200" />
+                                                <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="100" />
+                                                <ext:Column ColumnID="dataFimFormatada" Header="Data Fim" DataIndex="dataFimFormatada" Width="100" />
+                                                <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="100" />
                                             </Columns>
                                     </ColumnModel>
 
@@ -145,10 +149,10 @@
                     <ext:FormPanel ID="formulario" runat="server">
 
                         <Items>
-                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" AnchorHorizontal="100%" InputType="Text" Width="175" AllowBlank="false" />
+                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" AnchorHorizontal="100%" InputType="Text" Width="175" AllowBlank="false" MaxLength="100" />
                             <ext:DateField ID="dtInicio" runat="server" FieldLabel="Data Início" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
                             <ext:DateField ID="dtFim" runat="server" FieldLabel="Data Fim" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
-                            <ext:TextField ID="txtNumeroVagas" runat="server" FieldLabel="Numero Vagas" AnchorHorizontal="100%" InputType="Text" Width="175" AllowBlank="false" />
+                            <ext:NumberField ID="txtNumeroVagas" runat="server" FieldLabel="Numero Vagas" AnchorHorizontal="100%" Width="175" AllowBlank="false" />
                             <ext:ComboBox ID="cmbCurso" 
                                 runat="server" 
                                 DisplayField="nome" 
@@ -184,7 +188,6 @@
 					                   <tpl for=".">
 						                  <div class="search-item">
 							                 <h3>{nome}</h3>
-                                             Seleção de Curso
 						                  </div>
 					                   </tpl>
 				                   </Html>
@@ -204,7 +207,8 @@
                                 MinChars="1"
                                 FieldLabel="Professor"
                                 TriggerAction="All"
-                                AnchorHorizontal="100%">
+                                AnchorHorizontal="100%"
+                                AllowBlank="false">
                                 <Store>
                                     <ext:Store ID="Store7" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -235,7 +239,6 @@
 					                   <tpl for=".">
 						                  <div class="search-item">
 							                 <h3><span></span>{nomePessoa}</h3>
-                                             {nomeCargo}
 						                  </div>
 					                   </tpl>
 				                   </Html>

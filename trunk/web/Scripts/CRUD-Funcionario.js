@@ -4,12 +4,22 @@
 
     GridPanelFuncionario.el.mask('Salvando', 'x-mask-loading');
 
-    $.post('/Funcionario/Save', fooorm, function (valor) {
-        Ext.Msg.show({
-            title: 'Sucesso',
-            msg: 'Funcionário salvo com sucesso',
-            buttons: Ext.Msg.OK
-        });
+    $.post('/Funcionario/Save', fooorm, function (result) {
+        if (result.success) {
+            Ext.Msg.show({
+                title: 'Sucesso',
+                msg: 'Funconário salvo com sucesso',
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.INFO
+            });
+        } else {
+            Ext.Msg.show({
+                title: 'Erro',
+                msg: 'Erro ao cadastrar ' + controller,
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.ERROR
+            });
+        }
         GridPanelFuncionario.reload();
         GridPanelFuncionario.el.unmask();
     });
@@ -48,8 +58,9 @@ function novoFuncionario() {
 
         Ext.Msg.show({
             title: 'Aviso',
-            msg: 'Selecione uma Pessoa antes de cadastrar um novo endereço!',
-            buttons: Ext.Msg.OK
+            msg: 'Selecione um cargo para cadastrar um novo funcionário!',
+            buttons: Ext.Msg.OK,
+            icon: Ext.Msg.INFO
         });
 
     }

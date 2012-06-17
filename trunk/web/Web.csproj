@@ -187,9 +187,7 @@
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Scripts\jquery.maskMoney.js" />
     <Content Include="Views\Cargo\Cargo.aspx" />
-    <Content Include="Views\Curso\Curso_Modulo.aspx" />
     <Content Include="Views\Curso\Curso.aspx" />
-    <Content Include="Views\Endereco\Endereco.aspx" />
     <Content Include="Views\Funcionario\Funcionario.aspx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Home\Layout.aspx" />
@@ -204,7 +202,6 @@
     <Content Include="Views\LancarNotaFalta\LancarNotaFalta.aspx" />
     <Content Include="Views\Pagamento\RealizarPagamento.aspx" />
     <Content Include="Views\Relatorio\Especializacao.aspx" />
-   
     <Content Include="Views\Relatorio\CursosMaisCursados.aspx" />
     <Content Include="Views\Relatorio\ExAlunos.aspx" />
     <Content Include="Views\Taxa\Taxa.aspx" />

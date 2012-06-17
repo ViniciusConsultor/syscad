@@ -8,5 +8,6 @@ namespace web.Models
     public class Professor : Funcionario
     {
         public ICollection<Especializacao> Especializacoes { get; set; }
+        public ICollection<Turma> Turmas { get; set; }
     }
 }

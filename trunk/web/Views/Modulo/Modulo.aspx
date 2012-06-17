@@ -36,7 +36,7 @@
         TrackMouseOver="true"
         Width="1181"
         Height="704"
-        AutoExpandColumn="curso">
+        AutoExpandColumn="nome">
         <Store>
             <ext:Store 
                 ID="Store1" 
@@ -50,7 +50,6 @@
                             <ext:RecordField Name="idModulo" Type="Int" />
                             <ext:RecordField Name="nome" Type="String" />
                             <ext:RecordField Name="tempoDuracao" Type="String" />
-                            <ext:RecordField Name="statusModulo" Type="String" />
                             <ext:RecordField Name="Curso.nome" Type="String" />
                         </Fields>
                     </ext:JsonReader>
@@ -68,23 +67,18 @@
 
                     <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                         <Editor>
-                            <ext:TextField ID="txtNomeEditar" runat="server" />
+                            <ext:TextField ID="txtNomeEditar" runat="server" MaxLength="30" />
                         </Editor>
                     </ext:Column>
 
-                    <ext:Column ColumnID="tempoDuracao" Header="Tempo de Duracao" DataIndex="tempoDuracao" >
+                    <ext:Column ColumnID="tempoDuracao" Header="Duracao (Dias)" DataIndex="tempoDuracao" Width="200" >
                         <Editor>
-                            <ext:TextField ID="txtTempoDuracaoEditar" runat="server" />
+                            <ext:NumberField ID="txtTempoDuracaoEditar" runat="server" MaxLength="3" />
                         </Editor>
                     </ext:Column>
-                    
-                    <ext:Column ColumnID="statusModulo" Header="Status do Modulo" DataIndex="statusModulo" >
-                        <Editor>
-                            <ext:TextField ID="txtStatusModuloEditar" runat="server" />
-                        </Editor>
-                    </ext:Column>
+                   
 
-                    <ext:Column ColumnID="curso" Header="Curso" Width="75" DataIndex="Curso.nome" >
+                    <ext:Column ColumnID="curso" Header="Curso" Width="300" DataIndex="Curso.nome" >
                         <Editor>
                             <ext:ComboBox ID="cmbCursoEditar" 
                                 runat="server" 
@@ -96,7 +90,9 @@
                                 HideTrigger="false"
                                 ItemSelector="div.search-item"        
                                 MinChars="1"
-                                TriggerAction="All">
+                                TriggerAction="All"
+                                AllowBlank="false"
+                                >
                                 <Store>
                                     <ext:Store ID="Store2" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -136,7 +132,7 @@
                 <Items>
                     <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                         <Listeners> 
-                            <Click Handler="novo()" />
+                            <Click Handler="novo(formulario)" />
                         </Listeners>
                     </ext:Button>
                     <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
@@ -187,9 +183,8 @@
                     <ext:FormPanel ID="formulario" runat="server">
 
                         <Items>
-                            <ext:TextField ID="txtNome" runat="server" FieldLabel=" Nome" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtTempoDuracao" runat="server" FieldLabel=" Tempo de Duração" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtStatusModulo" runat="server" FieldLabel=" Status do Módulo" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtNome" runat="server" FieldLabel=" Nome" InputType="Text" Width="350" AllowBlank="false" MaxLength="30" />
+                            <ext:NumberField ID="txtTempoDuracao" runat="server" FieldLabel=" Duração (Dias)" Width="350" AllowBlank="false"  MaxLength="3" />
 
                             <ext:ComboBox ID="cmbCurso" 
                                 runat="server" 
@@ -203,7 +198,9 @@
                                 ItemSelector="div.search-item"        
                                 MinChars="1"
                                 FieldLabel=" Curso"
-                                TriggerAction="All">
+                                TriggerAction="All"
+                                AllowBlank="false"
+                                >
                                 <Store>
                                     <ext:Store ID="Store4" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -223,8 +220,7 @@
                                    <Html>
 					                   <tpl for=".">
 						                  <div class="search-item">
-							                 <h3><span>{idCurso}</span>{nome}</h3>
-                                             Seleção de Curso
+							                 <h3>{nome}</h3>                                            
 						                  </div>
 					                   </tpl>
 				                   </Html>

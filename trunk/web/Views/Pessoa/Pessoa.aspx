@@ -88,17 +88,17 @@
 
                                             <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtNomeEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
+                                                    <ext:TextField ID="txtNomeEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" MaxLength="100" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="cpf" Header="CPF" DataIndex="cpf" Width="130">
                                                 <Editor>
-                                                    <ext:TextField ID="txtCPFEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" MaxLength="11" />
+                                                    <ext:TextField ID="txtCPFEditar" runat="server" AnchorHorizontal="100%"  AllowBlank="false" MaxLength="11" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column Header="Email" DataIndex="email" Width="130" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtEmailEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" />
+                                                    <ext:TextField ID="txtEmailEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" MaxLength="50" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column Header="Telefone" DataIndex="telefone" Width="100">
@@ -272,17 +272,17 @@
                                             </ext:Column>
                                             <ext:Column ColumnID="logradouro" Header="Logradouro" DataIndex="logradouro" Width="150">
                                                 <Editor>
-                                                    <ext:TextField ID="txtLogradouroEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                    <ext:TextField ID="txtLogradouroEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" MaxLength="100" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="numero" Header="Numero" DataIndex="numero" Width="100">
                                                 <Editor>
-                                                    <ext:NumberField ID="txtNumeroEditar" runat="server" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                    <ext:NumberField ID="txtNumeroEditar" runat="server" Width="350" AllowBlank="false" MaxLength="20" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="complemento" Header="Complemento" DataIndex="complemento" Width="100">
                                                 <Editor>
-                                                    <ext:TextField ID="txtComplementoEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                    <ext:TextField ID="txtComplementoEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" MaxLength="100" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="CEP" Header="CEP" DataIndex="CEP" Width="100">
@@ -296,17 +296,17 @@
                                             </ext:Column>
                                             <ext:Column ColumnID="bairro" Header="Bairro" DataIndex="bairro" Width="100">
                                                 <Editor>
-                                                    <ext:TextField ID="txtBairroEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                    <ext:TextField ID="txtBairroEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" MaxLength="50" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="cidade" Header="Cidade" DataIndex="cidade" Width="100">
                                                 <Editor>
-                                                    <ext:TextField ID="txtCidadeEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                    <ext:TextField ID="txtCidadeEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" MaxLength="50" />
                                                 </Editor>
                                             </ext:Column>
                                             <ext:Column ColumnID="uf" Header="UF" DataIndex="uf" Width="100">
                                                 <Editor>
-                                                    <ext:TextField ID="txtUFEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                                                    <ext:TextField ID="txtUFEditar" runat="server" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" MaxLength="2" />
                                                 </Editor>
                                             </ext:Column>
                                         </Columns>
@@ -366,9 +366,9 @@
                 <Items>
                     <ext:FormPanel ID="formulario" runat="server">
                         <Items>
-                            <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtCpf" runat="server" FieldLabel="CPF" InputType="Text" Width="175" AllowBlank="false" MaxLength="11"></ext:TextField>                            
-                            <ext:TextField ID="txtEmail" runat="server" FieldLabel="Email" Width="175" AllowBlank="false" />
+                            <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" MaxLength="100"/>
+                            <ext:TextField ID="txtCpf" runat="server" FieldLabel="CPF" Width="175" AllowBlank="false" MaxLength="11"  />                          
+                            <ext:TextField ID="txtEmail" runat="server" FieldLabel="Email" Width="175" AllowBlank="false" MaxLength="50" />
                             <ext:TextField ID="txtTelefone" runat="server" FieldLabel="Telefone" Width="175" AllowBlank="false" Mask="(##) ####-####" EnableKeyEvents="true">
                                 <Listeners>
                                     <KeyPress Fn="mascara" />
@@ -379,7 +379,7 @@
                                     <KeyPress Fn="mascara" />
                                 </Listeners>
                             </ext:TextField>
-                            <ext:DateField ID="dtNascimento" runat="server" FieldLabel="Data de Nascimento" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
+                            <ext:DateField ID="dtNascimento" runat="server" FieldLabel="Nascimento" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
                             <ext:ComboBox ID="txtSexo" runat="server" FieldLabel="Sexo" AllowBlank="false" Width="175">
                                 <Items>
                                     <ext:ListItem Text="Masculino" Value="1" />
@@ -408,7 +408,6 @@
 
     </form>
 
-    <form id="FormNovoEndereco" >
     
         <ext:Window 
                 ID="winNovoEndereco" 
@@ -462,14 +461,13 @@
 					                   <tpl for=".">
 						                  <div class="search-item">
 							                 <h3><span>{idTipoEndereco}</span>{nome}</h3>
-							                 Tipo de Endereço
 						                  </div>
 					                   </tpl>
 				                   </Html>
                                 </Template>
                             </ext:ComboBox>
 
-                            <ext:ComboBox ID="idPessoa" 
+                             <ext:ComboBox ID="idPessoa" 
                                 runat="server" 
                                 DisplayField="nome" 
                                 ValueField="idPessoa" 
@@ -518,17 +516,17 @@
                                 </Template>
                             </ext:ComboBox>
 
-                            <ext:TextField ID="txtLogradouro" runat="server" FieldLabel="Logradouro" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:NumberField ID="txtNumero" runat="server" FieldLabel="Numero" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtComplemento" runat="server" FieldLabel="Complemento" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtCep" runat="server" FieldLabel="CEP" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" EnableKeyEvents="true" Mask="#####-###" >
+                            <ext:TextField ID="txtLogradouro" runat="server" FieldLabel="Logradouro" InputType="Text" Width="350" AllowBlank="false" MaxLength="100" />
+                            <ext:NumberField ID="txtNumero" runat="server" FieldLabel="Numero" Width="350" AllowBlank="false"  MaxLength="20" />
+                            <ext:TextField ID="txtComplemento" runat="server" FieldLabel="Complemento" InputType="Text" Width="350" AllowBlank="false" MaxLength="100" />
+                            <ext:TextField ID="txtCep" runat="server" FieldLabel="CEP" InputType="Text" Width="350" AllowBlank="false" EnableKeyEvents="true" Mask="#####-###" >
                                 <Listeners>
                                     <KeyPress  fn="mascara" />
                                 </Listeners>
                             </ext:TextField>
-                            <ext:TextField ID="txtBairro" runat="server" FieldLabel="Bairro" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtCidade" runat="server" FieldLabel="Cidade" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtUf" runat="server" FieldLabel="UF" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" MaxLength="2" />
+                            <ext:TextField ID="txtBairro" runat="server" FieldLabel="Bairro" InputType="Text" Width="350" AllowBlank="false" MaxLength="50" />
+                            <ext:TextField ID="txtCidade" runat="server" FieldLabel="Cidade" InputType="Text" Width="350" AllowBlank="false" MaxLength="50" />
+                            <ext:TextField ID="txtUf" runat="server" FieldLabel="UF" InputType="Text" Width="350" AllowBlank="false" MaxLength="2" />
 
                         </Items>
 
@@ -550,7 +548,6 @@
 
         </ext:Window>
 
-    </form>    
                   
 </body>
 </html>
