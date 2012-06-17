@@ -33,13 +33,13 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save(string txtNomeModulo, int txtTempoDuracao, int txtStatusModulo, int idCurso_Value)
+        public JsonResult Save(string txtNome, int txtTempoDuracao, int cmbCurso_Value)
         {
             Modulo modulo = new Modulo();
-            modulo.nome = txtNomeModulo;
+            modulo.nome = txtNome;
             modulo.tempoDuracao = txtTempoDuracao;
-            modulo.statusModulo = txtStatusModulo;
-            modulo.idCurso = idCurso_Value;
+            modulo.statusModulo = (int)EnumStatus.Ativo;
+            modulo.idCurso = cmbCurso_Value;
 
             try
             {
@@ -78,10 +78,6 @@ namespace web.Controllers
                     case "tempoDuracao":
 
                         modulo.tempoDuracao = Convert.ToInt32(valor);
-                        break;
-
-                    case "statusModulo":
-                        modulo.statusModulo = Convert.ToInt32(valor);
                         break;
 
                     case "Curso.nome":
@@ -143,7 +139,6 @@ namespace web.Controllers
        
         public ActionResult Modulo()
         {
-            ViewData["teste"] = "leonardo";
             return View();
         }
 

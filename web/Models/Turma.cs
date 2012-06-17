@@ -23,5 +23,6 @@ namespace web.Models
         public Curso Curso { get; set; }
         public ICollection<MatriculaTurma> MatriculaTurmas { get; set; }
         public ICollection<NotaFalta> NotaFaltas { get; set; }
+        public Professor Professor { get; set; }
     }
 }

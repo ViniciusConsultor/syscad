@@ -115,7 +115,7 @@
                             <Items>
                                 <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                                     <Listeners> 
-                                        <Click Handler="novo()" />
+                                        <Click Handler="novo(formulario)" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
@@ -152,7 +152,7 @@
                 Modal="true"
                 >
                 <Items>
-                    <ext:FormPanel ID="matricula" runat="server">
+                    <ext:FormPanel ID="formulario" runat="server">
 
                         <Items>
                                                         
@@ -167,13 +167,13 @@
                                 HideTrigger="false"
                                 ItemSelector="div.search-item"        
                                 MinChars="1"
-                                FieldLabel="Pessoa"
+                                FieldLabel="Aluno"
                                 TriggerAction="All"
                                 AllowBlank="false">
                                 <Store>
                                     <ext:Store ID="Store2" runat="server" AutoLoad="false">
                                         <Proxy>
-                                            <ext:HttpProxy Method="POST" Url="/Pessoa/Search" />
+                                            <ext:HttpProxy Method="POST" Url="/Pessoa/PessoaAluno" />
                                         </Proxy>
                                         <Reader>
                                             <ext:JsonReader Root="pessoas" TotalProperty="totalReg">
@@ -220,7 +220,7 @@
                                 FieldLabel="Responsavel"
                                 TriggerAction="All"
                                 Hidden="true"
-                                AllowBlank="false">
+                                AllowBlank="true">
                                 <Store>
                                     <ext:Store ID="Store3" runat="server" AutoLoad="false">
                                         <Proxy>
@@ -254,7 +254,7 @@
                                 </Template>
                             </ext:ComboBox>
 
-                            <ext:TextField Hidden="true" ID="txtGrauParentesco" runat="server" FieldLabel="Grau de Parentesco" Width="350" AllowBlank="false" />
+                            <ext:TextField Hidden="true" ID="txtGrauParentesco" runat="server" FieldLabel="Grau de Parentesco" Width="350" AllowBlank="true" />
 
                             <ext:ComboBox ID="cmbTurma" 
                                 runat="server" 
@@ -298,7 +298,7 @@
 					                   <tpl for=".">
 						                  <div class="search-item">
 							                 <h3><span>{cursoNome}</span>{descricao}</h3>
-							                 Vagas: {vagasOcupadas}/{numeroVagas} - Data início: {dataInicio} - Data fim: {dataFim}                                             
+                                             Vagas Ocupadas: {vagasOcupadas}/{numeroVagas} 							                                                            
 						                  </div>
 					                   </tpl>
 				                   </Html>

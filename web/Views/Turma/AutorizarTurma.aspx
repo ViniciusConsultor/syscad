@@ -19,25 +19,55 @@
             rec.dataFimFormatada = data.format('d/m/Y');
         }
 
-        var autorizarTurma = function (value) {
+        var executarAcao = function (command, value) {
 
-            $.post('/Turma/Autorizar', { idTurma: value }, function (valor) {
-                if (valor == "Sim") {
-                    Ext.Msg.show({
-                        title: 'Sucesso',
-                        msg: 'Autorização Completa! Turma Aberta.',
-                        buttons: Ext.Msg.OK
-                    });
+            if (command == "autorizar") {
+                $.post('/Turma/Autorizar', { idTurma: value }, function (valor) {
+                    if (valor == "Sim") {
+                        Ext.Msg.show({
+                            title: 'Sucesso',
+                            msg: 'Autorização Completa! Turma Aberta.',
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.Msg.INFO
+                        });
 
-                    GridPanel.reload();
-                } else {
-                    Ext.Msg.show({
-                        title: 'Erro',
-                        msg: 'Erro ao Autorizar!',
-                        buttons: Ext.Msg.OK
-                    });
-                }
-            });
+                        GridPanel.reload();
+                    } else {
+                        Ext.Msg.show({
+                            title: 'Erro',
+                            msg: 'Erro ao Autorizar!',
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.Msg.INFO
+                        });
+                    }
+                });
+            } else {
+                Ext.Msg.confirm('Confirmação', 'Tem certeza que deseja rejeitar a turma', function (btn) {
+
+                    if (btn == 'yes') {
+                        $.post('/Turma/Rejeitar', { idTurma: value }, function (valor) {
+                            if (valor == "Sim") {
+                                Ext.Msg.show({
+                                    title: 'Sucesso',
+                                    msg: 'Turma Rejeitada',
+                                    buttons: Ext.Msg.OK,
+                                    icon: Ext.Msg.INFO
+                                });
+
+                                GridPanel.reload();
+                            } else {
+                                Ext.Msg.show({
+                                    title: 'Erro',
+                                    msg: 'Erro ao Rejeitar!',
+                                    buttons: Ext.Msg.OK,
+                                    icon: Ext.Msg.INFO
+                                });
+                            }
+                        });
+
+                    }
+                });
+            }
 
         }
 
@@ -77,6 +107,7 @@
                                                         <ext:RecordField Name="idTurma" Type="Int" />
                                                         <ext:RecordField Name="idCurso" Type="Int" />
                                                         <ext:RecordField Name="descricao" Type="String" />
+                                                        <ext:RecordField Name="numeroVagas" Type="Int" />
                                                         <ext:RecordField Name="dataInicio" Type="Date" >
                                                             <Convert Fn="fomataData" />
                                                         </ext:RecordField>
@@ -85,6 +116,8 @@
                                                         </ext:RecordField>
                                                         <ext:RecordField Name="dataInicioFormatada" Type="String" />
                                                         <ext:RecordField Name="dataFimFormatada" Type="String" />
+                                                        <ext:RecordField Name="Curso.nome" Type="String" />
+                                                        <ext:RecordField Name="Professor.nome" Type="String" />
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>                                            
@@ -97,12 +130,16 @@
                                             <Columns>
                                                 <ext:RowNumbererColumn />
                                                 <ext:Column ColumnID="idTurma" Header="IdTurma" DataIndex="idTurma" Hidden="true" />
-                                                <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" Width="150" />
-                                                <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="150" />
-                                                <ext:Column ColumnID="dataFimFormatada" Header="Data Fim" DataIndex="dataFimFormatada" Width="150" />
-                                                <ext:CommandColumn Width="110" Align="Center" Header="Autorizar">
+                                                <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" />
+                                                <ext:Column ColumnID="curso" Header="Curso" DataIndex="Curso.nome" Width="200" />
+                                                <ext:Column ColumnID="professor" Header="Professor" DataIndex="Professor.nome" Width="200" />
+                                                <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="75" />
+                                                <ext:Column ColumnID="dataFimFormatada" Header="Data Fim" DataIndex="dataFimFormatada" Width="75" />
+                                                <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="100" />
+                                                <ext:CommandColumn Width="150" Align="Center" Header="Ação">
                                                     <Commands>
-                                                        <ext:GridCommand Icon="Accept" CommandName="autorizar" Text="Autorizar Turma"  />
+                                                        <ext:GridCommand Icon="Accept" CommandName="autorizar" Text="Autorizar"  />
+                                                        <ext:GridCommand Icon="Decline" CommandName="rejeitar" Text="Rejeitar"  />
                                                     </Commands>
                                                 </ext:CommandColumn>
                                             </Columns>
@@ -114,7 +151,7 @@
                                     </SelectionModel>
 
                                     <Listeners>
-                                        <Command Handler="autorizarTurma(record.data.idTurma)" />
+                                        <Command Handler="executarAcao(command, record.data.idTurma)" />
                                     </Listeners>
 
                                     <BottomBar>

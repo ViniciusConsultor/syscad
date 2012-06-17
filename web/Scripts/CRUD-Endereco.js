@@ -1,6 +1,6 @@
-﻿function salvarEndereco(fooorm) {
+﻿function salvarEndereco(form) {
 
-    if (!formulario.isValid()) {
+    if (!endereco.isValid()) {
         return false;
     }
 
@@ -8,12 +8,22 @@
 
     GridPanelEndereco.el.mask('Salvando', 'x-mask-loading');
 
-    $.post('/Endereco/Save', fooorm, function (valor) {
-        Ext.Msg.show({
-            title: 'Sucesso',
-            msg: 'Endereço salvo com sucesso',
-            buttons: Ext.Msg.OK
-        });
+    $.post('/Endereco/Save', form, function (result) {
+        if (result.success) {
+            Ext.Msg.show({
+                title: 'Sucesso',
+                msg: 'Endereço salvo com sucesso',
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.INFO
+            });
+        } else {
+            Ext.Msg.show({
+                title: 'Erro',
+                msg: 'Erro ao cadastrar ' + controller,
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.ERROR
+            });
+        }
         GridPanelEndereco.reload();
         GridPanelEndereco.el.unmask();
     });
@@ -46,7 +56,7 @@ function novoEndereco(form) {
 
     if (GridPanel.getSelectionModel().hasSelection()) {
 
-        form.getForm().reset();
+       // form.getForm().reset();
         winNovoEndereco.show();
 
     } else {
@@ -54,7 +64,8 @@ function novoEndereco(form) {
         Ext.Msg.show({
             title: 'Aviso',
             msg: 'Selecione uma Pessoa antes de cadastrar um novo endereço!',
-            buttons: Ext.Msg.OK
+            buttons: Ext.Msg.OK,
+            icon: Ext.Msg.INFO
         });
 
     }

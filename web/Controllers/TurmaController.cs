@@ -31,7 +31,7 @@ namespace web.Controllers
             dbCobranca = new Repositorio<Cobranca>();
         }
 
-        public JsonResult Search(string limit, string query, string start)
+        public string Search(string limit, string query, string start)
         {
 
             IList<Turma> listaTurma = dbTurma.FindAll(x => x.status == (int)EnumStatus.TurmaAberta).Where(x => x.descricao.ToLower().Contains(query.ToLower())).ToList();
@@ -40,7 +40,10 @@ namespace web.Controllers
             {
                 t.Curso = new Repositorio<Curso>().FindOne(x => x.idCurso == t.idCurso);
             }
-            return Json(new { turmas = listaTurma, totalReg = listaTurma.Count }, JsonRequestBehavior.AllowGet);
+
+            return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
+
+            //return Json(new { turmas = listaTurma, totalReg = listaTurma.Count }, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -85,7 +88,15 @@ namespace web.Controllers
                                   dataInicio = t.dataInicio,
                                   idCurso = t.idCurso,
                                   vagasOcupadas = t.vagasOcupadas,
-                                  numeroVagas = t.numeroVagas
+                                  numeroVagas = t.numeroVagas,
+                                  Curso = new Models.Curso
+                                  {
+                                      nome = t.Curso.nome
+                                  },
+                                  Professor = new Models.Professor
+                                  {
+                                      nome = t.Funcionario.Pessoa.nome
+                                  }
                               }).ToList();
             //List<Turma> listaTurma = dbTurma.FindAll();
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
@@ -93,7 +104,27 @@ namespace web.Controllers
 
         public string FindAllTurmas()
         {
-            List<Turma> listaTurma = dbTurma.FindAll(x => x.status == (int)EnumStatus.TurmaSolicitada);
+            //List<Turma> listaTurma = dbTurma.FindAll(x => x.status == (int)EnumStatus.TurmaSolicitada);
+            var listaTurma = (from t in dbTurma.Context.Turma
+                              where t.status == (int)EnumStatus.TurmaSolicitada
+                              select new Models.Turma
+                              {
+                                  descricao = t.descricao,
+                                  idTurma = t.idTurma,
+                                  dataInicio = t.dataInicio,
+                                  dataFim = t.dataFim,
+                                  idCurso = t.idCurso,
+                                  vagasOcupadas = t.vagasOcupadas,
+                                  numeroVagas = t.numeroVagas,
+                                  Curso = new Models.Curso
+                                  {
+                                      nome = t.Curso.nome
+                                  },
+                                  Professor = new Models.Professor
+                                  {
+                                      nome = t.Funcionario.Pessoa.nome
+                                  }
+                              }).ToList();
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 
@@ -116,6 +147,27 @@ namespace web.Controllers
                 return "Não";
             }
             
+        }
+
+        public string Rejeitar(int idTurma)
+        {
+            Turma turma = dbTurma.FindOne(x => x.idTurma == idTurma);
+
+            turma.status = (int)EnumStatus.TurmaRejeitada;
+
+            try
+            {
+
+                dbTurma.Atualizar(turma);
+                dbTurma.SaveChanges();
+
+                return "Sim";
+            }
+            catch
+            {
+                return "Não";
+            }
+
         }
 
         public JsonResult Save(int cmbCurso_Value, string dtInicio, string dtFim, string txtDescricao, int txtNumeroVagas, int cmbProfessor_Value)

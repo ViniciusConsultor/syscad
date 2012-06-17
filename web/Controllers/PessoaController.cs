@@ -21,7 +21,7 @@ namespace web.Controllers
             return View();
         }
 
-        IRepositorio<Pessoa> dbPessoa;
+        Repositorio<Pessoa> dbPessoa;
 
         public PessoaController()
         {
@@ -32,6 +32,15 @@ namespace web.Controllers
         {
 
             IList<Pessoa> listaPessoa = dbPessoa.FindAll().Where(x => x.nome.ToLower().Contains(query.ToLower())).ToList();
+            return Json(new { pessoas = listaPessoa, totalReg = listaPessoa.Count }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult PessoaAluno(string limit, string query, string start)
+        {
+
+            //IList<Pessoa> listaPessoa = dbPessoa.FindAll().Where(x => x.nome.ToLower().Contains(query.ToLower()) && x.Funcionarios != null).ToList();
+            var listaPessoa = (from p in dbPessoa.Context.Pessoa where (p.nome.ToLower().Contains(query.ToLower()) || query.ToLower() == "") && p.Funcionarios.Count() == 0 select p).ToList();
             return Json(new { pessoas = listaPessoa, totalReg = listaPessoa.Count }, JsonRequestBehavior.AllowGet);
 
         }

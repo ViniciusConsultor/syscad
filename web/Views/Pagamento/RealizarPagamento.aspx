@@ -46,15 +46,21 @@
 
         var pagar = function (serialize) {
             $.post('/Pagamento/Pagar', serialize, function (result) {
-                success:
-                {
-                    Ext.Msg.show({
-                        title: 'Sucesso',
-                        msg: result.message,
-                        buttons: Ext.Msg.OK,
-                        icon: Ext.Msg.INFO
-                    });                    
-                }
+                    if (result.success) {
+                        Ext.Msg.show({
+                            title: 'Sucesso',
+                            msg: result.message,
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.Msg.INFO
+                        });
+                    } else {
+                        Ext.Msg.show({
+                            title: 'Erro',
+                            msg: result.message,
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.Msg.ERROR
+                        });
+                    }
             });
         };
 

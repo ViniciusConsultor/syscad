@@ -81,20 +81,20 @@
 
                                         <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
                                             <Editor>
-                                                <ext:TextField ID="txtNomeEditar" runat="server" />
+                                                <ext:TextField ID="txtNomeEditar" runat="server" MaxLength="100" />
                                             </Editor>
                                         </ext:Column>
 
                                         <ext:Column ColumnID="descricao" Header="Descrição" DataIndex="descricao" >
                                             <Editor>
-                                                <ext:TextField ID="txtDescricaoEditar" runat="server" />
+                                                <ext:TextField ID="txtDescricaoEditar" runat="server" MaxLength="100"/>
                                             </Editor>
                                         </ext:Column>
                     
                                         <ext:Column ColumnID="valor" Header="Valor" DataIndex="valor" >
                                             <Renderer Fn="formataDinheiro" />
                                             <Editor>
-                                                <ext:NumberField ID="txtValorEditar" runat="server" EmptyText="0,00" DecimalPrecision="2" DecimalSeparator="," />
+                                                <ext:NumberField ID="txtValorEditar" runat="server" EmptyText="0,00" DecimalPrecision="2" DecimalSeparator="," MaxLength="20" />
                                             </Editor>
                                         </ext:Column>
                                     </Columns>
@@ -108,7 +108,7 @@
                                     <Items>
                                         <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                                             <Listeners> 
-                                                <Click Handler="novo()" />
+                                                <Click Handler="novo(formulario)" />
                                             </Listeners>
                                         </ext:Button>
                                         <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
@@ -157,9 +157,9 @@
                     <ext:FormPanel ID="formulario" runat="server">
 
                         <Items>
-                            <ext:TextField ID="txtNome" runat="server" FieldLabel=" Nome" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel=" Descricao" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
-                            <ext:TextField ID="txtValor" runat="server" FieldLabel=" Valor" InputType="Text" Width="350" AllowBlank="false" AutoFocus="true" />
+                            <ext:TextField ID="txtNome" runat="server" FieldLabel=" Nome" InputType="Text" Width="350" AllowBlank="false" MaxLength="100"  />
+                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel=" Descricao" InputType="Text" Width="350" AllowBlank="false"  MaxLength="100" />
+                            <ext:NumberField ID="txtValor" runat="server" FieldLabel=" Valor" Width="350" AllowBlank="false" DecimalPrecision="2" DecimalSeparator="," MaxLength="20"  />
                         </Items>
 
                         <BottomBar>
