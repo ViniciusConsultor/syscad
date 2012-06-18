@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\CargoController.cs" />
+    <Compile Include="Controllers\EspecializacaoController.cs" />
     <Compile Include="Controllers\CursoController.cs" />
     <Compile Include="Controllers\EnderecoController.cs" />
     <Compile Include="Controllers\FuncionarioController.cs" />
@@ -188,6 +189,7 @@
     <Content Include="Scripts\jquery.maskMoney.js" />
     <Content Include="Views\Cargo\Cargo.aspx" />
     <Content Include="Views\Curso\Curso.aspx" />
+    <Content Include="Views\Especializacao\Especializacao.aspx" />
     <Content Include="Views\Funcionario\Funcionario.aspx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Home\Layout.aspx" />

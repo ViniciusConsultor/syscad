@@ -169,5 +169,18 @@ namespace web.Controllers
             return Json(new { funcionarios = listaFuncionarios, totalReg = listaFuncionarios.Count }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult FindAllProfessores()
+        {
+            List<Funcionario> listaFuncionarios = dbFuncionario.FindAll(x => x.idCargo == 2);
+
+            foreach (Funcionario f in listaFuncionarios)
+            {
+                f.Pessoa = dbPessoa.FindOne(x => x.idPessoa == f.idPessoa);
+            }
+
+            return Json(new { funcionarios = listaFuncionarios, totalReg = listaFuncionarios.Count }, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
