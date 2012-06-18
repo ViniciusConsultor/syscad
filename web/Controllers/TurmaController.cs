@@ -235,7 +235,7 @@ namespace web.Controllers
 
         public string FindTurmasDisponibilidade(int idCurso)
         {
-            List<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) != 0 && x.status == (int)EnumStatus.TurmaAberta && x.idCurso == idCurso);
+            List<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) > 0 && x.status == (int)EnumStatus.TurmaAberta && x.idCurso == idCurso);
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 
@@ -297,6 +297,26 @@ namespace web.Controllers
                 return "Não";
             }
 
+        }
+
+        public JsonResult Excluir(int id)
+        {
+            Turma turma = dbTurma.FindOne(tur => tur.idTurma == id);
+
+            try
+            {
+                dbTurma.Remover(turma);
+                dbTurma.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
         }
     }
 }
