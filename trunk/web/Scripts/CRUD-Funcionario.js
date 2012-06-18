@@ -52,6 +52,12 @@ function novoFuncionario() {
 
     if (GridPanel.getSelectionModel().hasSelection()) {
 
+        Ext.getCmp("cmbPessoa").reset();
+        Ext.getCmp("txtSalario").reset();
+        Ext.getCmp("txtLogin").reset();
+        Ext.getCmp("txtSenha").reset();
+        Ext.getCmp("cmbPerfil").reset();
+
         winNovoFuncionario.show();
 
     } else {

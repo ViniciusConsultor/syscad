@@ -518,7 +518,7 @@
 
                             <ext:TextField ID="txtLogradouro" runat="server" FieldLabel="Logradouro" InputType="Text" Width="350" AllowBlank="false" MaxLength="100" />
                             <ext:NumberField ID="txtNumero" runat="server" FieldLabel="Numero" Width="350" AllowBlank="false"  MaxLength="20" />
-                            <ext:TextField ID="txtComplemento" runat="server" FieldLabel="Complemento" InputType="Text" Width="350" AllowBlank="false" MaxLength="100" />
+                            <ext:TextField ID="txtComplemento" runat="server" FieldLabel="Complemento" InputType="Text" Width="350" MaxLength="100" />
                             <ext:TextField ID="txtCep" runat="server" FieldLabel="CEP" InputType="Text" Width="350" AllowBlank="false" EnableKeyEvents="true" Mask="#####-###" >
                                 <Listeners>
                                     <KeyPress  fn="mascara" />

@@ -118,7 +118,7 @@
                                         <Items>
                                             <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                                                 <Listeners> 
-                                                    <Click Handler="winNovo.show()" />
+                                                    <Click Handler="novo(formulario)" />
                                                 </Listeners>
                                             </ext:Button>
                                             <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
@@ -350,7 +350,7 @@
                 Modal="true"
                 >
                 <Items>
-                    <ext:FormPanel ID="FormPanel1" runat="server">
+                    <ext:FormPanel ID="formulario" runat="server">
 
                         <Items>
                             <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" MaxLength="100"/>
