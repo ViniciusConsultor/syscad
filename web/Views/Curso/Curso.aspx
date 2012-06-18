@@ -50,7 +50,7 @@
                                 TrackMouseOver="true"
                                 Width="1181" 
                                 Height="704"
-                                AutoExpandColumn="nome"
+                                AutoExpandColumn="descricao"
                                 >
                                 <Store>
                                     <ext:Store 
@@ -80,7 +80,7 @@
                                             <ext:RowNumbererColumn />
                                             <ext:Column ColumnID="idCurso" Header="Id" DataIndex="idCurso" Hidden="true" />
 
-                                            <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >
+                                            <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" Width="150" >
                                                 <Editor>
                                                     <ext:TextField ID="txtNomeEditar" runat="server" MaxLength="50" AllowBlank="false"/>
                                                 </Editor>
@@ -107,7 +107,7 @@
                                         <Items>
                                             <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                                                 <Listeners> 
-                                                    <Click Handler="winNovo.show()" />
+                                                    <Click Handler="novo(formulario)" />
                                                 </Listeners>
                                             </ext:Button>
                                             <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
@@ -156,8 +156,8 @@
                     <ext:FormPanel ID="formulario" runat="server">
 
                         <Items>
-                            <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" />
-                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" InputType="Text" Width="175" AllowBlank="true" />                            
+                            <ext:TextField ID="txtNome" runat="server" FieldLabel="Nome" InputType="Text" Width="175" AllowBlank="false" MaxLength="50" />
+                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" InputType="Text" Width="175" AllowBlank="true" MaxLength="100" />                            
                             <ext:NumberField ID="txtValor" runat="server" FieldLabel="Valor" Width="175" AllowBlank="false" />
                         </Items>
 

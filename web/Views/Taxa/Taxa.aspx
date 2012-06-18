@@ -77,6 +77,7 @@
                             </Listeners>
                             <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                                     <Columns>
+                                        <ext:RowNumbererColumn />
                                         <ext:Column ColumnID="idTaxa" Header="Id" DataIndex="idFuncionario" Hidden="true" />
 
                                         <ext:Column ColumnID="nome" Header="Nome" DataIndex="nome" AutoDataBind="true" >

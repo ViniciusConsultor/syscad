@@ -56,7 +56,15 @@ function novoEndereco(form) {
 
     if (GridPanel.getSelectionModel().hasSelection()) {
 
-       // form.getForm().reset();
+        Ext.getCmp("cmbTipoEndereco").reset();
+        Ext.getCmp("txtLogradouro").reset();
+        Ext.getCmp("txtNumero").reset();
+        Ext.getCmp("txtComplemento").reset();
+        Ext.getCmp("txtCep").reset();
+        Ext.getCmp("txtBairro").reset();
+        Ext.getCmp("txtCidade").reset();
+        Ext.getCmp("txtUf").reset();
+
         winNovoEndereco.show();
 
     } else {
