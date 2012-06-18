@@ -86,6 +86,33 @@ namespace web.Controllers
                                   descricao = t.descricao,
                                   idTurma = t.idTurma,
                                   dataInicio = t.dataInicio,
+                                  dataFim = t.dataFim,
+                                  idCurso = t.idCurso,
+                                  vagasOcupadas = t.vagasOcupadas,
+                                  numeroVagas = t.numeroVagas,
+                                  Curso = new Models.Curso
+                                  {
+                                      nome = t.Curso.nome
+                                  },
+                                  Professor = new Models.Professor
+                                  {
+                                      nome = t.Funcionario.Pessoa.nome
+                                  }
+                              }).ToList();
+            //List<Turma> listaTurma = dbTurma.FindAll();
+            return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
+        }
+
+        public string FindAllAbertas(int codigoCurso)
+        {
+            var listaTurma = (from t in dbTurma.Context.Turma
+                              where t.Curso.idCurso == codigoCurso && t.status == (int)EnumStatus.TurmaAberta
+                              select new Models.Turma
+                              {
+                                  descricao = t.descricao,
+                                  idTurma = t.idTurma,
+                                  dataInicio = t.dataInicio,
+                                  dataFim = t.dataFim,
                                   idCurso = t.idCurso,
                                   vagasOcupadas = t.vagasOcupadas,
                                   numeroVagas = t.numeroVagas,
@@ -216,6 +243,7 @@ namespace web.Controllers
         {
             Turma t = dbTurma.FindOne(x => x.idTurma == codigoTurma);
             t.dataFechamento = DateTime.Now;
+            t.status = (int)EnumStatus.TurmaFechada;
             dbTurma.Atualizar(t);
             dbTurma.SaveChanges();
 

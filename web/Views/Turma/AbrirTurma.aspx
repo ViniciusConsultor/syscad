@@ -105,7 +105,7 @@
                                             <Items>
                                                 <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                                                     <Listeners> 
-                                                        <Click Handler="winNovo.show()" />
+                                                        <Click Handler="novo(formulario)" />
                                                     </Listeners>
                                                 </ext:Button>
                                                 <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">

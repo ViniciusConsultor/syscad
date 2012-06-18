@@ -14,6 +14,11 @@
             rec.dataInicioFormatada = data.format('d/m/Y');
         }
 
+        var fomataDataFim = function (value, rec) {
+            var data = new Date(value);
+            rec.dataFimFormatada = data.format('d/m/Y');
+        }
+
         var fecharTurma = function (command, rec) {
             $.post("/Turma/FechamentoTurma", { codigoTurma: rec.data.idTurma }, function () {
                 success:
@@ -109,14 +114,14 @@
                                     ID="grdTurmas"
                                     runat="server"  
                                     AutoExpandColumn="descricao"
-                                    OnRefreshData="/Turma/FindAll"
+                                    OnRefreshData="/Turma/FindAllAbertas"
                                     >
                                     <Store>
                                         <ext:Store 
                                             ID="Store2" 
                                             runat="server">
                                             <Proxy>
-                                                <ext:HttpProxy Json="true" Method="GET" Url="/Turma/FindAll" AutoDataBind="true" />
+                                                <ext:HttpProxy Json="true" Method="GET" Url="/Turma/FindAllAbertas" AutoDataBind="true" />
                                             </Proxy>
                                             <Reader>
                                                 <ext:JsonReader Root="turmas" TotalProperty="totalReg">
@@ -127,9 +132,16 @@
                                                         <ext:RecordField Name="dataInicio" Type="Date" >
                                                             <Convert Fn="fomataData" />
                                                         </ext:RecordField>
+                                                        <ext:RecordField Name="dataFim" Type="Date" >
+                                                            <Convert Fn="fomataDataFim" />
+                                                        </ext:RecordField>
                                                         <ext:RecordField Name="vagasOcupadas" Type="Int" />
                                                          <ext:RecordField Name="numeroVagas" Type="Int" />
                                                         <ext:RecordField Name="dataInicioFormatada" Type="String" />
+                                                        <ext:RecordField Name="dataFimFormatada" Type="String" />
+                                                        <ext:RecordField Name="Curso.nome" Type="String" />
+                                                        <ext:RecordField Name="Professor.nome" Type="String" />
+
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>                                            
@@ -142,11 +154,14 @@
                                             <Columns>
                                                 <ext:RowNumbererColumn />
                                                 <ext:Column ColumnID="idTurma" Header="IdTurma" DataIndex="idTurma" Hidden="true" />
-                                                <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" Width="150" />
-                                                <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="150" />
-                                                <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="150" />
+                                                <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" />
+                                                <ext:Column ColumnID="curso" Header="Curso" DataIndex="Curso.nome" Width="200" />
+                                                <ext:Column ColumnID="professor" Header="Professor" DataIndex="Professor.nome" Width="200" />
+                                                <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="100" />
+                                                <ext:Column ColumnID="dataFimFormatada" Header="Data Fim" DataIndex="dataFimFormatada" Width="100" />
+                                                <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="100" />
                                                 <ext:Column ColumnID="vagasOcupadas" Header="Vagas Ocupadas" DataIndex="vagasOcupadas" Width="150" />
-                                                <ext:CommandColumn Width="110" Align="Center">
+                                                <ext:CommandColumn Width="110" Align="Center" Header="Ação">
                                                     <Commands>
                                                         <ext:GridCommand Icon="Delete" CommandName="fecharTurma" Text="Fechar Turma"  />
                                                     </Commands>
