@@ -149,7 +149,7 @@
                     <ext:FormPanel ID="formulario" runat="server">
 
                         <Items>
-                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Descrição" AnchorHorizontal="100%" InputType="Text" Width="175" AllowBlank="false" MaxLength="100" />
+                            <ext:TextField ID="txtDescricao" runat="server" FieldLabel="Nº. da Turma" AnchorHorizontal="100%" InputType="Text" Width="175" AllowBlank="false" MaxLength="100" />
                             <ext:DateField ID="dtInicio" runat="server" FieldLabel="Data Início" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
                             <ext:DateField ID="dtFim" runat="server" FieldLabel="Data Fim" AnchorHorizontal="100%" EnableKeyEvents="true" AllowBlank="false" /> 
                             <ext:NumberField ID="txtNumeroVagas" runat="server" FieldLabel="Numero Vagas" AnchorHorizontal="100%" Width="175" AllowBlank="false" />

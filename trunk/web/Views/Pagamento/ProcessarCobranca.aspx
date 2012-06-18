@@ -24,6 +24,7 @@
 
         var processarCobranca = function () {
             if ($("#mes").val() != "") {
+                ViewPort1.el.mask('Verificando Alunos...', 'x-mask-loading');
                 var grid = Ext.getCmp("grdCobranca");
                 grid.load();
                 setTimeout("geraCobranca(0)", 1000);
@@ -39,6 +40,7 @@
 
         var geraCobranca = function (i) {
             if (Store1.getCount() > 0) {
+                ViewPort1.el.unmask();
                 var record = Store1.getAt(i);
                 var mes = $("#mes").val();
                 $.post("/Pagamento/GeraCobranca", { idAluno: record.data.idAluno, mes: mes }, function (result) {
@@ -74,6 +76,14 @@
                             }, 1000);
                         }
                     }
+                });
+            } else {
+                ViewPort1.el.unmask();
+                Ext.Msg.show({
+                    title: 'Erro',
+                    msg: 'Não há alunos para gerar cobrança no mês selecionado!',
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.ERROR
                 });
             }
         }
