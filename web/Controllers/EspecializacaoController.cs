@@ -30,7 +30,7 @@ namespace web.Controllers
         }
 
         [HttpGet]
-        public JsonResult FindAll(int idFuncionario)
+        public JsonResult FindAllFuncionario(int idFuncionario)
         {
             Funcionario funcionario = dbFuncionario.FindOne(x => x.idFuncionario == idFuncionario);
             List<FuncionarioEspecializacao> listaFuncionarioEspecializacao = new List<FuncionarioEspecializacao>();
@@ -48,20 +48,56 @@ namespace web.Controllers
             return Json(new { especializacoes = listaFuncionarioEspecializacao, totalReg = listaFuncionarioEspecializacao.Count }, JsonRequestBehavior.AllowGet);
         }
 
-        /*
+        [HttpGet]
+        public JsonResult FindAll()
+        {
+            List<Especializacao> listaEspecializacao = dbEspecializacao.FindAll();
+            return Json(new { especializacoes = listaEspecializacao, totalReg = listaEspecializacao.Count }, JsonRequestBehavior.AllowGet);
+        }
+
+        
+        [HttpPost]
+        public JsonResult Save(string txtNome)
+        {
+            Especializacao especializacao = new Especializacao();
+            especializacao.nome = txtNome;
+
+            try
+            {
+                dbEspecializacao.Adicionar(especializacao);
+                dbEspecializacao.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+                        
         [HttpPost]
         public JsonResult Excluir(int id)
         {
+            FuncionarioEspecializacao funcionarioEspecializacao = dbFuncionarioEspecializacao.FindOne(f => f.idFuncionarioEspecializacao == id);
 
+            try
+            {
+                dbFuncionarioEspecializacao.Remover(funcionarioEspecializacao);
+                dbFuncionarioEspecializacao.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
         }
 
-        [HttpPost]
-        public JsonResult Save(string txtNome, string txtDescricao)
-        {
-            
-
-        }
-
+        /*
         [HttpPost]
         public JsonResult Editar(int id, string campo, string valor)
         {

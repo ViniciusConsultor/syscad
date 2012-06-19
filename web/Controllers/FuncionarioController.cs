@@ -12,6 +12,7 @@ namespace web.Controllers
     public class FuncionarioController : Controller
     {
         IRepositorio<Funcionario> dbFuncionario;
+        IRepositorio<FuncionarioEspecializacao> dbFuncionarioEspecializacao;
         IRepositorio<Usuario> dbUsuario;
         IRepositorio<Cargo> dbCargo;
         IRepositorio<Pessoa> dbPessoa;
@@ -19,6 +20,7 @@ namespace web.Controllers
         public FuncionarioController()
         {
             dbFuncionario = new Repositorio<Funcionario>();
+            dbFuncionarioEspecializacao = new Repositorio<FuncionarioEspecializacao>();
             dbUsuario = new Repositorio<Usuario>();
             dbCargo = new Repositorio<Cargo>();
             dbPessoa = new Repositorio<Pessoa>();
@@ -170,13 +172,14 @@ namespace web.Controllers
         }
 
         [HttpGet]
-        public JsonResult FindAllProfessores()
+        public JsonResult FindAllProfessores(int idEspecializacao)
         {
-            List<Funcionario> listaFuncionarios = dbFuncionario.FindAll(x => x.idCargo == 2);
+            List<FuncionarioEspecializacao> listaFuncionarios = dbFuncionarioEspecializacao.FindAll(x => x.idEspecializacao == idEspecializacao);
 
-            foreach (Funcionario f in listaFuncionarios)
+            foreach (FuncionarioEspecializacao fe in listaFuncionarios)
             {
-                f.Pessoa = dbPessoa.FindOne(x => x.idPessoa == f.idPessoa);
+                fe.Funcionario = dbFuncionario.FindOne(x => x.idFuncionario == fe.idFuncionario);
+                fe.Funcionario.Pessoa = dbPessoa.FindOne(x => x.idPessoa == fe.Funcionario.idPessoa);
             }
 
             return Json(new { funcionarios = listaFuncionarios, totalReg = listaFuncionarios.Count }, JsonRequestBehavior.AllowGet);
