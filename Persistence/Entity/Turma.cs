@@ -22,6 +22,7 @@ namespace Persistence.Entity
         public virtual DateTime dataInicio { get; set; }
         public virtual DateTime dataFim { get; set; }
         public virtual DateTime? dataFechamento { get; set; }
+        public virtual string justificativa { get; set; }
         public virtual Curso Curso { get; set; }
         public virtual Funcionario Funcionario { get; set; }
         public virtual ICollection<MatriculaTurma> MatriculaTurmas { get; set; }

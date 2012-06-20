@@ -20,9 +20,40 @@
         }
 
         var fecharTurma = function (command, rec) {
-            $.post("/Turma/FechamentoTurma", { codigoTurma: rec.data.idTurma }, function () {
-                success:
-                {
+            var dataAtual = new Date();
+            if (rec.data.dataFim < dataAtual) {
+                $.post("/Turma/FechamentoTurma", { codigoTurma: rec.data.idTurma }, function (result) {
+                    if (result.success) {
+                        Ext.Msg.show({
+                            title: 'Sucesso',
+                            msg: 'Turma fechada com sucesso!',
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.Msg.INFO,
+                            fn: function () {
+                                Ext.getCmp("grdTurmas").reload();
+                            }
+                        });
+                    } else {
+                        Ext.Msg.show({
+                            title: 'Erro',
+                            msg: 'Ocorreu um erro ao fechar a turma!',
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.Msg.ERROR,
+                            fn: function () {
+                                Ext.getCmp("grdTurmas").reload();
+                            }
+                        });
+                    }  
+                });
+            } else {
+                winJustificativa.show();
+                Ext.getCmp("codigoTurma").setValue(rec.data.idTurma);
+            }
+        }
+
+        var fecharTurmaJustificativa = function (serialize) {
+            $.post("/Turma/FechamentoTurma", serialize, function (result) {
+                if(result.success){                
                     Ext.Msg.show({
                         title: 'Sucesso',
                         msg: 'Turma fechada com sucesso!',
@@ -30,10 +61,23 @@
                         icon: Ext.Msg.INFO,
                         fn: function () {
                             Ext.getCmp("grdTurmas").reload();
+                            Ext.getCmp("Formulario").getForm().reset();
+                            winJustificativa.hide();
                         }
                     });
-                    
-                }
+                } else {
+                     Ext.Msg.show({
+                        title: 'Erro',
+                        msg: 'Ocorreu um erro ao fechar a turma!',
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.Msg.ERROR,
+                        fn: function () {
+                            Ext.getCmp("grdTurmas").reload();
+                            Ext.getCmp("Formulario").getForm().reset();
+                            winJustificativa.hide();
+                        }
+                    });
+                }                
             });
         }
     </script>
@@ -182,5 +226,43 @@
                 </ext:BorderLayout>
             </Items>
         </ext:Viewport>
+
+        <ext:Window 
+                ID="winJustificativa" 
+                runat="server" 
+                Icon="Application" 
+                Title="Justificativa" 
+                Hidden="true"
+                X="250"
+                Y="100"
+                Layout="FormLayout"
+                AutoHeight="true"
+                Frame="true"
+                Width="500"
+                Modal="true"
+                >
+                <Items>
+                    <ext:FormPanel ID="formulario" runat="server">
+                        <Items>
+                            <ext:Hidden ID="codigoTurma" runat="server" />                            
+                            <ext:TextArea ID="justificativa" AllowBlank="false" runat="server" FieldLabel="Justificativa" Width="200" Height="100" EmptyText="Informe uma justificativa para fechamento da turma antes da data de término" />                                                     
+                        </Items>
+                        <BottomBar>
+                            <ext:Toolbar ID="Toolbar3" runat="server">
+                                <Items>
+                                    <ext:ToolbarFill />
+                                        <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
+                                            <Listeners>
+                                                <Click Handler="fecharTurmaJustificativa(Ext.getCmp('formulario').getForm().getValues())" />
+                                            </Listeners>
+                                        </ext:Button>
+                                </Items>
+                            </ext:Toolbar>  
+                        </BottomBar>
+
+                    </ext:FormPanel>
+                </Items>
+
+        </ext:Window>
 </body>
 </html>

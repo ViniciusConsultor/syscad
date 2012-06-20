@@ -47,6 +47,22 @@ namespace web.Controllers
 
         }
 
+        public string GetTurmasAtivas(string limit, string query, string start)
+        {
+
+            IList<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) > 0 && x.status == (int)EnumStatus.TurmaAberta).Where(x => x.descricao.ToLower().Contains(query.ToLower())).ToList();
+
+            foreach (Turma t in listaTurma)
+            {
+                t.Curso = new Repositorio<Curso>().FindOne(x => x.idCurso == t.idCurso);
+            }
+
+            return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
+
+            //return Json(new { turmas = listaTurma, totalReg = listaTurma.Count }, JsonRequestBehavior.AllowGet);
+
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -229,7 +245,7 @@ namespace web.Controllers
 
         public string FindTurmas()
         {
-            List<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) != 0 && x.status == (int)EnumStatus.TurmaAberta);
+            List<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) > 0 && x.status == (int)EnumStatus.TurmaAberta);
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 
@@ -239,24 +255,38 @@ namespace web.Controllers
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 
-        public JsonResult FechamentoTurma(int codigoTurma)
+        public JsonResult FechamentoTurma(int codigoTurma, string justificativa = "")
         {
-            Turma t = dbTurma.FindOne(x => x.idTurma == codigoTurma);
-            t.dataFechamento = DateTime.Now;
-            t.status = (int)EnumStatus.TurmaFechada;
-            dbTurma.Atualizar(t);
-            dbTurma.SaveChanges();
-
-            List<MatriculaTurma> listMT = dbMatriculaTurma.FindAll(x => x.idTurma == codigoTurma);
-            foreach (MatriculaTurma mt in listMT)
+            try
             {
-                mt.situacaoAluno = (int)EnumStatus.TurmaFechada;
-                dbMatriculaTurma.Atualizar(mt);
+                Turma t = dbTurma.FindOne(x => x.idTurma == codigoTurma);
+                t.dataFechamento = DateTime.Now;
+                t.status = (int)EnumStatus.TurmaFechada;
+
+                //Fechamento antes da data de término
+                if (t.dataFim > DateTime.Now)
+                {
+                    t.status = (int)EnumStatus.TurmaFechadaAntes;
+                    t.justificativa = justificativa;
+                    List<MatriculaTurma> listMT = dbMatriculaTurma.FindAll(x => x.idTurma == codigoTurma);
+                    foreach (MatriculaTurma mt in listMT)
+                    {
+                        mt.situacaoAluno = (int)EnumStatus.TurmaFechadaAntes;
+                        dbMatriculaTurma.Atualizar(mt);
+                    }
+
+                    dbMatriculaTurma.SaveChanges();
+                }
+
+                dbTurma.Atualizar(t);
+                dbTurma.SaveChanges();
+
+                return Json(new { success = true });
             }
-
-            dbMatriculaTurma.SaveChanges();
-
-            return Json(new { success = true});
+            catch(Exception e)
+            {
+                return Json(new { success = false, message = e.Message });
+            }
         }
 
         [HttpPost]

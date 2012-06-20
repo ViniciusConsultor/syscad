@@ -20,6 +20,8 @@ namespace web.Controllers
         IRepositorio<MatriculaTurma> dbMatriculaTurma;
         IRepositorio<Taxa> dbTaxa;
         IRepositorio<Cobranca> dbCobranca;
+        IRepositorio<Status> dbStatus;
+        IRepositorio<Turma> dbTurma;
 
         public MatriculaController()
         {
@@ -30,6 +32,8 @@ namespace web.Controllers
             dbMatriculaTurma = new Repositorio<MatriculaTurma>();
             dbTaxa = new Repositorio<Taxa>();
             dbCobranca = new Repositorio<Cobranca>();
+            dbStatus = new Repositorio<Status>();
+            dbTurma = new Repositorio<Turma>();
         }
         
         public ActionResult Matricula()
@@ -45,25 +49,38 @@ namespace web.Controllers
         [HttpGet]
         public string FindAll()
         {
-            var listaMatricula = (from m in dbMatricula.Context.Matricula
-                                  select new Models.Matricula
+            var listaMatricula = (from m in dbMatricula.Context.MatriculaTurma
+                                  where m.situacaoAluno != (int)EnumStatus.TurmaFechadaAntes || m.situacaoAluno == null
+                                  select new Models.MatriculaTurma
                                   {
                                       idMatricula = m.idMatricula,
-                                      idAluno = m.idAluno,
-                                      numeroMatricula = m.numeroMatricula,
-                                      tipo = m.tipo,
-                                      dataRegistro = m.dataRegistro,
-                                      dataCancelamento = m.dataCancelamento != null ? m.dataCancelamento.Value : m.dataRegistro,
-                                      Aluno = new Models.Aluno
+                                      situacaoAluno = m.situacaoAluno,
+                                      notaFinal = m.notaFinal,
+                                      Matricula = new Models.Matricula
                                       {
-                                          idAluno = m.Aluno.idAluno,
-                                          nome = m.Aluno.Pessoa.nome,
-                                          Responsavel = new Models.Responsavel
+                                          numeroMatricula = m.Matricula.numeroMatricula,
+                                          tipo = m.Matricula.tipo,
+                                          dataRegistro = m.Matricula.dataRegistro,
+                                          dataCancelamento = m.Matricula.dataCancelamento != null ? m.Matricula.dataCancelamento.Value : m.Matricula.dataRegistro,
+                                          Aluno = new Models.Aluno
                                           {
-                                              idResponsavel = m.Aluno.Responsavel != null ? m.Aluno.Responsavel.idResponsavel : 0,
-                                              nome = m.Aluno.Responsavel.Pessoa.nome
+                                              idAluno = m.Matricula.Aluno.idAluno,
+                                              nome = m.Matricula.Aluno.Pessoa.nome,
+                                              Responsavel = new Models.Responsavel
+                                              {
+                                                  idResponsavel = m.Matricula.Aluno.Responsavel != null ? m.Matricula.Aluno.Responsavel.idResponsavel : 0,
+                                                  nome = m.Matricula.Aluno.Responsavel.Pessoa.nome
+                                              }
+                                          }
+                                      },
+                                      Turma = new Models.Turma
+                                      {
+                                          descricao = m.Turma.descricao,
+                                          Curso = new Models.Curso{
+                                               nome = m.Turma.Curso.nome
                                           }
                                       }
+
                                   }).ToList();
 
 
@@ -110,6 +127,7 @@ namespace web.Controllers
             Aluno aluno = dbAluno.FindOne(x => x.idAluno == matricula.idAluno);
             MatriculaTurma matriculaTurma = dbMatriculaTurma.FindOne(x => x.idMatricula == matricula.idMatricula);
             Cobranca cobranca = dbCobranca.FindOne(x => x.idAluno == aluno.idAluno && x.idTaxa == 1);
+            Turma turma = dbTurma.FindOne(x => x.idTurma == matriculaTurma.idTurma);
 
             try
             {
@@ -124,6 +142,10 @@ namespace web.Controllers
                 
                 dbAluno.Remover(aluno);
                 dbAluno.SaveChanges();
+
+                turma.vagasOcupadas -= 1;
+                dbTurma.Atualizar(turma);
+                dbTurma.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
 
@@ -240,6 +262,10 @@ namespace web.Controllers
                 dbMatriculaTurma.Adicionar(matriculaTurma);
                 dbMatriculaTurma.SaveChanges();
 
+                Turma turma = dbTurma.FindOne(x => x.idTurma == cmbTurma_Value);
+                turma.vagasOcupadas += 1;
+                dbTurma.SaveChanges();
+
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);
                 
             }
@@ -348,5 +374,11 @@ namespace web.Controllers
             return anos;
         }
 
+        [HttpGet]
+        public string GetSitucao(int situacao)
+        {
+            Status s = dbStatus.FindOne(x => x.idStatus == situacao);
+            return s.descricao;
+        }
     }
 }
