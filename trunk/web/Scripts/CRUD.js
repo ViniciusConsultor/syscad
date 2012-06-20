@@ -18,7 +18,15 @@ function excluirRegistro() {
                 var genericParamsRecord = "record.data."; //Não mecher
                 var makeParams = genericParamsRecord + campoIdRegistro; //Não mecher
 
-                $.post(metodoExcluir, { id: eval(makeParams) }, function () {
+                $.post(metodoExcluir, { id: eval(makeParams) }, function (result) {
+                    if (!result.success) {                       
+                        Ext.Msg.show({
+                            title: 'Erro',
+                            msg: 'Erro ao excluir ' + controller,
+                            buttons: Ext.Msg.OK,
+                            icon: Ext.Msg.ERROR
+                        });
+                    }
                     GridPanel.reload();
                     GridPanel.el.unmask();
                 });

@@ -19,6 +19,7 @@ namespace Persistence.Entity
         TurmaSolicitada = 10,
         TurmaAberta = 11,
         Inadimplente = 12,
-        TurmaRejeitada = 13
+        TurmaRejeitada = 13,
+        TurmaFechadaAntes = 14
     }
 }

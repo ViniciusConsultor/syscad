@@ -16,22 +16,18 @@
     //Variaveis GENERICAS
     var controller = '<%= ViewContext.RouteData.Values["Controller"] %>'; // NÃO MECHER
 
-    var trataCurso = function (value, rec) {
-        rec.cursoNome = rec.Curso.nome;
+    var trataSituacao = function (value, rec) {
+        if (value != null) {
+            $.get('/Matricula/GetSituacao', { situacao: value }, function (valor) {
+                rec.nomeSituacao = valor;
+            });
+        } else {
+            rec.nomeSituacao = "Matriculado";
+        };
     }
 
-    var trataCancelamento = function (value, rec) {
-        //alert("Data Registro:\n" + rec.dataRegistro + "\nData Cancelamento:\n" + value);
-        if (value == rec.dataRegistro) {
-
-            rec.dtCancelamento = null;
-
-        } else {
-
-            var data = new Date(value);
-            rec.dtCancelamento = data.format('d/m/Y');
-
-        }
+    var trataCurso = function (value, rec) {
+        rec.cursoNome = value;        
     }
 
     var idadePessoa = function (value) {
@@ -65,7 +61,8 @@
                     TrackMouseOver="true"
                     Width="850"
                     Height="704"
-                    AutoExpandColumn="Aluno.nome"
+                    AutoExpandColumn="Matricula.Aluno.nome"
+                    onRefreshData="/Matricula/FindAll"
                     >
                     <Store>
                         <ext:Store 
@@ -78,14 +75,17 @@
                                 <ext:JsonReader Root="matriculas" TotalProperty="totalReg">
                                     <Fields>
                                         <ext:RecordField Name="idMatricula" Type="Int" />
-                                        <ext:RecordField Name="numeroMatricula" Type="Int" />
-                                        <ext:RecordField Name="Aluno.nome" Type="String" />
-                                        <ext:RecordField Name="dataRegistro" DateFormat="dd/MM/yyyy" />
-                                        <ext:RecordField Name="dataCancelamento" DateFormat="dd/MM/yyyy">
-                                            <Convert Fn="trataCancelamento" />
+                                        <ext:RecordField Name="Matricula.numeroMatricula" Type="Int" />
+                                        <ext:RecordField Name="Matricula.Aluno.nome" Type="String" />
+                                        <ext:RecordField Name="Matricula.dataRegistro" DateFormat="dd/MM/yyyy" />
+                                        <ext:RecordField Name="Matricula.Aluno.Responsavel.nome" Type="String" />
+                                        <ext:RecordField Name="Turma.descricao" Type="String" />
+                                        <ext:RecordField Name="Turma.Curso.nome" Type="String" />
+                                        <ext:RecordField Name="situacaoAluno" Type="Int" >
+                                            <Convert Fn="trataSituacao" />
                                         </ext:RecordField>
-                                        <ext:RecordField Name="Aluno.Responsavel.nome" Type="String" />
-                                        <ext:RecordField Name="dtCancelamento" Type="String" />
+                                        <ext:RecordField Name="notaFinal" Type="Float" />
+                                        <ext:RecordField Name="nomeSituacao" Type="String" />
                                     </Fields>
                                 </ext:JsonReader>
                             </Reader>
@@ -98,12 +98,15 @@
                     <ColumnModel ID="ColumnModel1" runat="server" RegisterAllResources="false">
                             <Columns>
                                 <ext:RowNumbererColumn />
-                                <ext:Column ColumnID="idmatricula" Hidden="true" DataIndex="idMatricula"></ext:Column>
-                                <ext:Column ColumnID="matricula" Header="Matrícula" DataIndex="numeroMatricula"></ext:Column>
-                                <ext:Column ColumnID="aluno" Header="Aluno" DataIndex="Aluno.nome" width="180px"></ext:Column>
-                                <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Aluno.Responsavel.nome" width="180px"></ext:Column>                    
-                                <ext:DateColumn DataIndex="dataRegistro" Header="Data de Registro" Width="100px" Format="dd/MM/yyyy" />
-                                <ext:Column DataIndex="dtCancelamento" Header="Data de Cancelamento" Width="120px" />
+                                <ext:Column ColumnID="idMatricula" Hidden="true" DataIndex="idMatricula"></ext:Column>
+                                <ext:Column ColumnID="Matricula" Header="Mat." DataIndex="Matricula.numeroMatricula" Width="40"></ext:Column>
+                                <ext:Column ColumnID="Aluno" Header="Aluno" DataIndex="Matricula.Aluno.nome" width="180px"></ext:Column>
+                                <ext:Column ColumnID="Curso" Header="Curso" DataIndex="Turma.Curso.nome" width="180px"></ext:Column>
+                                <ext:Column ColumnID="Turma" Header="Turma" DataIndex="Turma.descricao" width="100px"></ext:Column>
+                                <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Matricula.Aluno.Responsavel.nome" width="180px"></ext:Column>  
+                                <ext:Column DataIndex="nomeSituacao" Header="Situação" Width="80px" />
+                                <ext:Column DataIndex="Nota Final" Header="Nota Final" Width="80px" />                  
+                                <ext:DateColumn DataIndex="Matricula.dataRegistro" Header="Data de Registro" Width="90px" Format="dd/MM/yyyy" />
                             </Columns>
                         </ColumnModel>
                     <SelectionModel>
@@ -129,6 +132,7 @@
                     <BottomBar>
                         <ext:PagingToolbar ID="PagingToolbar2" runat="server" PageSize="10" />
                     </BottomBar>
+                    <LoadMask ShowMask="true" />
                 </ext:GridPanel>
             </Center>
         </ext:BorderLayout>
@@ -273,7 +277,7 @@
                                 <Store>
                                     <ext:Store ID="Store4" runat="server" AutoLoad="false">
                                         <Proxy>
-                                            <ext:HttpProxy Method="POST" Url="/Turma/Search" />
+                                            <ext:HttpProxy Method="POST" Url="/Turma/GetTurmasAtivas" />
                                         </Proxy>
                                         <Reader>
                                             <ext:JsonReader Root="turmas" TotalProperty="totalReg">

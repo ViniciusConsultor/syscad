@@ -68,14 +68,6 @@
             <End Role="usuario" EntitySet="usuario" />
             <End Role="funcionario" EntitySet="funcionario" />
           </AssociationSet>
-          <AssociationSet Name="FK_funcionarioEspecializacao_especializacao" Association="BDSysCadModel.Store.FK_funcionarioEspecializacao_especializacao">
-            <End Role="especializacao" EntitySet="especializacao" />
-            <End Role="funcionarioEspecializacao" EntitySet="funcionarioEspecializacao" />
-          </AssociationSet>
-          <AssociationSet Name="FK_funcionarioEspecializacao_funcionario" Association="BDSysCadModel.Store.FK_funcionarioEspecializacao_funcionario">
-            <End Role="funcionario" EntitySet="funcionario" />
-            <End Role="funcionarioEspecializacao" EntitySet="funcionarioEspecializacao" />
-          </AssociationSet>
           <AssociationSet Name="FK_matricula_aluno" Association="BDSysCadModel.Store.FK_matricula_aluno">
             <End Role="aluno" EntitySet="aluno" />
             <End Role="matricula" EntitySet="matricula" />
@@ -339,6 +331,7 @@
           <Property Name="dataFechamento" Type="datetime" />
           <Property Name="status" Type="int" />
           <Property Name="idFuncionario" Type="int" />
+          <Property Name="justificativa" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="usuario">
           <Key>
@@ -466,30 +459,6 @@
             </Principal>
             <Dependent Role="funcionario">
               <PropertyRef Name="idUsuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_funcionarioEspecializacao_especializacao">
-          <End Role="especializacao" Type="BDSysCadModel.Store.especializacao" Multiplicity="1" />
-          <End Role="funcionarioEspecializacao" Type="BDSysCadModel.Store.funcionarioEspecializacao" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="especializacao">
-              <PropertyRef Name="idEspecializacao" />
-            </Principal>
-            <Dependent Role="funcionarioEspecializacao">
-              <PropertyRef Name="idEspecializacao" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_funcionarioEspecializacao_funcionario">
-          <End Role="funcionario" Type="BDSysCadModel.Store.funcionario" Multiplicity="1" />
-          <End Role="funcionarioEspecializacao" Type="BDSysCadModel.Store.funcionarioEspecializacao" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="funcionario">
-              <PropertyRef Name="idFuncionario" />
-            </Principal>
-            <Dependent Role="funcionarioEspecializacao">
-              <PropertyRef Name="idFuncionario" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1230,6 +1199,7 @@
           <NavigationProperty Name="NotaFaltas" Relationship="BDSysCadModel.FK_notaFalta_turma" FromRole="turma" ToRole="NotaFalta" />
           <Property Type="Int32" Name="idFuncionario" />
           <NavigationProperty Name="Funcionario" Relationship="BDSysCadModel.FK_turma_funcionario" FromRole="Turma" ToRole="Funcionario" />
+          <Property Type="String" Name="justificativa" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_turma_curso">
           <End Type="BDSysCadModel.Curso" Role="Curso" Multiplicity="1" />
@@ -1543,6 +1513,7 @@
           <EntitySetMapping Name="TurmaSet">
             <EntityTypeMapping TypeName="BDSysCadModel.Turma">
               <MappingFragment StoreEntitySet="turma">
+                <ScalarProperty Name="justificativa" ColumnName="justificativa" />
                 <ScalarProperty Name="idFuncionario" ColumnName="idFuncionario" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="dataFechamento" ColumnName="dataFechamento" />

@@ -16,5 +16,7 @@ namespace web.Models
         public int idMatricula { get; set; }
         public Matricula Matricula { get; set; }
         public Turma Turma { get; set; }
+        public int? situacaoAluno { get; set; }
+        public decimal? notaFinal { get; set; }
     }
 }

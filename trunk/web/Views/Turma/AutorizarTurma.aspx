@@ -28,10 +28,13 @@
                             title: 'Sucesso',
                             msg: 'Autorização Completa! Turma Aberta.',
                             buttons: Ext.Msg.OK,
-                            icon: Ext.Msg.INFO
+                            icon: Ext.Msg.INFO,
+                            fn: function () {
+                                GridPanel.reload();
+                            }
                         });
 
-                        GridPanel.reload();
+                        
                     } else {
                         Ext.Msg.show({
                             title: 'Erro',
@@ -51,10 +54,11 @@
                                     title: 'Sucesso',
                                     msg: 'Turma Rejeitada',
                                     buttons: Ext.Msg.OK,
-                                    icon: Ext.Msg.INFO
-                                });
-
-                                GridPanel.reload();
+                                    icon: Ext.Msg.INFO,
+                                    fn: function () {
+                                        GridPanel.reload();
+                                    }
+                                });                                
                             } else {
                                 Ext.Msg.show({
                                     title: 'Erro',
