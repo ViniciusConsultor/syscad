@@ -273,6 +273,12 @@ namespace web.Controllers
                     {
                         mt.situacaoAluno = (int)EnumStatus.TurmaFechadaAntes;
                         dbMatriculaTurma.Atualizar(mt);
+
+                        Matricula mat = dbMatricula.FindOne(x => x.idMatricula == mt.idMatricula);
+                        List<Cobranca> cob = dbCobranca.FindAll(x => x.idAluno == mat.idAluno);
+                        cob.ForEach(x => dbCobranca.Remover(x));
+                        dbCobranca.SaveChanges();
+
                     }
 
                     dbMatriculaTurma.SaveChanges();

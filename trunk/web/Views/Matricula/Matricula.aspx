@@ -18,9 +18,17 @@
 
     var trataSituacao = function (value, rec) {
         if (value != null) {
-            $.get('/Matricula/GetSituacao', { situacao: value }, function (valor) {
-                rec.nomeSituacao = valor;
-            });
+            switch (value) {
+                case 1:
+                    rec.nomeSituacao = "Aprovado";
+                    break;
+                case 2:
+                    rec.nomeSituacao = "Reprovado";
+                    break;
+                case 3:
+                    rec.nomeSituacao = "Recuperação";
+                    break;
+            }
         } else {
             rec.nomeSituacao = "Matriculado";
         };
@@ -105,7 +113,7 @@
                                 <ext:Column ColumnID="Turma" Header="Turma" DataIndex="Turma.descricao" width="100px"></ext:Column>
                                 <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Matricula.Aluno.Responsavel.nome" width="180px"></ext:Column>  
                                 <ext:Column DataIndex="nomeSituacao" Header="Situação" Width="80px" />
-                                <ext:Column DataIndex="Nota Final" Header="Nota Final" Width="80px" />                  
+                                <ext:Column DataIndex="notaFinal" Header="Nota Final" Width="80px" />                  
                                 <ext:DateColumn DataIndex="Matricula.dataRegistro" Header="Data de Registro" Width="90px" Format="dd/MM/yyyy" />
                             </Columns>
                         </ColumnModel>

@@ -52,12 +52,13 @@
             var IdAluno = e.record.data.IdAluno;
             var IdTurma = e.record.data.IdTurma;
             var IdModulo = e.record.data.IdModulo;
+            var IdMatricula = e.record.data.IdMatricula;
             var field = e.field;
             var newValue = e.value;
 
             grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
 
-            var r = $.post('/LancarNotaFalta/EnviarNotaFalta', { idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function (result) {
+            var r = $.post('/LancarNotaFalta/EnviarNotaFalta', { idMatricula:IdMatricula, idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function (result) {
                 complete:
                 {
                     grdNotaFalta.el.unmask();
@@ -199,6 +200,7 @@
                                                         <ext:RecordField Name="Faltas" Type="Int" />
                                                         <ext:RecordField Name="situacaoAluno" Type="Int" />
                                                         <ext:RecordField Name="notaFinal"  />
+                                                        <ext:RecordField Name="IdMatricula" Type="Int"  />
                                                     </Fields>
                                                 </ext:JsonReader>
                                             </Reader>

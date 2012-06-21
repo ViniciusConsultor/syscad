@@ -45,17 +45,37 @@ namespace web.Controllers
         public JsonResult FindTurmaByProfessor()
         {
             var idProfessor = (int)Session["id_usuario"];
-            int codigoTurma = (from t in dbTurma.Context.Turma where t.Funcionario.Usuario.idUsuario == idProfessor select t.idTurma).FirstOrDefault();
-            List<Models.ModuloViewData> listModulos = (from m in dbModulo.Context.Modulo
-                                               where m.Curso.Turmas.Where(t => t.idTurma == codigoTurma).Count() > 0
-                                               select new Models.ModuloViewData
-                                               {
-                                                   IdModulo = m.idModulo,
-                                                   IdTurma = m.Curso.Turmas.Where(x => x.Funcionario.Usuario.idUsuario == idProfessor).FirstOrDefault().idTurma,
-                                                   nomeCurso = m.Curso.nome,
-                                                   nomeModulo = m.nome,
-                                                   nomeTurma = m.Curso.Turmas.Where(x => x.Funcionario.Usuario.idUsuario == idProfessor).FirstOrDefault().descricao
-                                               }).ToList();
+
+            conn.Open();
+            string sql = @"select idModulo, idTurma , m.nome as modulo, c.nome as curso, t.descricao as turma from modulo m
+                            join curso c
+                            on m.idCurso = c.idCurso
+                            join turma t
+                            on t.idCurso = c.idCurso
+                            join funcionario f
+                            on f.idFuncionario = t.idFuncionario
+                            where f.idUsuario = @usuario and t.status = @status";
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            comm.Parameters.Add(new SqlParameter("@usuario", idProfessor));
+            comm.Parameters.Add(new SqlParameter("@status", (int)EnumStatus.TurmaAberta));
+            SqlDataReader dr = comm.ExecuteReader();
+
+            List<Models.ModuloViewData> listModulos = new List<Models.ModuloViewData>();
+
+            while (dr.Read())
+            {
+                Models.ModuloViewData a = new Models.ModuloViewData();
+                a.IdModulo = dr.GetInt32(0);
+                a.IdTurma = dr.GetInt32(1);
+                a.nomeModulo = dr.GetString(2);
+                a.nomeCurso = dr.GetString(3);
+                a.nomeTurma = dr.GetString(4);
+
+                listModulos.Add(a);
+            }
+
+            conn.Close();
 
             return Json(new { modulos = listModulos },JsonRequestBehavior.AllowGet);
         }
@@ -65,7 +85,7 @@ namespace web.Controllers
         {
             
             conn.Open();
-            string sql = @"select a.idAluno, t.idTurma, mo.idModulo, p.nome, nt.nota1, nt.nota2, nt.qtdFalta, nt.situacaoAluno, nt.notaFinal 
+            string sql = @"select a.idAluno, t.idTurma, mo.idModulo, p.nome, nt.nota1, nt.nota2, nt.qtdFalta, nt.situacaoAluno, nt.notaFinal, m.idMatricula 
                             from aluno a
                             join pessoa p on a.idPessoa = p.idPessoa
                             join matricula m on a.idAluno = m.idAluno
@@ -96,6 +116,7 @@ namespace web.Controllers
                 a.Faltas = !dr.IsDBNull(6) ? dr.GetInt32(6) : 0;
                 a.situacaoAluno = !dr.IsDBNull(7) ? dr.GetInt32(7) : 0;
                 a.notaFinal = !dr.IsDBNull(8) ? dr.GetDecimal(8) : (decimal?)null;
+                a.IdMatricula = dr.GetInt32(9);
 
                 listAlunos.Add(a);
             }
@@ -105,7 +126,7 @@ namespace web.Controllers
             return Json(new { alunos = listAlunos }, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult EnviarNotaFalta(int idAluno, int idTurma, int idModulo, string campo, string valor)
+        public JsonResult EnviarNotaFalta(int idMatricula, int idAluno, int idTurma, int idModulo, string campo, string valor)
         {
             try
             {
@@ -152,7 +173,7 @@ namespace web.Controllers
                 dbNT.SaveChanges();
 
                 //Verifica a situação do aluno
-                var ntFalta = verificaSituacao(idAluno, idTurma, idModulo);
+                var ntFalta = verificaSituacao(idMatricula, idAluno, idTurma, idModulo);
 
                 return Json(new { notaFalta = ntFalta, success = true }, JsonRequestBehavior.AllowGet);
 
@@ -179,7 +200,7 @@ namespace web.Controllers
         }
 
         //Implementação das regras de negocio
-        private NotaFalta verificaSituacao(int idAluno, int idTurma, int idModulo)
+        private NotaFalta verificaSituacao(int idMatricula, int idAluno, int idTurma, int idModulo)
         {
             NotaFalta nt = dbNotaFalta.FindOne(x => x.idAluno == idAluno && x.idTurma == idTurma && x.idModulo == idModulo);
             if (nt.nota1 != null && nt.qtdFalta != null)
@@ -238,12 +259,12 @@ namespace web.Controllers
                     if (modulosAprovados == qtdModulosCursados)
                     {    
                         //Aprovado no curso
-                        atualizaSituacaoFinalAluno(idAluno, idTurma, EnumStatus.Aprovado, notaFinal.Value);
+                        atualizaSituacaoFinalAluno(idMatricula, idTurma, EnumStatus.Aprovado, notaFinal.Value);
                     }
                     else
                     {
                         //Reprovado no curso
-                        atualizaSituacaoFinalAluno(idAluno, idTurma, EnumStatus.Reprovado, notaFinal.Value);
+                        atualizaSituacaoFinalAluno(idMatricula, idTurma, EnumStatus.Reprovado, notaFinal.Value);
                     }
                 }
             }
@@ -278,11 +299,10 @@ namespace web.Controllers
             }
         }
 
-        private void atualizaSituacaoFinalAluno(int idAluno, int idTurma, EnumStatus status, decimal notaFinal)
+        private void atualizaSituacaoFinalAluno(int idMatricula, int idTurma, EnumStatus status, decimal notaFinal)
         {
             try
             {
-                Matricula m = dbMatricula.FindOne(x => x.idAluno == idAluno);
                 var sql = @"UPDATE mt
                             SET situacaoAluno = @situacaoAluno, notaFinal = @notaFinal
                             FROM dbo.matriculaTurma mt
@@ -291,7 +311,7 @@ namespace web.Controllers
                 SqlCommand comm = conn.CreateCommand();
                 comm.CommandText = sql;
                 comm.Parameters.Add(new SqlParameter("@situacaoAluno", status));
-                comm.Parameters.Add(new SqlParameter("@idMatricula", m.idMatricula));
+                comm.Parameters.Add(new SqlParameter("@idMatricula", idMatricula));
                 comm.Parameters.Add(new SqlParameter("@idTurma", idTurma));
                 comm.Parameters.Add(new SqlParameter("@notaFinal", notaFinal));
                 comm.ExecuteNonQuery();
