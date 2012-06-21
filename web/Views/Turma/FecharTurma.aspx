@@ -61,7 +61,7 @@
                         icon: Ext.Msg.INFO,
                         fn: function () {
                             Ext.getCmp("grdTurmas").reload();
-                            Ext.getCmp("Formulario").getForm().reset();
+                            Ext.getCmp("formulario").getForm().reset();
                             winJustificativa.hide();
                         }
                     });
@@ -73,7 +73,7 @@
                         icon: Ext.Msg.ERROR,
                         fn: function () {
                             Ext.getCmp("grdTurmas").reload();
-                            Ext.getCmp("Formulario").getForm().reset();
+                            Ext.getCmp("formulario").getForm().reset();
                             winJustificativa.hide();
                         }
                     });

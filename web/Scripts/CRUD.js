@@ -77,7 +77,7 @@ function salvar() {
         } else {
             Ext.Msg.show({
                 title: 'Erro',
-                msg: 'Erro ao cadastrar ' + controller,
+                msg: result.message,
                 buttons: Ext.Msg.OK,
                 icon: Ext.Msg.ERROR
             });

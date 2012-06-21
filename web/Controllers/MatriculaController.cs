@@ -17,7 +17,7 @@ namespace web.Controllers
         IRepositorio<Aluno> dbAluno;
         IRepositorio<Pessoa> dbPessoa;
         IRepositorio<Responsavel> dbResponsavel;
-        IRepositorio<MatriculaTurma> dbMatriculaTurma;
+        Repositorio<MatriculaTurma> dbMatriculaTurma;
         IRepositorio<Taxa> dbTaxa;
         IRepositorio<Cobranca> dbCobranca;
         IRepositorio<Status> dbStatus;
@@ -193,47 +193,55 @@ namespace web.Controllers
 
         [HttpPost]
         public JsonResult Save(int cmbPessoa_Value, string cmbResponsavel_Value, string txtGrauParentesco, string txtDataCancelamento, int cmbTurma_Value)
-        {           
-
-            Matricula matricula = new Matricula();
-            Aluno aluno = new Aluno();
-            Responsavel responsavel = new Responsavel();
-            Cobranca cobranca = new Cobranca();
-
-            Aluno alunoExistente = dbAluno.FindOne(x => x.idPessoa == cmbPessoa_Value);
-
-            Taxa taxa = dbTaxa.FindOne(x => x.idTaxa == 1);            
-
-            if (!String.IsNullOrEmpty(txtDataCancelamento))
-            {
-                matricula.dataCancelamento = Convert.ToDateTime(txtDataCancelamento);
-            }
-
-            if (!String.IsNullOrEmpty(cmbResponsavel_Value) && !String.IsNullOrEmpty(txtGrauParentesco))
-            {
-                responsavel.idPessoa = Convert.ToInt32(cmbResponsavel_Value);
-                responsavel.grauParentesco = txtGrauParentesco;
-                aluno.Responsavel = responsavel;
-            }
-            
-            aluno.idPessoa = cmbPessoa_Value;            
-            aluno.statusFinanceiro = 0;
-            aluno.statusPedagogico = 0;
-            
-            matricula.numeroMatricula = 0;
-            if (alunoExistente != null)
-            {
-                matricula.idAluno = alunoExistente.idAluno;
-            }
-            else
-            {
-                matricula.Aluno = aluno;
-            }
-            matricula.dataRegistro = DateTime.Now;
-            matricula.tipo = "matricula";
-
+        {
             try
             {
+
+                //Tratamento de erro para não permitir o cadastramento duplicado do aluno na turma
+                var qtdMatAluno = (from m in dbMatriculaTurma.Context.MatriculaTurma where m.Matricula.Aluno.Pessoa.idPessoa == cmbPessoa_Value && m.Turma.idTurma == cmbTurma_Value && m.Turma.status == (int)EnumStatus.TurmaAberta select m).Count();
+                if (qtdMatAluno > 0)
+                {
+                    throw new Exception("O Aluno já matriculado nesta turma!");
+                }
+                    
+
+                Matricula matricula = new Matricula();
+                Aluno aluno = new Aluno();
+                Responsavel responsavel = new Responsavel();
+                Cobranca cobranca = new Cobranca();
+
+                Aluno alunoExistente = dbAluno.FindOne(x => x.idPessoa == cmbPessoa_Value);
+
+                Taxa taxa = dbTaxa.FindOne(x => x.idTaxa == 1);            
+
+                if (!String.IsNullOrEmpty(txtDataCancelamento))
+                {
+                    matricula.dataCancelamento = Convert.ToDateTime(txtDataCancelamento);
+                }
+
+                if (!String.IsNullOrEmpty(cmbResponsavel_Value) && !String.IsNullOrEmpty(txtGrauParentesco))
+                {
+                    responsavel.idPessoa = Convert.ToInt32(cmbResponsavel_Value);
+                    responsavel.grauParentesco = txtGrauParentesco;
+                    aluno.Responsavel = responsavel;
+                }
+            
+                aluno.idPessoa = cmbPessoa_Value;            
+                aluno.statusFinanceiro = 0;
+                aluno.statusPedagogico = 0;
+            
+                matricula.numeroMatricula = 0;
+                if (alunoExistente != null)
+                {
+                    matricula.idAluno = alunoExistente.idAluno;
+                }
+                else
+                {
+                    matricula.Aluno = aluno;
+                }
+                matricula.dataRegistro = DateTime.Now;
+                matricula.tipo = "matricula";
+
                 dbMatricula.Adicionar(matricula);
                 dbMatricula.SaveChanges();
 
@@ -374,11 +382,5 @@ namespace web.Controllers
             return anos;
         }
 
-        [HttpGet]
-        public string GetSitucao(int situacao)
-        {
-            Status s = dbStatus.FindOne(x => x.idStatus == situacao);
-            return s.descricao;
-        }
     }
 }

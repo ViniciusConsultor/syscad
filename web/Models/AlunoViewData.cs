@@ -10,6 +10,7 @@ namespace web.Models
         public int IdAluno { get; set; }
         public int IdTurma { get; set; }
         public int IdModulo { get; set; }
+        public int IdMatricula { get; set; }
         public string Nome { get; set; }
         public decimal? Nota1 { get; set; }
         public decimal? Nota2 { get; set; }
