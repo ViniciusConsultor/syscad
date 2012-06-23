@@ -15,6 +15,11 @@
             var data = new Date(value);
             rec.dataInicioFormatada = data.format('d/m/Y');
         }
+
+        var fomataDataFim = function (value, rec) {
+            var data = new Date(value);
+            rec.dataFimFormatada = data.format('d/m/Y');
+        }
     </script>
 </head>
 <script type="text/javascript">
@@ -95,7 +100,7 @@
                             ID="grdTurmas"
                             runat="server"  
                             AutoExpandColumn="descricao"
-                            OnRefreshData="/Turma/FindTurmas"
+                            OnRefreshData="/Turma/FindTurmasDisponibilidade"
                             >
                             <Store>
                                 <ext:Store 
@@ -113,9 +118,15 @@
                                                 <ext:RecordField Name="dataInicio" Type="Date" >
                                                     <Convert Fn="fomataData" />
                                                 </ext:RecordField>
+                                                <ext:RecordField Name="dataFim" Type="Date" >
+                                                    <Convert Fn="fomataDataFim" />
+                                                </ext:RecordField>
                                                 <ext:RecordField Name="vagasOcupadas" Type="Int" />
                                                 <ext:RecordField Name="numeroVagas" Type="Int" />
                                                 <ext:RecordField Name="dataInicioFormatada" Type="String" />
+                                                <ext:RecordField Name="dataFimFormatada" Type="String" />
+                                                <ext:RecordField Name="Curso.nome" Type="String" />
+                                                <ext:RecordField Name="Professor.nome" Type="String" />
                                             </Fields>
                                         </ext:JsonReader>
                                     </Reader>                                            
@@ -132,9 +143,13 @@
                                     <Columns>
                                         <ext:RowNumbererColumn />
                                         <ext:Column ColumnID="idTurma" Header="IdTurma" DataIndex="idTurma" Hidden="true" />
-                                        <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" Width="150" />
-                                        <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="150" />
-                                        <ext:Column ColumnID="numeroVagas" Header="Quantidade de Vagas" DataIndex="numeroVagas" Width="150" />                                        <ext:Column ColumnID="vagasOcupadas" Header="Vagas Ocupadas" DataIndex="vagasOcupadas" Width="150" />
+                                        <ext:Column ColumnID="descricao" Header="Turma" DataIndex="descricao" />
+                                        <ext:Column ColumnID="curso" Header="Curso" DataIndex="Curso.nome" Width="200" />
+                                        <ext:Column ColumnID="professor" Header="Professor" DataIndex="Professor.nome" Width="200" />
+                                        <ext:Column ColumnID="dataInicioFormatada" Header="Data Inicio" DataIndex="dataInicioFormatada" Width="100" />
+                                        <ext:Column ColumnID="dataFimFormatada" Header="Data Fim" DataIndex="dataFimFormatada" Width="100" />
+                                        <ext:Column ColumnID="numeroVagas" Header="Vagas Disponíveis" DataIndex="numeroVagas" Width="100" />
+                                        <ext:Column ColumnID="vagasOcupadas" Header="Vagas Ocupadas" DataIndex="vagasOcupadas" Width="150" />
                                     </Columns>
                             </ColumnModel>                                   
                             <BottomBar>

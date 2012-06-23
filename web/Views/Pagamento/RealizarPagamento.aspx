@@ -157,10 +157,16 @@
         var trataDados = function (value, rec) {
             if (value == null) {
                 rec.nomeCobranca = "Mensalidade";
-                rec.valorCobranca = rec.Curso.valor;
+//                var dataAtual = new Date();
+//                if (dataAtual > rec.dataVencimento) {
+//                    rec.juros = rec.juros + (rec.Curso.valor / 0.02);
+//                    rec.valorCobranca = rec.Curso.valor + rec.juros;
+//                } else {
+                    rec.valorCobranca = rec.Curso.valor; 
+//                }
             } else {
                 rec.nomeCobranca = rec.Taxa.nome;
-                rec.valorCobranca = rec.Taxa.valor;               
+                rec.valorCobranca = rec.Taxa.valor;
             }
         }
 
