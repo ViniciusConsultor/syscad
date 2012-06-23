@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head id="Head1" runat="server">
-    <title>Modulos</title>
+    <title>Módulos</title>
     <link href="../../Content/Grid.css" rel="stylesheet" type="text/css" />
     <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
 </head>
@@ -31,7 +31,7 @@
     <ext:GridPanel 
         ID="GridPanel"
         runat="server" 
-        Title="Gerenciar Modulo" 
+        Title="Gerenciar Módulo" 
         StripeRows="true"
         TrackMouseOver="true"
         Width="1181"

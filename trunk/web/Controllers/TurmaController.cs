@@ -251,7 +251,28 @@ namespace web.Controllers
 
         public string FindTurmasDisponibilidade(int idCurso)
         {
-            List<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) > 0 && x.status == (int)EnumStatus.TurmaAberta && x.idCurso == idCurso);
+            //List<Turma> listaTurma = dbTurma.FindAll(x => (x.numeroVagas - x.vagasOcupadas) > 0 && x.status == (int)EnumStatus.TurmaAberta && x.idCurso == idCurso && x.dataInicio < DateTime.Now);
+            var listaTurma = (from t in dbTurma.Context.Turma
+                              where (t.numeroVagas - t.vagasOcupadas) > 0 && t.status == (int)EnumStatus.TurmaAberta && t.idCurso == idCurso && t.dataInicio < DateTime.Now
+                              select new Models.Turma
+                              {
+                                  descricao = t.descricao,
+                                  idTurma = t.idTurma,
+                                  dataInicio = t.dataInicio,
+                                  dataFim = t.dataFim,
+                                  idCurso = t.idCurso,
+                                  vagasOcupadas = t.vagasOcupadas,
+                                  numeroVagas = t.numeroVagas,
+                                  Curso = new Models.Curso
+                                  {
+                                      nome = t.Curso.nome
+                                  },
+                                  Professor = new Models.Professor
+                                  {
+                                      nome = t.Funcionario.Pessoa.nome
+                                  }
+                              }).ToList();
+            
             return "{turmas:" + JSON.Serialize(listaTurma) + ", totalReg:" + listaTurma.Count() + "}";
         }
 

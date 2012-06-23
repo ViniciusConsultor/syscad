@@ -73,8 +73,8 @@ namespace web.Controllers
                                                        idAluno = c.idAluno,
                                                        idTaxa = c.idTaxa,
                                                        idCurso = c.idCurso,
-                                                       juros = c.juros,
-                                                       valorTotal = c.valorTotal,
+                                                       juros = c.juros, //DateTime.Now > c.dataVencimento ? c.juros + (c.valorTotal / 0.02m) : c.juros,
+                                                       valorTotal = c.valorTotal, //DateTime.Now > c.dataVencimento ? c.valorTotal * 1.02m : c.valorTotal,
                                                        dataVencimento = c.dataVencimento,
                                                        Taxa = new Models.Taxa
                                                        {

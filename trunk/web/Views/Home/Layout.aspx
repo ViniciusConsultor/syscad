@@ -68,7 +68,7 @@
 
                  tab.on("activate", function () {
                      var item = TreePanel1.items.get(id + "_item");
-
+                     tab.reload();
                      if (item) {
                          TreePanel1.setSelection(item);
                      }

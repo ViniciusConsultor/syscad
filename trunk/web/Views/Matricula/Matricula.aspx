@@ -111,7 +111,7 @@
                                 <ext:Column ColumnID="Aluno" Header="Aluno" DataIndex="Matricula.Aluno.nome" width="180px"></ext:Column>
                                 <ext:Column ColumnID="Curso" Header="Curso" DataIndex="Turma.Curso.nome" width="180px"></ext:Column>
                                 <ext:Column ColumnID="Turma" Header="Turma" DataIndex="Turma.descricao" width="100px"></ext:Column>
-                                <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Matricula.Aluno.Responsavel.nome" width="180px"></ext:Column>  
+                                <ext:Column ColumnID="responsavel" Header="Responsavel" DataIndex="Matricula.Aluno.Responsavel.nome" width="180px" /> 
                                 <ext:Column DataIndex="nomeSituacao" Header="Situação" Width="80px" />
                                 <ext:Column DataIndex="notaFinal" Header="Nota Final" Width="80px" />                  
                                 <ext:DateColumn DataIndex="Matricula.dataRegistro" Header="Data de Registro" Width="90px" Format="dd/MM/yyyy" />
@@ -236,7 +236,7 @@
                                 <Store>
                                     <ext:Store ID="Store3" runat="server" AutoLoad="false">
                                         <Proxy>
-                                            <ext:HttpProxy Method="POST" Url="/Pessoa/Search" />
+                                            <ext:HttpProxy Method="POST" Url="/Pessoa/PessoaResponsavel" />
                                         </Proxy>
                                         <Reader>
                                             <ext:JsonReader Root="pessoas" TotalProperty="totalReg">
