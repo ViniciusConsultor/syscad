@@ -51,6 +51,20 @@
         });
 
     }
+
+    var salvarMatricula = function () {
+        if (Ext.getCmp("cmbPessoa").getValue() == Ext.getCmp("cmbResponsavel").getValue()) {
+            Ext.Msg.show({
+                title: 'Erro',
+                msg: 'O Aluno não pode ser o mesmo que o responsavel!',
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.ERROR
+            });
+            return false;
+        }
+        salvar();
+
+    }
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 
@@ -325,7 +339,7 @@
                                     <ext:ToolbarFill />
                                         <ext:Button ID="btnSalvar" Text="Salvar" Icon="Disk" runat="server">
                                             <Listeners>
-                                                <Click Handler="salvar()" />
+                                                <Click Handler="salvarMatricula()" />
                                             </Listeners>
                                         </ext:Button>
                                 </Items>

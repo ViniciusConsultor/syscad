@@ -112,7 +112,7 @@
                                             </ext:Column>
                                             <ext:Column Header="Celular" DataIndex="celular" Width="100" >
                                                 <Editor>
-                                                    <ext:TextField ID="txtCelularEditar" runat="server" AnchorHorizontal="100%" AllowBlank="false" EnableKeyEvents="true" Mask="(##) ####-####" >
+                                                    <ext:TextField ID="txtCelularEditar" runat="server" AnchorHorizontal="100%" AllowBlank="true" EnableKeyEvents="true" Mask="(##) ####-####" >
                                                         <Listeners>
                                                             <KeyPress Fn="mascara" />
                                                         </Listeners>

@@ -73,7 +73,7 @@ namespace web.Controllers
                                                        idAluno = c.idAluno,
                                                        idTaxa = c.idTaxa,
                                                        idCurso = c.idCurso,
-                                                       juros = c.juros, //DateTime.Now > c.dataVencimento ? c.juros + (c.valorTotal / 0.02m) : c.juros,
+                                                       juros = DateTime.Now > c.dataVencimento ? (DateTime.Now.Day - c.dataVencimento.Day) * (c.valorTotal * 0.02m) : c.juros,
                                                        valorTotal = c.valorTotal, //DateTime.Now > c.dataVencimento ? c.valorTotal * 1.02m : c.valorTotal,
                                                        dataVencimento = c.dataVencimento,
                                                        Taxa = new Models.Taxa
@@ -91,7 +91,7 @@ namespace web.Controllers
                                                            nome = c.Aluno.Pessoa.nome
                                                        },
                                                        valorPago = c.Pagamentos.Sum(x => x.valor),
-                                                       valorFaltante = c.valorTotal - c.Pagamentos.Sum(x => x.valor)
+                                                       valorFaltante = (c.valorTotal + c.juros) - c.Pagamentos.Sum(x => x.valor)
                                                    }).ToList();
 
    
@@ -118,6 +118,12 @@ namespace web.Controllers
                 dbPagamento.Adicionar(p);
                 dbPagamento.SaveChanges();
 
+                var cob = dbCobranca.FindOne(x => x.idCobranca == idCobranca);
+                var juros = DateTime.Now > cob.dataVencimento ? (DateTime.Now.Day - cob.dataVencimento.Day) * (cob.valorTotal * 0.02m) : 0;
+                cob.juros = juros;
+                dbCobranca.Atualizar(cob);
+                dbCobranca.SaveChanges();
+
                 mensagem = "Pagamento realizado com sucesso!";
                 return Json(new { success = true, message = mensagem });
             }
@@ -143,11 +149,13 @@ namespace web.Controllers
         {
 
             conn.Open();
-            string sql = @"select nome, cpf, bairro, cep, cidade, uf, logradouro, numero, complemento, valorTotal, datavencimento, idCobranca, e.idEndereco from dbo.aluno a
-                        join dbo.pessoa p on a.idPessoa = p.idPessoa
-                        join dbo.cobranca c on a.idAluno = c.idAluno
-                        left join dbo.endereco e on a.idPessoa = e.idPessoa and e.idTipoEndereco = 1
-                        where idCobranca = @idCobranca";
+            string sql = @"select p.nome, p.cpf, p.dataNascimento, bairro, cep, cidade, uf, logradouro, numero, complemento, valorTotal, datavencimento, idCobranca, e.idEndereco, pr.nome, pr.cpf from dbo.aluno a
+                            join dbo.pessoa p on a.idPessoa = p.idPessoa
+                            join dbo.cobranca c on a.idAluno = c.idAluno
+                            left join dbo.endereco e on a.idPessoa = e.idPessoa and e.idTipoEndereco = 1
+                            left join dbo.responsavel r on a.idResponsavel = r.idResponsavel
+                            left join dbo.pessoa pr on r.idPessoa = pr.idPessoa
+                            where idCobranca = @idCobranca";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
             comm.Parameters.Add(new SqlParameter("@idCobranca", idCobranca));
@@ -155,23 +163,35 @@ namespace web.Controllers
             Models.Cobranca cobranca = new Models.Cobranca();
             if (dr.Read())
             {                
-                cobranca.valorTotal = dr.GetDecimal(9);
-                cobranca.dataVencimento = dr.GetDateTime(10);
-                cobranca.idCobranca = dr.GetInt32(11);
+                cobranca.valorTotal = dr.GetDecimal(10);
+                cobranca.dataVencimento = dr.GetDateTime(11);
+                cobranca.idCobranca = dr.GetInt32(12);
                 Models.Aluno aluno = new Models.Aluno();
                 aluno.nome = dr.GetString(0);
                 aluno.cpf = dr.GetString(1);
+                aluno.dataNascimento = dr.GetDateTime(2);
+
+                TimeSpan data = DateTime.Now - aluno.dataNascimento;
+
+                if (Math.Round(data.TotalDays / 360) < 18)
+                {
+                    aluno.Responsavel = new Models.Responsavel
+                    {
+                        nome = dr.GetString(14),
+                        cpf = dr.GetString(15)
+                    };
+                }
                 
                 if (!dr.IsDBNull(12)){ 
                     aluno.Enderecos.Add(new Models.Endereco
                     {
-                        bairro = dr.GetString(2),
-                        CEP = dr.GetString(3),
-                        cidade = dr.GetString(4),
-                        uf = dr.GetString(5),
-                        logradouro = dr.GetString(6),
-                        numero = dr.GetInt32(7),
-                        complemento = dr.GetString(8)
+                        bairro = dr.GetString(3),
+                        CEP = dr.GetString(4),
+                        cidade = dr.GetString(5),
+                        uf = dr.GetString(6),
+                        logradouro = dr.GetString(7),
+                        numero = dr.GetInt32(8),
+                        complemento = dr.GetString(9)
                     });
                 }
                 cobranca.Aluno = aluno;    
@@ -191,7 +211,16 @@ namespace web.Controllers
             Boleto b = new Boleto(vencimento, valorBoleto, "176", nossoNumero, c, new EspecieDocumento(341, 1));
             b.NumeroDocumento = nossoNumero;
 
-            b.Sacado = new Sacado(cobranca.Aluno.cpf, cobranca.Aluno.nome);
+            TimeSpan dt = DateTime.Now - cobranca.Aluno.dataNascimento;
+            var idade = Math.Round(dt.TotalDays / 360);
+            if (idade < 18)
+            {
+                b.Sacado = new Sacado(cobranca.Aluno.Responsavel.cpf, cobranca.Aluno.Responsavel.nome);
+            }
+            else
+            {
+                b.Sacado = new Sacado(cobranca.Aluno.cpf, cobranca.Aluno.nome);
+            }
             if (cobranca.Aluno.Enderecos.Count > 0)
             {
                 b.Sacado.Endereco.End = String.Format("{0}, {1} {2}", cobranca.Aluno.Enderecos.FirstOrDefault().logradouro, cobranca.Aluno.Enderecos.FirstOrDefault().numero, cobranca.Aluno.Enderecos.FirstOrDefault().complemento);

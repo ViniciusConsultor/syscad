@@ -157,16 +157,25 @@
         var trataDados = function (value, rec) {
             if (value == null) {
                 rec.nomeCobranca = "Mensalidade";
-//                var dataAtual = new Date();
-//                if (dataAtual > rec.dataVencimento) {
-//                    rec.juros = rec.juros + (rec.Curso.valor / 0.02);
-//                    rec.valorCobranca = rec.Curso.valor + rec.juros;
-//                } else {
-                    rec.valorCobranca = rec.Curso.valor; 
-//                }
+                var dataAtual = new Date();
+                var dataVencimento = new Date(rec.dataVencimento);
+                if (dataAtual > dataVencimento) {
+                    rec.valorCobranca = rec.Curso.valor;
+                    rec.valorTotal = rec.Curso.valor + rec.juros;
+                } else {
+                    rec.valorCobranca = rec.Curso.valor;
+                }
             } else {
                 rec.nomeCobranca = rec.Taxa.nome;
-                rec.valorCobranca = rec.Taxa.valor;
+                var dataAtual = new Date();
+                var dataVencimento = new Date(rec.dataVencimento);
+                if(dataAtual > dataVencimento){
+                    rec.valorCobranca = rec.Taxa.valor;
+                    rec.valorTotal = rec.Taxa.valor + rec.juros;
+                } else {
+                    rec.valorCobranca = rec.Taxa.valor;
+                }
+
             }
         }
 
@@ -261,15 +270,15 @@
                                                 <ext:RecordField Name="idCobranca" Type="int"/>
                                                 <ext:RecordField Name="Taxa.nome" Type="String"/>
                                                 <ext:RecordField Name="dataVencimento" DateFormat="dd/MM/yyyy" />
+                                                <ext:RecordField Name="idTaxa" Type="Int" >
+                                                    <Convert fn="trataDados" />
+                                                </ext:RecordField>
                                                 <ext:RecordField Name="Taxa.valor" Type="Float" />
                                                 <ext:RecordField Name="juros" Type="Float" />
                                                 <ext:RecordField Name="valorTotal" Type="Float" />
                                                 <ext:RecordField Name="Aluno.nome" Type="string" />
                                                 <ext:RecordField Name="valorPago" Type="Float" />
                                                 <ext:RecordField Name="valorFaltante" Type="Float" />
-                                                <ext:RecordField Name="idTaxa" Type="Int" >
-                                                    <Convert fn="trataDados" />
-                                                </ext:RecordField>
                                                 <ext:RecordField Name="idCurso" Type="Int" />
                                                 <ext:RecordField Name="Curso.valor" Type="Float" />
                                                 <ext:RecordField Name="valorCobranca" Type="Float" />
