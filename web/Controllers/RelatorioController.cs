@@ -101,7 +101,7 @@ namespace web.Controllers
                             ON mt.idTurma = t.idTurma
                             JOIN curso c
                             ON t.idCurso = c.idCurso
-                            GROUP BY COUNT(mt.idMatricula) desc";
+                            GROUP BY COUNT(mt.idMatricula)";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
             SqlDataReader dr = comm.ExecuteReader();

@@ -165,7 +165,7 @@
                 Valor Total:
             </td>
             <td class="Right">
-               <span class="valor"><%=Model.First().Cobranca.valorTotal %></span>
+               <span class="valor"><%=Model.First().Cobranca.valorTotal + Model.First().Cobranca.juros %></span>
             </td>
         </tr>
         <tr>
@@ -197,7 +197,7 @@
                 Total Pago:
             </td>
             <td colspan="2" class="Right">
-               <span class="valor"><%=Model.First().Cobranca.valorTotal %></span>
+               <span class="valor"><%=Model.First().Cobranca.valorTotal + Model.First().Cobranca.juros%></span>
             </td>
         </tr>
         <tr>

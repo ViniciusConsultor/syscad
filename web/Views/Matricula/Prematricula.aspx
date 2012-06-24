@@ -50,6 +50,16 @@
 
     function salvarPreMatricula() {
 
+        if (Ext.getCmp("cmbPessoa").getValue() == Ext.getCmp("cmbResponsavel").getValue()) {
+            Ext.Msg.show({
+                title: 'Erro',
+                msg: 'O Aluno não pode ser o mesmo que o responsavel!',
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.ERROR
+            });
+            return false;
+        }
+
         if (controller == "Pessoa") {
             if (vercpf($("#txtCpf").val())) {
 
@@ -57,7 +67,8 @@
                 Ext.Msg.show({
                     title: 'Validação de CPF',
                     msg: 'O CPF informado não é válido!',
-                    buttons: Ext.Msg.OK
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.ERROR
                 });
                 return false;
             }
@@ -71,7 +82,8 @@
             Ext.Msg.show({
                 title: 'Sucesso',
                 msg: controller + ' salvo(a) com sucesso',
-                buttons: Ext.Msg.OK
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.INFO
             });
             GridPanel.reload();
             GridPanel.el.unmask();
@@ -173,7 +185,7 @@
                             <Items>
                                 <ext:Button ID="Button4" runat="server" Text="Novo" Icon="Add">
                                     <Listeners> 
-                                        <Click Handler="novo()" />
+                                        <Click Handler="novo(matricula)" />
                                     </Listeners>
                                 </ext:Button>
                                 <ext:Button ID="Button6" runat="server" Text="Excluir" Icon="Delete">
@@ -231,7 +243,7 @@
                                 <Store>
                                     <ext:Store ID="Store2" runat="server" AutoLoad="false">
                                         <Proxy>
-                                            <ext:HttpProxy Method="POST" Url="/Pessoa/Search" />
+                                            <ext:HttpProxy Method="POST" Url="/Pessoa/PessoaAluno" />
                                         </Proxy>
                                         <Reader>
                                             <ext:JsonReader Root="pessoas" TotalProperty="totalReg">
@@ -282,7 +294,7 @@
                                 <Store>
                                     <ext:Store ID="Store3" runat="server" AutoLoad="false">
                                         <Proxy>
-                                            <ext:HttpProxy Method="POST" Url="/Pessoa/Search" />
+                                            <ext:HttpProxy Method="POST" Url="/Pessoa/PessoaResponsavel" />
                                         </Proxy>
                                         <Reader>
                                             <ext:JsonReader Root="pessoas" TotalProperty="totalReg">
@@ -356,7 +368,7 @@
 					                   <tpl for=".">
 						                  <div class="search-item">
 							                 <h3><span>{cursoNome}</span>{descricao}</h3>
-							                 Vagas: {vagasOcupadas}/{numeroVagas} - Data início: {dataInicio} - Data fim: {dataFim}                                             
+							                 Vagas: {vagasOcupadas}/{numeroVagas}                                         
 						                  </div>
 					                   </tpl>
 				                   </Html>

@@ -293,24 +293,21 @@
 				                   </Html>
                                 </Template>
                             </ext:ComboBox>
-
-                        <BottomBar>
-                            <ext:Toolbar ID="Toolbar4" runat="server">
-                                <Items>
-                                    <ext:ToolbarFill />
-                                        <ext:Button ID="Button10" Text="Salvar" Icon="Disk" runat="server">
-                                            <Listeners>
-                                                <Click Handler="salvarEndereco(#{endereco}.getForm().getValues())" />
-                                            </Listeners>
-                                        </ext:Button>
-                                </Items>
-                            </ext:Toolbar>  
-                        </BottomBar>
                     </Items>
-
                     </ext:FormPanel>
                 </Items>
-
+                <BottomBar>
+                    <ext:Toolbar ID="Toolbar4" runat="server">
+                        <Items>
+                            <ext:ToolbarFill />
+                                <ext:Button ID="Button10" Text="Salvar" Icon="Disk" runat="server">
+                                    <Listeners>
+                                        <Click Handler="salvarEndereco(#{endereco}.getForm().getValues())" />
+                                    </Listeners>
+                                </ext:Button>
+                        </Items>
+                    </ext:Toolbar>  
+                </BottomBar>
         </ext:Window>
 
 
