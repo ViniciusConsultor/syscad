@@ -35,11 +35,11 @@
         
         #customers-ct .letter-row h2 { font-size : 2em; }
         
-        #customers-ct .header { padding : 10px 0px 10px 5px; }
+        .header { padding : 10px 0px 10px 5px; }
         
-        #customers-ct .header p { font-size : 2em; }
+        .header p { font-size : 2em; text-align:center }
 
-        #customers-ct .header a { margin-bottom : 10px; }
+        .header a { margin-bottom : 10px; }
         
         .cust-name-over {
             cursor : pointer;
@@ -101,6 +101,13 @@
         var trataPessoaEmail = function (value, rec) {
             rec.emailPessoa = rec.Pessoa.email;
         }
+
+        var enviar = function () {
+            Ext.getCmp("Toolbar1").show();
+            Ext.getCmp("DataView1").show();
+            Ext.getCmp("DataView1").getStore().reload();
+            Ext.getCmp("winPeriodo").hide();
+        }
     </script>
 </head>
 <body>
@@ -125,7 +132,7 @@
         </Listeners>
     </ext:Menu> 
     
-    <ext:Store ID="dsReport" runat="server">
+    <ext:Store ID="dsReport" runat="server" AutoLoad="false">
         <Proxy>
             <ext:HttpProxy Method="POST" Url="/Relatorio/FindCursoMaisCursado" />
         </Proxy>
@@ -133,29 +140,42 @@
             <ext:JsonReader Root="cursos" TotalProperty="totalReg">
                 <Fields>
                     <ext:RecordField Name="Curso" Type="String" />
-                    <ext:RecordField Name="QtdAluno" Type="Int" />                     
+                    <ext:RecordField Name="QtdAluno" Type="Int" />
+                    <ext:RecordField Name="dtInicio" Type="String" />  
+                    <ext:RecordField Name="dtFim" Type="String" />                       
                 </Fields>
             </ext:JsonReader>
         </Reader>
+        <BaseParams>
+            <ext:Parameter Name="dtInicio" Value="Ext.getCmp('dtInicio').getValue()" Mode="Raw" />
+            <ext:Parameter Name="dtFim" Value="Ext.getCmp('dtFim').getValue()" Mode="Raw" />
+        </BaseParams>
     </ext:Store>    
-    <ext:Toolbar ID="Toolbar1" runat="server">
+
+    <ext:Toolbar ID="Toolbar1" runat="server" Hidden="true">
         <Items>
             <ext:Button ID="Button1" runat="server" Text="Imprimir Relatório" Icon="Printer" OnClientClick="window.print();" />
+            <ext:Button ID="Button2" runat="server" Text="Trocar Periodo" Icon="Clock" OnClientClick="winPeriodo.show();" />
         </Items>
-    </ext:Toolbar>    
+    </ext:Toolbar>   
+     
     <ext:DataView ID="DataView1" 
         runat="server" 
         StoreID="dsReport" 
         SingleSelect="true"
         ItemSelector="tr.customer-record" 
         OverClass="cust-name-over"
-        EmptyText="Não há nenhum aluno matriculado.">
+        EmptyText="<center><br/><h3>Não há nenhum aluno matriculado neste período</h3></center>"
+        Hidden="true">
         <Template ID="Template1" runat="server">
             <Html>
+                <div class="header">
+                    <p>Relatório de Cursos mais procurados</p>
+                    <p>V Mendonsa da Costa Idiomas e Informática</p>
+                    <p>CNPJ: 10.668.613/0001-55</p>
+                    <br />
+                </div>
 				<div id="customers-ct">
-					<div class="header">
-						<p>Cursos Mais Cursados</p>                                                                        
-					</div>
 					<table>
 						<tr>
 							<th>Curso</th>
@@ -172,10 +192,46 @@
 				</div>
 			</Html>
         </Template>
-        <Listeners>
-            <ContainerClick Fn="viewClick" />
-            <Click Fn="nodeClick" />
-        </Listeners>
+
     </ext:DataView>
+
+    <ext:Window 
+        ID="winPeriodo" 
+        runat="server" 
+        Icon="Clock" 
+        Title="Periodo" 
+        X="250"
+        Y="100"
+        Layout="FormLayout"
+        AutoHeight="true"
+        Frame="true"
+        Width="250"
+        Modal="true"
+        Closable="false"
+        >
+        <Items>
+            <ext:FormPanel ID="formulario" runat="server">
+                <Items>
+                    <ext:DateField ID="dtInicio" runat="server" FieldLabel="Data Inicio" AnchorHorizontal="100%" AllowBlank="false" /> 
+                    <ext:DateField ID="dtFim" runat="server" FieldLabel="Data Fim" AnchorHorizontal="100%" AllowBlank="false" /> 
+                </Items>
+
+                <BottomBar>
+                    <ext:Toolbar ID="Toolbar2" runat="server">
+                        <Items>
+                            <ext:ToolbarFill />
+                                <ext:Button ID="btnSalvar" Text="Enviar" Icon="Disk" runat="server">
+                                    <Listeners>
+                                        <Click Handler="enviar()" />
+                                    </Listeners>
+                                </ext:Button>
+                        </Items>
+                    </ext:Toolbar>  
+                </BottomBar>
+
+            </ext:FormPanel>
+        </Items>
+
+    </ext:Window>
 </body>
 </html>

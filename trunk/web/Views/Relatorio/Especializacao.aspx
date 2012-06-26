@@ -149,13 +149,16 @@
         SingleSelect="true"
         ItemSelector="tr.customer-record" 
         OverClass="cust-name-over"
-        EmptyText="Não há ex-alunos.">
+        EmptyText="Não há especialização para professores.">
         <Template ID="Template1" runat="server">
             <Html>
 				<div id="customers-ct">
-					<div class="header">
-						<p>Especialização dos Professores</p>                                                                        
-					</div>
+                    <div class="header">
+                        <p>Relatório de Especialização de professores</p>
+                        <p>V Mendonsa da Costa Idiomas e Informática</p>
+                        <p>CNPJ: 10.668.613/0001-55</p>
+                        <br />
+                    </div>
 					<table>
 						<tr>
 							<th>Nome</th>
@@ -172,10 +175,6 @@
 				</div>
 			</Html>
         </Template>
-        <Listeners>
-            <ContainerClick Fn="viewClick" />
-            <Click Fn="nodeClick" />
-        </Listeners>
     </ext:DataView>
 </body>
 </html>

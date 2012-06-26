@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Persistence.DAO;
 using Persistence.Entity;
-using Models = web.Models;
 using Ext.Net;
-using BoletoNet;
 using System.Data.SqlClient;
-using System.Data;
+using System.IO;
+using System;
+
 
 namespace web.Controllers
 {
@@ -49,28 +47,36 @@ namespace web.Controllers
         }
 
         [HttpPost]
-        public string FindExAlunos()
+        public string FindExAlunos(string dtInicio, string dtFim)
         {
-            List<MatriculaTurma> listaMatriculaTurma = dbMatriculaTurma.FindAll();
-            List<Aluno> listaAlunosInativos = dbAluno.FindAll();
+            var dataInicio = Convert.ToDateTime(dtInicio);
+            var dataFim = Convert.ToDateTime(dtFim);
 
-            foreach (MatriculaTurma m in listaMatriculaTurma)
-            {
-                m.Matricula = dbMatricula.FindOne(x => x.idMatricula == m.idMatricula);
-                m.Matricula.Aluno = dbAluno.FindOne(x => x.idAluno == m.Matricula.idAluno);
-                if (m.Matricula.Aluno != null)
-                {
-                    listaAlunosInativos.Remove(m.Matricula.Aluno);
-                }
-            }
+            var listAluno = (from m in dbAluno.Context.MatriculaTurma where m.Turma.dataFechamento != null && 
+                                 ((m.Turma.dataInicio >= dataInicio && m.Turma.dataInicio <= dataFim) || 
+                                 (m.Turma.dataFim >= dataInicio && m.Turma.dataFim <= dataFim)) 
+                                 select m.Matricula.Aluno).Distinct();
 
-            foreach (Aluno a in listaAlunosInativos)
-            {
-                a.Pessoa = dbPessoa.FindOne(x => x.idPessoa == a.idPessoa);
-            }
+            //List<MatriculaTurma> listaMatriculaTurma = dbMatriculaTurma.FindAll();
+            //List<Aluno> listaAlunosInativos = dbAluno.FindAll();
+
+            //foreach (MatriculaTurma m in listaMatriculaTurma)
+            //{
+            //    m.Matricula = dbMatricula.FindOne(x => x.idMatricula == m.idMatricula);
+            //    m.Matricula.Aluno = dbAluno.FindOne(x => x.idAluno == m.Matricula.idAluno);
+            //    if (m.Matricula.Aluno != null)
+            //    {
+            //        listaAlunosInativos.Remove(m.Matricula.Aluno);
+            //    }
+            //}
+
+            //foreach (Aluno a in listaAlunosInativos)
+            //{
+            //    a.Pessoa = dbPessoa.FindOne(x => x.idPessoa == a.idPessoa);
+            //}
 
 
-            return "{alunos:" + JSON.Serialize(listaAlunosInativos) + ", totalReg:" + listaAlunosInativos.Count() + "}";
+            return "{alunos:" + JSON.Serialize(listAluno) + ", totalReg:" + listAluno.Count() + "}";
         }
 
         [HttpPost]
@@ -92,8 +98,11 @@ namespace web.Controllers
             return View();
         }
 
-        public JsonResult FindCursoMaisCursado()
+        public JsonResult FindCursoMaisCursado(string dtInicio, string dtFim)
         {
+            var dataInicio = Convert.ToDateTime(dtInicio);
+            var dataFim = Convert.ToDateTime(dtFim);
+
             conn.Open();
             string sql = @"SELECT c.nome, COUNT(mt.idMatricula) as QtdAlunos 
                             FROM matriculaTurma mt
@@ -101,9 +110,13 @@ namespace web.Controllers
                             ON mt.idTurma = t.idTurma
                             JOIN curso c
                             ON t.idCurso = c.idCurso
-                            GROUP BY COUNT(mt.idMatricula)";
+                            where t.dataInicio between @dtInicio and @dtFim and  t.dataFim between @dtInicio and @dtFim
+                            GROUP BY c.nome
+                            order by COUNT(mt.idMatricula) desc";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
+            comm.Parameters.Add(new SqlParameter("@dtInicio", dataInicio));
+            comm.Parameters.Add(new SqlParameter("@dtFim", dataFim));
             SqlDataReader dr = comm.ExecuteReader();
             List<object> lista = new List<object>();
             while (dr.Read())
@@ -160,5 +173,6 @@ namespace web.Controllers
             return "{alunos:" + JSON.Serialize(listaAlunos) + ", totalReg:" + listaAlunos.Count() + "}";
         }
     }
+
 
 }

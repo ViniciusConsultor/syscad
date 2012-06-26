@@ -21,6 +21,11 @@
         winNovo.show();
     }
 
+    var novoProfessor = function () {
+        Ext.getCmp("txtNome").reset();
+        winNovoProfessorEspecializacao.show();
+    }
+
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
 <script src="../../Scripts/funcoes.js" type="text/javascript"></script>
@@ -179,6 +184,23 @@
                                         </Listeners>
                                     </ext:RowSelectionModel>
                                 </SelectionModel>
+                                <TopBar>
+                                    <ext:Toolbar ID="Toolbar2" runat="server">
+                                        <Items>
+                                            <ext:Button ID="Button1" runat="server" Text="Novo" Icon="Add">
+                                                <Listeners> 
+                                                    <Click Handler="novoProfessor()" />
+                                                </Listeners>
+                                            </ext:Button>
+                                            <ext:Button ID="Button4" runat="server" Text="Excluir" Icon="Delete">
+                                                <Listeners> 
+                                                    <Click Handler="excluir()" />
+                                                </Listeners>
+                                            </ext:Button>
+                                        </Items>
+                                    </ext:Toolbar>
+                                </TopBar>
+
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar2" runat="server" PageSize="10" />
                                 </BottomBar>
@@ -228,11 +250,8 @@
 
                     </ext:FormPanel>
                 </Items>
-
         </ext:Window>
-
     </form>
-
 
     <ext:Window 
                 ID="winNovoProfessorEspecializacao" 
@@ -246,11 +265,9 @@
                 AutoHeight="true"
                 Frame="true"
                 Width="500"
-                Modal="true"
-                >
+                Modal="true">
                 <Items>
                     <ext:FormPanel ID="professor" runat="server">
-
                         <Items>
                             <ext:ComboBox ID="cmbProfessor" 
                                 runat="server" 

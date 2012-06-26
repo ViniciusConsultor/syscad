@@ -35,11 +35,11 @@
         
         #customers-ct .letter-row h2 { font-size : 2em; }
         
-        #customers-ct .header { padding : 10px 0px 10px 5px; }
+        .header { padding : 10px 0px 10px 5px; }
         
-        #customers-ct .header p { font-size : 2em; }
+        .header p { font-size : 2em; text-align:center }
 
-        #customers-ct .header a { margin-bottom : 10px; }
+        .header a { margin-bottom : 10px; }
         
         .cust-name-over {
             cursor : pointer;
@@ -160,9 +160,9 @@
         </Reader>
     </ext:Store>
     
-    <ext:Toolbar runat="server">
+    <ext:Toolbar ID="Toolbar2" runat="server">
         <Items>
-            <ext:Button runat="server" Text="Imprimir Relatório" Icon="Printer" OnClientClick="window.print();" />
+            <ext:Button ID="Button1" runat="server" Text="Imprimir Relatório" Icon="Printer" OnClientClick="window.print();" />
         </Items>
     </ext:Toolbar>
     
@@ -175,10 +175,13 @@
         EmptyText="Não há alunos inadimplentes.">
         <Template ID="Template1" runat="server">
             <Html>
+                <div class="header">
+                    <p>Relatório de Alunos Inadimplentes</p>
+                    <p>V Mendonsa da Costa Idiomas e Informática</p>
+                    <p>CNPJ: 10.668.613/0001-55</p>
+                    <br />
+                </div>
 				<div id="customers-ct">
-					<div class="header">
-						<p>Alunos Inadimplentes</p>                                                                        
-					</div>
 					<table>
 						<tr>
 							<th>Nome</th>
@@ -203,10 +206,6 @@
 				</div>
 			</Html>
         </Template>
-        <Listeners>
-            <ContainerClick Fn="viewClick" />
-            <Click Fn="nodeClick" />
-        </Listeners>
     </ext:DataView>
 </body>
 </html>
