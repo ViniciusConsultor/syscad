@@ -53,7 +53,8 @@
                                 TrackMouseOver="true"
                                 Width="1181" 
                                 Height="704"
-                                AutoExpandColumn="nome">
+                                AutoExpandColumn="nome"
+                                onRefreshData="/Pessoa/FindAll">
                                 <Store>
                                     <ext:Store 
                                         ID="Store1" 
@@ -147,7 +148,7 @@
                                         </Listeners>
                                     </ext:RowSelectionModel>
                                 </SelectionModel>
-
+                                <LoadMask ShowMask="true" />
                                 <TopBar>
                                     <ext:Toolbar ID="Toolbar2" runat="server">
                                         <Items>

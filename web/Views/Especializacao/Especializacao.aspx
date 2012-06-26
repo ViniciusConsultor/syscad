@@ -21,13 +21,13 @@
         winNovo.show();
     }
 
-    var novoProfessor = function () {
-        Ext.getCmp("txtNome").reset();
-        winNovoProfessorEspecializacao.show();
+    var convertePessoa = function (value, rec) {
+        rec.nomePessoa = rec.Pessoa.nome;
     }
 
 </script>
 <script src="../../Scripts/CRUD.js" type="text/javascript"></script>
+<script src="../../Scripts/CRUD-Professor.js" type="text/javascript"></script>
 <script src="../../Scripts/funcoes.js" type="text/javascript"></script>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" RemoveViewState="true" IDMode="Explicit" />
@@ -45,7 +45,7 @@
                         Frame="true" 
                         Icon="Information">
                         <Content>
-                            <h1>Cadastrar Especializacao dos Professores</h1>
+                            <h1>Cadastrar Especialização dos Professores</h1>
                             <p>Selecione o professor no primeiro GRID para que o segundo GRID seja preenchido com as especializações</p>
                         </Content>
                     </ext:Panel>
@@ -61,6 +61,7 @@
                                 TrackMouseOver="true"
                                 Icon="UserSuitBlack"
                                 AutoExpandColumn="nome"
+                                onRefreshData="/Especializacao/FindAll"
                                 >
                                 <Store>
                                     <ext:Store 
@@ -99,7 +100,7 @@
                                 <SelectionModel>
                                     <ext:RowSelectionModel ID="RowSelectionModel2" runat="server" SingleSelect="true">
                                         <Listeners>
-                                            <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{StoreProfessor}.reload();}; #{formulario}.getForm().loadRecord(record);" Buffer="250" />
+                                            <RowSelect Handler="if (#{pnlSouth}.isVisible()) {#{StoreProfessor}.reload();}; #{professor}.getForm().loadRecord(record);" Buffer="250" />
                                         </Listeners>
                                     </ext:RowSelectionModel>
                                 </SelectionModel>
@@ -114,7 +115,7 @@
                                             </ext:Button>
                                             <ext:Button ID="Button3" runat="server" Text="Excluir" Icon="Delete">
                                                 <Listeners> 
-                                                    <Click Handler="excluir()" />
+                                                    <Click Handler="excluirRegistro()" />
                                                 </Listeners>
                                             </ext:Button>
                                             <ext:Button ID="Button5" runat="server" Text="Editar" Icon="Information">
@@ -125,7 +126,7 @@
                                         </Items>
                                     </ext:Toolbar>
                                 </TopBar>
-
+                                <LoadMask ShowMask="true" />
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar1" runat="server" PageSize="10" />
                                 </BottomBar>
@@ -137,17 +138,19 @@
                     <ext:Panel ID="pnlSouth" runat="server" Frame="true" Title="Professores" Icon="UserSuitBlack" Layout="Fit"  Split="true" Collapsible="true" Height="200">
                         <Items>
                             <ext:GridPanel 
-                                ID="GridPanel1"
+                                ID="GridPanelProfessor"
                                 runat="server" 
                                 StripeRows="true"
                                 TrackMouseOver="true"
                                 Icon="UserSuitBlack"
                                 AutoExpandColumn="Funcionario.Pessoa.nome"
+                                onRefreshData="/Funcionario/FindAllProfessores"
                                 >
                                 <Store>
                                     <ext:Store 
                                         ID="StoreProfessor" 
-                                        runat="server">
+                                        runat="server"
+                                        AutoLoad="false">
                                         <Proxy>
                                             <ext:HttpProxy Json="true" Method="GET" Url="/Funcionario/FindAllProfessores" AutoDataBind="true" />
                                         </Proxy>
@@ -189,18 +192,18 @@
                                         <Items>
                                             <ext:Button ID="Button1" runat="server" Text="Novo" Icon="Add">
                                                 <Listeners> 
-                                                    <Click Handler="novoProfessor()" />
+                                                    <Click Handler="novoProfessor(professor)" />
                                                 </Listeners>
                                             </ext:Button>
                                             <ext:Button ID="Button4" runat="server" Text="Excluir" Icon="Delete">
                                                 <Listeners> 
-                                                    <Click Handler="excluir()" />
+                                                    <Click Handler="excluirProfessorEspecializacao()" />
                                                 </Listeners>
                                             </ext:Button>
                                         </Items>
                                     </ext:Toolbar>
                                 </TopBar>
-
+                                <LoadMask ShowMask="true" />
                                 <BottomBar>
                                     <ext:PagingToolbar ID="PagingToolbar2" runat="server" PageSize="10" />
                                 </BottomBar>
@@ -254,7 +257,7 @@
     </form>
 
     <ext:Window 
-                ID="winNovoProfessorEspecializacao" 
+                ID="winNovoProfessor" 
                 runat="server" 
                 Icon="ApplicationAdd" 
                 Title="Novo Professor/Especialização" 
@@ -267,11 +270,13 @@
                 Width="500"
                 Modal="true">
                 <Items>
+                    
                     <ext:FormPanel ID="professor" runat="server">
                         <Items>
+                            <ext:Hidden ID="idEspecializacao" runat="server" />
                             <ext:ComboBox ID="cmbProfessor" 
                                 runat="server" 
-                                DisplayField="Pessoa.nome" 
+                                DisplayField="nomePessoa" 
                                 ValueField="idFuncionario" 
                                 TypeAhead="false" 
                                 LoadingText="Procurando..." 
@@ -286,21 +291,25 @@
                                 <Store>
                                     <ext:Store ID="Store3" runat="server" AutoLoad="false">
                                         <Proxy>
-                                            <ext:HttpProxy Method="POST" Url="/Funcionario/FindAllProfessor" />
+                                            <ext:HttpProxy Method="GET" Url="/Funcionario/FindFuncionarios" />
                                         </Proxy>
                                         <Reader>
-                                            <ext:JsonReader Root="professores" TotalProperty="totalReg">
+                                            <ext:JsonReader Root="funcionarios" TotalProperty="totalReg">
                                                 <Fields>
                                                     <ext:RecordField Name="idFuncionario" Type="Int" />
                                                     <ext:RecordField Name="Pessoa.nome" Type="String">
-                                                        <Convert Fn="convertePessoa()" />
+                                                        <Convert Fn="convertePessoa" />
                                                     </ext:RecordField>
+                                                    <ext:RecordField Name="nomePessoa" Type="String" />
                                                 </Fields>
                                             </ext:JsonReader>
                                         </Reader>
+                                        <BaseParams>
+                                            <ext:Parameter Name="idCargo" Mode="Value" Value="2" />
+                                        </BaseParams>
                                     </ext:Store>
                                 </Store>
-                                <Template ID="Template2" runat="server">
+                                <Template ID="Template1" runat="server">
                                    <Html>
 					                   <tpl for=".">
 						                  <div class="search-item">
@@ -319,7 +328,7 @@
                             <ext:ToolbarFill />
                                 <ext:Button ID="Button10" Text="Salvar" Icon="Disk" runat="server">
                                     <Listeners>
-                                        <Click Handler="salvarEndereco(#{endereco}.getForm().getValues())" />
+                                        <Click Handler="salvarProfessor(#{professor}.getForm().getValues())" />
                                     </Listeners>
                                 </ext:Button>
                         </Items>

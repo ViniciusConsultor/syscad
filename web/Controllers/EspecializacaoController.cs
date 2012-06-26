@@ -75,9 +75,30 @@ namespace web.Controllers
             }
             
         }
+
+        [HttpPost]
+        public JsonResult SaveProfessorEspecializacao(int idEspecializacao, int cmbProfessor_value)
+        {
+            FuncionarioEspecializacao especializacao = new FuncionarioEspecializacao();
+            especializacao.idEspecializacao = idEspecializacao;
+            especializacao.idFuncionario = cmbProfessor_value;
+
+            try
+            {
+                dbFuncionarioEspecializacao.Adicionar(especializacao);
+                dbFuncionarioEspecializacao.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
                         
         [HttpPost]
-        public JsonResult Excluir(int id)
+        public JsonResult ExcluirProfessorEspecializacao(int id)
         {
             FuncionarioEspecializacao funcionarioEspecializacao = dbFuncionarioEspecializacao.FindOne(f => f.idFuncionarioEspecializacao == id);
 
@@ -97,14 +118,64 @@ namespace web.Controllers
             }
         }
 
-        /*
+        [HttpPost]
+        public JsonResult Excluir(int id)
+        {
+            Especializacao especializacao = dbEspecializacao.FindOne(f => f.idEspecializacao == id);
+            List<FuncionarioEspecializacao> funEsp = dbFuncionarioEspecializacao.FindAll(x => x.idEspecializacao == id);
+            try
+            {
+                dbEspecializacao.Remover(especializacao);
+                dbEspecializacao.SaveChanges();
+
+                foreach(FuncionarioEspecializacao fe in funEsp){
+                    dbFuncionarioEspecializacao.Remover(fe);
+                    dbFuncionarioEspecializacao.SaveChanges();
+                }
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
         [HttpPost]
         public JsonResult Editar(int id, string campo, string valor)
         {
 
-           
+            Especializacao especialicao = dbEspecializacao.FindOne(fun => fun.idEspecializacao == id);
 
-        }*/
+            try
+            {
+
+                switch (campo)
+                {
+                    case "nome":
+                        especialicao.nome = valor;
+                        break;
+                }
+
+                dbEspecializacao.Atualizar(especialicao);
+                dbEspecializacao.SaveChanges();
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, message = e.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+
 
     }
 }

@@ -8,7 +8,7 @@
     
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-    <title>Relatório de Especializao de Professores</title>
+    <title>Relatório de Especialização de Professores</title>
     
     <style type="text/css">
         body  {
@@ -35,11 +35,11 @@
         
         #customers-ct .letter-row h2 { font-size : 2em; }
         
-        #customers-ct .header { padding : 10px 0px 10px 5px; }
+         .header { padding : 10px 0px 10px 5px; }
         
-        #customers-ct .header p { font-size : 2em; }
+        .header p { font-size : 2em; }
 
-        #customers-ct .header a { margin-bottom : 10px; }
+        .header a { margin-bottom : 10px; }
         
         .cust-name-over {
             cursor : pointer;
@@ -95,7 +95,7 @@
         }
 
         var trataEspecializacaoNome = function (value, rec) {
-            rec.especializacaoPessoa = rec.Especializacao.nome;
+            rec.nomeEspecializacao = rec.Especializacao.nome;
         }
     </script>
 </head>
@@ -131,7 +131,7 @@
                         <Convert Fn="trataEspecializacaoNome" />
                     </ext:RecordField>
                     <ext:RecordField Name="nomePessoa" Type="String" />
-                    <ext:RecordField Name="especializacaoPessoa" Type="String" />
+                    <ext:RecordField Name="nomeEspecializacao" Type="String" />
                 </Fields>
             </ext:JsonReader>
         </Reader>
@@ -168,7 +168,7 @@
 						<tpl for=".">
 									<tr class="customer-record">
                                         <td class="cust-name" nomePessoa="{nomePessoa}" especializacaoPessoa="{especializacaoPessoa}">&nbsp;{nomePessoa}</td>
-                                        <td>&nbsp;{especializacaoPessoa}</td>
+                                        <td>&nbsp;{nomeEspecializacao}</td>
 									</tr>
 						</tpl>                    
 					</table>
