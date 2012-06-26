@@ -18,7 +18,7 @@
 
                 $("#retorno_identificacao").html("Senha: <a href=\"\">Trocar Usuário<a>");
                 $("#txt_identificacao").html("<input type=\"hidden\" id=\"login\" name=\"login\" value=\"" + valor + "\"/> <input type=\"password\" id=\"senha\" name=\"senha\" class=\"txt_syscad_login\" />");
-                $("#buttton_identificacao").html("<input type=\"image\" src=\"../../Content/imagens/seta_vai.png\" id=\"enviar_login_2\" />");
+                $("#buttton_identificacao").html("<input type=\"image\" src=\"../../Content/imagens/seta_vai_3.png\" id=\"enviar_login_2\" />");
                 $("#retorno_mensagem").html("Digite a senha para o usuário <br /><strong>" + valor + "</strong>");
                 $("#senha").focus();
 

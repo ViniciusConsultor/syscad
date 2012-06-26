@@ -24,13 +24,13 @@
           <form name="formulario_login" action="" method="post" id="formulario_login" >
             <table cellpadding="10" cellspacing="10">
                 <tr>
-                    <td rowspan="2"><img src="../../Content/imagens/logo_syscad.png" alt="Logo Syscad" /></td>
+                    <td rowspan="2"><img src="../../Content/imagens/logo_syscad_3.png" alt="Logo Syscad" /></td>
                     <td class="word_syscad_login" id="retorno_identificacao">Usuário:</td>
                     <td class="word_syscad_login">&nbsp;</td>
                 </tr>
                 <tr>
                   <td id="txt_identificacao"><input type="text" name="login" class="txt_syscad_login" /></td>
-                  <td id="buttton_identificacao"><input type="image" src="../../Content/imagens/seta_vai.png" id="enviar_login" /></td>
+                  <td id="buttton_identificacao"><input type="image" src="../../Content/imagens/seta_vai_3.png" id="enviar_login" /></td>
                 </tr>
                 <tr>
                   <td>&nbsp;</td>
@@ -40,17 +40,7 @@
             </table>
           </form>
     </div>
-    <div id="syscad_rodape_login">
-    	<table cellspacing="10">
-        	<tr>
-            	<td><a href="" onclick="window.close()">Fechar Janela</a></td>
-                <td><img src="../../Content/imagens/separador_login.png" width="1" height="56" alt="Separador" /></td>
-            	<td><a href="#">Esqueci a Senha</a></td>
-                <td><img src="../../Content/imagens/separador_login.png" width="1" height="56" alt="Separador" /></td>
-            	<td><a href="#">Contate o Administrador</a></td>
-            </tr>
-        </table>
-    </div>
+
         
 </body>
 </html>
