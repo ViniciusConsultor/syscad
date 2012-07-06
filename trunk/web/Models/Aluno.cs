@@ -19,8 +19,6 @@ namespace web.Models
 
         public int idAluno { get; set; }
         public int? idResponsavel { get; set; }
-        public int statusPedagogico { get; set; } 
-        public int statusFinanceiro { get; set; }
         public ICollection<Cobranca> Cobrancas { get; set; }
         public Matricula Matricula { get; set; }
         public ICollection<NotaFalta> NotaFaltas { get; set; }

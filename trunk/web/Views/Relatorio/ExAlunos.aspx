@@ -35,9 +35,9 @@
         
         #customers-ct .letter-row h2 { font-size : 2em; }
         
-        .header { padding : 10px 0px 10px 5px; }
+        .header { padding : 10px 0px 10px 5px; display:none; }
         
-        .header p { font-size : 2em; }
+        .header p { font-size : 2em; text-align:center }
 
         .header a { margin-bottom : 10px; }
         
@@ -65,8 +65,15 @@
             padding : 5px 0px 5px 28px;            
             width : 150px;
         }
+        
+        .logo
+        {
+            float:left;
+            position:absolute;            
+        }
+
     </style>
-    
+    <script src="../../Scripts/jquery-1.4.4.min.js" type="text/javascript"></script>
     <script type="text/javascript">
         var viewClick = function (dv, e) {
             var group = e.getTarget("h2.letter-selector");
@@ -91,45 +98,36 @@
         };
 
         var trataPessoaNome = function (value, rec) {
-            rec.nomePessoa = rec.Pessoa.nome;
+            rec.nomePessoa = rec.nome;
         }
 
         var trataPessoaTelefone = function (value, rec) {
-            rec.telefonePessoa = rec.Pessoa.telefone;
+            rec.telefonePessoa = rec.telefone;
         }
 
         var trataPessoaTelefoneCelular = function (value, rec) {
-            rec.telefoneCelularPessoa = rec.Pessoa.celular;
+            rec.telefoneCelularPessoa = rec.celular;
         }
 
         var trataPessoaEmail = function (value, rec) {
-            rec.emailPessoa = rec.Pessoa.email;
+            rec.emailPessoa = rec.email;
         }
 
         var enviar = function () {
+            var dtInicio = Ext.getCmp('dtInicio').getValue();
+            var dtFim = Ext.getCmp('dtFim').getValue();
             Ext.getCmp("Toolbar1").show();
             Ext.getCmp("DataView1").show();
             Ext.getCmp("DataView1").getStore().reload();
             Ext.getCmp("winPeriodo").hide();
+
+            $(".header").show();
+            Ext.getCmp("periodo").show().setText("Período: " + dtInicio.format("d/m/Y") + " até " + dtFim.format("d/m/Y"));
         }
     </script>
 </head>
 <body>
     <ext:ResourceManager ID="ResourceManager1" runat="server" />
-    
-    <ext:Menu ID="DataViewContextMenu" runat="server">
-        <Items>
-            <ext:MenuTextItem ID="CustomerLabel" runat="server" CtCls="customer-label"  />
-            <ext:MenuItem ID="MenuItem1" runat="server" Text="Enviar Email" Icon="Mail">   
-                <Listeners>
-                    <Click Handler="if (Ext.isEmpty(this.parentMenu.node.email, false)) { Ext.Msg.alert('Error', 'Customer has no email');} else { parent.location = 'mailto:'+this.parentMenu.node.email }" />
-                </Listeners>                
-            </ext:MenuItem>
-        </Items>
-       <Listeners>
-            <BeforeShow Handler="#{CustomerLabel}.setText(this.node.contato);" />
-        </Listeners>
-    </ext:Menu> 
     
     <ext:Store ID="dsReport" runat="server" AutoLoad="false">
         <Proxy>
@@ -139,16 +137,16 @@
             <ext:JsonReader Root="alunos" TotalProperty="totalReg" IDProperty="idAluno">
                 <Fields>
                     <ext:RecordField Name="idAluno" Type="Int" />
-                    <ext:RecordField Name="Pessoa.nome" Type="String">
+                    <ext:RecordField Name="nome" Type="String">
                         <Convert Fn="trataPessoaNome" />
                     </ext:RecordField>
-                    <ext:RecordField Name="Pessoa.email" Type="String">
+                    <ext:RecordField Name="email" Type="String">
                         <Convert Fn="trataPessoaEmail" />
                     </ext:RecordField>
-                    <ext:RecordField Name="Pessoa.telefone" Type="String">
+                    <ext:RecordField Name="telefone" Type="String">
                         <Convert Fn="trataPessoaTelefone" />
                     </ext:RecordField>
-                    <ext:RecordField Name="Pessoa.celular" Type="String">
+                    <ext:RecordField Name="celular" Type="String">
                         <Convert Fn="trataPessoaTelefoneCelular" />
                     </ext:RecordField>
                     <ext:RecordField Name="nomePessoa" Type="String" />
@@ -167,9 +165,19 @@
     <ext:Toolbar ID="Toolbar1" runat="server" Hidden="true">
         <Items>
             <ext:Button ID="Button1" runat="server" Text="Imprimir Relatório" Icon="Printer" OnClientClick="window.print();" />
+            <ext:Button ID="Button2" runat="server" Text="Trocar Periodo" Icon="Clock" OnClientClick="winPeriodo.show();" />
         </Items>
     </ext:Toolbar>
     
+    <div class="header">
+        <div class="logo"><img src="../../Content/imagens/logo_masterCurso.png" width="150px" /></div>
+        <p>Relatório de Ex-Aluno</p>
+        <p>V Mendonsa da Costa Idiomas e Informática</p>
+        <p>CNPJ: 10.668.613/0001-55</p>
+        <br />
+    </div>
+    <ext:Label ID="periodo" runat="server" LabelWidth="50" Hidden="true" AnchorHorizontal="100%"  />
+    <br /><br />
     <ext:DataView ID="DataView1" 
         runat="server" 
         StoreID="dsReport" 
@@ -181,12 +189,6 @@
         <Template ID="Template1" runat="server">
             <Html>
 				<div id="customers-ct">
-                <div class="header">
-                    <p>Relatório de Ex-Alunos</p>
-                    <p>V Mendonsa da Costa Idiomas e Informática</p>
-                    <p>CNPJ: 10.668.613/0001-55</p>
-                    <br />
-                </div>
 					<table>
 						<tr>
 							<th>Nome</th>
@@ -236,7 +238,7 @@
                             <ext:ToolbarFill />
                                 <ext:Button ID="btnSalvar" Text="Enviar" Icon="Disk" runat="server">
                                     <Listeners>
-                                        <Click Handler="enviar()" />
+                                        <Click Handler="Ext.getCmp('formulario').getForm().isValid() ? enviar(): void(0);" />
                                     </Listeners>
                                 </ext:Button>
                         </Items>

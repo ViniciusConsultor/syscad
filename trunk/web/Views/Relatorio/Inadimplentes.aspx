@@ -65,6 +65,12 @@
             padding : 5px 0px 5px 28px;            
             width : 150px;
         }
+        
+        .logo
+        {
+            float:left;
+            position:absolute;
+        }
     </style>
     
     <script type="text/javascript">
@@ -163,6 +169,7 @@
     <ext:Toolbar ID="Toolbar2" runat="server">
         <Items>
             <ext:Button ID="Button1" runat="server" Text="Imprimir Relatório" Icon="Printer" OnClientClick="window.print();" />
+
         </Items>
     </ext:Toolbar>
     
@@ -176,6 +183,7 @@
         <Template ID="Template1" runat="server">
             <Html>
                 <div class="header">
+                    <div class="logo"><img src="../../Content/imagens/logo_masterCurso.png" width="150px" /></div>
                     <p>Relatório de Alunos Inadimplentes</p>
                     <p>V Mendonsa da Costa Idiomas e Informática</p>
                     <p>CNPJ: 10.668.613/0001-55</p>

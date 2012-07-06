@@ -65,39 +65,56 @@ namespace web.Controllers
         public string FindAllCobrancas(int idAluno)
         {
 
-            List<Models.Cobranca> listaCobranca = (from c in dbCobranca.Context.Cobranca
-                                                   where c.idAluno == idAluno && c.statusPagamento == 7
-                                                   select new Models.Cobranca
-                                                   {
-                                                       idCobranca = c.idCobranca,
-                                                       idAluno = c.idAluno,
-                                                       idTaxa = c.idTaxa,
-                                                       idCurso = c.idCurso,
-                                                       juros = DateTime.Now > c.dataVencimento ? (DateTime.Now.Day - c.dataVencimento.Day) * (c.valorTotal * 0.02m) : c.juros,
-                                                       valorTotal = c.valorTotal, //DateTime.Now > c.dataVencimento ? c.valorTotal * 1.02m : c.valorTotal,
-                                                       dataVencimento = c.dataVencimento,
-                                                       Taxa = new Models.Taxa
-                                                       {
-                                                           idTaxa = c.Taxa.idTaxa,
-                                                           nome = c.Taxa.nome,
-                                                           valor = c.Taxa.valor
-                                                       },
-                                                       Curso = new Models.Curso{
-                                                           nome = c.Curso.nome,
-                                                           valor = c.Curso.valor
-                                                       },
-                                                       Aluno = new Models.Aluno
-                                                       {
-                                                           nome = c.Aluno.Pessoa.nome
-                                                       },
-                                                       valorPago = c.Pagamentos.Sum(x => x.valor),
-                                                       valorFaltante = (c.valorTotal + c.juros) - c.Pagamentos.Sum(x => x.valor)
-                                                   }).ToList();
+//            conn.Open();
+//            string sql = @"select c.* from aluno a
+//join cobranca c
+//on a.idAluno = c.idAluno
+//left join curso cu
+//on c.idCurso = cu.idCurso
+//left join taxa t
+//on c.idTaxa = c.idTaxa
+//
+//                            WHERE idAluno = @idAluno and statusPagamento = @status";
+//            SqlCommand comm = conn.CreateCommand();
+//            comm.CommandText = sql;
+//            comm.Parameters.Add(new SqlParameter("@idAluno", idAluno));
+//            comm.Parameters.Add(new SqlParameter("@status", EnumStatus.NaoPago));
+//            SqlDataReader dr = comm.ExecuteReader();
+
+//            List<Models.Cobranca> listaCobranca = (from c in dbCobranca.Context.Cobranca
+//                                                   where c.idAluno == idAluno && c.statusPagamento == 7
+//                                                   select new Models.Cobranca
+//                                                   {
+//                                                       idCobranca = c.idCobranca,
+//                                                       idAluno = c.idAluno,
+//                                                       idTaxa = c.idTaxa,
+//                                                       idCurso = c.idCurso,                                                      
+//                                                       juros = DateTime.Now > c.dataVencimento ? ((TimeSpan)(DateTime.Now - c.dataVencimento)).TotalDays * (c.valorTotal * 0.02m) : c.juros,
+//                                                       valorTotal = c.valorTotal, //DateTime.Now > c.dataVencimento ? c.valorTotal * 1.02m : c.valorTotal,
+//                                                       dataVencimento = c.dataVencimento,
+//                                                       Taxa = new Models.Taxa
+//                                                       {
+//                                                           idTaxa = c.Taxa.idTaxa,
+//                                                           nome = c.Taxa.nome,
+//                                                           valor = c.Taxa.valor
+//                                                       },
+//                                                       Curso = new Models.Curso{
+//                                                           nome = c.Curso.nome,
+//                                                           valor = c.Curso.valor
+//                                                       },
+//                                                       Aluno = new Models.Aluno
+//                                                       {
+//                                                           nome = c.Aluno.Pessoa.nome
+//                                                       },
+//                                                       valorPago = c.Pagamentos.Sum(x => x.valor),
+//                                                       valorFaltante = (c.valorTotal + c.juros) - c.Pagamentos.Sum(x => x.valor)
+//                                                   }).ToList();
 
    
 
-            string jsonResult = JSON.Serialize(listaCobranca);
-            return "{cobrancas:" + jsonResult + ", totalReg:" + listaCobranca.Count() + " }";
+//            string jsonResult = JSON.Serialize(listaCobranca);
+//            return "{cobrancas:" + jsonResult + ", totalReg:" + listaCobranca.Count() + " }";
+            return "";
         }
 
         public JsonResult Pagar(int idCobranca, decimal valorPagar, int formaPag_Value)
@@ -230,7 +247,7 @@ namespace web.Controllers
                 b.Sacado.Endereco.UF = cobranca.Aluno.Enderecos.FirstOrDefault().uf;
             }
 
-            // Exemplo de como adicionar mais informações ao sacado
+            //Exemplo de como adicionar mais informações ao sacado
             //b.Sacado.InformacoesSacado.Add(new InfoSacado("TÍTULO: " + "2541245"));
 
             item2.Descricao += " " + item2.QuantidadeDias.ToString() + " dias corridos do vencimento.";
@@ -241,7 +258,7 @@ namespace web.Controllers
             if (b.ValorDesconto == 0)
             {
                 Instrucao_Itau item3 = new Instrucao_Itau(999, 1);
-                item3.Descricao += ("1,00 por dia de antecipação.");
+                item3.Descricao += ("2%a.d. de multa");
                 b.Instrucoes.Add(item3);
             }
 
@@ -263,7 +280,7 @@ namespace web.Controllers
         public ActionResult Recibo(int idCobranca)
         {
             conn.Open();
-            string sql = @"select formaPag, p.valor as valorPago, t.nome as descTaxa, valorTotal, juros, t.valor as valorTaxa, pe.nome, 
+            string sql = @"select distinct formaPag, p.valor as valorPago, t.nome as descTaxa, valorTotal, juros, t.valor as valorTaxa, pe.nome, 
                             m.numeroMatricula, cu.nome, cu.valor as valorCurso 
                             from dbo.pagamento p
                             join dbo.cobranca c on p.idCobranca = c.idCobranca

@@ -44,10 +44,12 @@ namespace web.Controllers
         [HttpGet]
         public JsonResult FindTurmaByProfessor()
         {
-            var idProfessor = (int)Session["id_usuario"];
+            if (Session["id_usuario"] != null)
+            {
+                var idProfessor = (int)Session["id_usuario"];
 
-            conn.Open();
-            string sql = @"select idModulo, idTurma , m.nome as modulo, c.nome as curso, t.descricao as turma from modulo m
+                conn.Open();
+                string sql = @"select idModulo, idTurma , m.nome as modulo, c.nome as curso, t.descricao as turma from modulo m
                             join curso c
                             on m.idCurso = c.idCurso
                             join turma t
@@ -55,29 +57,35 @@ namespace web.Controllers
                             join funcionario f
                             on f.idFuncionario = t.idFuncionario
                             where f.idUsuario = @usuario and t.status = @status";
-            SqlCommand comm = conn.CreateCommand();
-            comm.CommandText = sql;
-            comm.Parameters.Add(new SqlParameter("@usuario", idProfessor));
-            comm.Parameters.Add(new SqlParameter("@status", (int)EnumStatus.TurmaAberta));
-            SqlDataReader dr = comm.ExecuteReader();
+                SqlCommand comm = conn.CreateCommand();
+                comm.CommandText = sql;
+                comm.Parameters.Add(new SqlParameter("@usuario", idProfessor));
+                comm.Parameters.Add(new SqlParameter("@status", (int)EnumStatus.TurmaAberta));
+                SqlDataReader dr = comm.ExecuteReader();
 
-            List<Models.ModuloViewData> listModulos = new List<Models.ModuloViewData>();
+                List<Models.ModuloViewData> listModulos = new List<Models.ModuloViewData>();
 
-            while (dr.Read())
-            {
-                Models.ModuloViewData a = new Models.ModuloViewData();
-                a.IdModulo = dr.GetInt32(0);
-                a.IdTurma = dr.GetInt32(1);
-                a.nomeModulo = dr.GetString(2);
-                a.nomeCurso = dr.GetString(3);
-                a.nomeTurma = dr.GetString(4);
+                while (dr.Read())
+                {
+                    Models.ModuloViewData a = new Models.ModuloViewData();
+                    a.IdModulo = dr.GetInt32(0);
+                    a.IdTurma = dr.GetInt32(1);
+                    a.nomeModulo = dr.GetString(2);
+                    a.nomeCurso = dr.GetString(3);
+                    a.nomeTurma = dr.GetString(4);
 
-                listModulos.Add(a);
+                    listModulos.Add(a);
+                }
+
+                conn.Close();
+
+                return Json(new { modulos = listModulos }, JsonRequestBehavior.AllowGet);
             }
-
-            conn.Close();
-
-            return Json(new { modulos = listModulos },JsonRequestBehavior.AllowGet);
+            else
+            {
+                List<Models.ModuloViewData> listModulos = new List<Models.ModuloViewData>();
+                return Json(new { modulos = listModulos }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpGet]

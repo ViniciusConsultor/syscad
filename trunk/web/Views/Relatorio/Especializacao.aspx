@@ -37,7 +37,7 @@
         
          .header { padding : 10px 0px 10px 5px; }
         
-        .header p { font-size : 2em; }
+        .header p { font-size : 2em; text-align:center }
 
         .header a { margin-bottom : 10px; }
         
@@ -65,6 +65,11 @@
             padding : 5px 0px 5px 28px;            
             width : 150px;
         }
+        .logo
+        {
+            float:left;
+            position:absolute;
+        }        
     </style>
     
     <script type="text/javascript">
@@ -140,6 +145,7 @@
     <ext:Toolbar ID="Toolbar1" runat="server">
         <Items>
             <ext:Button ID="Button1" runat="server" Text="Imprimir Relatório" Icon="Printer" OnClientClick="window.print();" />
+
         </Items>
     </ext:Toolbar>
     
@@ -154,6 +160,7 @@
             <Html>
 				<div id="customers-ct">
                     <div class="header">
+                        <div class="logo"><img src="../../Content/imagens/logo_masterCurso.png" width="150px" /></div>
                         <p>Relatório de Especialização de professores</p>
                         <p>V Mendonsa da Costa Idiomas e Informática</p>
                         <p>CNPJ: 10.668.613/0001-55</p>
