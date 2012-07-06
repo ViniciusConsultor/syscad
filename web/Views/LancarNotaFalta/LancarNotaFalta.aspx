@@ -56,23 +56,28 @@
             var field = e.field;
             var newValue = e.value;
 
-            grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
+            if (newValue > 0) {
+                grdNotaFalta.el.mask('Alterando curso', 'x-mask-loading');
 
-            var r = $.post('/LancarNotaFalta/EnviarNotaFalta', { idMatricula:IdMatricula, idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function (result) {
-                complete:
-                {
-                    grdNotaFalta.el.unmask();
-                    var mensagem = "<b>Nota Cadastrada com sucesso!</b>";
-                    Ext.Msg.notify("Mensagem", mensagem);
-                    e.record.data.situacaoAluno = result.notaFalta.situacaoAluno;
-                    e.record.data.notaFinal = result.notaFalta.notaFinal;
-                    grdNotaFalta.store.commitChanges();
+                var r = $.post('/LancarNotaFalta/EnviarNotaFalta', { idMatricula: IdMatricula, idAluno: IdAluno, idTurma: IdTurma, idModulo: IdModulo, campo: field, valor: newValue }, function (result) {
+                    complete:
+                    {
+                        grdNotaFalta.el.unmask();
+                        var mensagem = "<b>Nota Cadastrada com sucesso!</b>";
+                        Ext.Msg.notify("Mensagem", mensagem);
+                        e.record.data.situacaoAluno = result.notaFalta.situacaoAluno;
+                        e.record.data.notaFinal = result.notaFalta.notaFinal;
+                        grdNotaFalta.store.commitChanges();
+                    }
+                });
+
+                if (e.column === 4 && e.record.data.Faltas == "") {
+                    return 0;
                 }
-            });
-
-            if (e.column === 4 && e.record.data.Faltas == "") {
+            } else {
                 return 0;
             }
+
         };
 
         var beforeEdit = function (e) {

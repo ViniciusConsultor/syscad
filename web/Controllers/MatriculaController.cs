@@ -245,12 +245,15 @@ namespace web.Controllers
                 dbMatricula.Adicionar(matricula);
                 dbMatricula.SaveChanges();
 
+                Turma turma = dbTurma.FindOne(x => x.idTurma == cmbTurma_Value);
+
                 cobranca.idTaxa = 1;
                 cobranca.idAluno = matricula.idAluno;
                 cobranca.statusPagamento = (int)EnumStatus.NaoPago;
                 cobranca.valorTotal = taxa.valor;
                 cobranca.juros = 0;
                 cobranca.dataVencimento = DateTime.Now.AddDays(5);
+                cobranca.idCurso = turma.Curso.idCurso;
 
                 Matricula matriculaExistente = dbMatricula.FindOne(x => x.idAluno == matricula.idAluno && x.numeroMatricula != 0);
 
@@ -270,7 +273,7 @@ namespace web.Controllers
                 dbMatriculaTurma.Adicionar(matriculaTurma);
                 dbMatriculaTurma.SaveChanges();
 
-                Turma turma = dbTurma.FindOne(x => x.idTurma == cmbTurma_Value);
+                
                 turma.vagasOcupadas += 1;
                 dbTurma.SaveChanges();
 

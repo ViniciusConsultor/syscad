@@ -52,29 +52,42 @@ namespace web.Controllers
             var dataInicio = Convert.ToDateTime(dtInicio);
             var dataFim = Convert.ToDateTime(dtFim);
 
-            var listAluno = (from m in dbAluno.Context.MatriculaTurma where m.Turma.dataFechamento != null && 
-                                 ((m.Turma.dataInicio >= dataInicio && m.Turma.dataInicio <= dataFim) || 
-                                 (m.Turma.dataFim >= dataInicio && m.Turma.dataFim <= dataFim)) 
-                                 select m.Matricula.Aluno).Distinct();
+            conn.Open();
+            string sql = @"select a.idAluno, p.nome, p.email, p.telefone, p.celular from matriculaTurma mt
+                            join turma t
+                            on mt.idTurma = t.idTurma
+                            join matricula m
+                            on mt.idMatricula = m.idMatricula
+                            join aluno a
+                            on m.idAluno = a.idAluno
+                            join pessoa p
+                            on a.idPessoa = p.idPessoa
+                            where t.dataFechamento is not null 
+                            and t.dataInicio between @dtInicio and @dtFim
+                            or t.dataFim between @dtInicio and @dtFim
+                            order by p.nome";
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            comm.Parameters.Add(new SqlParameter("@dtInicio", dataInicio));
+            comm.Parameters.Add(new SqlParameter("@dtFim", dataFim));
+            SqlDataReader dr = comm.ExecuteReader();
+            List<Models.Aluno> listAluno = new List<Models.Aluno>();
+            while (dr.Read())
+            {
+                Models.Aluno a = new Models.Aluno
+                {
+                    idAluno = dr.GetInt32(0),
+                    nome = dr.GetString(1),
+                    email = dr.GetString(2),
+                    telefone = dr.GetString(3),
+                    celular = dr.GetString(4)
 
-            //List<MatriculaTurma> listaMatriculaTurma = dbMatriculaTurma.FindAll();
-            //List<Aluno> listaAlunosInativos = dbAluno.FindAll();
+                };
 
-            //foreach (MatriculaTurma m in listaMatriculaTurma)
-            //{
-            //    m.Matricula = dbMatricula.FindOne(x => x.idMatricula == m.idMatricula);
-            //    m.Matricula.Aluno = dbAluno.FindOne(x => x.idAluno == m.Matricula.idAluno);
-            //    if (m.Matricula.Aluno != null)
-            //    {
-            //        listaAlunosInativos.Remove(m.Matricula.Aluno);
-            //    }
-            //}
+                listAluno.Add(a);                
+            }
 
-            //foreach (Aluno a in listaAlunosInativos)
-            //{
-            //    a.Pessoa = dbPessoa.FindOne(x => x.idPessoa == a.idPessoa);
-            //}
-
+            //return Json(new { cursos = lista, totalReg = lista.Count });
 
             return "{alunos:" + JSON.Serialize(listAluno) + ", totalReg:" + listAluno.Count() + "}";
         }
@@ -90,7 +103,7 @@ namespace web.Controllers
                 fe.Funcionario.Pessoa = new Repositorio<Pessoa>().FindOne(x => x.idPessoa == fe.Funcionario.idPessoa);
             }
 
-            return "{funcionarioEspecializacoes:" + JSON.Serialize(listaFuncionarioEspecializacoes) + ", totalReg:" + listaFuncionarioEspecializacoes.Count() + "}";
+            return "{funcionarioEspecializacoes:" + JSON.Serialize(listaFuncionarioEspecializacoes.OrderBy(x => x.Funcionario.Pessoa.nome)) + ", totalReg:" + listaFuncionarioEspecializacoes.Count() + "}";
         }
 
         public ActionResult CursosMaisCursados()
@@ -124,10 +137,13 @@ namespace web.Controllers
                 var c = new
                 {
                     Curso = dr.GetString(0),
-                    QtdAluno = dr.GetInt32(1)
+                    QtdAluno = dr.GetInt32(1),
+                    DataInicio = dataInicio,
+                    DataFim = dataFim
+
                 };
 
-                lista.Add(c);
+                lista.Add(c);                
             }
 
             return Json(new { cursos = lista, totalReg = lista.Count });
@@ -149,7 +165,7 @@ namespace web.Controllers
                             on p.idPessoa = a.idPessoa
                             where c.dataVencimento < GETDATE() and c.statusPagamento = 7
                             group by p.nome, p.telefone, p.celular, p.email, a.idAluno
-                            order by dataVencimento";
+                            order by dataVencimento, SUM(valorTotal) desc";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
             SqlDataReader dr = comm.ExecuteReader();

@@ -257,7 +257,7 @@
                             Margins="0 0 5 5"
                             Icon="Money"
                             Region="Center"
-                            AutoExpandColumn="nomeCobranca" 
+                            AutoExpandColumn="Curso.nome" 
                             Frame="true">
                             <Store>
                                 <ext:Store ID="StoreCobrancas" runat="server" AutoLoad="false">
@@ -296,6 +296,7 @@
                                 <Columns>
                                     <ext:RowNumbererColumn ColumnID="number" />
                                     <ext:Column DataIndex="idCobranca" Header="Id" Width="50" Hidden="true" />
+                                    <ext:Column DataIndex="Curso.nome" Header="Curso" />
                                     <ext:Column DataIndex="nomeCobranca" Header="Cobrança" >                                     
                                     </ext:Column>
                                     <ext:DateColumn DataIndex="dataVencimento" Header="Data de Vencimento" Width="150" Format="dd/MM/yyyy" />
@@ -354,7 +355,6 @@
                                 <ext:Hidden ID="_valorPago" runat="server" />
                                 <ext:DisplayField ID="valorFaltante" runat="server" FieldLabel="Valor Faltante" DataIndex="valorFaltante" Hidden="true" Cls="faltante" />
                                 <ext:Hidden ID="_valorFaltante" runat="server" />
-                                <ext:NumberField ID="valorPagar" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" EmptyText="0,00" DecimalPrecision="2" DecimalSeparator="," />
                                 <ext:ComboBox ID="formaPag" runat="server" FieldLabel="Forma Pagto" AllowBlank="false">
                                     <Items>
                                         <ext:ListItem Text="Dinheiro" Value="1" />
@@ -362,6 +362,7 @@
                                         <ext:ListItem Text="Boleto Bancário" Value="3" />
                                     </Items>
                                 </ext:ComboBox>
+                                <ext:NumberField ID="valorPagar" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" EmptyText="0,00" DecimalPrecision="2" DecimalSeparator="," />
                                 <ext:Button ID="btnPagar" Text="Realizar Pagamento" Icon="MoneyAdd" runat="server" >
                                     <Listeners>
                                         <Click Handler="#{FormPanel1}.isValid() ? realizarPagamento(#{FormPanel1}.getForm().getValues()) : void(0);" />

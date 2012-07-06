@@ -135,6 +135,7 @@
     <Content Include="Content\imagens\blue-loading.gif" />
     <Content Include="Content\imagens\error_icon.gif" />
     <Content Include="Content\imagens\logo-itau.jpg" />
+    <Content Include="Content\imagens\logo_masterCurso.png" />
     <Content Include="Content\imagens\logo_syscad.png" />
     <Content Include="Content\imagens\logo_syscad_2.png" />
     <Content Include="Content\imagens\logo_syscad_peq.png" />
