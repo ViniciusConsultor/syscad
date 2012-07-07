@@ -21,7 +21,7 @@ namespace web.Controllers
         IRepositorio<Taxa> dbTaxa;
         IRepositorio<Cobranca> dbCobranca;
         IRepositorio<Status> dbStatus;
-        IRepositorio<Turma> dbTurma;
+        Repositorio<Turma> dbTurma;
 
         public MatriculaController()
         {
@@ -245,7 +245,7 @@ namespace web.Controllers
                 dbMatricula.Adicionar(matricula);
                 dbMatricula.SaveChanges();
 
-                Turma turma = dbTurma.FindOne(x => x.idTurma == cmbTurma_Value);
+                Turma turma = (from t in dbTurma.Context.Turma where t.idTurma == cmbTurma_Value select t).First();
 
                 cobranca.idTaxa = 1;
                 cobranca.idAluno = matricula.idAluno;
@@ -253,7 +253,7 @@ namespace web.Controllers
                 cobranca.valorTotal = taxa.valor;
                 cobranca.juros = 0;
                 cobranca.dataVencimento = DateTime.Now.AddDays(5);
-                cobranca.idCurso = turma.Curso.idCurso;
+                cobranca.idCurso = turma.idCurso;
 
                 Matricula matriculaExistente = dbMatricula.FindOne(x => x.idAluno == matricula.idAluno && x.numeroMatricula != 0);
 
@@ -275,6 +275,7 @@ namespace web.Controllers
 
                 
                 turma.vagasOcupadas += 1;
+                dbTurma.Atualizar(turma);
                 dbTurma.SaveChanges();
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);

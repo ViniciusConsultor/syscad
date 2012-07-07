@@ -69,15 +69,18 @@
             var valorPagar = parseFloat(formataValor($("#valorPagar").val()));
             var valorPago = parseFloat(formataValor($("#_valorPago").val()));
             var valorFaltante = parseFloat(formataValor($("#_valorFaltante").val()));
+            var formaPag = Ext.getCmp("formaPag").getValue();
 
-            if(valorPagar <= 0){
+            if (formaPag == 3 && valorFaltante > 0) {
+                showMsgBoleto();
+            } else if (valorPagar <= 0) {
                 Ext.Msg.show({
                     title: 'Erro',
                     msg: 'O valor não pode ser menor ou igual a Zero!',
                     buttons: Ext.Msg.OK,
                     icon: Ext.Msg.ERROR
                 });
-            }else if ((valorPagar + valorPago) > valorTotal) {
+            } else if ((valorPagar + valorPago) > valorTotal) {
                 Ext.Msg.show({
                     title: 'Erro',
                     msg: 'O valor pago é maior que o valor total!',
@@ -86,19 +89,28 @@
                 });
 
             } else if ((valorPagar + valorPago) < valorTotal) {
-                Ext.Msg.confirm("Atenção", "O valor pago é menor que o valor total, deseja continuar?", function (btn) {
-                    if (btn == "yes") {
-                        mostrarCampos(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected());
-                        $("#valorPago").text(formataDinheiro(valorPago + valorPagar));
-                        $("#_valorPago").val(valorPago + valorPagar);
-                        $("#valorFaltante").text(formataDinheiro(valorTotal - (valorPago + valorPagar)));
-                        $("#_valorFaltante").val(valorTotal - (valorPago + valorPagar));
-                        $("#valorPagar").val('');
-                        $("#formaPag").val('');
-                        pagar(serialize);
-                        Ext.getCmp("grdCobrancas").reload();
-                    }
-                });
+                if (formaPag == 3) {
+                    Ext.Msg.show({
+                        title: 'Erro',
+                        msg: 'Para dar baixa em pagamento por boleto informe o valor total!',
+                        buttons: Ext.Msg.OK,
+                        icon: Ext.Msg.ERROR
+                    });
+                } else {
+                    Ext.Msg.confirm("Atenção", "O valor pago é menor que o valor total, deseja continuar?", function (btn) {
+                        if (btn == "yes") {
+                            mostrarCampos(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected());
+                            $("#valorPago").text(formataDinheiro(valorPago + valorPagar));
+                            $("#_valorPago").val(valorPago + valorPagar);
+                            $("#valorFaltante").text(formataDinheiro(valorTotal - (valorPago + valorPagar)));
+                            $("#_valorFaltante").val(valorTotal - (valorPago + valorPagar));
+                            $("#valorPagar").val('');
+                            $("#formaPag").val('');
+                            pagar(serialize);
+                            Ext.getCmp("grdCobrancas").reload();
+                        }
+                    });
+                }
             } else if ((valorPagar + valorPago) == valorTotal) {
                 Ext.getCmp("FormPanel1").toggleCollapse();
                 Ext.getCmp("valorPago").hide();
@@ -107,7 +119,9 @@
                 mudarStatus();
                 Ext.getCmp("FormPanel1").getForm().reset();
                 var record = Ext.getCmp("grdCobrancas").getSelectionModel().getSelected();
-                Ext.getCmp("WindowRecibo").load("/Pagamento/Recibo/?idCobranca=" + record.data.idCobranca).show();
+                if (formaPag != 3) {
+                    Ext.getCmp("WindowRecibo").load("/Pagamento/Recibo/?idCobranca=" + record.data.idCobranca).show();
+                }
             }
         }
 
@@ -177,6 +191,15 @@
                 }
 
             }
+        }
+
+        var showMsgBoleto = function () {
+            Ext.Msg.show({
+                title: 'Atenção',
+                msg: 'A cobrança está pendente de pagamento por dinheiro ou cartão!',
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.ERROR
+            });
         }
 
     </script>
@@ -324,7 +347,7 @@
                                 </ext:RowSelectionModel>
                             </SelectionModel> 
                             <Listeners>
-                                <Command Handler="#{boletoWindow}.load('/Pagamento/GerarBoleto/?idCobranca='+record.data.idCobranca).show();" />
+                                <Command Handler="record.data.valorPago == 0 ? #{boletoWindow}.load('/Pagamento/GerarBoleto/?idCobranca='+record.data.idCobranca).show() : showMsgBoleto()" />
                             </Listeners>  
                             <BottomBar>
                                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
