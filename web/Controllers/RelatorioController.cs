@@ -157,7 +157,8 @@ namespace web.Controllers
         public string FindInadimplentes()
         {
              conn.Open();
-             string sql = @"select a.idAluno, p.nome, p.telefone, p.celular, p.email, MIN(c.dataVencimento) as dataVencimento, SUM(valorTotal) as valorTotal
+             string sql = @"select a.idAluno, p.nome, p.telefone, p.celular, p.email, MIN(c.dataVencimento) as dataVencimento, SUM(valorTotal) as valorTotal,
+                            SUM(case when GETDATE() > c.dataVencimento then DATEDIFF(d,c.dataVencimento,GETDATE()) * (c.valorTotal * 0.02) ELSE c.juros END) AS juros
                             from aluno a
                             join cobranca c
                             on a.idAluno = c.idAluno
@@ -165,7 +166,7 @@ namespace web.Controllers
                             on p.idPessoa = a.idPessoa
                             where c.dataVencimento < GETDATE() and c.statusPagamento = 7
                             group by p.nome, p.telefone, p.celular, p.email, a.idAluno
-                            order by dataVencimento, SUM(valorTotal) desc";
+                            order by dataVencimento, SUM(valorTotal) desc, SUM(c.juros)";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
             SqlDataReader dr = comm.ExecuteReader();
@@ -180,7 +181,7 @@ namespace web.Controllers
                     celular = dr.GetString(3),
                     email = dr.GetString(4),
                     dataVencimento = dr.GetDateTime(5),
-                    valorTotal = dr.GetDecimal(6)
+                    valorTotal = dr.GetDecimal(6) + dr.GetDecimal(7)
                 };
 
                 listaAlunos.Add(a);

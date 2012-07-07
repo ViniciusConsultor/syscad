@@ -332,6 +332,7 @@ namespace web.Controllers
             cobranca.valorTotal = taxa.valor;
             cobranca.juros = 0;
             cobranca.dataVencimento = DateTime.Now.AddDays(5);
+            cobranca.idCurso = turma.idCurso;
 
             matricula.tipo = "matricula";
             turma.vagasOcupadas ++;
