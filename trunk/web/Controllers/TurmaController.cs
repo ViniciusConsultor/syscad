@@ -297,8 +297,11 @@ namespace web.Controllers
 
                         Matricula mat = dbMatricula.FindOne(x => x.idMatricula == mt.idMatricula);
                         List<Cobranca> cob = dbCobranca.FindAll(x => x.idAluno == mat.idAluno);
-                        cob.ForEach(x => dbCobranca.Remover(x));
-                        dbCobranca.SaveChanges();
+                        foreach(var c in cob){
+                            c.statusPagamento = 5;
+                            dbCobranca.Atualizar(c);
+                            dbCobranca.SaveChanges();
+                        }
 
                     }
 

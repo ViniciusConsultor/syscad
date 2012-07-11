@@ -198,6 +198,7 @@
     <Content Include="Views\Matricula\Prematricula.aspx" />
     <Content Include="Views\Matricula\Matricula.aspx" />
     <Content Include="Views\Modulo\Modulo.aspx" />
+    <Content Include="Views\Pagamento\BaixaBoleto.aspx" />
     <Content Include="Views\Pagamento\Boleto.aspx" />
     <Content Include="Views\Relatorio\Inadimplentes.aspx" />
     <Content Include="Views\Pagamento\ProcessarCobranca.aspx" />

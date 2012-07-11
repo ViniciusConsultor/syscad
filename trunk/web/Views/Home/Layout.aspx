@@ -79,7 +79,7 @@
          }
 
          var carregaIcons = function () {
-             Ext.net.ResourceMgr.registerIcon(["UserSuitBlack", "Folder", "ApplicationFormAdd", "ApplicationCascade", "User", "MoneyAdd", "MoneyDollar", "ApplicationDelete", "Accept", "Report", "BookAddresses", "BookOpen", "Money", "BookOpenMark", "Vcard", "Clock", "ApplicationAdd"]);
+             Ext.net.ResourceMgr.registerIcon(["UserSuitBlack", "Folder", "ApplicationFormAdd", "ApplicationCascade", "User", "MoneyAdd", "MoneyDollar", "ApplicationDelete", "Accept", "Report", "BookAddresses", "BookOpen", "Money", "BookOpenMark", "Vcard", "Clock", "ApplicationAdd", "MoneyDelete", "UserEarth"]);
          }
 
          var GetSession = function (session) {

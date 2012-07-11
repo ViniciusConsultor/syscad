@@ -38,6 +38,11 @@ namespace web.Controllers
             return View();
         }
 
+        public ActionResult BaixaBoleto()
+        {
+            return View();
+        }
+
         public JsonResult Search(string limit, string query, string start)
         {
             int matricula;
@@ -144,10 +149,6 @@ namespace web.Controllers
 
             try
             {
-                //string sql = "INSERT INTO Pagamento (idCobranca,valor,formaPag) VALUES ({0},{1},{2})";
-                //Object[] parameters = { idCobranca, valorPagar, formaPag_Value };
-                //dbPagamento.Context.ExecuteStoreCommand(sql, parameters);
-
                 dbPagamento.Adicionar(p);
                 dbPagamento.SaveChanges();
 
@@ -161,6 +162,38 @@ namespace web.Controllers
                 return Json(new { success = true, message = mensagem });
             }
             catch(Exception e)
+            {
+                mensagem = "Erro: " + e.Message;
+                return Json(new { success = false, message = mensagem });
+            }
+
+        }
+
+        public JsonResult PagarBoleto(int idCobranca, decimal valorPagar, int formaPag_Value)
+        {
+            string mensagem;
+            Pagamento p = new Pagamento();
+            p.idCobranca = idCobranca;
+            p.valor = valorPagar;
+            p.formaPag = formaPag_Value;
+            p.dataPagamento = DateTime.Now;
+
+            try
+            {
+                dbPagamento.Adicionar(p);
+                dbPagamento.SaveChanges();
+
+                var cob = dbCobranca.FindOne(x => x.idCobranca == idCobranca);
+                var juros = DateTime.Now > cob.dataVencimento ? (DateTime.Now.Day - cob.dataVencimento.Day) * (cob.valorTotal * 0.02m) : 0;
+                cob.juros = juros;
+                cob.statusPagamento = (int)EnumStatus.Pago;
+                dbCobranca.Atualizar(cob);
+                dbCobranca.SaveChanges();
+
+                mensagem = "Pagamento realizado com sucesso!";
+                return Json(new { success = true, message = mensagem });
+            }
+            catch (Exception e)
             {
                 mensagem = "Erro: " + e.Message;
                 return Json(new { success = false, message = mensagem });

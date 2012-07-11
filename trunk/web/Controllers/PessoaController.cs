@@ -8,13 +8,14 @@ using Persistence.Entity;
 using System.Data;
 using Ext.Net;
 using System.Web.Services;
+using System.Data.SqlClient;
 
 namespace web.Controllers
 {
     public class PessoaController : Controller
     {
-        //
-        // GET: /Pessoa/
+        const string CONNECTIONSTR = @"Data Source=.\SQLEXPRESS;Initial Catalog=SysCad;Integrated Security=True;MultipleActiveResultSets=True";
+        SqlConnection conn;      
 
         public ActionResult Pessoa()
         {
@@ -26,6 +27,7 @@ namespace web.Controllers
         public PessoaController()
         {
             dbPessoa = new Repositorio<Pessoa>();
+            conn = new SqlConnection(CONNECTIONSTR);
         }
 
         public JsonResult Search(string limit, string query, string start)
@@ -46,8 +48,32 @@ namespace web.Controllers
 
         public JsonResult PessoaResponsavel(string limit, string query, string start)
         {
+            conn.Open();
+            string sql = @"SELECT idPessoa, nome, cpf, email, telefone, celular, dataNascimento, sexo
+                            FROM pessoa 
+                            WHERE DATEDIFF(y,datanascimento,getdate()) >= 18";
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = sql;
+            SqlDataReader dr = comm.ExecuteReader();
 
-            var listaPessoa = (from p in dbPessoa.Context.Pessoa where (p.nome.ToLower().Contains(query.ToLower()) || query.ToLower() == "") && p.Funcionarios.Count() == 0 && p.Alunos.Count() == 0 select p).ToList();
+            List<Models.Pessoa> listaPessoa = new List<Models.Pessoa>();
+
+            while (dr.Read())
+            {
+                Models.Pessoa p = new Models.Pessoa();
+
+                p.idPessoa = dr.GetInt32(0);
+                p.nome = dr.GetString(1);
+                p.cpf = dr.GetString(2);
+                p.email = dr.GetString(3);
+                p.telefone = dr.GetString(4);
+                p.celular = dr.GetString(5);
+                p.dataNascimento = dr.GetDateTime(6);
+                p.sexo = dr.GetInt32(7);
+
+                listaPessoa.Add(p);
+            }
+            //var listaPessoa = (from p in dbPessoa.Context.Pessoa where (Convert.ToInt32(((DateTime.Now - p.dataNascimento)).TotalDays) / 360) >= 18 select p).ToList();
             return Json(new { pessoas = listaPessoa, totalReg = listaPessoa.Count }, JsonRequestBehavior.AllowGet);
 
         }

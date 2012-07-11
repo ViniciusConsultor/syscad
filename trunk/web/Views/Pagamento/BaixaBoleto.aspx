@@ -27,7 +27,7 @@
     <script type="text/javascript">
 
 
-       var formataDinheiro = function(num) {
+        var formataDinheiro = function (num) {
             num = num.toString().replace(/\R$|\,/g, '');
             if (isNaN(num)) num = "0";
             sign = (num == (num = Math.abs(num)));
@@ -41,131 +41,7 @@
         }
 
         var formataValor = function (val) {
-           return val.toString().replace(/\,/g,'.');
-        }
-
-        var pagar = function (serialize) {
-            $.post('/Pagamento/Pagar', serialize, function (result) {
-                    if (result.success) {
-                        Ext.Msg.show({
-                            title: 'Sucesso',
-                            msg: result.message,
-                            buttons: Ext.Msg.OK,
-                            icon: Ext.Msg.INFO
-                        });
-                    } else {
-                        Ext.Msg.show({
-                            title: 'Erro',
-                            msg: result.message,
-                            buttons: Ext.Msg.OK,
-                            icon: Ext.Msg.ERROR
-                        });
-                    }
-            });
-        };
-
-        var realizarPagamento = function (serialize) {
-            var valorTotal = parseFloat(formataValor(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected().data.valorTotal));
-            var valorPagar = parseFloat(formataValor($("#valorPagar").val()));
-            var valorPago = parseFloat(formataValor($("#_valorPago").val()));
-            var valorFaltante = parseFloat(formataValor($("#_valorFaltante").val()));
-            var formaPag = Ext.getCmp("formaPag").getValue();
-
-            if (formaPag == 3 && valorFaltante > 0) {
-                showMsgBoleto();
-            } else if (valorPagar <= 0) {
-                Ext.Msg.show({
-                    title: 'Erro',
-                    msg: 'O valor não pode ser menor ou igual a Zero!',
-                    buttons: Ext.Msg.OK,
-                    icon: Ext.Msg.ERROR
-                });
-            } else if ((valorPagar + valorPago) > valorTotal) {
-                Ext.Msg.show({
-                    title: 'Erro',
-                    msg: 'O valor pago é maior que o valor total!',
-                    buttons: Ext.Msg.OK,
-                    icon: Ext.Msg.ERROR
-                });
-
-            } else if ((valorPagar + valorPago) < valorTotal) {
-                if (formaPag == 3) {
-                    Ext.Msg.show({
-                        title: 'Erro',
-                        msg: 'Para dar baixa em pagamento por boleto informe o valor total!',
-                        buttons: Ext.Msg.OK,
-                        icon: Ext.Msg.ERROR
-                    });
-                } else {
-                    Ext.Msg.confirm("Atenção", "O valor pago é menor que o valor total, deseja continuar?", function (btn) {
-                        if (btn == "yes") {
-                            mostrarCampos(Ext.getCmp("grdCobrancas").getSelectionModel().getSelected());
-                            $("#valorPago").text(formataDinheiro(valorPago + valorPagar));
-                            $("#_valorPago").val(valorPago + valorPagar);
-                            $("#valorFaltante").text(formataDinheiro(valorTotal - (valorPago + valorPagar)));
-                            $("#_valorFaltante").val(valorTotal - (valorPago + valorPagar));
-                            $("#valorPagar").val('');
-                            $("#formaPag").val('');
-                            pagar(serialize);
-                            Ext.getCmp("grdCobrancas").reload();
-                        }
-                    });
-                }
-            } else if ((valorPagar + valorPago) == valorTotal) {
-                Ext.getCmp("FormPanel1").toggleCollapse();
-                Ext.getCmp("valorPago").hide();
-                Ext.getCmp("valorFaltante").hide();
-                pagar(serialize);
-                mudarStatus();
-                Ext.getCmp("FormPanel1").getForm().reset();
-                var record = Ext.getCmp("grdCobrancas").getSelectionModel().getSelected();
-                if (formaPag != 3) {
-                    Ext.getCmp("WindowRecibo").load("/Pagamento/Recibo/?idCobranca=" + record.data.idCobranca).show();
-                }
-            }
-        }
-
-        var mudarStatus = function () {
-            var idCobranca = Ext.getCmp("idCobranca").getValue();
-            $.post("/Pagamento/MudarStatus", { idCobranca: idCobranca, status: 6 }, function (result) {
-                complete:
-                {
-                    Ext.getCmp('grdCobrancas').getStore().reload();
-                }
-            });
-        };
-
-        var LoadFormulario = function (record) {
-            Ext.getCmp("FormPanel1").expand();
-            var dataVenc = new Date(record.data.dataVencimento);
-            Ext.getCmp("dataVencimento").setValue(dataVenc.format("d/m/Y"));
-            Ext.getCmp("valorTotal").setValue(formataDinheiro(record.data.valorTotal));
-            Ext.getCmp("_valorPago").setValue(record.data.valorPago);
-            Ext.getCmp("_valorFaltante").setValue(record.data.valorFaltante);
-            Ext.getCmp("valorPagar").reset();
-            Ext.getCmp("formaPag").reset();
-            if (record.data.idCurso == 0) {
-                Ext.getCmp("nomeCurso").hide();
-            } else {
-                Ext.getCmp("nomeCurso").show();
-            }
-            if (record.data.valorPago != "") {
-                mostrarCampos(record);
-            } else {
-                esconderCampos();
-            }
-        }
-
-        var mostrarCampos = function (record) {
-            Ext.getCmp("valorPago").show();
-            Ext.getCmp("valorFaltante").show();
-            Ext.getCmp("valorPago").setValue(formataDinheiro(record.data.valorPago));
-            Ext.getCmp("valorFaltante").setValue(formataDinheiro(record.data.valorFaltante));
-        }
-
-        var esconderCampos = function () {
-            Ext.getCmp("valorPago").hide();
-            Ext.getCmp("valorFaltante").hide();
+            return val.toString().replace(/\,/g, '.');
         }
 
         var trataDados = function (value, rec) {
@@ -183,7 +59,7 @@
                 rec.nomeCobranca = rec.Taxa.nome;
                 var dataAtual = new Date();
                 var dataVencimento = new Date(rec.dataVencimento);
-                if(dataAtual > dataVencimento){
+                if (dataAtual > dataVencimento) {
                     rec.valorCobranca = rec.Taxa.valor;
                     rec.valorTotal = rec.Taxa.valor + rec.juros;
                 } else {
@@ -193,12 +69,18 @@
             }
         }
 
-        var showMsgBoleto = function () {
-            Ext.Msg.show({
-                title: 'Atenção',
-                msg: 'A cobrança está pendente de pagamento por dinheiro ou cartão!',
-                buttons: Ext.Msg.OK,
-                icon: Ext.Msg.ERROR
+
+        var BaixaBoleto = function (command, record) {
+            $.post("/Pagamento/PagarBoleto", { idCobranca: record.data.idCobranca, valorPagar: record.data.valorCobranca, formaPag_Value: 3 }, function () {
+                Ext.Msg.show({
+                    title: 'Sucesso',
+                    msg: 'Boleto baixado com sucesso!',
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.INTO,
+                    fn: function () {
+                        Ext.getCmp("grdCobrancas").reload();
+                    }
+                });
             });
         }
 
@@ -222,7 +104,7 @@
                             Frame="true" 
                             Icon="User">
                             <Items>
-                               <ext:Label Html="<h1>Informe a matricula ou o nome do aluno para realizar o pagamento!</h1><br />" runat="server" />
+                               <ext:Label ID="Label1" Html="<h1>Informe a matricula ou o nome do aluno para realizar o pagamento!</h1><br />" runat="server" />
                                <ext:ComboBox ID="txtAluno" 
                                         runat="server" 
                                         DisplayField="nome" 
@@ -334,7 +216,7 @@
                                     </ext:Column>
                                     <ext:CommandColumn Width="110" Align="Center">
                                         <Commands>
-                                            <ext:GridCommand Icon="Money" CommandName="Boleto" Text="Boleto"  />
+                                            <ext:GridCommand Icon="MoneyDelete" CommandName="Boleto" Text="Baixa Boleto"  />
                                         </Commands>
                                     </ext:CommandColumn>
                                 </Columns>
@@ -342,107 +224,22 @@
                             <SelectionModel>
                                 <ext:RowSelectionModel ID="RowSelectionModel1" runat="server" SingleSelect="true">
                                     <Listeners>
-                                        <RowSelect Handler="#{FormPanel1}.getForm().loadRecord(record); LoadFormulario(record);" />
+                                        <RowSelect Handler="void(0)" />
                                     </Listeners>
                                 </ext:RowSelectionModel>
                             </SelectionModel> 
                             <Listeners>
-                                <Command Handler="record.data.valorPago == 0 ? #{boletoWindow}.load('/Pagamento/GerarBoleto/?idCobranca='+record.data.idCobranca).show() : showMsgBoleto()" />
+                                <Command Handler="BaixaBoleto(command, record)" />
                             </Listeners>  
                             <BottomBar>
                                 <ext:PagingToolbar ID="PagingToolbar1" runat="server" />
                             </BottomBar>
                             <LoadMask ShowMask="true" />
                         </ext:GridPanel>
-                    </Center>
-                    <East Collapsible="true" Split="false" >
-                        <ext:FormPanel 
-                            ID="FormPanel1" 
-                            runat="server" 
-                            Margins="0 5 5 5"
-                            Frame="true" 
-                            Title="Pagamento" 
-                            Width="280"
-                            Icon="MoneyDollar"
-                            DefaultAnchor="100%"
-                            Collapsed="true"
-                            >
-                            <Items>
-                                <ext:Hidden ID="idCobranca" DataIndex="idCobranca" runat="server" />                                                     
-                                <ext:DisplayField ID="DisplayField1" runat="server" FieldLabel="Aluno" DataIndex="Aluno.nome" />
-                                <ext:DisplayField ID="nomeCurso" runat="server" FieldLabel="Curso" DataIndex="Curso.nome" />
-                                <ext:DisplayField ID="DisplayField2" runat="server" FieldLabel="Cobrança" DataIndex="nomeCobranca" />
-                                <ext:DisplayField ID="dataVencimento" runat="server" FieldLabel="Data Vencimento" />
-                                <ext:DisplayField ID="valorTotal" runat="server" FieldLabel="Valor Total" DataIndex="valorTotal"/>
-                                <ext:DisplayField ID="valorPago" runat="server" FieldLabel="Valor Pago" DataIndex="valorPago" Hidden="true" />
-                                <ext:Hidden ID="_valorPago" runat="server" />
-                                <ext:DisplayField ID="valorFaltante" runat="server" FieldLabel="Valor Faltante" DataIndex="valorFaltante" Hidden="true" Cls="faltante" />
-                                <ext:Hidden ID="_valorFaltante" runat="server" />
-                                <ext:ComboBox ID="formaPag" runat="server" FieldLabel="Forma Pagto" AllowBlank="false">
-                                    <Items>
-                                        <ext:ListItem Text="Dinheiro" Value="1" />
-                                        <ext:ListItem Text="Cartão de Crédito" Value="2" />
-                                    </Items>
-                                </ext:ComboBox>
-                                <ext:NumberField ID="valorPagar" FieldLabel="Valor à pagar" runat="server" AllowBlank="false" EmptyText="0,00" DecimalPrecision="2" DecimalSeparator="," />
-                                <ext:Button ID="btnPagar" Text="Realizar Pagamento" Icon="MoneyAdd" runat="server" >
-                                    <Listeners>
-                                        <Click Handler="#{FormPanel1}.isValid() ? realizarPagamento(#{FormPanel1}.getForm().getValues()) : void(0);" />
-                                    </Listeners>
-                                </ext:Button>
-                            </Items>
-                        </ext:FormPanel>
-                    </East>
+                    </Center>                   
                 </ext:BorderLayout>
             </Items>
         </ext:Viewport>
     </form>
-    <ext:Window ID="boletoWindow" runat="server" IDMode="Static" Title="Boleto Bancário"
-      Hidden="true" Modal="true" Height="550px" Width="750px">
-        <AutoLoad Url="/Pagamento/GerarBoleto" TriggerEvent="show" NoCache="true" ReloadOnEvent="true" ShowMask="true" MaskMsg="Carregando Boleto..."  Mode="IFrame">
-            <Params>
-                <ext:Parameter Name="idCobranca" Value="1" Mode="Raw" />
-            </Params>
-        </AutoLoad>              
-        <Listeners>
-            <Show Handler="boletoWindow.reload()" />
-        </Listeners>
-        <BottomBar>
-        <ext:Toolbar ID="botoesBar" runat="server">
-            <Items>
-                <ext:ToolbarFill />
-                <ext:Button ID="Button1" runat="server" Text="Imprimir" Icon="Printer">
-                    <Listeners>
-                        <Click Handler="#{boletoWindow}.getBody().print();" />
-                    </Listeners>
-                </ext:Button>
-            </Items>
-        </ext:Toolbar>
-        </BottomBar>
-  </ext:Window>
-  <ext:Window ID="WindowRecibo" runat="server" IDMode="Static" Title="Recibo de Pagamento"
-      Hidden="true" Modal="true" Height="550px" Width="350px">
-        <AutoLoad Url="/Pagamento/Recibo" TriggerEvent="show" NoCache="true" ReloadOnEvent="true" ShowMask="true" MaskMsg="Carregando Recibo..."  Mode="IFrame">
-            <Params>
-                <ext:Parameter Name="idCobranca" Value="1" Mode="Raw" />
-            </Params>
-        </AutoLoad>              
-        <Listeners>
-            <Show Handler="WindowRecibo.reload()" />
-        </Listeners>
-        <BottomBar>
-        <ext:Toolbar ID="Toolbar1" runat="server">
-            <Items>
-                <ext:ToolbarFill />
-                <ext:Button ID="Button2" runat="server" Text="Imprimir" Icon="Printer">
-                    <Listeners>
-                        <Click Handler="#{WindowRecibo}.getBody().print();" />
-                    </Listeners>
-                </ext:Button>
-            </Items>
-        </ext:Toolbar>
-        </BottomBar>
-  </ext:Window>
-
 </body>
 </html>
