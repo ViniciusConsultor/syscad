@@ -123,7 +123,7 @@ namespace web.Controllers
                             ON mt.idTurma = t.idTurma
                             JOIN curso c
                             ON t.idCurso = c.idCurso
-                            where t.dataInicio between @dtInicio and @dtFim and  t.dataFim between @dtInicio and @dtFim
+                            where t.dataInicio between @dtInicio and @dtFim or t.dataFim between @dtInicio and @dtFim
                             GROUP BY c.nome
                             order by COUNT(mt.idMatricula) desc";
             SqlCommand comm = conn.CreateCommand();
