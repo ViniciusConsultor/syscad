@@ -153,6 +153,7 @@
                     <ext:RecordField Name="emailPessoa" Type="String" />
                     <ext:RecordField Name="telefonePessoa" Type="String" />
                     <ext:RecordField Name="telefoneCelularPessoa" Type="String" />
+                    <ext:RecordField Name="nomeCurso" Type="String" />
                 </Fields>
             </ext:JsonReader>
         </Reader>
@@ -195,6 +196,7 @@
                             <th>E-mail</th>
                             <th>Telefone</th>
                             <th>Celular</th>
+                            <th>Curso</th>
 						</tr>
 					
 						<tpl for=".">
@@ -203,6 +205,7 @@
                                         <td>&nbsp;{emailPessoa}</td>
                                         <td>&nbsp;{telefonePessoa}</td>
                                         <td>&nbsp;{telefoneCelularPessoa}</td>
+                                        <td>&nbsp;{nomeCurso}</td>
 									</tr>
 						</tpl>                    
 					</table>
