@@ -71,7 +71,7 @@ namespace web.Controllers
         {
 
             conn.Open();
-            string sql = @"select c.idCobranca, c.idAluno, c.idTaxa, c.idCurso, 
+            string sql = @"select c.idCobranca, c.idAluno, isnull(c.idTaxa,0) as idTaxa, c.idCurso, 
                             case when GETDATE() > c.dataVencimento then DATEDIFF(d,c.dataVencimento,GETDATE()) * (c.valorTotal * 0.02) ELSE c.juros END AS juros, 
                             c.valorTotal, c.dataVencimento, t.nome as nomeTaxa, t.valor as valorTaxa, cu.nome as nomeCurso,
                             cu.valor as valorCurso, p.nome as nomeAluno, SUM(pag.valor) as valorPago, (c.valorTotal + c.juros) - SUM(pag.valor) as valorFaltante 
@@ -112,8 +112,8 @@ namespace web.Controllers
                 cob.Taxa = new Models.Taxa
                 {
                     idTaxa = dr.GetInt32(2),
-                    nome = dr.GetString(7),
-                    valor = dr.GetDecimal(8)
+                    nome = dr.IsDBNull(7) ? "" : dr.GetString(7),
+                    valor = dr.IsDBNull(8) ? 0 : dr.GetDecimal(8)
                 };
 
                 cob.Curso = new Models.Curso

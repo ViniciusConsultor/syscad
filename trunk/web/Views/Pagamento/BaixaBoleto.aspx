@@ -45,7 +45,7 @@
         }
 
         var trataDados = function (value, rec) {
-            if (value == null) {
+            if (value == 0) {
                 rec.nomeCobranca = "Mensalidade";
                 var dataAtual = new Date();
                 var dataVencimento = new Date(rec.dataVencimento);
