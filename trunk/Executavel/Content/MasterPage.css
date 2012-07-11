@@ -1,0 +1,29 @@
+﻿/*GENERICO*/
+body{ background-color: #DFE8F6; font-family:Arial;}
+
+/*DIV'S BARRA SUPERIOR*/
+#bar_login { margin-top: 0; width: 100%; height: 34px;  background-image: url('imagens/bar_login.jpg'); background-repeat: repeat-x; padding: 0; }
+
+#left_inside_bar_login { margin: 0; padding: 0; float: left; height: 30px; }
+#left_inside_bar_login ul {float:left; margin: 0; padding: 0; list-style: none; }
+#left_inside_bar_login ul li {float:left; padding-left:10px; padding-right:10px; background: url('imagens/bar_login_separador.jpg') no-repeat right; height: 34px;}
+#left_inside_bar_login ul li span{float:left; padding-top:8px; font:15px Arial; color:#FFF;}
+
+#right_inside_bar_login {margin: 0; padding: 0; float: right; height: 30px; }
+#right_inside_bar_login ul { margin: 0; padding: 0; list-style: none; }
+#right_inside_bar_login ul li{ padding:8px 10px 0 10px; font: 15px Arial; color: #FFF; border-left:1px solid #000078; height: 34px;}
+#right_inside_bar_login ul li a{color:#fff;}
+
+/*Aba da primeira página*/
+.h1_titulo{float:left; font-size:20px; color:#000033; margin:15px 10px 30px 10px; width:1000px; border-bottom:2px solid #000033;}
+
+#sidebar_left{float:left; color:#000033; margin-left:10px; width:260px; padding:5px;}
+#sidebar_center{float:left; color:#000033; margin:0 15px; width:260px; padding:5px;}
+#sidebar_right{float:left; color:#000033; margin-right:10px; width:260px; padding:5px;}
+#sidebar_left .info, #sidebar_center .info, #sidebar_right .info{float:left; width:250px; border-bottom:1px dashed #999;}
+#sidebar_left .info:hover, #sidebar_center .info:hover, #sidebar_right .info:hover{background:#eee;}
+#sidebar_left .titulo_bloco, #sidebar_center .titulo_bloco, #sidebar_right .titulo_bloco{float:left; width:250px;}
+#sidebar_left .h2_titulo_bloco, #sidebar_center .h2_titulo_bloco, #sidebar_right .h2_titulo_bloco{font-size:20px; text-align:center; padding:15px; color:#fff; background:#000033;}
+#sidebar_left .h3_titulo_info, #sidebar_center .h3_titulo_info, #sidebar_right .h3_titulo_info{float:left; font-size:14px; margin:10px 0 5px 0;}
+#sidebar_left .p_descricao_info, #sidebar_center .p_descricao_info, #sidebar_right .p_descricao_info{float:left; font-size:12px; margin-bottom:5px;}
+#sidebar_left .info .span_data_info, #sidebar_center .info .span_data_info, #sidebar_right .info .span_data_info{float:left; font-size:11px; padding-bottom:3px;}
