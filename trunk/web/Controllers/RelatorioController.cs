@@ -53,7 +53,7 @@ namespace web.Controllers
             var dataFim = Convert.ToDateTime(dtFim);
 
             conn.Open();
-            string sql = @"select a.idAluno, p.nome, p.email, p.telefone, p.celular from matriculaTurma mt
+            string sql = @"select a.idAluno, p.nome, p.email, p.telefone, p.celular, c.nome as nomeCurso, MAX(m.dataRegistro) as data from matriculaTurma mt
                             join turma t
                             on mt.idTurma = t.idTurma
                             join matricula m
@@ -62,25 +62,29 @@ namespace web.Controllers
                             on m.idAluno = a.idAluno
                             join pessoa p
                             on a.idPessoa = p.idPessoa
+                            join curso c
+                            on t.idCurso = c.idCurso
                             where t.dataFechamento is not null 
                             and t.dataInicio between @dtInicio and @dtFim
                             or t.dataFim between @dtInicio and @dtFim
+                            group by a.idAluno, p.nome, p.email, p.telefone, p.celular, c.nome
                             order by p.nome";
             SqlCommand comm = conn.CreateCommand();
             comm.CommandText = sql;
             comm.Parameters.Add(new SqlParameter("@dtInicio", dataInicio));
             comm.Parameters.Add(new SqlParameter("@dtFim", dataFim));
             SqlDataReader dr = comm.ExecuteReader();
-            List<Models.Aluno> listAluno = new List<Models.Aluno>();
+            List<object> listAluno = new List<object>();
             while (dr.Read())
             {
-                Models.Aluno a = new Models.Aluno
+                object a = new
                 {
                     idAluno = dr.GetInt32(0),
                     nome = dr.GetString(1),
                     email = dr.GetString(2),
                     telefone = dr.GetString(3),
-                    celular = dr.GetString(4)
+                    celular = dr.GetString(4),
+                    nomeCurso = dr.GetString(5)
 
                 };
 
